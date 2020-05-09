@@ -1,8 +1,9 @@
 import fetch from 'node-fetch';
 
-const url = 'http://localhost:3000';
-
 function HomePage(props) {
+  // We can destructure here or inside the map.
+  // We should probably destructure in the function declaration.
+  // TODO Replace key with uuid()
   return (
     <div>
       {props.posts.map(({ id, name, price, images }) => (
@@ -16,8 +17,11 @@ function HomePage(props) {
   );
 }
 
+// Prerender data for quicker loading. 
+// Should we use getServerSideProps?
+
 export async function getStaticProps(context) {
-  const posts = await fetch(`${url}/api/hello`)
+  const posts = await fetch(`${process.env.url}/api/hello`)
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
