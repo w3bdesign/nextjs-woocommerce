@@ -17,7 +17,7 @@ Start the server with ```npm run dev ```
 
 ## Features
 
-- Connect to Woocommerce REST API and list ID, name and display image
+- Connect to Woocommerce REST API and list ID, name and display image for products
 
 ## TODO
 
