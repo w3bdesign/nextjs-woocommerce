@@ -1,5 +1,4 @@
-import Header from "components/Header.component"
-
+import Header from 'components/Header.component';
 
 function HomePage(props) {
   // We can destructure here or inside the map.
@@ -24,8 +23,8 @@ function HomePage(props) {
 // Prerender data for quicker loading.
 // Should we use getServerSideProps?
 
-export async function getStaticProps(context) {
-  const posts = await fetch(`${process.env.ServerUrl}/api/getWooProducts`)
+export async function getStaticProps() {
+  const posts = await fetch(`${process.env.NextjsUrl}/api/getWooProducts`)
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
