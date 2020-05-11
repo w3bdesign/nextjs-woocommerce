@@ -1,6 +1,7 @@
 module.exports = {
   purge: [
-    './pages/**/*.js'    
+    './pages/**/*.js',
+    './pages/**/*.jsx'     
   ],
   theme: {},
   variants: {},
