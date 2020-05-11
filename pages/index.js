@@ -1,6 +1,5 @@
-import fetch from 'node-fetch';
+import Header from "components/Header.component"
 
-import Header from '../components/Header.component';
 
 function HomePage(props) {
   // We can destructure here or inside the map.
