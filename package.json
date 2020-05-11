@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
+    "easy-peasy": "^3.3.0",
     "next": "^9.4.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

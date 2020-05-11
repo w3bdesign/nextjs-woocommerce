@@ -9,7 +9,7 @@
 
 # Next.js ecommerce site with Woocommerce backend
 
-Clone or fork the repo and rename ```next.config.example.js``` to ```next.config.js```
+Clone or fork the repo and rename ```.env.example``` to ```.env```
 
 Modify the values according to your setup
 
