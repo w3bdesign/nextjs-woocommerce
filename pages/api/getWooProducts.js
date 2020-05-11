@@ -8,13 +8,13 @@ const WooCommerce = new WooCommerceRestApi({
   version: 'wc/v3',
 });
 
-function getProducts() {
-  return WooCommerce.get('products');
+async function getProductsFromRest() {
+  return await WooCommerce.get('products');
 }
 
-export async function Hello(req, res) {
-  const WooProducts = await getProducts();
+export async function getWooProducts(req, res) {
+  const WooProducts = getProductsFromRest();
   res.status(200).json(WooProducts.data);
 }
 
-export default Hello;
+export default getWooProducts;
