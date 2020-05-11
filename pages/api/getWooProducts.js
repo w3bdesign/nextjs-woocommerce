@@ -2,9 +2,9 @@ import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 const WooCommerce = new WooCommerceRestApi({
   // We are fetching values from next.config.js
-  url: process.env.WooUrl,
-  consumerKey: process.env.consumerKey,
-  consumerSecret: process.env.consumerSecret,
+  url: process.env.WOO_URL,
+  consumerKey: process.env.CONSUMER_KEY,
+  consumerSecret: process.env.CONSUMER_SECRET,
   version: 'wc/v3',
 });
 
