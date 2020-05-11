@@ -1,4 +1,6 @@
 import Header from 'components/Header/Header.component';
+import Hero from "components/Main/Hero.component"
+import Products from "components/Main/Products.component"
 
 function HomePage(props) {
   // We can destructure here or inside the map.
@@ -7,6 +9,8 @@ function HomePage(props) {
   return (
     <>
       <Header />
+      <Hero />
+      <Products products={props} />
       <div>
         {props.posts.map(({ id, name, price, images }) => (
           <div key={id}>
