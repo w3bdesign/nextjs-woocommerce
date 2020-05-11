@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "uuid": "^8.0.0"
+  },
+  "devDependencies": {
+    "postcss-preset-env": "^6.7.0",
+    "tailwindcss": "^1.4.6"
   }
 }

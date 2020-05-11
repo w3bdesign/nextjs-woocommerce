@@ -12,6 +12,8 @@ function HomePage(props) {
           <div key={id}>
             ID: {id} <br /> Name: {name} <br /> Price: ${price} <br /> Image:{' '}
             <img src={images[0].src} />
+            <br />
+            <button className="btn-blue">Button</button>
             <hr />
           </div>
         ))}
