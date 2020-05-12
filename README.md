@@ -12,7 +12,7 @@ Start the server with ```npm run dev ```
 
 ## Features
 
-- Connect to Woocommerce REST API and list ID, name and display image for products
+- Connect to Woocommerce REST API and list name, price and display image for products
 - Tailwind CSS for styling
 - Minimalistic and responsive design
 - Custom API endpoints
