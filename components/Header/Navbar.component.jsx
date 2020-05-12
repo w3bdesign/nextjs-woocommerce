@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import Cart from './Cart.component';
+import Search from './Search.component';
 
 function Navbar() {
   return (
@@ -50,9 +51,7 @@ function Navbar() {
 
           <div className="order-1 md:order-2">
             <Link href="/">
-              <a
-                className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline "                
-              >
+              <a className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline ">
                 <svg
                   className="mr-2 text-gray-800 fill-current"
                   xmlns="http://www.w3.org/2000/svg"
@@ -71,6 +70,7 @@ function Navbar() {
             className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
+            <Search />
             <Cart />
           </div>
         </div>
