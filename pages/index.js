@@ -37,8 +37,9 @@ function HomePage(props) {
 
 // Prerender data for quicker loading.
 // Should we use getServerSideProps?
+// export async function getStaticProps() {
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const products = await getWooProducts();
   return {
     props: {
