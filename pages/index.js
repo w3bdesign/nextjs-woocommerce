@@ -18,13 +18,13 @@ function HomePage(props) {
 // Should we use getServerSideProps?
 
 export async function getStaticProps() {
-  const posts = await fetch(`${process.env.NEXTJS_URL}/api/getWooProducts`)
+  const products = await fetch(`${process.env.NEXTJS_URL}/api/getWooProducts`)
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
   return {
     props: {
-      posts,
+      products,
     },
   };
 }
