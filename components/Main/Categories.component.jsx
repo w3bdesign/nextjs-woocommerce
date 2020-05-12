@@ -1,4 +1,4 @@
-function Categories(props) {  
+function Categories(props) {
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
@@ -10,9 +10,6 @@ function Categories(props) {
             >
               Kategorier
             </a>
-
-  
-
           </div>
         </nav>
 

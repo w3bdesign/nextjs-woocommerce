@@ -1,4 +1,4 @@
-function Products(props) {  
+function IndexProducts(props) {  
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
@@ -66,4 +66,4 @@ function Products(props) {
   );
 }
 
-export default Products;
+export default IndexProducts;

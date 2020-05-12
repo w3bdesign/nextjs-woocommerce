@@ -1,6 +1,6 @@
 import Header from 'components/Header/Header.component';
 import Hero from 'components/Main/Hero.component';
-import Products from 'components/Main/Products.component';
+import IndexProducts from 'components/Main/IndexProducts.component';
 
 function HomePage(props) {
   // We can destructure here or inside the map.
@@ -9,7 +9,7 @@ function HomePage(props) {
     <>
       <Header />
       <Hero />
-      <Products products={props} />
+      <IndexProducts products={props} />
     </>
   );
 }
