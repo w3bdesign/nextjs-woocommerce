@@ -6,7 +6,7 @@ function Cart() {
       className="inline-block pl-3 no-underline hover:text-black"
       href="#cart"
       onClick={() => {
-        alert('You clicked on the cart, now we will do something soon.');
+        alert('Du klikket på handlekurven');
       }}
     >
       <svg

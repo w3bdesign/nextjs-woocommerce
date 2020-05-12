@@ -19,6 +19,7 @@ Start the server with ```npm run dev ```
 
 ## TODO
 
+- Implement mobile menu
 - Setup a live Woocommerce installation instead of using a local installation
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
