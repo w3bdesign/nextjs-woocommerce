@@ -31,7 +31,6 @@ function CategoryPage(props) {
 
 // Prerender data for quicker loading.
 // Should we use getServerSideProps?
-
 export async function getStaticProps() {
   const posts = await getWooCategories();
   return {
