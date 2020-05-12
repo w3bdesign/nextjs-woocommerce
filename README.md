@@ -13,6 +13,8 @@ Start the server with ```npm run dev ```
 ## Features
 
 - Connect to Woocommerce REST API and list name, price and display image for products
+- List all product categories on a separate page
+- API support for creating new Woocommerce orders (not connected to cart contents yet)
 - Tailwind CSS for styling
 - Minimalistic and responsive design
 - Custom API endpoints
