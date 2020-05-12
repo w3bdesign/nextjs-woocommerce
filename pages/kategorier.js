@@ -14,7 +14,9 @@ function CategoryPage(props) {
 // Should we use getServerSideProps?
 
 export async function getStaticProps() {
-  const posts = await fetch(`${process.env.NEXTJS_URL}/api/getWooCategories`)
+  //const posts = await fetch(`${process.env.NEXTJS_URL}/api/getWooCategories`)
+  const posts = await fetch("http://nextjs-woocommerce-a49viog5j.now.sh/api/getWooCategories")
+  
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
