@@ -4,6 +4,8 @@
 
 # Next.js ecommerce site with Woocommerce backend
 
+Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
+
 Clone or fork the repo and rename ```.env.example``` to ```.env```
 
 Modify the values according to your setup
@@ -17,12 +19,12 @@ Start the server with ```npm run dev ```
 - API support for creating new Woocommerce orders (not connected to cart contents yet)
 - Tailwind CSS for styling
 - Minimalistic and responsive design
-- Custom API endpoints
+- Currently connected to live Woocommerce installation instead of using a local installation
 
 ## TODO
 
+- Add Algolia search
 - Implement mobile menu
-- Setup a live Woocommerce installation instead of using a local installation
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
 - Implement Easy Peasy for cart state management
