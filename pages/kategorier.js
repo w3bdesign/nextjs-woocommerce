@@ -13,7 +13,7 @@ function CategoryPage(props) {
 // Prerender data for quicker loading.
 // Should we use getServerSideProps?
 
-export async function getStaticProps() {
+/*export async function getStaticProps() {
   //const posts = await fetch(`${process.env.NEXTJS_URL}/api/getWooCategories`)
   const posts = await fetch("http://nextjs-woocommerce-a49viog5j.now.sh/api/getWooCategories")
   
@@ -25,6 +25,6 @@ export async function getStaticProps() {
       posts,
     },
   };
-}
+}*/
 
 export default CategoryPage;

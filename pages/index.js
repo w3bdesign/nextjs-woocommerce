@@ -1,6 +1,25 @@
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+
 import Header from 'components/Header/Header.component';
 import Hero from 'components/Main/Hero.component';
 import IndexProducts from 'components/Main/IndexProducts.component';
+
+const WooCommerce = new WooCommerceRestApi({
+  // We are fetching values from .env
+  url: process.env.WOO_URL,
+  consumerKey: process.env.CONSUMER_KEY,
+  consumerSecret: process.env.CONSUMER_SECRET,
+  version: 'wc/v3',
+});
+
+function getProductsFromRest() {
+  return WooCommerce.get('products');
+}
+
+async function getWooProducts(req, res) {
+  const WooProducts = await getProductsFromRest();
+  res.status(200).json(WooProducts.data);
+}
 
 function HomePage(props) {
   console.log(process.env.VERCEL_URL)
@@ -21,10 +40,8 @@ function HomePage(props) {
 export async function getStaticProps() {
   console.log(process.env.VERCEL_URL)
   //const products = await fetch(`${process.env.VERCEL_URL}/api/getWooProducts`)
-  const products = await fetch("http://nextjs-woocommerce-a49viog5j.now.sh/api/getWooProducts")
+  const products = getWooProducts();
   
-    .then((res) => res.json())
-    .catch((error) => console.log(error));
 
   return {
     props: {
