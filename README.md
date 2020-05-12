@@ -25,6 +25,7 @@ Start the server with ```npm run dev ```
 ## TODO
 
 - Add a better README.md
+- Implement https://github.com/cyrilwanner/next-optimized-images for production
 - Implement Easy Peasy for cart state management
 - Add more functionality
 - Implement GraphQL?

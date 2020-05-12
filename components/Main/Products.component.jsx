@@ -47,7 +47,7 @@ function Products(props) {
 
         {props.products.posts.map(({ id, name, price, images }) => (
           <div key={id} className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4">
-            <img className="hover:grow hover:shadow-lg" src={images[0].src} />
+            <img id="product-image" className="hover:grow hover:shadow-lg" src={images[0].src} />
             <div className="flex items-center justify-between pt-3">
               <p className="">{name}</p>
               <svg
