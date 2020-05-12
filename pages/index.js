@@ -3,6 +3,7 @@ import Hero from 'components/Main/Hero.component';
 import IndexProducts from 'components/Main/IndexProducts.component';
 
 function HomePage(props) {
+  console.log(process.env.VERCEL_URL)
   // We can destructure here or inside the map.
   // We should probably destructure in the function declaration.  
   return (
