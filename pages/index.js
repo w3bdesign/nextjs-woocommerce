@@ -18,14 +18,14 @@ function getProductsFromRest() {
 
 async function getWooProducts(req, res) {
   const WooProducts = await getProductsFromRest();
- 
+
   return WooProducts.data;
 }
 
 function HomePage(props) {
   // We can destructure here or inside the map.
   // We should probably destructure in the function declaration.
-  console.log(props);
+
   return (
     <>
       <Header />
