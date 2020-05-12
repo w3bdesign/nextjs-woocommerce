@@ -18,7 +18,7 @@ function HomePage(props) {
 // Should we use getServerSideProps?
 
 export async function getStaticProps() {
-  const products = await fetch(`${process.env.NEXTJS_URL}/api/getWooProducts`)
+  const products = await fetch(`${process.env.VERCEL_URL}/api/getWooProducts`)
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
