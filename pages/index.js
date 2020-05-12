@@ -6,9 +6,9 @@ import IndexProducts from 'components/Main/IndexProducts.component';
 
 const WooCommerce = new WooCommerceRestApi({
   // We are fetching values from .env
-  url: process.env.WOO_URL,
-  consumerKey: process.env.CONSUMER_KEY,
-  consumerSecret: process.env.CONSUMER_SECRET,
+  url: `${process.env.WOO_URL}`,
+  consumerKey: `${process.env.CONSUMER_KEY}`,
+  consumerSecret: `${process.env.CONSUMER_SECRET}`,
   version: 'wc/v3',
 });
 
@@ -18,13 +18,12 @@ function getProductsFromRest() {
 
 async function getWooProducts(req, res) {
   const WooProducts = await getProductsFromRest();
-  res.status(200).json(WooProducts.data);
+  return WooProducts.data;
 }
 
 function HomePage(props) {
-  console.log(process.env.VERCEL_URL)
   // We can destructure here or inside the map.
-  // We should probably destructure in the function declaration.  
+  // We should probably destructure in the function declaration.
   return (
     <>
       <Header />
@@ -38,11 +37,7 @@ function HomePage(props) {
 // Should we use getServerSideProps?
 
 export async function getStaticProps() {
-  console.log(process.env.VERCEL_URL)
-  //const products = await fetch(`${process.env.VERCEL_URL}/api/getWooProducts`)
-  const products = getWooProducts();
-  
-
+  const products = await getWooProducts();
   return {
     props: {
       products,
