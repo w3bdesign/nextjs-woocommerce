@@ -1,27 +1,15 @@
 import Header from 'components/Header/Header.component';
-import Hero from "components/Main/Hero.component"
-import Products from "components/Main/Products.component"
+import Hero from 'components/Main/Hero.component';
+import Products from 'components/Main/Products.component';
 
 function HomePage(props) {
   // We can destructure here or inside the map.
-  // We should probably destructure in the function declaration.
-  // TODO Replace key with uuid()
+  // We should probably destructure in the function declaration.  
   return (
     <>
       <Header />
       <Hero />
       <Products products={props} />
-      <div>
-        {props.posts.map(({ id, name, price, images }) => (
-          <div key={id}>
-            ID: {id} <br /> Name: {name} <br /> Price: ${price} <br /> Image:{' '}
-            <img src={images[0].src} />
-            <br />
-            <button className="btn-blue">Button</button>
-            <hr />
-          </div>
-        ))}
-      </div>
     </>
   );
 }

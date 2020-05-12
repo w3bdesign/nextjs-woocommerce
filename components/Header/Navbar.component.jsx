@@ -3,7 +3,7 @@ function Navbar() {
     <header>
       <nav id="header" className="fixed top-0 z-30 w-full py-1 bg-white ">
         <div className="container flex flex-wrap items-center justify-between w-full px-6 py-3 mx-auto mt-0">
-          <label for="menu-toggle" className="block cursor-pointer md:hidden">
+          <label htmlFor="menu-toggle" className="block cursor-pointer md:hidden">
             <svg
               className="text-gray-900 fill-current"
               xmlns="http://www.w3.org/2000/svg"
