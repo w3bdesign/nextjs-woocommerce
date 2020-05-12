@@ -20,7 +20,7 @@ function HomePage(props) {
 
 export async function getStaticProps() {
   console.log(process.env.VERCEL_URL)
-  const products = await fetch(`${process.env.VERCEL_URL}/api/getWooProducts`)
+  const products = await fetch(`http://${process.env.VERCEL_URL}/api/getWooProducts`)
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
