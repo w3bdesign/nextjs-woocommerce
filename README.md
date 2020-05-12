@@ -18,12 +18,15 @@ Start the server with ```npm run dev ```
 ## Features
 
 - Connect to Woocommerce REST API and list ID, name and display image for products
+- Tailwind CSS for styling
+- Minimalistic and responsive design
 - Custom API endpoints
 
 ## TODO
 
 - Add a better README.md
-- Add better design, layout and functionality
+- Implement Easy Peasy for cart state management
+- Add more functionality
 - Implement GraphQL?
 
 
