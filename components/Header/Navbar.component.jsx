@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import Cart from './Cart.component';
 
 function Navbar() {
@@ -28,6 +30,9 @@ function Navbar() {
             <nav>
               <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
                 <li>
+
+
+
                   <a
                     className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
                     href="#"
@@ -36,12 +41,12 @@ function Navbar() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                    href="#"
-                  >
-                    Kategorier
-                  </a>
+                <Link href="/categories">
+          <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">Kategorier</a>
+        </Link>
+
+
+                 
                 </li>
               </ul>
             </nav>
