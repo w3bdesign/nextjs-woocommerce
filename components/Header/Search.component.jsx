@@ -1,3 +1,4 @@
+// https://github.com/algolia/react-instantsearch
 function Search() {
   return (
     <a

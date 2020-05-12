@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
-function IndexProducts(props) {
-  console.log(props.products.products);
+function IndexProducts(props) {  
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
