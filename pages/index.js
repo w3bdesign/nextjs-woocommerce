@@ -22,6 +22,8 @@ async function getWooProducts(req, res) {
   return WooProducts.data;
 }
 
+// https://apppresser.com/woocommerce-rest-api/
+
 function HomePage(props) {
   // We can destructure here or inside the map.
   // We should probably destructure in the function declaration.
