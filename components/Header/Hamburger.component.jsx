@@ -1,14 +1,68 @@
+import { useState } from 'react';
+
+import Link from 'next/link';
+
 function Hamburger() {
+  const [isExpanded, setisExpanded] = useState(false);
   return (
-    <svg
-      className="text-gray-900 fill-current"
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-    >
-      <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-    </svg>
+    <>
+      <span className="hidden" aria-label="Meny"></span>
+      <svg
+        onClick={() => {
+          setisExpanded(!isExpanded);
+        }}
+        className="text-gray-900 fill-current"
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+      >
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+      </svg>
+
+      {isExpanded && (
+        <div
+          id="mobile-menu"
+          className="absolute right-0 z-50 w-full mt-64 text-center text-black bg-white w-60 h-60"
+        >
+          <ul>
+            <li className="m-6 border border-gray-400 border-solid rounded">
+              <Link href="/">
+                <a
+                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
+                  href="#"
+                >
+                  Hjem
+                </a>
+              </Link>
+            </li>
+            <li className="m-6 border border-gray-400 border-solid rounded">
+              <Link href="/produkter">
+                <a
+                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
+                  href="#"
+                >
+                  Produkter
+                </a>
+              </Link>
+            </li>
+            <li className="m-6 border border-gray-400 border-solid rounded">
+              <Link href="/kategorier">
+                <a
+                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
+                  href="#"
+                >
+                  Kategorier
+                </a>
+              </Link>
+            </li>
+            {
+              // Mobilsøk her
+            }
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
 
