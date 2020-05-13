@@ -62,7 +62,7 @@ function Hamburger() {
                 </a>
               </Link>
             </li>
-            <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
+            <li className="w-full p-4 border-gray-400 border-solid rounded">
 
               <MobileSearch />
             </li>
