@@ -33,7 +33,7 @@ function Cart() {
         */
       }
        {isExpanded && (
-      <div className="absolute right-0 z-50 w-64 h-64 mt-48 mr-0 text-center text-black bg-white">
+      <div className="absolute right-0 z-50 w-64 h-64 mt-40 mr-0 text-center text-black bg-white">
         Shopping cart
     </div>
        )}
