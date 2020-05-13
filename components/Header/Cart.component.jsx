@@ -56,6 +56,12 @@ function Cart() {
               <img className="w-24" src="http://davethemogul.com/wp-content/uploads/2020/05/rezasaad-w0J1odQXj3A-unsplash-scaled.jpg" />
               <div className="ml-8 -mt-2 text-left">Testprodukt 2 <br className="mt-2"/>Farge: Blå <br className="mt-2"/> Str: Large<br className="mt-2"/><span className="font-bold">1 x KR 599</span><br className="mt-4"/></div>
             </div>
+            { 
+            // End product listing inside of cart
+            }
+            <div className="mx-auto mt-6">
+              <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">GÅ TIL KASSE</button>
+            </div>
 
           </div>
         </animated.div>
