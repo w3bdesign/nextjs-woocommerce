@@ -10,8 +10,8 @@ function Cart() {
     from: { opacity: isExpanded ? 1 : 0, width: isExpanded ? '300px' : "0px" }
   })*/
   const animation = useSpring({
-    to: [{ opacity: isExpanded ? 1 : 0}],
-    from: { opacity: isExpanded ? 1 : 0 }
+    to: [{ opacity: isExpanded ? 1 : 0, marginRight: isExpanded ? '0px' : "-300px"}],
+    from: { opacity: isExpanded ? 1 : 0 ,  marginRight: isExpanded ? '0px' : "-300px"}
   })
   return (
     <>
