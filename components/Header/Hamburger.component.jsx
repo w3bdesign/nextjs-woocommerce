@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import {useSpring, animated} from 'react-spring'
+import { useSpring, animated } from 'react-spring'
 import Link from 'next/link';
 
 import MobileSearch from "./MobileSearch.component"
 
 function Hamburger() {
   const [isExpanded, setisExpanded] = useState(false);
-  const animation = useSpring({opacity: 1, from: {opacity: 0}})
+  const animation = useSpring({ opacity: isExpanded ? 1 : 0 })
+
   return (
     <>
       <label
@@ -29,7 +30,7 @@ function Hamburger() {
       </label>
 
       {isExpanded && (
-        <animated.div style={animation}       
+        <animated.div style={animation}
           id="mobile-menu"
           className="absolute right-0 z-50 w-full text-center text-black bg-white"
         >
@@ -69,7 +70,7 @@ function Hamburger() {
               <MobileSearch />
             </li>
           </ul>
-          </animated.div>
+        </animated.div>
       )}
     </>
   );
