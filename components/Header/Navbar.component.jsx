@@ -2,28 +2,14 @@ import Link from 'next/link';
 
 import Cart from './Cart.component';
 import Search from './Search.component';
+import Hamburger from './Hamburger.component';
 
 function Navbar() {
   return (
     <header>
       <nav id="header" className="fixed top-0 z-30 w-full py-1 bg-white ">
         <div className="container flex flex-wrap items-center justify-between w-full px-6 py-3 mx-auto mt-0">
-          <label
-            htmlFor="menu-toggle"
-            className="block cursor-pointer md:hidden"
-          >
-            <svg
-              className="text-gray-900 fill-current"
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-            >
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-            </svg>
-          </label>
-          <input className="hidden" type="checkbox" id="menu-toggle" />
-
+          <Hamburger />
           <div
             className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1"
             id="menu"
