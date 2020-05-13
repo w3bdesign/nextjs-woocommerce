@@ -10,6 +10,8 @@ Clone or fork the repo and rename ```.env.example``` to ```.env```
 
 Modify the values according to your setup
 
+Follow this guide to generate API keys for your website: <a href="https://docs.woocommerce.com/document/woocommerce-rest-api/">https://docs.woocommerce.com/document/woocommerce-rest-api/</a>
+
 Start the server with ```npm run dev ```
 
 ## Features
