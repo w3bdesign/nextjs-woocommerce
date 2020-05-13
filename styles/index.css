@@ -13,11 +13,11 @@
 
 #mobile-menu {
   margin-top: 200px;
-  height:350px;
+  height:320px;
 }
 
 #mobile-search {
-margin-left:320px;
+margin-left:250px;
 }
 
 @tailwind utilities;
