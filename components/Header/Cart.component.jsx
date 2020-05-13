@@ -5,6 +5,10 @@ import { useSpring, animated } from 'react-spring'
 
 function Cart() {
   const [isExpanded, setisExpanded] = useState(false);
+  const animation = useSpring({
+    to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '180px' : "-180px" }],
+    from: { opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '180px' : "-180px" }
+  })
   return (
     <>
       <a
@@ -33,9 +37,9 @@ function Cart() {
         */
       }
        {isExpanded && (
-      <div className="absolute right-0 z-50 w-64 h-64 mt-40 mr-0 text-center text-black bg-white">
+      <animated.div style={animation} className="absolute right-0 z-50 w-64 h-64 mr-0 text-center text-black bg-white">
         Shopping cart
-    </div>
+        </animated.div>
        )}
 
     </>
