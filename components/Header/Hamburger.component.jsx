@@ -28,7 +28,7 @@ function Hamburger() {
       {isExpanded && (
         <div
           id="mobile-menu"
-          className="absolute right-0 z-50 w-full mt-40 text-center text-black bg-white w-60 h-60"
+          className="absolute right-0 z-50 w-full mt-32 text-center text-black bg-white w-60 h-60"
         >
           <ul>
             <li className="m-6 border border-gray-400 border-solid rounded">
