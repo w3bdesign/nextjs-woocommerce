@@ -5,8 +5,7 @@ import Link from 'next/link';
 import MobileSearch from "./MobileSearch.component"
 
 function Hamburger() {
-  const [isExpanded, setisExpanded] = useState(false);
-  // TODO Implement more advanced transitions, see https://codesandbox.io/embed/zn2q57vn13
+  const [isExpanded, setisExpanded] = useState(false);  
   //const animation = useSpring({ opacity: isExpanded ? 1 : 0 })
 
   const animation = useSpring({
