@@ -8,10 +8,10 @@ function Hamburger() {
   const [isExpanded, setisExpanded] = useState(false);
   // TODO Implement more advanced transitions, see https://codesandbox.io/embed/zn2q57vn13
   //const animation = useSpring({ opacity: isExpanded ? 1 : 0 })
-  
+
   const animation = useSpring({
-    to: [{opacity: isExpanded ? 1 : 0,  marginTop: isExpanded ? '180px' : "0px"}, {opacity: isExpanded ? 1 : 0}],
-    from: {opacity: isExpanded ? 1 : 0, marginTop: '0px'}
+    to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '180px' : "-180px" }],
+    from: { opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '180px' : "-180px" }
   })
 
   return (
