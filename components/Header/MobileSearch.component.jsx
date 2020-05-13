@@ -2,10 +2,10 @@
 function MobileSearch() {
   return (
     <>
-      <div className="inline mt-6">
+      <div className="inline mt-4">
         <form>
           <input
-            className="px-6 py-2 mt-4 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+            className="px-6 py-2 mt-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
             type="text"
             placeholder="Søk ..."
           />
