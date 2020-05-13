@@ -6,8 +6,8 @@ import { useSpring, animated } from 'react-spring'
 function Cart() {
   const [isExpanded, setisExpanded] = useState(false);
   const animation = useSpring({
-    to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '155px' : "-180px", height: isExpanded ? '250px' : "-0px" }],
-    from: { opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '155px' : "-180px", height: isExpanded ? '250px' : "-0px" }
+    to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '165px' : "-180px", height: isExpanded ? '250px' : "-0px" }],
+    from: { opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '165px' : "-180px", height: isExpanded ? '250px' : "-0px" }
   })
   return (
     <>
