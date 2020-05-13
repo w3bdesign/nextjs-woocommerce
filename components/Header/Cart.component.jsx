@@ -5,9 +5,13 @@ import { useSpring, animated } from 'react-spring'
 
 function Cart() {
   const [isExpanded, setisExpanded] = useState(false);
-  const animation = useSpring({
+  /*const animation = useSpring({
     to: [{ opacity: isExpanded ? 1 : 0, width: isExpanded ? '300px' : "0px" }],
     from: { opacity: isExpanded ? 1 : 0, width: isExpanded ? '300px' : "0px" }
+  })*/
+  const animation = useSpring({
+    to: [{ opacity: isExpanded ? 1 : 0}],
+    from: { opacity: isExpanded ? 1 : 0 }
   })
   return (
     <>
@@ -33,11 +37,11 @@ function Cart() {
 
       {
         /*
-      Animate margin-right and slide-in
+      Animate slide-in
         */
       }
       {isExpanded && (
-        <animated.div style={animation} className="fixed top-0 right-0 z-50 h-full mr-0 text-center text-black bg-white">
+        <animated.div style={animation} id="cart-div" className="fixed top-0 right-0 z-50 h-full mr-0 text-center text-black bg-white">
           <button onClick={() => {
             setisExpanded(!isExpanded);
           }} title="Close (Esc)" type="button" className="fixed top-0 right-0"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>

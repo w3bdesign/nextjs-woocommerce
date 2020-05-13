@@ -12,13 +12,17 @@
 }
 
 #mobile-menu {
-  height: 300px;
- /* margin-top: 180px;*/
+  height: 300px; 
 
 }
 
 #mobile-search {
   margin-left: 250px;
 }
+
+#cart-div {
+  width: 300px;
+}
+
 
 @tailwind utilities;
