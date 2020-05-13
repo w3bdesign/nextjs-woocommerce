@@ -6,8 +6,8 @@ import { useSpring, animated } from 'react-spring'
 function Cart() {
   const [isExpanded, setisExpanded] = useState(false);
   const animation = useSpring({
-    to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '160px' : "-180px" }],
-    from: { opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '160px' : "-180px" }
+    to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '150px' : "-180px", height: isExpanded ? '250px' : "-0px" }],
+    from: { opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '150px' : "-180px", height: isExpanded ? '250px' : "-0px" }
   })
   return (
     <>
@@ -36,11 +36,11 @@ function Cart() {
       Animate margin-right and slide-in
         */
       }
-       {isExpanded && (
-      <animated.div style={animation} className="absolute right-0 z-50 w-64 h-64 mr-0 text-center text-black bg-white">
-        Shopping cart
+      {isExpanded && (
+        <animated.div style={animation} className="absolute right-0 z-50 w-64 h-64 mr-0 text-center text-black bg-white">
+          Shopping cart
         </animated.div>
-       )}
+      )}
 
     </>
 
