@@ -9,7 +9,15 @@
 
 #product-image {
  min-height: 408px
+}
 
+#mobile-menu {
+  margin-top: 400px;
+  height:400px;
+}
+
+#mobile-search {
+margin-left:320px;
 }
 
 @tailwind utilities;

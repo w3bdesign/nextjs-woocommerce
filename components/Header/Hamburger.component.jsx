@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-import Search from "./Search.component"
+import MobileSearch from "./MobileSearch.component"
 
 function Hamburger() {
   const [isExpanded, setisExpanded] = useState(false);
@@ -29,7 +29,7 @@ function Hamburger() {
       {isExpanded && (
         <div
           id="mobile-menu"
-          className="absolute right-0 z-50 w-full mt-32 text-center text-black bg-white"
+          className="absolute right-0 z-50 w-full text-center text-black bg-white"
         >
           <ul>
             <li className="w-full p-4 border-t border-b border-gray-400 border-solid rounded">
@@ -63,7 +63,8 @@ function Hamburger() {
               </Link>
             </li>
             <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
-              <Search />
+
+              <MobileSearch />
             </li>
           </ul>
         </div>

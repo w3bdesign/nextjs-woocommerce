@@ -1,15 +1,15 @@
 // https://github.com/algolia/react-instantsearch
-function Search() {
+function MobileSearch() {
   return (
     <>
-      <div className="hidden mt-2 md:inline xl:inline">
+      <div className="inline mt-2">
         <form>
           <input
             className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
             type="text"
             placeholder="Søk ..."
           />
-          <div className="absolute ml-48 -mt-8">
+          <div id="mobile-search" className="absolute -mt-8">
             <a
               className="inline-block pl-3 no-underline hover:text-black"
               onClick={() => {
@@ -34,4 +34,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default MobileSearch;
