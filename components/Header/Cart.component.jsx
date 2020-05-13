@@ -32,9 +32,11 @@ function Cart() {
       Animate margin-right and slide-in
         */
       }
-      <div className="absolute right-0 z-50 w-64 h-64 mt-64 mr-0 text-center text-black bg-white">
+       {isExpanded && (
+      <div className="absolute right-0 z-50 w-64 h-64 mt-48 mr-0 text-center text-black bg-white">
         Shopping cart
     </div>
+       )}
 
     </>
 
