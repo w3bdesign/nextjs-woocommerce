@@ -5,10 +5,7 @@ import { useSpring, animated } from 'react-spring'
 
 function Cart() {
   const [isExpanded, setisExpanded] = useState(false);
-  /*const animation = useSpring({
-    to: [{ opacity: isExpanded ? 1 : 0, width: isExpanded ? '300px' : "0px" }],
-    from: { opacity: isExpanded ? 1 : 0, width: isExpanded ? '300px' : "0px" }
-  })*/
+
   const animation = useSpring({
     to: [{ opacity: isExpanded ? 1 : 0, marginRight: isExpanded ? '0px' : "-300px"}],
     from: { opacity: isExpanded ? 1 : 0 ,  marginRight: isExpanded ? '0px' : "-300px"}
@@ -45,7 +42,7 @@ function Cart() {
           <button onClick={() => {
             setisExpanded(!isExpanded);
           }} title="Close (Esc)" type="button" className="fixed top-0 right-0"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-          <div className="mt-6 text-2xl text-center border-b-2 border-gray-400 border-solid">HANDLEKURV</div>
+          <div className="mt-20 text-2xl text-center border-b-2 border-gray-400 border-solid">HANDLEKURV</div>
           <div className="mt-4">
             {
               // Start product listing inside of cart
