@@ -12,8 +12,12 @@
 }
 
 #mobile-menu {
-  margin-top: 180px;
+ 
   height:300px;
+
+  transition: margin-top 1.0s ease;
+  margin-top: 180px;
+  
 }
 
 #mobile-search {
