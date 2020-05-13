@@ -6,7 +6,13 @@ import MobileSearch from "./MobileSearch.component"
 
 function Hamburger() {
   const [isExpanded, setisExpanded] = useState(false);
-  const animation = useSpring({ opacity: isExpanded ? 1 : 0 })
+  // TODO Implement more advanced transitions, see https://codesandbox.io/embed/zn2q57vn13
+  //const animation = useSpring({ opacity: isExpanded ? 1 : 0 })
+  
+  const animation = useSpring({
+    to: [{opacity: isExpanded ? 1 : 0, color: '#ffaaee', marginTop: '180px'}, {opacity: isExpanded ? 1 : 0, color: 'rgb(14,26,19)'}],
+    from: {opacity: isExpanded ? 1 : 0, marginTop: '0px'}
+  })
 
   return (
     <>
