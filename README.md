@@ -25,6 +25,7 @@ Start the server with ```npm run dev ```
 
 ## TODO
 
+- Hide products not in stock
 - Add Algolia search
 - Implement mobile menu
 - Add a better README.md
