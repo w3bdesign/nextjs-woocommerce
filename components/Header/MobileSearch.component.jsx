@@ -2,7 +2,7 @@
 function MobileSearch() {
   return (
     <>
-      <div className="inline mt-2">
+      <div className="inline mt-6">
         <form>
           <input
             className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
