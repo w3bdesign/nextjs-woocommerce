@@ -47,10 +47,12 @@ function Cart() {
             // Start product listing inside of cart
             }
             <div className="flex p-4 mt-2 border-b border-gray-400 border-solid">
+              <div className="fixed right-0 mt-0 mr-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
               <img className="w-24" src="http://davethemogul.com/wp-content/uploads/2020/05/lynne-baltzer-_Qqfhl2sCFE-unsplash-scaled.jpg" />
               <div className="ml-8 -mt-2 text-left">Testprodukt 1 <br className="mt-2"/>Farge: Rød <br className="mt-2"/> Str: Large<br className="mt-2"/><span className="font-bold">1 x KR 599</span><br className="mt-4"/></div>
             </div>
             <div className="flex p-4 mt-2 border-b border-gray-400 border-solid">
+            <div className="fixed right-0 mt-0 mr-2"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
               <img className="w-24" src="http://davethemogul.com/wp-content/uploads/2020/05/rezasaad-w0J1odQXj3A-unsplash-scaled.jpg" />
               <div className="ml-8 -mt-2 text-left">Testprodukt 2 <br className="mt-2"/>Farge: Blå <br className="mt-2"/> Str: Large<br className="mt-2"/><span className="font-bold">1 x KR 599</span><br className="mt-4"/></div>
             </div>
