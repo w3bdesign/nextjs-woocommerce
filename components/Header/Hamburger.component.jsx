@@ -10,7 +10,7 @@ function Hamburger() {
   //const animation = useSpring({ opacity: isExpanded ? 1 : 0 })
   
   const animation = useSpring({
-    to: [{opacity: isExpanded ? 1 : 0, color: '#ffaaee', marginTop: '180px'}, {opacity: isExpanded ? 1 : 0, color: 'rgb(14,26,19)'}],
+    to: [{opacity: isExpanded ? 1 : 0, color: '#ffaaee', marginTop: isExpanded ? '180px' : "0px"}, {opacity: isExpanded ? 1 : 0}],
     from: {opacity: isExpanded ? 1 : 0, marginTop: '0px'}
   })
 
