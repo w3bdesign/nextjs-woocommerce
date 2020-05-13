@@ -31,7 +31,7 @@ function Hamburger() {
           className="absolute right-0 z-50 w-full mt-32 text-center text-black bg-white w-60 h-60"
         >
           <ul>
-            <li className="w-full p-4 border border-gray-400 border-solid rounded">
+            <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
               <Link href="/">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
@@ -41,7 +41,7 @@ function Hamburger() {
                 </a>
               </Link>
             </li>
-            <li className="w-full p-4 border border-gray-400 border-solid rounded">
+            <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
               <Link href="/produkter">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
@@ -51,7 +51,7 @@ function Hamburger() {
                 </a>
               </Link>
             </li>
-            <li className="w-full p-4 border border-gray-400 border-solid rounded">
+            <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
               <Link href="/kategorier">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
