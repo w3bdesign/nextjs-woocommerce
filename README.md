@@ -18,6 +18,7 @@ Start the server with ```npm run dev ```
 
 - Connect to Woocommerce REST API and list name, price and display image for products
 - Animations with React-Spring
+- Mobile menu and cart slide-out with animations
 - List all product categories on a separate page
 - API support for creating new Woocommerce orders (not connected to cart contents yet)
 - Tailwind CSS for styling
