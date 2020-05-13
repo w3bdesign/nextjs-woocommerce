@@ -1,5 +1,7 @@
 <p align="center">
 <img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot.jpg?" alt="Screenshot"/>
+<br />
+<img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot2.jpg?" alt="Screenshot"/>
 </p>
 
 # Next.js Ecommerce site with Woocommerce backend
