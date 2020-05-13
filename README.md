@@ -2,7 +2,7 @@
 <img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot.jpg?" alt="Screenshot"/>
 </p>
 
-# Next.js ecommerce site with Woocommerce backend
+# Next.js Ecommerce site with Woocommerce backend
 
 Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
 
