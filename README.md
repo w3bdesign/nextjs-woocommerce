@@ -30,14 +30,9 @@ Start the server with ```npm run dev ```
 ## TODO
 
 - Hide products not in stock
-- Add Algolia search
-- Implement mobile menu
+- Add Algolia search 
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
 - Implement Easy Peasy for cart state management
 - Add more functionality
-- Implement GraphQL?
-
-
-
-
+- Implement GraphQL with useSWR?
