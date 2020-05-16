@@ -36,5 +36,4 @@ Start the server with ```npm run dev ```
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
 - Implement Easy Peasy for cart state management
-- Add more functionality
-- Implement GraphQL with useSWR or react-query?
+- Add more functionality-
