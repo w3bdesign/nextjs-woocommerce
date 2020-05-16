@@ -5,7 +5,7 @@ import Header from 'components/Header/Header.component';
 import Hero from 'components/Main/Hero.component';
 import IndexProducts from 'components/Main/IndexProducts.component';
 
-import WOO_CONFIG from 'nextConfig';
+import WOO_CONFIG from '../nextConfig';
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 
 // https://apppresser.com/woocommerce-rest-api/
