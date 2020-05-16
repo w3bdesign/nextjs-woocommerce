@@ -8,7 +8,7 @@
 
 Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
 
-Clone or fork the repo and rename ```.env.example``` to ```.env```
+Clone or fork the repo and rename ```nextConfig.example.js``` to ```nextConfig.example```
 
 Modify the values according to your setup
 

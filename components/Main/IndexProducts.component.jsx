@@ -32,9 +32,9 @@ function IndexProducts(props) {
           </div>
         </nav>
 
-        {props.products.products.length ? (
-          props.products.products.map(
-            ({ id, name, price, images, on_sale, regular_price }) => (
+        {props.products.products.nodes.length ? (
+          props.products.products.nodes.map(
+            ({ id, name, price, onSale, image }) => (
               <div
                 key={id}
                 className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4"
@@ -49,7 +49,7 @@ function IndexProducts(props) {
                     <img
                       id="product-image"
                       className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
-                      src={images[0].src}
+                      src={image.sourceUrl}
                     />
                   </a>
                 </Link>
@@ -57,19 +57,20 @@ function IndexProducts(props) {
                   <p className="font-bold text-center">{name}</p>
                 </div>
                 {/* Display sale price when on sale */}
-                {on_sale && (
+
+                {onSale && (
                   <>
                     <div className="flex justify-center">
                       <div className="pt-1 text-gray-900 line-through">
-                        KR {regular_price}
+                        {price}
                       </div>
-                      <div className="pt-1 ml-2 text-gray-900">KR {price}</div>
+                      <div className="pt-1 ml-2 text-gray-900"> {price}</div>
                     </div>
                   </>
                 )}
                 {/* Display regular price when not on sale */}
-                {!on_sale && (
-                  <p className="pt-1 text-center text-gray-900">KR {price}</p>
+                {!onSale && (
+                  <p className="pt-1 text-center text-gray-900"> {price}</p>
                 )}
               </div>
             )

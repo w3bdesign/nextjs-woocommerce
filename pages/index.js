@@ -1,55 +1,41 @@
-import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import { request } from 'graphql-request';
+import useSWR from 'swr';
 
 import Header from 'components/Header/Header.component';
 import Hero from 'components/Main/Hero.component';
 import IndexProducts from 'components/Main/IndexProducts.component';
 
-const WooCommerce = new WooCommerceRestApi({
-  // We are fetching values from .env
-  url: `${process.env.WOO_URL}`,
-  consumerKey: `${process.env.CONSUMER_KEY}`,
-  consumerSecret: `${process.env.CONSUMER_SECRET}`,
-  version: 'wc/v3',
-});
-
-function getProductsFromRest() {
-  return WooCommerce.get('products');
-}
-
-async function getWooProducts(req, res) {
-  const WooProducts = await getProductsFromRest();
-
-  return WooProducts.data;
-}
+import WOO_CONFIG from 'nextConfig';
+import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 
 // https://apppresser.com/woocommerce-rest-api/
 // https://dev.to/aryanjnyc/i-migrated-away-from-apollo-client-to-vercel-swr-and-prisma-graphql-request-and-you-can-too-245b
 // https://medium.com/better-programming/why-you-should-be-separating-your-server-cache-from-your-ui-state-1585a9ae8336
 
-function HomePage(props) {
-  // We can destructure here or inside the map.
-  // We should probably destructure in the function declaration.
+function HomePage() {
+  const { data, error } = useSWR(FETCH_ALL_PRODUCTS_QUERY, (query) =>
+    request(WOO_CONFIG.GRAPHQL_URL, query)
+  );
 
   return (
     <>
       <Header />
       <Hero />
-      <IndexProducts products={props} />
+
+      {data ? (
+        <IndexProducts products={data} />
+      ) : (
+        <div className="mt-8 text-2xl text-center">Laster produkter ...</div>
+      )}
+
+      {/* Display error message if error occured */}
+      {error && (
+        <div className="mt-8 text-2xl text-center">
+          Feil under lasting av produkter ...
+        </div>
+      )}
     </>
   );
-}
-
-// Prerender data for quicker loading.
-// Should we use getServerSideProps?
-// export async function getStaticProps() {
-
-export async function getServerSideProps() {
-  const products = await getWooProducts();
-  return {
-    props: {
-      products,
-    },
-  };
 }
 
 export default HomePage;
