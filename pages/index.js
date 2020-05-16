@@ -12,7 +12,7 @@ import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 // https://medium.com/better-programming/why-you-should-be-separating-your-server-cache-from-your-ui-state-1585a9ae8336
 
 const WOO_CONFIG = {
-  GRAPHQL_URL: `${process.env.GRAPHQL_URL}`,
+  GRAPHQL_URL: 'https://davethemogul.com/graphql'
 };
 
 function HomePage() {
