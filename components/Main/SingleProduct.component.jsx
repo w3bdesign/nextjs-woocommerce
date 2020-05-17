@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
 function IndexProducts(props) {
+ 
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
@@ -11,7 +12,7 @@ function IndexProducts(props) {
               className="text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline "
               href="#"
             >
-              Produkter
+              Enkeltprodukt
             </a>
 
             <div className="flex items-center" id="store-nav-content">
@@ -35,7 +36,7 @@ function IndexProducts(props) {
 
         {props.products.products.nodes.length ? (
           props.products.products.nodes.map(
-            ({ productId, name, price, onSale, slug, image }) => (
+            ({ id, name, price, onSale, slug, image }) => (
               <div
                 key={uuidv4()}
                 className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4"
@@ -43,7 +44,7 @@ function IndexProducts(props) {
                 <Link
                   href={{
                     pathname: '/produkt',
-                    query: { id: productId, slug: slug },
+                    query: { slug: slug },
                   }}
                 >
                   <a>
