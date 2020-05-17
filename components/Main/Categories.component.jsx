@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 function Categories(props) {
   return (
     <section className="py-8 bg-white">
@@ -13,10 +15,10 @@ function Categories(props) {
           </div>
         </nav>
 
-        {props.categories.productCategories.nodes.map(({ id, name }) => (
-          <div key={id} className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4">
-            <div className="flex items-center justify-between pt-3">
-              <p className="">{name}</p>
+        {props.categories.productCategories.nodes.map(({  name }) => (
+          <div key={uuidv4()} className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4">
+            <div className="flex items-center justify-center p-6 text-center rounded shadow">
+              <p className="text-lg">{name}</p>
             </div>
           </div>
         ))}
