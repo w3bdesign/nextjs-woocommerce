@@ -8,11 +8,16 @@
 
 Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
 
-Clone or fork the repo and rename ```nextConfig.example.js``` to ```nextConfig.example```
+1. Clone and activate the following plugins , in your WordPress plugin directory:
 
-Modify the values according to your setup
+* [wp-graphql](https://github.com/wp-graphql/wp-graphql) Exposes graphql for WordPress ( **Tested with v-0.8.0** of this plugin )
+* [wp-graphiql](https://github.com/wp-graphql/wp-graphiql) Provides GraphiQL IDE (playground) to the WP-Admin.
+* [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds Woocommerce functionality to a WPGraphQL schema ( **Tested with v-0.5.0** of this plugin )
 
-Follow this guide to generate API keys for your website: <a href="https://docs.woocommerce.com/document/woocommerce-rest-api/">https://docs.woocommerce.com/document/woocommerce-rest-api/</a>
+You can also import default wooCommerce products that come with wooCommerce Plugin for development ( if you don't have any products in your WordPress install ) `WP Dashboard > Tools > Import > WooCommerce products(CSV)`: The WooCommerce default products csv file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv`
+
+2. Clone or fork the repo and modify ```nextConfig.js```
+3. Modify the values according to your setup
 
 Start the server with ```npm run dev ```
 
