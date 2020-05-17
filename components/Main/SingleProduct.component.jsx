@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
+import {withRouter} from "next/router"
+
+
 function IndexProducts(props) {
  
   return (
@@ -87,4 +90,4 @@ function IndexProducts(props) {
   );
 }
 
-export default IndexProducts;
+export default withRouter(IndexProducts);
