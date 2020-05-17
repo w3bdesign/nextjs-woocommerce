@@ -17,3 +17,13 @@ query MyQuery {
   }
 }
 `;
+
+export const FETCH_ALL_CATEGORIES_QUERY = `
+query MyQuery {
+  productCategories {
+    nodes {
+      name
+    }
+  }
+}
+`;

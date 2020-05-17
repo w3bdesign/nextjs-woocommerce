@@ -13,7 +13,7 @@ function Categories(props) {
           </div>
         </nav>
 
-        {props.categories.posts.map(({ id, name }) => (
+        {props.categories.productCategories.nodes.map(({ id, name }) => (
           <div key={id} className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4">
             <div className="flex items-center justify-between pt-3">
               <p className="">{name}</p>
