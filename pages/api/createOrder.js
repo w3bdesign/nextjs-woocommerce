@@ -1,4 +1,4 @@
-import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+/*import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 const data = {
     payment_method: "bacs",
@@ -65,4 +65,4 @@ export async function sendNewOrder(req, res) {
   res.status(200).json(WooOrder.data);
 }
 
-export default sendNewOrder;
+export default sendNewOrder;*/
