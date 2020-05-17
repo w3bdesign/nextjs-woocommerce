@@ -1,43 +1,34 @@
-import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import { request } from 'graphql-request';
+import useSWR from 'swr';
 
 import Header from 'components/Header/Header.component';
 import Categories from 'components/Main/Categories.component';
 
-const WooCommerce = new WooCommerceRestApi({
-  // We are fetching values from .env
-  url: `${process.env.WOO_URL}`,
-  consumerKey: `${process.env.CONSUMER_KEY}`,
-  consumerSecret: `${process.env.CONSUMER_SECRET}`,
-  version: 'wc/v3',
-});
+import { FETCH_ALL_CATEGORIES_QUERY } from 'const/GQL_QUERIES';
+import { WOO_CONFIG } from 'config/nextConfig';
 
-function getCategoriesFromRest() {
-  return WooCommerce.get('products/categories');
-}
+function CategoryPage() {
+  const { data, error } = useSWR(FETCH_ALL_CATEGORIES_QUERY, (query) =>
+    request(WOO_CONFIG.GRAPHQL_URL, query)
+  );
 
-export async function getWooCategories(req, res) {  
-  const WooCategories = await getCategoriesFromRest();
-  return WooCategories.data;
-}
-
-function CategoryPage(props) {
   return (
     <>
       <Header />
-      <Categories categories={props} />
+      {data ? (
+        <Categories categories={data} />
+      ) : (
+        <div className="mt-8 text-2xl text-center">Laster kategorier ...</div>
+      )}
+
+      {/* Display error message if error occured */}
+      {error && (
+        <div className="mt-8 text-2xl text-center">
+          Feil under lasting av kategorier ...
+        </div>
+      )}
     </>
   );
-}
-
-// Prerender data for quicker loading.
-// Should we use getServerSideProps?
-export async function getStaticProps() {
-  const posts = await getWooCategories();
-  return {
-    props: {
-      posts,
-    },
-  };
 }
 
 export default CategoryPage;

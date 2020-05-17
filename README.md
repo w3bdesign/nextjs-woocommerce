@@ -18,8 +18,7 @@ Start the server with ```npm run dev ```
 
 ## Features
 
-- Connect to Woocommerce REST API and list name, price and display image for products (currently used on category page only)
-- Connext to Woocommerce GraphQL API and list name, price and display image for products (currently used on front page only)
+- Connect to Woocommerce GraphQL API and list name, price and display image for products (currently used on front page only)
 - Vercel useSWR for caching and graphql-request for data fetching
 - Animations with React-Spring
 - Mobile menu and cart slide-out with animations

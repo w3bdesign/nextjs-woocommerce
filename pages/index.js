@@ -6,14 +6,7 @@ import Hero from 'components/Main/Hero.component';
 import IndexProducts from 'components/Main/IndexProducts.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
-
-// https://apppresser.com/woocommerce-rest-api/
-// https://dev.to/aryanjnyc/i-migrated-away-from-apollo-client-to-vercel-swr-and-prisma-graphql-request-and-you-can-too-245b
-// https://medium.com/better-programming/why-you-should-be-separating-your-server-cache-from-your-ui-state-1585a9ae8336
-
-const WOO_CONFIG = {
-  GRAPHQL_URL: 'https://davethemogul.com/graphql'
-};
+import { WOO_CONFIG } from 'config/nextConfig';
 
 function HomePage() {
   const { data, error } = useSWR(FETCH_ALL_PRODUCTS_QUERY, (query) =>
