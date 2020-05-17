@@ -2,8 +2,10 @@ export const FETCH_ALL_PRODUCTS_QUERY = `
 query MyQuery {
   products {
     nodes {
+      productId
       name        
       onSale
+      slug
       image {
         sourceUrl
       }

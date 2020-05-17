@@ -2,7 +2,7 @@ import { request } from 'graphql-request';
 import useSWR from 'swr';
 
 import Header from 'components/Header/Header.component';
-import IndexProducts from 'components/Main/IndexProducts.component';
+import SingleProduct from 'components/Main/SingleProduct.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
@@ -15,15 +15,16 @@ function HomePage() {
   return (
     <>
       <Header />
+      
       {data ? (
-        <IndexProducts products={data} />
+        <SingleProduct products={data} />
       ) : (
-        <div className="mt-8 text-2xl text-center">Laster produkter ...</div>
+        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
       )}
       {/* Display error message if error occured */}
       {error && (
         <div className="mt-8 text-2xl text-center">
-          Feil under lasting av produkter ...
+          Feil under lasting av produkt ...
         </div>
       )}
     </>
