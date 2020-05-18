@@ -10,7 +10,8 @@ export function AppProvider(props) {
     if (process.browser) {
       let cartData = localStorage.getItem('woocommerce-cart');
       cartData = null !== cartData ? JSON.parse(cartData) : '';
-      setCart(cartData);
+      //setCart(cartData);
+      setCart({product: "123"});
     }
   }, []);
   return (
