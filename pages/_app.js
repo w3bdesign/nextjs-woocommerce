@@ -1,4 +1,5 @@
-import '../styles/index.css'
+import { AppProvider } from 'context/AppContext';
+import '../styles/index.css';
 
 // Will be called once for every metric that has to be reported.
 export function reportWebVitals(metric) {
@@ -7,7 +8,11 @@ export function reportWebVitals(metric) {
 }
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <AppProvider>
+      <Component {...pageProps} />
+    </AppProvider>
+  );
 }
 
 export default MyApp;
