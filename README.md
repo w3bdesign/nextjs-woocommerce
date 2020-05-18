@@ -32,7 +32,7 @@ Start the server with ```npm run dev ```
 - Mobile menu and cart slide-out with animations
 - List all product categories on a separate page
 - Link to individual product
-- API support for creating new Woocommerce orders (not connected to cart contents yet)
+- Pretty URLs with builtin Nextjs functionality
 - Tailwind CSS for styling
 - Minimalistic and responsive design
 - Currently connected to live Woocommerce installation instead of using a local installation
