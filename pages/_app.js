@@ -1,7 +1,5 @@
+import { AppProvider } from 'context/AppContext';
 import '../styles/index.css';
-
-// Setup localStorage here
-const CartContext = React.createContext();
 
 // Will be called once for every metric that has to be reported.
 export function reportWebVitals(metric) {
@@ -11,9 +9,9 @@ export function reportWebVitals(metric) {
 
 function MyApp({ Component, pageProps }) {
   return (
-    <CartContext.Provider value="">
-      <Component {...pageProps} />;
-    </CartContext.Provider>
+    <AppProvider>
+      <Component {...pageProps} />
+    </AppProvider>
   );
 }
 
