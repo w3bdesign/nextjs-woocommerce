@@ -1,7 +1,7 @@
 {
     "version": 2,
     "routes": [
-      { "src": "/product/(?<slug>[^/]+)$", "dest": "/product?slug=$slug" }      
+      { "src": "/produkt/(?<slug>[^/]+)$", "dest": "/produkt?slug=$slug" }      
     ]
   }
   
