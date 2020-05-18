@@ -35,18 +35,20 @@ function IndexProducts(props) {
 
         {props.products.products.nodes.length ? (
           props.products.products.nodes.map(
-            ({ productId, name, price, onSale, slug, image }) => (
+            ({
+              productId,
+              name,
+              price,
+              regularPrice,
+              salePrice,
+              onSale,
+              slug,
+              image,
+            }) => (
               <div
                 key={uuidv4()}
                 className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4"
               >
-                {/*<Link
-                 
-                  href={{
-                    pathname: '/produkt',
-                    query: { slug: slug },
-                  }}
-                >*/}
                 <Link href="/produkt/[post]" as={`/produkt/${slug}`}>
                   <a>
                     <img
@@ -65,9 +67,11 @@ function IndexProducts(props) {
                   <>
                     <div className="flex justify-center">
                       <div className="pt-1 text-gray-900 line-through">
-                        {price}
+                        {regularPrice}
                       </div>
-                      <div className="pt-1 ml-2 text-gray-900"> {price}</div>
+                      <div className="pt-1 ml-2 text-gray-900">                       
+                        {salePrice}
+                      </div>
                     </div>
                   </>
                 )}

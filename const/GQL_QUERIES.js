@@ -3,7 +3,7 @@ query MyQuery {
   products {
     nodes {
       productId
-      name        
+      name
       onSale
       slug
       image {
@@ -11,9 +11,13 @@ query MyQuery {
       }
       ... on SimpleProduct {
         price
+        regularPrice
+        salePrice
       }
       ... on VariableProduct {
         price
+        regularPrice
+        salePrice
       }
     }
   }

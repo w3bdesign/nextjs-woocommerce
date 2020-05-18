@@ -1,4 +1,5 @@
 function SingleProduct(props) {
+
   const {
     description,
     image,
@@ -6,6 +7,8 @@ function SingleProduct(props) {
     onSale,
     productId,
     price,
+    regularPrice,
+    salePrice
   } = props.product.products.edges[0].node;
 
   // Strip out HTML from description
@@ -27,9 +30,9 @@ function SingleProduct(props) {
             {onSale && (
               <>
                 <div className="flex">
-                  <p className="pt-1 mt-4 text-3xl text-gray-900">{price}</p>
+                  <p className="pt-1 mt-4 text-3xl text-gray-900">{salePrice}</p>
                   <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
-                    {price}
+                    {regularPrice}
                   </p>
                 </div>
               </>
@@ -41,7 +44,7 @@ function SingleProduct(props) {
               {DESCRIPTION_WITHOUT_HTML}
             </p>
             <p className="pt-1 mt-4 text-xl text-gray-900">
-              <p className="py-2">Farge</p>
+              <span className="py-2">Farge</span>
               <select
                 id="farge"
                 className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
@@ -51,7 +54,7 @@ function SingleProduct(props) {
             </p>
 
             <p className="pt-1 mt-2 text-xl text-gray-900 ">
-              <p className="py-2">Størrelse</p>
+              <span className="py-2">Størrelse</span>
               <select
                 id="størrelse"
                 className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
