@@ -59,6 +59,16 @@ function SingleProduct(props) {
                 <option value="sort">Large</option>
               </select>
             </p>
+            <p className="pt-1 mt-2">
+              <button
+                className="px-4 py-2 mt-4 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
+                onClick={() => {
+                  alert('Du har klikket kjøp');
+                }}
+              >
+                KJØP
+              </button>
+            </p>
           </div>
         </div>
       </div>
