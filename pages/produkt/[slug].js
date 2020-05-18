@@ -25,12 +25,15 @@ function Produkt() {
           }
           onSale
           description
-          ... on SimpleProduct {
-          
+          ... on SimpleProduct {          
             price
+            regularPrice
+            salePrice
           }
           ... on VariableProduct {
            price
+           regularPrice
+           salePrice
           }
         }
       }
