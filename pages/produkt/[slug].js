@@ -13,7 +13,7 @@ function Produkt(props) {
   const {
     router: { query },
   } = props;
-  console.log(query)
+  console.log(query);
 
   const FETCH_SINGLE_PRODUCT_QUERY = `
   query MyQuery {
@@ -63,6 +63,13 @@ export async function getStaticProps(context) {
   console.log(context);
   return {
     props: { query: context }, // will be passed to the page component as props
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { slug: '1' } }],
+    fallback: true, // See the "fallback" section below
   };
 }
 

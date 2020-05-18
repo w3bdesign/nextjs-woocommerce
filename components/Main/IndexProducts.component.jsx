@@ -40,13 +40,14 @@ function IndexProducts(props) {
                 key={uuidv4()}
                 className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4"
               >
-                <Link
-                  as={'/produkt/'}
+                {/*<Link
+                 
                   href={{
                     pathname: '/produkt',
-                    query: { id: productId, slug: slug },
+                    query: { slug: slug },
                   }}
-                >
+                >*/}
+                <Link href="/produkt/[post]" as={`/produkt/${slug}`}>
                   <a>
                     <img
                       id="product-image"
