@@ -1,23 +1,21 @@
 import { request } from 'graphql-request';
 import useSWR from 'swr';
-import { withRouter } from 'next/router';
+import { withRouter, useRouter } from 'next/router';
 
 import Header from 'components/Header/Header.component';
 import SingleProduct from 'components/Main/SingleProduct.component';
 
 import { WOO_CONFIG } from 'config/nextConfig';
 
+// Display a single product with dynamic pretty urls
 function Produkt(props) {
   // Destructure query string from navigation. Eg { id: "46", slug: "test-produkt-4" }
-  // Returns query
-  const {
-    router: { query },
-  } = props;
-  console.log(query);
+  const router = useRouter();
+  const { slug } = router.query;
 
   const FETCH_SINGLE_PRODUCT_QUERY = `
   query MyQuery {
-    products(where: {slug: "${query.slug}"}) {
+    products(where: {slug: "${slug}"}) {
       edges {
         node {
           name
@@ -36,14 +34,10 @@ function Produkt(props) {
   const { data, error } = useSWR(FETCH_SINGLE_PRODUCT_QUERY, (query) =>
     request(WOO_CONFIG.GRAPHQL_URL, query)
   );
-  if (error) {
-    console.log(error);
-  }
 
   return (
     <>
       <Header />
-
       {data ? (
         <SingleProduct product={data} />
       ) : (
@@ -59,10 +53,10 @@ function Produkt(props) {
   );
 }
 
+// Send the page query parameters to the useRouter (eg slug: "test-produkt-4")
 export async function getStaticProps(context) {
-  console.log(context);
   return {
-    props: { query: context }, // will be passed to the page component as props
+    props: { query: context },
   };
 }
 
