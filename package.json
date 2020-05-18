@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "easy-peasy": "^3.3.0",
     "graphql-request": "^1.8.2",
     "next": "^9.4.1",
     "react": "^16.13.1",
