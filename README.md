@@ -26,6 +26,7 @@ Start the server with ```npm run dev ```
 ## Features
 
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
+- Cart handling with createContext
 - Vercel useSWR for caching and graphql-request for data fetching
 - Animations with React-Spring
 - Mobile menu and cart slide-out with animations
@@ -38,7 +39,7 @@ Start the server with ```npm run dev ```
 
 ## TODO
 
-- Add cart functionality
+- Add more cart functionality
 - Add checkout functionality
 - Hide products not in stock
 - Add Algolia search 
