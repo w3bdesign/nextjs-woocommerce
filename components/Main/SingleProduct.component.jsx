@@ -1,68 +1,75 @@
 function SingleProduct(props) {
-  
-  //const price = 0;
-
   const {
     description,
     image,
     name,
     onSale,
     productId,
-    price
+    price,
   } = props.product.products.edges[0].node;
+
+  // Strip out HTML from description
+  const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
 
   return (
     <section className="py-8 bg-white">
-      <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
-        <nav id="store" className="top-0 w-full px-6 py-1">
-          <div className="container flex flex-wrap items-center justify-between w-full px-2 py-3 mx-auto mt-0">
-            <a
-              className="mt-8 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline "
-              href="#"
-            >
-              Enkeltprodukt
-            </a>
-
-            <div className="flex items-center" id="store-nav-content">
-              <a
-                className="inline-block pl-3 no-underline hover:text-black"
-                href="#"
-              >
-                <svg
-                  className="fill-current hover:text-black"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M7 11H17V13H7zM4 7H20V9H4zM10 15H14V17H10z" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </nav>
-        <div className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4">
+      <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
+        <div className="grid grid-cols-2 gap-4 mt-16">
           <img
             id="product-image"
-            className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+            className="h-auto transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
             src={image.sourceUrl}
           />
-          <div className="flex justify-center pt-3">
-            <p className="font-bold text-center">{name}</p>
+          <div className="ml-8">
+            <p className="text-3xl font-bold text-left">{name}</p>
+            <br />
+            {/* Display sale price when on sale */}
+            {onSale && (
+              <>
+                <div className="flex">
+                  <p className="pt-1 mt-4 text-3xl text-gray-900">{price}</p>
+                  <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
+                    {price}
+                  </p>
+                </div>
+              </>
+            )}
+            {/* Display regular price when not on sale */}
+            {!onSale && <p className="pt-1 mt-4 text-gray-900"> {price}</p>}
+            <br />
+            <p className="pt-1 mt-4 text-2xl text-gray-900">
+              {DESCRIPTION_WITHOUT_HTML}
+            </p>
+            <p className="pt-1 mt-4 text-xl text-gray-900">
+              <p className="py-2">Farge</p>
+              <select
+                id="farge"
+                className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+              >
+                <option value="sort">Blå</option>
+              </select>
+            </p>
+
+            <p className="pt-1 mt-2 text-xl text-gray-900 ">
+              <p className="py-2">Størrelse</p>
+              <select
+                id="størrelse"
+                className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+              >
+                <option value="sort">Large</option>
+              </select>
+            </p>
+            <p className="pt-1 mt-2">
+              <button
+                className="px-4 py-2 mt-4 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
+                onClick={() => {
+                  alert('Du har klikket kjøp');
+                }}
+              >
+                KJØP
+              </button>
+            </p>
           </div>
-          {/* Display sale price when on sale */}
-          {onSale && (
-            <>
-              <div className="flex justify-center">
-                <div className="pt-1 text-gray-900 line-through">{price}</div>
-                <div className="pt-1 ml-2 text-gray-900"> {price}</div>
-              </div>
-            </>
-          )}
-          {/* Display regular price when not on sale */}
-          {!onSale && (
-            <p className="pt-1 text-center text-gray-900"> {price}</p>
-          )}
         </div>
       </div>
     </section>
