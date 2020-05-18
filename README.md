@@ -6,6 +6,8 @@
 
 # Next.js Ecommerce site with Woocommerce backend
 
+## This is still a work in progress
+
 Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
 
 1. Clone and activate the following plugins , in your WordPress plugin directory:
@@ -28,6 +30,7 @@ Start the server with ```npm run dev ```
 - Animations with React-Spring
 - Mobile menu and cart slide-out with animations
 - List all product categories on a separate page
+- Link to individual product
 - API support for creating new Woocommerce orders (not connected to cart contents yet)
 - Tailwind CSS for styling
 - Minimalistic and responsive design
