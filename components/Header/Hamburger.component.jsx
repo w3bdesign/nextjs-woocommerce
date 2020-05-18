@@ -5,8 +5,7 @@ import Link from 'next/link';
 import MobileSearch from "./MobileSearch.component"
 
 function Hamburger() {
-  const [isExpanded, setisExpanded] = useState(false);  
-  //const animation = useSpring({ opacity: isExpanded ? 1 : 0 })
+  const [isExpanded, setisExpanded] = useState(false);    
 
   const animation = useSpring({
     to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '180px' : "-180px" }],

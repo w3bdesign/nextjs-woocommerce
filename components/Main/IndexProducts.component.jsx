@@ -41,6 +41,7 @@ function IndexProducts(props) {
                 className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4"
               >
                 <Link
+                  as={'/produkt/'}
                   href={{
                     pathname: '/produkt',
                     query: { id: productId, slug: slug },
