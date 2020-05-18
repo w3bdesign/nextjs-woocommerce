@@ -25,6 +25,13 @@ function Produkt(props) {
           }
           onSale
           description
+          ... on SimpleProduct {
+          
+            price
+          }
+          ... on VariableProduct {
+           price
+          }
         }
       }
     }

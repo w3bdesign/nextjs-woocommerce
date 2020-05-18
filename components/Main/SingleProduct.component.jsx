@@ -1,6 +1,6 @@
 function SingleProduct(props) {
   
-  const price = 0;
+  //const price = 0;
 
   const {
     description,
@@ -8,6 +8,7 @@ function SingleProduct(props) {
     name,
     onSale,
     productId,
+    price
   } = props.product.products.edges[0].node;
 
   return (
