@@ -4,7 +4,7 @@ import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
 import { WOO_CONFIG } from 'config/nextConfig';
-import SearchHit from './SearchHit.component';
+import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
   WOO_CONFIG.ALGOLIA_APP_ID,
@@ -34,7 +34,7 @@ const Search = () => {
               }}
             />
 
-            {search && <Hits className="absolute" hitComponent={SearchHit} />}
+            {search && <Hits className="absolute" hitComponent={SearchResults} />}
           </InstantSearch>
         </div>
       </div>
