@@ -59,20 +59,6 @@ const Produkt = () => {
       )}
     </>
   );
-}
-
-// Send the page query parameters to the useRouter (eg slug: "test-produkt-4")
-export async const getStaticProps = (context) => {
-  return {
-    props: { query: context },
-  };
-}
-
-export async const getStaticPaths = () => {
-  return {
-    paths: [{ params: { slug: '1' } }],
-    fallback: true, // See the "fallback" section below
-  };
-}
+};
 
 export default withRouter(Produkt);

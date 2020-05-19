@@ -1,5 +1,5 @@
 // https://github.com/algolia/react-instantsearch
-function Search() {
+const Search = () => {
   return (
     <>
       <div className="hidden mt-2 md:inline xl:inline">
@@ -18,7 +18,6 @@ function Search() {
               href="#"
             >
               <svg
-
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -32,6 +31,6 @@ function Search() {
       </div>
     </>
   );
-}
+};
 
 export default Search;
