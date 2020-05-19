@@ -42,6 +42,7 @@ Start the server with ```npm run dev ```
 - Add more cart functionality
 - Add checkout functionality
 - Hide products not in stock
+- Add loading spinners?
 - Add better SEO
 - Add Algolia search 
 - Add a better README.md
