@@ -1,4 +1,5 @@
 import { AppProvider } from 'context/AppContext';
+import Footer from "../components/Footer/Footer.component"
 import '../styles/index.css';
 
 // Will be called once for every metric that has to be reported.
@@ -11,6 +12,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <AppProvider>
       <Component {...pageProps} />
+      <Footer/>
     </AppProvider>
   );
 }

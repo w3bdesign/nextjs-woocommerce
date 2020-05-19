@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Cart from './Cart.component';
+import Cart from '../Cart/Cart.component';
 import Search from './Search.component';
 import Hamburger from './Hamburger.component';
 

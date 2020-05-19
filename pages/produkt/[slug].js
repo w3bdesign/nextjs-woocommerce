@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import { withRouter, useRouter } from 'next/router';
 
 import Header from 'components/Header/Header.component';
-import SingleProduct from 'components/Main/SingleProduct.component';
+import SingleProduct from 'components/Product/SingleProduct.component';
 
 import { WOO_CONFIG } from 'config/nextConfig';
 
