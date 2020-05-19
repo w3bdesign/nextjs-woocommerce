@@ -2,7 +2,7 @@ import { request } from 'graphql-request';
 import useSWR from 'swr';
 
 import Header from 'components/Header/Header.component';
-import IndexProducts from 'components/Main/IndexProducts.component';
+import IndexProducts from 'components/Product/IndexProducts.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
