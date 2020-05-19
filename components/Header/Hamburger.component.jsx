@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import Link from 'next/link';
 
-import MobileSearch from './MobileSearch.component';
+import MobileSearch from '../Search/MobileSearch.component';
 
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);

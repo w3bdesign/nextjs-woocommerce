@@ -4,6 +4,8 @@ import Header from '../components/Header/Header.component';
 import Footer from '../components/Footer/Footer.component';
 
 import '../styles/index.css';
+import '../styles/algolia.min.css';
+
 
 // Will be called once for every metric that has to be reported.
 export function reportWebVitals(metric) {
