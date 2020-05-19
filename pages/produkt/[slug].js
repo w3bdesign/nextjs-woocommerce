@@ -7,7 +7,7 @@ import SingleProduct from 'components/Product/SingleProduct.component';
 import { WOO_CONFIG } from 'config/nextConfig';
 
 // Display a single product with dynamic pretty urls
-function Produkt() {
+const Produkt = () => {
   // Destructure query string from navigation. Eg { id: "46", slug: "test-produkt-4" }
   const router = useRouter();
   const { slug } = router.query;
@@ -62,13 +62,13 @@ function Produkt() {
 }
 
 // Send the page query parameters to the useRouter (eg slug: "test-produkt-4")
-export async function getStaticProps(context) {
+export async const getStaticProps = (context) => {
   return {
     props: { query: context },
   };
 }
 
-export async function getStaticPaths() {
+export async const getStaticPaths = () => {
   return {
     paths: [{ params: { slug: '1' } }],
     fallback: true, // See the "fallback" section below

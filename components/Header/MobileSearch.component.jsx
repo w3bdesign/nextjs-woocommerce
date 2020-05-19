@@ -1,5 +1,5 @@
 // https://github.com/algolia/react-instantsearch
-function MobileSearch() {
+const MobileSearch = () => {
   return (
     <>
       <div className="inline mt-4">
@@ -18,7 +18,6 @@ function MobileSearch() {
               href="#"
             >
               <svg
-
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -32,6 +31,6 @@ function MobileSearch() {
       </div>
     </>
   );
-}
+};
 
 export default MobileSearch;

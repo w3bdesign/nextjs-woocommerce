@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-function Categories(props) {
+const Categories = (props) => {
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">

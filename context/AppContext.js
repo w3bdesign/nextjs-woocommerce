@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 export const AppContext = React.createContext([{}, () => {}]);
 
-export function AppProvider(props) {
+export const AppProvider = (props) => {
   const [cart, setCart] = useState(null);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export function AppProvider(props) {
       let cartData = localStorage.getItem('woocommerce-cart');
       cartData = null !== cartData ? JSON.parse(cartData) : '';
       //setCart(cartData);
-      setCart({product: "123"});
+      setCart({ product: '123' });
     }
   }, []);
   return (
@@ -19,4 +19,4 @@ export function AppProvider(props) {
       {props.children}
     </AppContext.Provider>
   );
-}
+};
