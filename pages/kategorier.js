@@ -2,7 +2,7 @@ import { request } from 'graphql-request';
 import useSWR from 'swr';
 
 import Header from 'components/Header/Header.component';
-import Categories from 'components/Main/Categories.component';
+import Categories from 'components/Category/Categories.component';
 
 import { FETCH_ALL_CATEGORIES_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
