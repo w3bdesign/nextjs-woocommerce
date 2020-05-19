@@ -27,6 +27,7 @@ Start the server with ```npm run dev ```
 
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Cart handling with createContext
+- Algolia search (work in progress)
 - Vercel useSWR for caching and graphql-request for data fetching
 - Animations with React-Spring
 - Mobile menu and cart slide-out with animations
@@ -44,6 +45,6 @@ Start the server with ```npm run dev ```
 - Hide products not in stock
 - Add loading spinners?
 - Add better SEO
-- Add Algolia search 
+- Improve Algolia search and add it for mobile view as well
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
