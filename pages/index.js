@@ -1,7 +1,6 @@
 import { request } from 'graphql-request';
 import useSWR from 'swr';
 
-import Header from 'components/Header/Header.component';
 import Hero from 'components/Index/Hero.component';
 import IndexProducts from 'components/Product/IndexProducts.component';
 
@@ -15,7 +14,6 @@ function HomePage() {
 
   return (
     <>
-      <Header />
       <Hero />
       {data ? (
         <IndexProducts products={data} />

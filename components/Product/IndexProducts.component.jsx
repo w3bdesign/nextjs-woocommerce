@@ -8,7 +8,7 @@ function IndexProducts(props) {
         <nav id="store" className="top-0 w-full px-6 py-1">
           <div className="container flex flex-wrap items-center justify-between w-full px-2 py-3 mx-auto mt-0">
             <a
-              className="text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline "
+              className="mt-6 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline"
               href="#"
             >
               Produkter
