@@ -1,5 +1,6 @@
-function SingleProduct(props) {
+import AddToCartButton from 'components/Cart/AddToCartButton';
 
+function SingleProduct(props) {
   const {
     description,
     image,
@@ -8,19 +9,21 @@ function SingleProduct(props) {
     productId,
     price,
     regularPrice,
-    salePrice
+    salePrice,
   } = props.product.products.edges[0].node;
 
   // Strip out HTML from description
   const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
 
+  const {product} = props;
+
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
-        <div className="grid grid-cols-2 gap-4 mt-16">
+        <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
           <img
             id="product-image"
-            className="h-auto transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+            className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
             src={image.sourceUrl}
           />
           <div className="ml-8">
@@ -30,7 +33,9 @@ function SingleProduct(props) {
             {onSale && (
               <>
                 <div className="flex">
-                  <p className="pt-1 mt-4 text-3xl text-gray-900">{salePrice}</p>
+                  <p className="pt-1 mt-4 text-3xl text-gray-900">
+                    {salePrice}
+                  </p>
                   <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
                     {regularPrice}
                   </p>
@@ -63,14 +68,7 @@ function SingleProduct(props) {
               </select>
             </p>
             <p className="pt-1 mt-2">
-              <button
-                className="px-4 py-2 mt-4 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
-                onClick={() => {
-                  alert('Du har klikket kjøp');
-                }}
-              >
-                KJØP
-              </button>
+              <AddToCartButton product={product}/>
             </p>
           </div>
         </div>
