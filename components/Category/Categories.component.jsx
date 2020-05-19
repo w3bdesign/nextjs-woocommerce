@@ -17,7 +17,7 @@ function Categories(props) {
 
         {props.categories.productCategories.nodes.map(({  name }) => (
           <div key={uuidv4()} className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4">
-            <div className="flex items-center justify-center p-6 text-center border border-gray-300 rounded-lg shadow">
+            <div className="flex items-center justify-center p-6 text-center border border-gray-300 rounded-lg shadow hover:bg-gray-300">
               <p className="text-lg">{name}</p>
             </div>
           </div>
