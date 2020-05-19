@@ -11,6 +11,8 @@ const searchClient = algoliasearch(
   WOO_CONFIG.ALGOLIA_PUBLIC_API_KEY
 );
 
+// https://www.algolia.com/doc/api-reference/widgets/instantsearch/react/
+
 const Search = () => {
   const [search, setSearch] = useState(null);
 
