@@ -1,6 +1,6 @@
 import AddToCartButton from 'components/Cart/AddToCartButton';
 
-function SingleProduct(props) {
+const SingleProduct = (props) => {
   const {
     description,
     image,

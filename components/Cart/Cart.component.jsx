@@ -3,11 +3,11 @@ import { useSpring, animated } from 'react-spring';
 
 import { AppContext } from 'context/AppContext';
 
-function Cart() {
+const Cart = () => {
   const [isExpanded, setisExpanded] = useState(false);
-  const [cart, setCart] = useContext(AppContext)
+  const [cart, setCart] = useContext(AppContext);
 
-  console.log("We have inside of our cart:");
+  console.log('We have inside of our cart:');
   console.log(cart);
 
   const animation = useSpring({
@@ -157,6 +157,6 @@ function Cart() {
       )}
     </>
   );
-}
+};
 
 export default Cart;

@@ -6,7 +6,7 @@ import Categories from 'components/Category/Categories.component';
 import { FETCH_ALL_CATEGORIES_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
 
-function CategoryPage() {
+const CategoryPage = () => {
   const { data, error } = useSWR(FETCH_ALL_CATEGORIES_QUERY, (query) =>
     request(WOO_CONFIG.GRAPHQL_URL, query)
   );
@@ -27,6 +27,6 @@ function CategoryPage() {
       )}
     </>
   );
-}
+};
 
 export default CategoryPage;

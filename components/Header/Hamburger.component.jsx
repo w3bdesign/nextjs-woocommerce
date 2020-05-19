@@ -1,16 +1,24 @@
 import { useState } from 'react';
-import { useSpring, animated } from 'react-spring'
+import { useSpring, animated } from 'react-spring';
 import Link from 'next/link';
 
-import MobileSearch from "./MobileSearch.component"
+import MobileSearch from './MobileSearch.component';
 
-function Hamburger() {
-  const [isExpanded, setisExpanded] = useState(false);    
+const Hamburger = () => {
+  const [isExpanded, setisExpanded] = useState(false);
 
   const animation = useSpring({
-    to: [{ opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '180px' : "-180px" }],
-    from: { opacity: isExpanded ? 1 : 0, marginTop: isExpanded ? '180px' : "-180px" }
-  })
+    to: [
+      {
+        opacity: isExpanded ? 1 : 0,
+        marginTop: isExpanded ? '180px' : '-180px',
+      },
+    ],
+    from: {
+      opacity: isExpanded ? 1 : 0,
+      marginTop: isExpanded ? '180px' : '-180px',
+    },
+  });
 
   return (
     <>
@@ -34,7 +42,8 @@ function Hamburger() {
       </label>
 
       {isExpanded && (
-        <animated.div style={animation}
+        <animated.div
+          style={animation}
           id="mobile-menu"
           className="absolute right-0 z-50 w-full text-center text-black bg-white"
         >
@@ -70,7 +79,6 @@ function Hamburger() {
               </Link>
             </li>
             <li className="w-full p-4 border-gray-400 border-solid rounded">
-
               <MobileSearch />
             </li>
           </ul>
@@ -78,6 +86,6 @@ function Hamburger() {
       )}
     </>
   );
-}
+};
 
 export default Hamburger;

@@ -1,7 +1,7 @@
 import { AppProvider } from 'context/AppContext';
 
-import Header from "../components/Header/Header.component"
-import Footer from "../components/Footer/Footer.component"
+import Header from '../components/Header/Header.component';
+import Footer from '../components/Footer/Footer.component';
 
 import '../styles/index.css';
 
@@ -11,14 +11,14 @@ export function reportWebVitals(metric) {
   // console.log(metric);
 }
 
-function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }) => {
   return (
     <AppProvider>
       <Header />
       <Component {...pageProps} />
-      <Footer/>
+      <Footer />
     </AppProvider>
   );
-}
+};
 
 export default MyApp;

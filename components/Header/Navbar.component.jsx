@@ -4,7 +4,7 @@ import Cart from '../Cart/Cart.component';
 import Search from './Search.component';
 import Hamburger from './Hamburger.component';
 
-function Navbar() {
+const Navbar = () => {
   return (
     <header>
       <nav id="header" className="fixed top-0 z-30 w-full py-1 bg-white ">

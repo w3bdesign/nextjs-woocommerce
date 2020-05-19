@@ -1,4 +1,4 @@
-function Hero() {
+const Hero = () => {
   return (
     <>
       <section
@@ -22,6 +22,6 @@ function Hero() {
       </section>
     </>
   );
-}
+};
 
 export default Hero;
