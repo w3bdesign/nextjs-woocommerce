@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import Cart from '../Cart/Cart.component';
-import Search from './Search.component';
+import Search from '../Search/Search.component';
 import Hamburger from './Hamburger.component';
 
 const Navbar = () => {

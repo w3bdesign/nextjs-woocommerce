@@ -7,7 +7,7 @@ import IndexProducts from 'components/Product/IndexProducts.component';
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
 
-function HomePage() {
+const HomePage = () => {
   const { data, error } = useSWR(FETCH_ALL_PRODUCTS_QUERY, (query) =>
     request(WOO_CONFIG.GRAPHQL_URL, query)
   );
@@ -28,6 +28,6 @@ function HomePage() {
       )}
     </>
   );
-}
+};
 
 export default HomePage;
