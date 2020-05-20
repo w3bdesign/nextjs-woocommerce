@@ -18,6 +18,7 @@ const AddToCartButton = (props) => {
       let existingCart = localStorage.getItem('woocommerce-cart');
       if (existingCart) {
       } else {
+        //const NewCart = addFirstProduct(props)
       }
     }
   };
