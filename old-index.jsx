@@ -1,8 +1,8 @@
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 import Header from 'components/Header/Header.component';
-import Hero from 'components/Main/Hero.component';
-import IndexProducts from 'components/Main/IndexProducts.component';
+import Hero from 'components/Index/Hero.component';
+import IndexProducts from 'components/Product/IndexProducts.component';
 
 const WooCommerce = new WooCommerceRestApi({
   // We are fetching values from .env
