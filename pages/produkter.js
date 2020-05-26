@@ -17,7 +17,13 @@ const Produkter = () => {
       {data ? (
         <IndexProducts products={data} />
       ) : (
-        <div>{!error && <div className="h-64 mt-20"><LoadingSpinner /></div>}</div>
+        <div>
+          {!error && (
+            <div className="h-64 mt-20">
+              <LoadingSpinner />
+            </div>
+          )}
+        </div>
       )}
       {/* Display error message if error occured */}
       {error && (
@@ -25,7 +31,11 @@ const Produkter = () => {
           Feil under lasting av produkter ...
         </div>
       )}
-  
+      {!error && !data && (
+        <div className="mt-8 text-2xl text-center">
+          Feil under lasting av produkter ...
+        </div>
+      )}
     </>
   );
 };
