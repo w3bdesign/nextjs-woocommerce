@@ -12,23 +12,20 @@ const SearchResults = ({ hit }) => {
             className="hit-image"
           />
         </header>
-       
-  {
-  /*
+
+        {/*
     <Highlight attribute="post_title" hit={hit}  className="pl-4 text-lg font-bold"/> 
-  */
-  }
-          
-          
-      
+  */}
+
         <div className="pl-4 text-left">
-        {hit.post_title && <span class="text-lg  font-bold">{hit.post_title}</span>}
-        <br />
+          {hit.post_title && (
+            <span class="text-lg  font-bold">{hit.post_title}</span>
+          )}
+          <br />
           {hit.content && <span class="text-base">{hit.content}</span>}
           <br />
           {hit.price && <span class="text-base">kr {hit.price}</span>}
-          </div>
-         
+        </div>
       </div>
     </article>
   );
