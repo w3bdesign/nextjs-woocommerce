@@ -3,6 +3,7 @@ import useSWR from 'swr';
 
 import Hero from 'components/Index/Hero.component';
 import IndexProducts from 'components/Product/IndexProducts.component';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
@@ -18,7 +19,11 @@ const HomePage = () => {
       {data ? (
         <IndexProducts products={data} />
       ) : (
-        <div className="mt-8 text-2xl text-center">Laster produkter ...</div>
+        <div className="mt-8 text-2xl text-center">
+          Laster produkter ...
+          <br />
+          {!error && <LoadingSpinner />}
+        </div>
       )}
       {/* Display error message if error occured */}
       {error && (
