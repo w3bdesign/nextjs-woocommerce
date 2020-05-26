@@ -14,18 +14,19 @@ const Produkter = () => {
 
   return (
     <>
-      {data ? (
-        <IndexProducts products={data} />
-      ) : (
+      {data && <IndexProducts products={data} />}
+
+      {!data && !error && (
         <div className="mt-8 text-2xl text-center">
-          Laster produkter ...
+          Laster ...
           <br />
-          {!error && <LoadingSpinner />}
+          <LoadingSpinner />
         </div>
       )}
+
       {/* Display error message if error occured */}
       {error && (
-        <div className="mt-8 text-2xl text-center">
+        <div className="h-12 mt-8 text-2xl text-center">
           Feil under lasting av produkter ...
         </div>
       )}

@@ -28,7 +28,7 @@ const HomePage = () => {
 
       {/* Display error message if error occured */}
       {error && (
-        <div className="mt-8 text-2xl text-center">
+        <div className="h-12 mt-8 text-2xl text-center">
           Feil under lasting av produkter ...
         </div>
       )}
