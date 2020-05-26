@@ -1,5 +1,3 @@
-import { Highlight } from 'react-instantsearch-dom';
-
 const SearchResults = ({ hit }) => {
   console.log(hit);
   return (
@@ -9,13 +7,9 @@ const SearchResults = ({ hit }) => {
           <img
             src={hit.images.thumbnail.url}
             alt={hit.name}
-            className="hit-image"
+            className="w-12 hit-image"
           />
-        </header>
-
-        {/*
-    <Highlight attribute="post_title" hit={hit}  className="pl-4 text-lg font-bold"/> 
-  */}
+        </header>  
 
         <div className="pl-4 text-left">
           {hit.post_title && (
