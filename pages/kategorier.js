@@ -21,11 +21,16 @@ const CategoryPage = () => {
       {data ? (
         <Categories categories={data} />
       ) : (
-        <div>{!error && <div className="h-64"><LoadingSpinner /></div>}</div>
+        <div>{!error && <div className="h-64 mt-20"><LoadingSpinner /></div>}</div>
       )}
 
       {/* Display error message if error occured */}
       {error && (
+        <div className="mt-8 text-2xl text-center">
+          Feil under lasting av kategorier ...
+        </div>
+      )}
+      {!data && (
         <div className="mt-8 text-2xl text-center">
           Feil under lasting av kategorier ...
         </div>
