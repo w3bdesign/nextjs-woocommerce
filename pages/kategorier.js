@@ -32,7 +32,7 @@ const CategoryPage = () => {
 
       {/* Display error message if error occured */}
       {error && (
-        <div className="h-12 mt-8 text-2xl text-center">
+        <div className="h-12 mt-20 text-2xl text-center">
           Feil under lasting av kategorier ...
         </div>
       )}
