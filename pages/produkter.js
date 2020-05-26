@@ -25,11 +25,7 @@ const Produkter = () => {
           Feil under lasting av produkter ...
         </div>
       )}
-      {!data && (
-        <div className="mt-8 text-2xl text-center">
-          Feil under lasting av produkter ...
-        </div>
-      )}
+  
     </>
   );
 };

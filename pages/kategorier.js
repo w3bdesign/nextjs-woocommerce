@@ -30,11 +30,7 @@ const CategoryPage = () => {
           Feil under lasting av kategorier ...
         </div>
       )}
-      {!data && (
-        <div className="mt-8 text-2xl text-center">
-          Feil under lasting av kategorier ...
-        </div>
-      )}
+
     </>
   );
 };
