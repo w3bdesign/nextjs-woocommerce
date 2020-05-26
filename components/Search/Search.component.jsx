@@ -25,6 +25,11 @@ const Search = () => {
             searchClient={searchClient}
           >
             <SearchBox
+              translations={{
+                submitTitle: 'Søk',
+                resetTitle: 'Slett søketekst',
+                placeholder: 'Søk her ...',
+              }}
               className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
               onReset={() => {
                 setSearch(null);
@@ -34,7 +39,9 @@ const Search = () => {
               }}
             />
 
-            {search && <Hits className="absolute" hitComponent={SearchResults} />}
+            {search && (
+              <Hits className="absolute" hitComponent={SearchResults} />
+            )}
           </InstantSearch>
         </div>
       </div>

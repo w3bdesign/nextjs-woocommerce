@@ -15,22 +15,24 @@ const MobileSearch = () => {
   return (
     <>
       <div className="inline mt-4">
-      <InstantSearch
-            indexName="wp_posts_product"
-            searchClient={searchClient}
-          >
-            <SearchBox
-              className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
-              onReset={() => {
-                setSearch(null);
-              }}
-              onChange={(text) => {
-                setSearch(text.target.value);
-              }}
-            />
+        <InstantSearch indexName="wp_posts_product" searchClient={searchClient}>
+          <SearchBox
+            translations={{
+              submitTitle: 'Søk',
+              resetTitle: 'Slett søketekst',
+              placeholder: 'Søk her ...',
+            }}
+            className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+            onReset={() => {
+              setSearch(null);
+            }}
+            onChange={(text) => {
+              setSearch(text.target.value);
+            }}
+          />
 
-            {search && <Hits className="absolute" hitComponent={SearchResults} />}
-          </InstantSearch>
+          {search && <Hits className="absolute" hitComponent={SearchResults} />}
+        </InstantSearch>
       </div>
     </>
   );
