@@ -24,6 +24,7 @@
     "uuid": "^8.0.0"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.7",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^1.4.6"
   }
