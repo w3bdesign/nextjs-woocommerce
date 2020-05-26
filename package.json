@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@svgr/webpack": "^5.4.0",
     "algoliasearch": "^4.2.0",
     "graphql-request": "^1.8.2",
     "next": "^9.4.1",
