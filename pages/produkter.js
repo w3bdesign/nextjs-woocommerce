@@ -17,7 +17,7 @@ const Produkter = () => {
       {data && <IndexProducts products={data} />}
 
       {!data && !error && (
-        <div className="mt-8 text-2xl text-center">
+        <div className="h-32 mt-8 text-2xl text-center">
           Laster ...
           <br />
           <LoadingSpinner />
