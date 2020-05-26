@@ -69,9 +69,7 @@ const IndexProducts = (props) => {
                       <div className="pt-1 text-gray-900 line-through">
                         {regularPrice}
                       </div>
-                      <div className="pt-1 ml-2 text-gray-900">                       
-                        {salePrice}
-                      </div>
+                      <div className="pt-1 ml-2 text-gray-900">{salePrice}</div>
                     </div>
                   </>
                 )}
@@ -90,6 +88,6 @@ const IndexProducts = (props) => {
       </div>
     </section>
   );
-}
+};
 
 export default IndexProducts;

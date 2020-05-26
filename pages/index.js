@@ -6,11 +6,15 @@ import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
+import { INITIAL_PRODUCTS } from 'const/INITIAL_PRODUCTS';
 import { WOO_CONFIG } from 'config/nextConfig';
 
-const HomePage = () => {
-  const { data, error } = useSWR(FETCH_ALL_PRODUCTS_QUERY, (query) =>
-    request(WOO_CONFIG.GRAPHQL_URL, query)
+const HomePage = (props) => {
+  const initialData = props;
+  const { data, error } = useSWR(
+    FETCH_ALL_PRODUCTS_QUERY,
+    (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
+    { initialData }
   );
 
   return (
@@ -38,3 +42,10 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+export async function getStaticProps() {
+  // Default products to display on front page
+  return {
+    props: INITIAL_PRODUCTS, // will be passed to the page component as props
+  };
+}
