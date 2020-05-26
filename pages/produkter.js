@@ -4,8 +4,6 @@ import useSWR from 'swr';
 import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import Spinner from '../public/loader.svg';
-
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
 
@@ -22,7 +20,7 @@ const Produkter = () => {
         <div className="h-64 mt-8 text-2xl text-center">
           Laster ...
           <br />
-          <Spinner />
+          <LoadingSpinner />
         </div>
       )}
 
