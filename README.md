@@ -46,6 +46,6 @@ Start the server with ```npm run dev ```
 - Add checkout functionality
 - Hide products not in stock
 - Add better SEO
-- Improve Algolia search and add it for mobile view as well
+- Add price to Algolia search
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
