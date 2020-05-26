@@ -21,7 +21,7 @@ const CategoryPage = () => {
       {data ? (
         <Categories categories={data} />
       ) : (
-        <div>{!error && <LoadingSpinner />}</div>
+        <div>{!error && <div className="h-64"><LoadingSpinner /></div>}</div>
       )}
 
       {/* Display error message if error occured */}
