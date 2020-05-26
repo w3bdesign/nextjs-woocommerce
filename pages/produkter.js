@@ -17,21 +17,14 @@ const Produkter = () => {
       {data ? (
         <IndexProducts products={data} />
       ) : (
-        <div>
-          {!error && (
-            <div className="h-64 mt-20">
-              <LoadingSpinner />
-            </div>
-          )}
+        <div className="mt-8 text-2xl text-center">
+          Laster produkter ...
+          <br />
+          {!error && <LoadingSpinner />}
         </div>
       )}
       {/* Display error message if error occured */}
       {error && (
-        <div className="mt-8 text-2xl text-center">
-          Feil under lasting av produkter ...
-        </div>
-      )}
-      {!error && !data && (
         <div className="mt-8 text-2xl text-center">
           Feil under lasting av produkter ...
         </div>
