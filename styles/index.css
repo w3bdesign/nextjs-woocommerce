@@ -24,8 +24,8 @@
   width: 300px;
 }
 
-.ais-SearchBox-submit {	
-	padding: 10px;
+.ais-SearchBox-submitIcon {
+	margin-right: 10px;
 }
 
 @tailwind utilities;
