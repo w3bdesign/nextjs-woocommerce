@@ -2,6 +2,7 @@ import { request } from 'graphql-request';
 import useSWR from 'swr';
 
 import IndexProducts from 'components/Product/IndexProducts.component';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
 import { WOO_CONFIG } from 'config/nextConfig';
@@ -16,7 +17,7 @@ const Produkter = () => {
       {data ? (
         <IndexProducts products={data} />
       ) : (
-        <div className="mt-8 text-2xl text-center">Laster produkter ...</div>
+        <div>{!error && <LoadingSpinner />}</div>
       )}
       {/* Display error message if error occured */}
       {error && (

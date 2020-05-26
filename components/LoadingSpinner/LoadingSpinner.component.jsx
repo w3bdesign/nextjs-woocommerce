@@ -3,35 +3,34 @@ import styled, { keyframes } from 'styled-components';
 
 const LoadingSpinner = () => {
   return (
-    <Container>
-      <Circle />
-    </Container>
+    <>
+      <Container>
+        <Circle />
+      </Container>
+    </>
   );
 };
 
 export default LoadingSpinner;
 
-const breatheAnimation = keyframes`
- 0% { transform: rotate(0deg); opacity: 1 } 
- /*20% { transform: rotate(72deg); opacity: 0.5 } 
- 40% { transform: rotate(144deg); opacity: 1 } 
- 60% { transform: rotate(216deg); opacity: 0.5 } 
- 80% { transform: rotate(288deg); opacity: 0.5 } */ 
- 100% { transform: rotate(360deg); opacity: 1; }
+const rotateAnimation = keyframes`
+ 0% { transform: rotate(0deg);  } 
+ 50% { transform: rotate(180deg);  }
+ 100% { transform: rotate(360deg);  }
 `;
 
 const Circle = styled.div`
-width: 100px;
+  width: 100px;
   height: 100px;
   border-radius: 50px;
   border: 10px solid black;
   border-right: 10px solid white;
   border-bottom: 10px solid white;
-  animation-name: ${breatheAnimation};
+  animation-name: ${rotateAnimation};
   animation-duration: 2s;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
--webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: linear;
+  -webkit-animation-timing-function: linear;
 `;
 
 const Container = styled.div`
