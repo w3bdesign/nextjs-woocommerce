@@ -30,6 +30,7 @@ Start the server with ```npm run dev ```
 - Algolia search (work in progress)
 - Vercel useSWR for caching and graphql-request for data fetching
 - Animations with React-Spring
+- Shows loading spinner created with Styled Components while loading data and error message if data can not be loaded
 - Mobile menu and cart slide-out with animations
 - List all product categories on a separate page
 - Link to individual product
@@ -43,7 +44,6 @@ Start the server with ```npm run dev ```
 - Add more cart functionality
 - Add checkout functionality
 - Hide products not in stock
-- Add loading spinners?
 - Add better SEO
 - Improve Algolia search and add it for mobile view as well
 - Add a better README.md
