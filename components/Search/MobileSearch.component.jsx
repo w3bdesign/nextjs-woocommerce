@@ -1,33 +1,36 @@
-// https://github.com/algolia/react-instantsearch
+import algoliasearch from 'algoliasearch';
+import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
+import { useState } from 'react';
+
+import { WOO_CONFIG } from 'config/nextConfig';
+import SearchResults from './SearchResults.component';
+
+const searchClient = algoliasearch(
+  WOO_CONFIG.ALGOLIA_APP_ID,
+  WOO_CONFIG.ALGOLIA_PUBLIC_API_KEY
+);
+
 const MobileSearch = () => {
+  const [search, setSearch] = useState(null);
   return (
     <>
       <div className="inline mt-4">
-        <form>
-          <input
-            className="px-6 py-2 mt-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
-            type="text"
-            placeholder="Søk ..."
-          />
-          <div id="mobile-search" className="absolute -mt-8">
-            <a
-              className="inline-block pl-3 no-underline hover:text-black"
-              onClick={() => {
-                alert('Du har klikket søkeknappen');
+      <InstantSearch
+            indexName="wp_posts_product"
+            searchClient={searchClient}
+          >
+            <SearchBox
+              className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+              onReset={() => {
+                setSearch(null);
               }}
-              href="#"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path d="M10,18c1.846,0,3.543-0.635,4.897-1.688l4.396,4.396l1.414-1.414l-4.396-4.396C17.365,13.543,18,11.846,18,10 c0-4.411-3.589-8-8-8s-8,3.589-8,8S5.589,18,10,18z M10,4c3.309,0,6,2.691,6,6s-2.691,6-6,6s-6-2.691-6-6S6.691,4,10,4z" />
-              </svg>
-            </a>
-          </div>
-        </form>
+              onChange={(text) => {
+                setSearch(text.target.value);
+              }}
+            />
+
+            {search && <Hits className="absolute" hitComponent={SearchResults} />}
+          </InstantSearch>
       </div>
     </>
   );
