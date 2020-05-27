@@ -53,7 +53,7 @@ const IndexProducts = (props) => {
                   <a>
                     <img
                       id="product-image"
-                      className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                      className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105 xs:w-64 xs:mw-64"
                       src={image.sourceUrl}
                     />
                   </a>
