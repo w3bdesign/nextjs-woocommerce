@@ -47,13 +47,13 @@ const IndexProducts = (props) => {
             }) => (
               <div
                 key={uuidv4()}
-                className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4"
+                className="flex flex-col w-full p-6 md:w-1/2 xl:w-1/4"
               >
                 <Link href="/produkt/[post]" as={`/produkt/${slug}`}>
                   <a>
                     <img
                       id="product-image"
-                      className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105 xs:w-64 xs:mw-64"
+                      className="object-cover w-full h-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
                       src={image.sourceUrl}
                     />
                   </a>
