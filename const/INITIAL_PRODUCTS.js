@@ -10,7 +10,7 @@ export const INITIAL_PRODUCTS =
                     "onSale": false,
                     "slug": "test-produkt-4",
                     "image": {
-                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_408,w_272/Nextjs-Woocommerce/lynne-baltzer-_Qqfhl2sCFE-unsplash-scaled_bfjiej.jpg"
+                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_490,w_325/Nextjs-Woocommerce/lynne-baltzer-_Qqfhl2sCFE-unsplash-scaled_bfjiej.jpg"
                     },
                     "price": "kr799.00",
                     "regularPrice": "kr799.00",
@@ -22,7 +22,7 @@ export const INITIAL_PRODUCTS =
                     "onSale": true,
                     "slug": "test-produkt-3",
                     "image": {
-                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_408,w_272/v1590520040/Nextjs-Woocommerce/taylor-dG4Eb_oC5iM-unsplash_kfgrw4.jpg"
+                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_490,w_325/v1590520040/Nextjs-Woocommerce/taylor-dG4Eb_oC5iM-unsplash_kfgrw4.jpg"
                     },
                     "price": "kr799.00",
                     "regularPrice": "kr999.00",
@@ -34,7 +34,7 @@ export const INITIAL_PRODUCTS =
                     "onSale": true,
                     "slug": "test-produkt-2",
                     "image": {
-                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_408,w_272/v1590520040/Nextjs-Woocommerce/milad-shams-LUCWiFdK1rs-unsplash-scaled_aypez1.jpg"
+                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_490,w_325/v1590520040/Nextjs-Woocommerce/milad-shams-LUCWiFdK1rs-unsplash-scaled_aypez1.jpg"
                     },
                     "price": "kr399.00",
                     "regularPrice": "kr899.00",
@@ -46,7 +46,7 @@ export const INITIAL_PRODUCTS =
                     "onSale": true,
                     "slug": "test-produkt",
                     "image": {
-                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_408,w_272/v1590520040/Nextjs-Woocommerce/rezasaad-w0J1odQXj3A-unsplash-scaled_mrcbf9.jpg"
+                        "sourceUrl": "https://res.cloudinary.com/duelisue0/image/upload/c_fit,h_490,w_325/v1590520040/Nextjs-Woocommerce/rezasaad-w0J1odQXj3A-unsplash-scaled_mrcbf9.jpg"
                     },
                     "price": "kr499.00",
                     "regularPrice": "kr999.00",
