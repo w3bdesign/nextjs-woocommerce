@@ -7,9 +7,6 @@ const Cart = () => {
   const [isExpanded, setisExpanded] = useState(false);
   const [cart, setCart] = useContext(AppContext);
 
-  console.log('We have inside of our cart:');
-  console.log(cart);
-
   const animation = useSpring({
     to: [
       {
@@ -46,7 +43,7 @@ const Cart = () => {
 
       {/*
       Animate slide-in
-        */}
+      */}
       {isExpanded && (
         <animated.div
           style={animation}
