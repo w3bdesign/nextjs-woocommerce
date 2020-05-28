@@ -1,6 +1,14 @@
-import { Link } from 'next/link';
+import { useState, useContext } from 'React';
+
+import { AppContext } from 'utils/context/AppContext';
 
 const AddToCartButton = (props) => {
+  console.log('Add to cart button: ');
+  console.log(props);
+
+  const { product } = props;
+  const [cart, setCart] = useContext(AppContext);
+
   const {
     description,
     image,
@@ -19,6 +27,7 @@ const AddToCartButton = (props) => {
       if (existingCart) {
       } else {
         //const NewCart = addFirstProduct(props)
+        setCart(product)
       }
     }
   };

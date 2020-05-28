@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useSpring, animated } from 'react-spring';
 
-import { AppContext } from 'context/AppContext';
+import { AppContext } from 'utils/context/AppContext';
 
 const Cart = () => {
   const [isExpanded, setisExpanded] = useState(false);

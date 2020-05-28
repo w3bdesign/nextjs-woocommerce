@@ -5,9 +5,9 @@ import Hero from 'components/Index/Hero.component';
 import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import { FETCH_ALL_PRODUCTS_QUERY } from 'const/GQL_QUERIES';
-import { INITIAL_PRODUCTS } from 'const/INITIAL_PRODUCTS';
-import { WOO_CONFIG } from 'config/nextConfig';
+import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
+import { INITIAL_PRODUCTS } from 'utils/const/INITIAL_PRODUCTS';
+import { WOO_CONFIG } from 'utils/config/nextConfig';
 
 const HomePage = (props) => {
   const initialData = props;
