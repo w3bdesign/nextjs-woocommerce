@@ -15,7 +15,7 @@ const SingleProduct = (props) => {
   // Strip out HTML from description
   const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
 
-  const {product} = props;
+  const { product } = props;
 
   return (
     <section className="py-8 bg-white">
@@ -68,13 +68,13 @@ const SingleProduct = (props) => {
               </select>
             </p>
             <p className="pt-1 mt-2">
-              <AddToCartButton product={product}/>
+              <AddToCartButton product={product} />
             </p>
           </div>
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default SingleProduct;
