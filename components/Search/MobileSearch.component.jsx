@@ -2,7 +2,7 @@ import algoliasearch from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
-import { WOO_CONFIG } from 'config/nextConfig';
+import { WOO_CONFIG } from 'utils/config/nextConfig';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(

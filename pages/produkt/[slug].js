@@ -4,7 +4,7 @@ import { withRouter, useRouter } from 'next/router';
 
 import SingleProduct from 'components/Product/SingleProduct.component';
 
-import { WOO_CONFIG } from 'config/nextConfig';
+import { WOO_CONFIG } from 'utils/config/nextConfig';
 
 // Display a single product with dynamic pretty urls
 const Produkt = () => {

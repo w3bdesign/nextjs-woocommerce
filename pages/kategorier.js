@@ -4,8 +4,8 @@ import useSWR from 'swr';
 import Categories from 'components/Category/Categories.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import { FETCH_ALL_CATEGORIES_QUERY } from 'const/GQL_QUERIES';
-import { WOO_CONFIG } from 'config/nextConfig';
+import { FETCH_ALL_CATEGORIES_QUERY } from 'utils/const/GQL_QUERIES';
+import { WOO_CONFIG } from 'utils/config/nextConfig';
 
 const CategoryPage = () => {
   const { data, error } = useSWR(FETCH_ALL_CATEGORIES_QUERY, (query) =>
