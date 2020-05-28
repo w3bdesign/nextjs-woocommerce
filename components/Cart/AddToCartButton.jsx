@@ -1,4 +1,4 @@
-import { useState, useContext } from 'React';
+import { useState, useContext } from 'react';
 
 import { AppContext } from 'utils/context/AppContext';
 
