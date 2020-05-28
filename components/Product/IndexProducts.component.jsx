@@ -13,23 +13,6 @@ const IndexProducts = (props) => {
             >
               Produkter
             </a>
-
-            <div className="flex items-center" id="store-nav-content">
-              <a
-                className="inline-block pl-3 no-underline hover:text-black"
-                href="#"
-              >
-                <svg
-                  className="fill-current hover:text-black"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M7 11H17V13H7zM4 7H20V9H4zM10 15H14V17H10z" />
-                </svg>
-              </a>
-            </div>
           </div>
         </nav>
 
