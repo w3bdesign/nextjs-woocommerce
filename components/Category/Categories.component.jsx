@@ -1,5 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * Map over the categories and display them individually.
+ * Uses uuidv4 for unique key IDs
+ * @param {Object} props 
+ */
 const Categories = (props) => {
   return (
     <section className="py-8 bg-white">

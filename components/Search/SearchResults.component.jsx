@@ -1,5 +1,8 @@
+/**
+ * Displays search results from Algolia
+ * @param {Object} param0 
+ */
 const SearchResults = ({ hit }) => {
-  console.log(hit);
   return (
     <article className="hit">
       <div className="flex p-6 bg-white">
@@ -9,8 +12,7 @@ const SearchResults = ({ hit }) => {
             alt={hit.name}
             className="w-12 hit-image"
           />
-        </header>  
-
+        </header>
         <div className="pl-4 text-left">
           {hit.post_title && (
             <span class="text-lg  font-bold">{hit.post_title}</span>

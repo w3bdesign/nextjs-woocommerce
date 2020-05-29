@@ -6,7 +6,9 @@ import SingleProduct from 'components/Product/SingleProduct.component';
 
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
-// Display a single product with dynamic pretty urls
+/**
+ * Display a single product with dynamic pretty urls
+ */
 const Produkt = () => {
   // Destructure query string from navigation. Eg { id: "46", slug: "test-produkt-4" }
   const router = useRouter();

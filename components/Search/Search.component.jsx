@@ -1,4 +1,3 @@
-// https://github.com/algolia/react-instantsearch
 import algoliasearch from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
@@ -13,6 +12,9 @@ const searchClient = algoliasearch(
 
 // https://www.algolia.com/doc/api-reference/widgets/instantsearch/react/
 
+/**
+ * Displays Algolia search for larger resolutions that do not show the mobile menu
+ */
 const Search = () => {
   const [search, setSearch] = useState(null);
 

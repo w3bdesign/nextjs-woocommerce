@@ -4,6 +4,10 @@ import Cart from '../Cart/Cart.component';
 import Search from '../Search/Search.component';
 import Hamburger from './Hamburger.component';
 
+/**
+ * Navigation for the application. 
+ * Includes mobile menu.
+ */
 const Navbar = () => {
   return (
     <header>

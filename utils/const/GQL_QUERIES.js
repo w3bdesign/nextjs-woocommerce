@@ -1,3 +1,6 @@
+/**
+ * Fetch all Woocommerce products from GraphQL
+ */
 export const FETCH_ALL_PRODUCTS_QUERY = `
 query MyQuery {
   products {
@@ -24,6 +27,9 @@ query MyQuery {
 }
 `;
 
+/**
+ * Fetch all categories from GraphQL
+ */
 export const FETCH_ALL_CATEGORIES_QUERY = `
 query MyQuery {
   productCategories {

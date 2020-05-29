@@ -1,3 +1,6 @@
+/**
+ * Initial hero content displayed on the front page, under the navigation bar.
+ */
 const Hero = () => {
   return (
     <>

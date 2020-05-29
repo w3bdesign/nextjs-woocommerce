@@ -7,6 +7,9 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 import { FETCH_ALL_CATEGORIES_QUERY } from 'utils/const/GQL_QUERIES';
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
+/**
+ * Category page displays all of the categories
+ */
 const CategoryPage = () => {
   const { data, error } = useSWR(FETCH_ALL_CATEGORIES_QUERY, (query) =>
     request(WOO_CONFIG.GRAPHQL_URL, query)

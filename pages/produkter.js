@@ -7,6 +7,12 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
+/**
+ * Displays all of the products. 
+ * Uses useSWR for data-fetching and caching.
+ * Displays loading spinner while loading.
+ * Shows an error if the server is down or unreachable.
+ */
 const Produkter = () => {
   const { data, error } = useSWR(FETCH_ALL_PRODUCTS_QUERY, (query) =>
     request(WOO_CONFIG.GRAPHQL_URL, query)

@@ -1,5 +1,10 @@
 import AddToCartButton from 'components/Cart/AddToCartButton';
 
+/**
+ * Shows a single product with an Add To Cart button.  
+ * Uses GraphQL for product data
+ * @param {Object} props // Product data
+ */
 const SingleProduct = (props) => {
   const {
     description,
@@ -57,7 +62,6 @@ const SingleProduct = (props) => {
                 <option value="sort">Blå</option>
               </select>
             </p>
-
             <p className="pt-1 mt-2 text-xl text-gray-900 ">
               <span className="py-2">Størrelse</span>
               <select

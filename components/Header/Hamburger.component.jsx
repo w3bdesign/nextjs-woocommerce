@@ -4,6 +4,10 @@ import Link from 'next/link';
 
 import MobileSearch from '../Search/MobileSearch.component';
 
+/**
+ * Shows the mobile menu. 
+ * Uses React-spring for animations.
+ */
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
 

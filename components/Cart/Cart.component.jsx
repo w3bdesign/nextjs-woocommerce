@@ -3,6 +3,10 @@ import { useSpring, animated } from 'react-spring';
 
 import { AppContext } from 'utils/context/AppContext';
 
+/**
+ * Displays the shopping cart contents. 
+ * Currently only displays a sample cart.
+ */
 const Cart = () => {
   const [isExpanded, setisExpanded] = useState(false);
   const [cart, setCart] = useContext(AppContext);
