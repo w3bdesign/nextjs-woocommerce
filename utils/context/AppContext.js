@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 export const AppContext = React.createContext([{}, () => {}]);
 
+/**
+ * Provides a global application context for the entire application with the cart contents
+ * @param {Object} props 
+ */
 export const AppProvider = (props) => {
   const [cart, setCart] = useState(null);
 

@@ -9,6 +9,11 @@ import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
 import { INITIAL_PRODUCTS } from 'utils/const/INITIAL_PRODUCTS';
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
+/**
+ * Main index page
+ * @param {Object} props
+ * Initial static data is sent as props from getStaticProps and loaded through 'utils/const/INITIAL_PRODUCTS'
+ */
 const HomePage = (props) => {
   const initialData = props;
   const { data, error } = useSWR(
@@ -20,9 +25,7 @@ const HomePage = (props) => {
   return (
     <>
       <Hero />
-
       {data && <IndexProducts products={data} />}
-
       {!data && !error && (
         <div className="h-64 mt-8 text-2xl text-center">
           Laster produkter ...
@@ -30,7 +33,6 @@ const HomePage = (props) => {
           <LoadingSpinner />
         </div>
       )}
-
       {/* Display error message if error occured */}
       {error && (
         <div className="h-12 mt-8 text-2xl text-center">

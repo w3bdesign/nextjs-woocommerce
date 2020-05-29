@@ -10,6 +10,9 @@ const searchClient = algoliasearch(
   WOO_CONFIG.ALGOLIA_PUBLIC_API_KEY
 );
 
+/**
+ * Algolia search for mobile menu.
+ */
 const MobileSearch = () => {
   const [search, setSearch] = useState(null);
   return (
