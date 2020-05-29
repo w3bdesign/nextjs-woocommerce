@@ -38,6 +38,7 @@ Start the server with ```npm run dev ```
 - Pretty URLs with builtin Nextjs functionality
 - Tailwind CSS for styling
 - Minimalistic and responsive design
+- JSDoc comments on all functions
 - Currently connected to live Woocommerce installation instead of using a local installation
 
 ## TODO
