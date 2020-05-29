@@ -16,6 +16,7 @@ export const getFloatVal = (string) => {
  */
 export const addFirstProduct = (product) => {
   const { price } = product.product.products.edges[0].node;
+  const productData = product.product.products.edges[0].node;
   let productPrice = getFloatVal(price);
 
   // If no item in cart, push first product to an empty array
@@ -25,14 +26,27 @@ export const addFirstProduct = (product) => {
     totalProductsPrice: productPrice,
   };
 
-  const newProduct = createNewProduct(product, productPrice);
+  const newProduct = createNewProduct(productData, productPrice, 1);
 };
 
+
+// #13 
+// 7:20 
+
 /**
- * Create a new product
+ * Create a new product object
  * @param {Object} product
  * @param {Number} productPrice
+ * @param {Number} quantity
+ * @return { productId, image, name,  price, quantity,  totalPrice}
  */
-export const createNewProduct = (product, productPrice) => {
-  
+export const createNewProduct = (product, productPrice, quantity) => {
+  return {
+    productId: product.productId,
+    image: product.image.sourceUrl,
+    name: product.name,
+    price: productPrice,
+    quantity: quantity,
+    totalPrice: parseFloat((quantity * productPrice).toFixed(2)),
+  };
 };
