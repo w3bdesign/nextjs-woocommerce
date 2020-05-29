@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "algoliasearch": "^4.2.0",
-    "graphql-request": "^1.8.2",
+    "graphql-request": "^2.0.0",
     "next": "^9.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
