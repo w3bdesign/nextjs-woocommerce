@@ -30,6 +30,7 @@ export const addFirstProduct = (product) => {
   newCart.products.push(newProduct);
 
   localStorage.setItem('woocommerce-cart', JSON.stringify(newCart));
+  return newCart;
 };
 
 /**
