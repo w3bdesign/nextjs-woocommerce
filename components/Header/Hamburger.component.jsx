@@ -6,13 +6,13 @@ import MobileSearch from '../Search/MobileSearch.component';
 
 /**
  * Shows the mobile menu.
+ * Shows a X when mobile menu is expanded.
  * Uses React-spring for animations.
  */
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
-  const [isTest, setisTest] = useState(false);
 
-  const hamburgerSlideAnimation = useSpring({
+  const hamburgerSlideDownAnimation = useSpring({
     to: [
       {
         opacity: isExpanded ? 1 : 0,
@@ -25,7 +25,7 @@ const Hamburger = () => {
     },
   });
 
-  const hamburgerToXAnimation = useSpring({
+  const showHamburgerHideXAnimation = useSpring({
     to: [
       {
         opacity: isExpanded ? 0 : 1,
@@ -37,7 +37,7 @@ const Hamburger = () => {
     },
   });
 
-  const showXAnimation = useSpring({
+  const showXHideHamburgerAnimation = useSpring({
     to: [
       {
         opacity: isExpanded ? 1 : 0,
@@ -58,7 +58,8 @@ const Hamburger = () => {
         className="block cursor-pointer md:hidden"
       >
         <animated.svg
-          style={hamburgerToXAnimation}
+          id="hamburgersvg"
+          style={showHamburgerHideXAnimation}
           onClick={() => {
             setisExpanded(!isExpanded);
           }}
@@ -72,10 +73,11 @@ const Hamburger = () => {
         </animated.svg>
 
         <animated.svg
+          id="xsvg"
           onClick={() => {
             setisExpanded(!isExpanded);
           }}
-          style={showXAnimation}
+          style={showXHideHamburgerAnimation}
           xmlns="http://www.w3.org/2000/svg"
           width="25"
           height="25"
@@ -94,7 +96,7 @@ const Hamburger = () => {
 
       {isExpanded && (
         <animated.div
-          style={hamburgerSlideAnimation}
+          style={hamburgerSlideDownAnimation}
           id="mobile-menu"
           className="absolute right-0 z-50 w-full text-center text-black bg-white"
         >
