@@ -4,7 +4,7 @@ export const AppContext = React.createContext([{}, () => {}]);
 
 /**
  * Provides a global application context for the entire application with the cart contents
- * @param {Object} props 
+ * @param {Object} props
  */
 export const AppProvider = (props) => {
   const [cart, setCart] = useState(null);
@@ -14,8 +14,7 @@ export const AppProvider = (props) => {
     if (process.browser) {
       let cartData = localStorage.getItem('woocommerce-cart');
       cartData = null !== cartData ? JSON.parse(cartData) : '';
-      //setCart(cartData);
-      setCart({ product: '123' });
+      setCart(cartData);
     }
   }, []);
   return (

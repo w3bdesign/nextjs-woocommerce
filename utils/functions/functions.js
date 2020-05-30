@@ -27,11 +27,10 @@ export const addFirstProduct = (product) => {
   };
 
   const newProduct = createNewProduct(productData, productPrice, 1);
+  newCart.products.push(newProduct);
+
+  localStorage.setItem('woocommerce-cart', JSON.stringify(newCart));
 };
-
-
-// #13 
-// 7:20 
 
 /**
  * Create a new product object
