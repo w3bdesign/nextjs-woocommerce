@@ -45,8 +45,8 @@ const Hamburger = () => {
       },
     ],
     from: {
-      opacity: isTest ? 0 : 1,
-      display: isTest ? 'none' : 'inline',
+      opacity: isExpanded ? 0 : 1,
+      display: isExpanded ? 'none' : 'inline',
     },
   });
 
