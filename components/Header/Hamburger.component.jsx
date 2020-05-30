@@ -25,20 +25,19 @@ const Hamburger = () => {
     },
   });
 
-  const svgAnimation = useSpring({
+  const hamburgerToXAnimation = useSpring({
     to: [
-      {         
+      {
         opacity: isExpanded ? 0 : 1,
         display: isExpanded ? 'none' : 'inline',
-        
       },
     ],
-    from: {      
-      opacity: isExpanded ? 0 : 1,     
+    from: {
+      opacity: isExpanded ? 0 : 1,
     },
   });
 
-  const xAnimation = useSpring({
+  const showXAnimation = useSpring({
     to: [
       {
         opacity: isExpanded ? 1 : 0,
@@ -46,8 +45,8 @@ const Hamburger = () => {
       },
     ],
     from: {
-      opacity: isTest ? 0 : 1,     
-     display: isTest ? 'none' : 'inline',
+      opacity: isTest ? 0 : 1,
+      display: isTest ? 'none' : 'inline',
     },
   });
 
@@ -59,8 +58,8 @@ const Hamburger = () => {
         className="block cursor-pointer md:hidden"
       >
         <animated.svg
-          style={svgAnimation}
-          onClick={() => {            
+          style={hamburgerToXAnimation}
+          onClick={() => {
             setisExpanded(!isExpanded);
           }}
           className="text-gray-900 fill-current"
@@ -73,7 +72,10 @@ const Hamburger = () => {
         </animated.svg>
 
         <animated.svg
-          style={xAnimation}
+          onClick={() => {
+            setisExpanded(!isExpanded);
+          }}
+          style={showXAnimation}
           xmlns="http://www.w3.org/2000/svg"
           width="25"
           height="25"
