@@ -10,8 +10,9 @@ import MobileSearch from '../Search/MobileSearch.component';
  */
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
+  const [isTest, setisTest] = useState(false);
 
-  const animation = useSpring({
+  const hamburgerSlideAnimation = useSpring({
     to: [
       {
         opacity: isExpanded ? 1 : 0,
@@ -24,14 +25,29 @@ const Hamburger = () => {
     },
   });
 
-  const svganimation = useSpring({
+  const svgAnimation = useSpring({
+    to: [
+      {         
+        opacity: isExpanded ? 0 : 1,
+        display: isExpanded ? 'none' : 'inline',
+        
+      },
+    ],
+    from: {      
+      opacity: isExpanded ? 0 : 1,     
+    },
+  });
+
+  const xAnimation = useSpring({
     to: [
       {
-        transform: isExpanded ? 'rotate(45deg)' : "",
+        opacity: isExpanded ? 1 : 0,
+        display: isExpanded ? 'inline' : 'none',
       },
     ],
     from: {
-      transform: isExpanded ? 'rotate(180deg)' : "",
+      opacity: isTest ? 0 : 1,     
+     display: isTest ? 'none' : 'inline',
     },
   });
 
@@ -43,7 +59,8 @@ const Hamburger = () => {
         className="block cursor-pointer md:hidden"
       >
         <animated.svg
-          onClick={() => {
+          style={svgAnimation}
+          onClick={() => {            
             setisExpanded(!isExpanded);
           }}
           className="text-gray-900 fill-current"
@@ -54,11 +71,28 @@ const Hamburger = () => {
         >
           <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
         </animated.svg>
+
+        <animated.svg
+          style={xAnimation}
+          xmlns="http://www.w3.org/2000/svg"
+          width="25"
+          height="25"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="feather feather-x"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </animated.svg>
       </label>
 
       {isExpanded && (
         <animated.div
-          style={animation}
+          style={hamburgerSlideAnimation}
           id="mobile-menu"
           className="absolute right-0 z-50 w-full text-center text-black bg-white"
         >
