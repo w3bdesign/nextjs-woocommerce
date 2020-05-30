@@ -15,13 +15,13 @@ const Hamburger = () => {
   const hamburgerSlideDownAnimation = useSpring({
     to: [
       {
-        opacity: isExpanded ? 1 : 0,
-        marginTop: isExpanded ? '180px' : '-180px',
+        //opacity: isExpanded ? 1 : 0,
+        marginTop: isExpanded ? '180px' : '-500px',
       },
     ],
     from: {
-      opacity: isExpanded ? 1 : 0,
-      marginTop: isExpanded ? '180px' : '-180px',
+     // opacity: isExpanded ? 1 : 0,
+      marginTop: isExpanded ? '180px' : '-500px',
     },
   });
 
