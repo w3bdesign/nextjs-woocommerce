@@ -5,7 +5,7 @@ import Link from 'next/link';
 import MobileSearch from '../Search/MobileSearch.component';
 
 /**
- * Shows the mobile menu. 
+ * Shows the mobile menu.
  * Uses React-spring for animations.
  */
 const Hamburger = () => {
@@ -24,6 +24,17 @@ const Hamburger = () => {
     },
   });
 
+  const svganimation = useSpring({
+    to: [
+      {
+        transform: isExpanded ? 'rotate(45deg)' : "",
+      },
+    ],
+    from: {
+      transform: isExpanded ? 'rotate(180deg)' : "",
+    },
+  });
+
   return (
     <>
       <label
@@ -31,7 +42,7 @@ const Hamburger = () => {
         aria-label="Meny"
         className="block cursor-pointer md:hidden"
       >
-        <svg
+        <animated.svg
           onClick={() => {
             setisExpanded(!isExpanded);
           }}
@@ -42,7 +53,7 @@ const Hamburger = () => {
           viewBox="0 0 20 20"
         >
           <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-        </svg>
+        </animated.svg>
       </label>
 
       {isExpanded && (

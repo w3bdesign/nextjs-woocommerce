@@ -4,7 +4,7 @@ import { useSpring, animated } from 'react-spring';
 import { AppContext } from 'utils/context/AppContext';
 
 /**
- * Displays the shopping cart contents. 
+ * Displays the shopping cart contents.
  * Currently only displays a sample cart.
  */
 const Cart = () => {
@@ -82,9 +82,7 @@ const Cart = () => {
             HANDLEKURV
           </div>
           <div className="mt-4">
-            {
-              // Start product listing inside of cart
-            }
+            {/*Start product listing inside of cart*/}
             <div className="flex p-4 mt-2 border-b border-gray-400 border-solid">
               <div className="fixed right-0 mt-0 mr-2">
                 <svg
@@ -108,6 +106,8 @@ const Cart = () => {
                 src="http://davethemogul.com/wp-content/uploads/2020/05/lynne-baltzer-_Qqfhl2sCFE-unsplash-scaled.jpg"
               />
               <div className="ml-8 text-left">
+                
+
                 Testprodukt 1 <br className="mt-2" />
                 Farge: Rød <br className="mt-2" /> Str: Large
                 <br className="mt-2" />
