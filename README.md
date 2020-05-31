@@ -1,4 +1,8 @@
 <p align="center">
+<img src="https://badgen.net/badge/icon/Made%20with%20NextJS?icon=zeit&label&color=black&labelColor=black">
+<br />
+<img src="https://badgen.net/badge/code%20style/prettier/f2a">
+<br />
 <img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot1.jpg?" alt="Screenshot 1"/>
 <br />
 <img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot2.jpg?" alt="Screenshot 2"/>
