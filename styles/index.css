@@ -20,10 +20,14 @@
   width: 300px;
 }
 
+.ais-SearchBox-reset {
+	margin-left: 10px;
+}
+
 .ais-SearchBox-submitIcon { 
-  width: 35px;
-  margin-right: 10px;
-  margin-left: 60px;
+  /*width: 35px;*/
+ /* margin-right: 10px;*/
+ /* margin-left: 60px;*/
 }
 
 @tailwind utilities;
