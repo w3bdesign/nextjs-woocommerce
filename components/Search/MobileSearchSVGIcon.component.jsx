@@ -37,9 +37,9 @@ const MobileSearchSVGIcon = () => {
       </div>
       {isExpanded && (
         <animated.div
-          style={mobileSearchSlideDownAnimation}
-          className="absolute right-0 w-full h-48 p-4 text-black bg-white z-99"
-        >
+        style={mobileSearchSlideDownAnimation}
+        className="absolute right-0 w-full p-4 text-black bg-white z-99"
+      >
           <p
             onClick={() => {
               setisExpanded(!isExpanded);
