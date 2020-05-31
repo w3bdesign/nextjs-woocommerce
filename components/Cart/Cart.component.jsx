@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import { useSpring, animated } from 'react-spring';
 
 import { AppContext } from 'utils/context/AppContext';
+import CloseXSVG from '../Search/CloseXSVG.component';
 
 /**
  * Displays the shopping cart contents.
@@ -54,40 +55,10 @@ const Cart = () => {
           id="cart-div"
           className="fixed top-0 right-0 z-50 h-full mr-0 text-center text-black bg-white"
         >
-          <p
-          id="close-cart-p"
-            onClick={() => {
-              setisExpanded(!isExpanded);
-            }}
-            className="right-0 pr-2 ml-48 text-lg cursor-pointer"
-          >
-            LUKK{' '}
-          </p>
+          <div className="right-0 pr-2 ml-48 text-lg cursor-pointer">
+            <CloseXSVG isExpanded={isExpanded} setisExpanded={setisExpanded} />
+          </div>
 
-          <button
-            onClick={() => {
-              setisExpanded(!isExpanded);
-            }}
-            title="Close (Esc)"
-            type="button"
-            className="fixed top-0 right-0 cursor-pointer"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="30"
-              height="30"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              className="cursor-pointer"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
           <div className="mt-10 text-2xl text-center border-b-2 border-gray-400 border-solid">
             HANDLEKURV
           </div>
