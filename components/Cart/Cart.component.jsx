@@ -54,6 +54,15 @@ const Cart = () => {
           id="cart-div"
           className="fixed top-0 right-0 z-50 h-full mr-0 text-center text-black bg-white"
         >
+          <p
+            onClick={() => {
+              setisExpanded(!isExpanded);
+            }}
+            className="right-0 pr-2 mt-0 ml-48 text-lg cursor-pointer"
+          >
+            LUKK{' '}
+          </p>
+          
           <button
             onClick={() => {
               setisExpanded(!isExpanded);
@@ -85,6 +94,7 @@ const Cart = () => {
             {/*Start product listing inside of cart*/}
             <div className="flex p-4 mt-2 border-b border-gray-400 border-solid">
               <div className="fixed right-0 mt-0 mr-2">
+              
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"

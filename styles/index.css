@@ -9,11 +9,6 @@
 
 #mobile-menu {
   height: 300px; 
-
-}
-
-#mobile-search {
- /* margin-left: 250px;*/
 }
 
 #cart-div {
@@ -22,12 +17,6 @@
 
 .ais-SearchBox-reset {
 	margin-left: 10px;
-}
-
-.ais-SearchBox-submitIcon { 
-  /*width: 35px;*/
- /* margin-right: 10px;*/
- /* margin-left: 60px;*/
 }
 
 @tailwind utilities;

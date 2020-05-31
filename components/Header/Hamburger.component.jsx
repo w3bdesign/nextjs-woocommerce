@@ -96,10 +96,10 @@ const Hamburger = () => {
         <animated.div
           style={hamburgerSlideDownAnimation}
           id="mobile-menu"
-          className="absolute right-0 z-10 w-full text-center text-black bg-white"
+          className="absolute right-0 z-10 w-full text-center text-black bg-white "
         >
           <ul>
-            <li className="w-full p-4 border-t border-b border-gray-400 border-solid rounded hover:bg-gray-300">
+          <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
               <Link href="/">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
@@ -109,7 +109,7 @@ const Hamburger = () => {
                 </a>
               </Link>
             </li>
-            <li className="w-full p-4 border-b border-gray-400 border-solid rounded hover:bg-gray-300">
+            <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
               <Link href="/produkter">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
@@ -119,7 +119,7 @@ const Hamburger = () => {
                 </a>
               </Link>
             </li>
-            <li className="w-full p-4 border-b border-gray-400 border-solid rounded hover:bg-gray-300">
+            <li id="mobile-li" className="w-full p-4 border-b border-gray-400 border-solid rounded">
               <Link href="/kategorier">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"

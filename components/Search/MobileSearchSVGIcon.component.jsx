@@ -44,7 +44,7 @@ const MobileSearchSVGIcon = () => {
             onClick={() => {
               setisExpanded(!isExpanded);
             }}
-            className="absolute right-0 mr-12 -mt-6 text-lg"
+            className="absolute right-0 mr-12 -mt-6 text-lg cursor-pointer"
           >
             LUKK{' '}
           </p>
