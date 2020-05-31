@@ -58,11 +58,11 @@ const Cart = () => {
             onClick={() => {
               setisExpanded(!isExpanded);
             }}
-            className="right-0 pr-2 mt-0 ml-48 text-lg cursor-pointer"
+            className="right-0 pr-2 ml-48 text-lg cursor-pointer"
           >
             LUKK{' '}
           </p>
-          
+
           <button
             onClick={() => {
               setisExpanded(!isExpanded);
@@ -73,8 +73,8 @@ const Cart = () => {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
+              width="30"
+              height="30"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -94,7 +94,6 @@ const Cart = () => {
             {/*Start product listing inside of cart*/}
             <div className="flex p-4 mt-2 border-b border-gray-400 border-solid">
               <div className="fixed right-0 mt-0 mr-2">
-              
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -116,8 +115,6 @@ const Cart = () => {
                 src="http://davethemogul.com/wp-content/uploads/2020/05/lynne-baltzer-_Qqfhl2sCFE-unsplash-scaled.jpg"
               />
               <div className="ml-8 text-left">
-                
-
                 Testprodukt 1 <br className="mt-2" />
                 Farge: Rød <br className="mt-2" /> Str: Large
                 <br className="mt-2" />

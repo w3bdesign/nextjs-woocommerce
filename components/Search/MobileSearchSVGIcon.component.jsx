@@ -44,7 +44,7 @@ const MobileSearchSVGIcon = () => {
             onClick={() => {
               setisExpanded(!isExpanded);
             }}
-            className="absolute right-0 mr-12 -mt-6 text-lg cursor-pointer"
+            className="absolute right-0 mr-16 -mt-6 text-lg cursor-pointer"
           >
             LUKK{' '}
           </p>
@@ -55,8 +55,8 @@ const MobileSearchSVGIcon = () => {
               setisExpanded(!isExpanded);
             }}
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
+            width="30"
+            height="30"
             viewBox="0 0 20 20"
             fill="none"
             stroke="currentColor"
