@@ -15,6 +15,10 @@
   width: 300px;
 }
 
+#mobile-search-close-p {
+  margin-top:-20px;
+}
+
 .ais-SearchBox-reset {
 	margin-left: 10px;
 }
