@@ -50,7 +50,7 @@ const MobileSearchSVGIcon = () => {
           </p>
           <svg
             id="xsvg"
-            className="absolute right-0 mr-6 -mt-6"
+            className="absolute right-0 mr-6 -mt-6 cursor-pointer"
             onClick={() => {
               setisExpanded(!isExpanded);
             }}
