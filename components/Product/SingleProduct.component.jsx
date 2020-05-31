@@ -65,7 +65,7 @@ const SingleProduct = (props) => {
                 </>
               )}
               {/* Display regular price when not on sale */}
-              {!onSale && <p className="pt-1 mt-4 text-gray-900"> {price}</p>}
+              {!onSale && <p className="pt-1 mt-4 text-2xl text-gray-900"> {price}</p>}
               <br />
               <p className="pt-1 mt-4 text-2xl text-gray-900">
                 {DESCRIPTION_WITHOUT_HTML}
