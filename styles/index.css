@@ -20,9 +20,8 @@
   width: 300px;
 }
 
-.ais-SearchBox-submitIcon {
- /* margin-right: 10px;
-  margin-left:70px;*/
+.ais-SearchBox-submitIcon { 
+  margin-left:60px;
 }
 
 @tailwind utilities;
