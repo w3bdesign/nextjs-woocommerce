@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 
 import MobileSearch from './MobileSearch.component';
+import CloseXSVG from './CloseXSVG.component';
 
 const MobileSearchSVGIcon = () => {
   const [isExpanded, setisExpanded] = useState(false);
@@ -23,6 +24,7 @@ const MobileSearchSVGIcon = () => {
     <>
       <div className="inline mr-2 md:hidden xl:hidden">
         <svg
+        className="cursor-pointer"
           onClick={() => {
             setisExpanded(!isExpanded);
           }}
@@ -36,38 +38,13 @@ const MobileSearchSVGIcon = () => {
         </svg>
       </div>
       {isExpanded && (
-       <animated.div
-       style={mobileSearchSlideDownAnimation}
-       className="absolute right-0 z-50 w-full p-4 text-black bg-white"
-     >
-          <p
-          id="mobile-search-close-p"
-            onClick={() => {
-              setisExpanded(!isExpanded);
-            }}
-            className="absolute right-0 mr-16 text-lg cursor-pointer"
-          >
-            LUKK{' '}
-          </p>
-          <svg
-            id="xsvg"
-            className="absolute right-0 mr-6 -mt-6 cursor-pointer"
-            onClick={() => {
-              setisExpanded(!isExpanded);
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="30"
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+        <animated.div
+          style={mobileSearchSlideDownAnimation}
+          className="absolute right-0 z-50 w-full p-4 text-black bg-white"
+        >
+          <div className="absolute right-0 mr-6 -mt-12 cursor-pointer">
+            <CloseXSVG isExpanded={isExpanded} setisExpanded={setisExpanded} />
+          </div>
           <br />
           <MobileSearch />
         </animated.div>
