@@ -96,7 +96,7 @@ const Hamburger = () => {
         <animated.div
           style={hamburgerSlideDownAnimation}
           id="mobile-menu"
-          className="absolute right-0 z-50 w-full text-center text-black bg-white"
+          className="absolute right-0 w-full text-center text-black bg-white z-1"
         >
           <ul>
             <li className="w-full p-4 border-t border-b border-gray-400 border-solid rounded">
