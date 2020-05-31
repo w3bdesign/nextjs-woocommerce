@@ -2,10 +2,11 @@ import Link from 'next/link';
 
 import Cart from '../Cart/Cart.component';
 import Search from '../Search/Search.component';
+import MobileSearchSVGIcon from '../Search/MobileSearchSVGIcon.component';
 import Hamburger from './Hamburger.component';
 
 /**
- * Navigation for the application. 
+ * Navigation for the application.
  * Includes mobile menu.
  */
 const Navbar = () => {
@@ -37,7 +38,6 @@ const Navbar = () => {
               </ul>
             </nav>
           </div>
-
           <div className="order-1 md:order-2">
             <Link href="/">
               <a className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline ">
@@ -54,18 +54,18 @@ const Navbar = () => {
               </a>
             </Link>
           </div>
-
           <div
             className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
             <Search />
+            <MobileSearchSVGIcon />
             <Cart />
           </div>
         </div>
       </nav>
     </header>
   );
-}
+};
 
 export default Navbar;

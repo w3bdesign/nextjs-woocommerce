@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import Link from 'next/link';
 
-import MobileSearch from '../Search/MobileSearch.component';
-
 /**
  * Shows the mobile menu.
  * Shows a X when mobile menu is expanded.
@@ -130,10 +128,7 @@ const Hamburger = () => {
                   Kategorier
                 </a>
               </Link>
-            </li>
-            <li className="w-full p-4 border-gray-400 border-solid rounded">
-              <MobileSearch />
-            </li>
+            </li>            
           </ul>
         </animated.div>
       )}
