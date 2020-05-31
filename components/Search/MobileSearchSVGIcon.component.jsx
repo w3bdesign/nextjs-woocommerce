@@ -40,7 +40,14 @@ const MobileSearchSVGIcon = () => {
           style={mobileSearchSlideDownAnimation}
           className="absolute right-0 w-full h-48 p-4 text-black bg-white z-99"
         >
-          <p className="absolute right-0 mr-12 -mt-6 text-lg">LUKK </p>
+          <p
+            onClick={() => {
+              setisExpanded(!isExpanded);
+            }}
+            className="absolute right-0 mr-12 -mt-6 text-lg"
+          >
+            LUKK{' '}
+          </p>
           <svg
             id="xsvg"
             className="absolute right-0 mr-6 -mt-6"
