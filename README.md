@@ -1,8 +1,4 @@
-![Website](https://img.shields.io/website?down_color=OFFLINE&down_message=OFFLINE&up_color=green&up_message=ONLINE&url=https%3A%2F%2Fnextjs-woocommerce.now.sh%2F)
-![GitHub last commit](https://img.shields.io/github/last-commit/w3bdesign/nextjs-woocommerce)
-<img src="https://badgen.net/badge/code%20style/prettier/f2a" />
-<p align="center>
-<br />
+<p align="center">
 <img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot1.jpg?" alt="Screenshot 1"/>
 <br />
 <img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot2.jpg?" alt="Screenshot 2"/>
