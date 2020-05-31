@@ -55,6 +55,7 @@ const Cart = () => {
           className="fixed top-0 right-0 z-50 h-full mr-0 text-center text-black bg-white"
         >
           <p
+          id="close-cart-p"
             onClick={() => {
               setisExpanded(!isExpanded);
             }}
