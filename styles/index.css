@@ -21,7 +21,8 @@
 }
 
 .ais-SearchBox-submitIcon { 
-  margin-left:60px;
+  margin-right: 10px;
+  margin-left: 60px;
 }
 
 @tailwind utilities;
