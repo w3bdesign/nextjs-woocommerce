@@ -10,12 +10,12 @@ const MobileSearchSVGIcon = () => {
     to: [
       {
         opacity: isExpanded ? 1 : 0,
-        marginTop: isExpanded ? '30px' : '-180px',
+        marginTop: isExpanded ? '10px' : '-180px',
       },
     ],
     from: {
       opacity: isExpanded ? 1 : 0,
-      marginTop: isExpanded ? '30px' : '-180px',
+      marginTop: isExpanded ? '10px' : '-180px',
     },
   });
 
