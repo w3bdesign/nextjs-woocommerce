@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { useSpring, animated } from 'react-spring';
+import Link from 'next/link';
 
 import { AppContext } from 'utils/context/AppContext';
 import CloseXSVG from '../Search/CloseXSVG.component';
@@ -7,10 +8,14 @@ import CloseXSVG from '../Search/CloseXSVG.component';
 /**
  * Displays the shopping cart contents.
  * Currently only displays a sample cart.
+ * Displays amount of items in cart.
  */
 const Cart = () => {
   const [isExpanded, setisExpanded] = useState(false);
   const [cart, setCart] = useContext(AppContext);
+
+  const productsCount =
+    null !== cart && Object.keys(cart).length ? cart.totalProductsCount : '';
 
   const animation = useSpring({
     to: [
@@ -45,10 +50,19 @@ const Cart = () => {
           <circle cx="17.5" cy="18.5" r="1.5" />
         </svg>
       </a>
+      {/*Cart quantity */}
+      {productsCount && (
+        <span
+          onClick={() => {
+            setisExpanded(!isExpanded);
+          }}
+          className="w-6 h-6 pb-2 -mt-6 text-center text-white bg-black rounded-full"
+        >
+          {productsCount}
+        </span>
+      )}
 
-      {/*
-      Animate slide-in
-      */}
+      {/*Animate slide-in*/}
       {isExpanded && (
         <animated.div
           style={animation}
