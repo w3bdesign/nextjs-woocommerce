@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 
 import { AppContext } from 'utils/context/AppContext';
 import { addFirstProduct } from 'utils/functions/functions';
+import { updateCart } from 'utils/functions/functions';
 
 /**
  * Display and process product object when we click on the Add To Cart button
@@ -24,10 +25,17 @@ const AddToCartButton = (props) => {
   } = props.product.products.edges[0].node;
 
   const handleAddToCartClick = () => {
+    const quantityToBeAdded = 1;
+    
     // If component is rendered on the client side
     if (process.browser) {
       let existingCart = localStorage.getItem('woocommerce-cart');
       if (existingCart) {
+        existingCart = JSON.parse(existingCart)
+       
+        const updatedCart = updateCart (existingCart, product, quantityToBeAdded);
+        
+
         console.log('We have an existing product in cart: ');
         console.log(cart);
       } else {

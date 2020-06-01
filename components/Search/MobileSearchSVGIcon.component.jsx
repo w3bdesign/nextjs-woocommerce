@@ -4,6 +4,10 @@ import { useSpring, animated } from 'react-spring';
 import MobileSearch from './MobileSearch.component';
 import CloseXSVG from './CloseXSVG.component';
 
+/**
+ * The SVG that we use for search in the navbar for mobile.
+ * Also includes logic for closing and opening the search form.
+ */
 const MobileSearchSVGIcon = () => {
   const [isExpanded, setisExpanded] = useState(false);
 
@@ -24,7 +28,7 @@ const MobileSearchSVGIcon = () => {
     <>
       <div className="inline mr-2 md:hidden xl:hidden">
         <svg
-        className="cursor-pointer"
+          className="cursor-pointer"
           onClick={() => {
             setisExpanded(!isExpanded);
           }}

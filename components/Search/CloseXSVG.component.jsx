@@ -1,4 +1,10 @@
+/**
+ * The SVG that we display to close the cart or the mobile search 
+ * @param {Object} props 
+ */
 const CloseXSVG = (props) => {
+
+
   const { isExpanded, setisExpanded } = props;
   return (
     <>
