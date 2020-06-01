@@ -3,7 +3,7 @@
  */
 export const FETCH_ALL_PRODUCTS_QUERY = `
 query MyQuery {
-  products {
+  products(first: 12) {
     nodes {
       productId
       name
