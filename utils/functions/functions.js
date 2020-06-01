@@ -50,3 +50,13 @@ export const createNewProduct = (product, productPrice, quantity) => {
     totalPrice: parseFloat((quantity * productPrice).toFixed(2)),
   };
 };
+
+/**
+ * Update cart when we add a new product to it
+ * @param {Object} existingCart
+ * @param {Object} product
+ * @param {Number} quantityToBeAdded
+ */
+export const updateCart = (existingCart, product, quantityToBeAdded) => {
+  
+};
