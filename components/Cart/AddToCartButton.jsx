@@ -5,8 +5,8 @@ import { addFirstProduct } from 'utils/functions/functions';
 
 /**
  * Display and process product object when we click on the Add To Cart button
- * Adds product to shopping cart 
- * @param {Object} props 
+ * Adds product to shopping cart
+ * @param {Object} props
  */
 const AddToCartButton = (props) => {
   const { product } = props;
@@ -26,16 +26,13 @@ const AddToCartButton = (props) => {
   const handleAddToCartClick = () => {
     // If component is rendered on the client side
     if (process.browser) {
-      console.log('Is browser! Product Props: ');
-      console.log(product);
-
       let existingCart = localStorage.getItem('woocommerce-cart');
       if (existingCart) {
-        console.log('Existing cart status:');
+        console.log('We have an existing product in cart: ');
         console.log(cart);
       } else {
         const NewCart = addFirstProduct(props);
-        //setCart(NewCart);
+        setCart(NewCart);
       }
     }
   };
