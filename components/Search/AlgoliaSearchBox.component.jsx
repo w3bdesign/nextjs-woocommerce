@@ -15,7 +15,7 @@ const searchClient = algoliasearch(
 /**
  * Displays Algolia search for larger resolutions that do not show the mobile menu
  */
-const Search = () => {
+const AlgoliaSearchBox = () => {
   const [search, setSearch] = useState(null);
 
   return (
@@ -51,4 +51,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default AlgoliaSearchBox;
