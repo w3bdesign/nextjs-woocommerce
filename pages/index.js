@@ -16,6 +16,11 @@ import { WOO_CONFIG } from 'utils/config/nextConfig';
  */
 const HomePage = (props) => {
   const initialData = props;
+
+  // TODO Should this be moved to the component that uses it,
+  // TODO instead of fetching the data in index.js?
+  // TODO We can still fetch a single product and use it to display errors
+
   const { data, error } = useSWR(
     FETCH_ALL_PRODUCTS_QUERY,
     (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
@@ -26,6 +31,12 @@ const HomePage = (props) => {
     <>
       <Hero />
       {data && <IndexProducts products={data} />}
+
+      {
+        // TODO
+        // Add Hoodies section here
+      }
+
       {!data && !error && (
         <div className="h-64 mt-8 text-2xl text-center">
           Laster produkter ...

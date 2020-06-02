@@ -2,9 +2,9 @@
  * Fetch first 4 products from a specific category
  */
 
-export const FETCH_FIRST_PRODUCTS_FROM_DECOR_QUERY = `
+export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
  query MyQuery {
-  products(first: 4, where: {category: "Decor"}) {
+  products(first: 4, where: {category: "Hoodies"}) {
     nodes {
       productId
       name
