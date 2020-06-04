@@ -57,6 +57,30 @@ export const createNewProduct = (product, productPrice, quantity) => {
  * @param {Object} product
  * @param {Number} quantityToBeAdded
  */
-export const updateCart = (existingCart, product, quantityToBeAdded) => {
-  
+export const updateCart = (
+  existingCart,
+  product,
+  quantityToBeAdded,
+  newQuantity = false
+) => {
+  const updatedProducts = getUpdatedProducts(
+    existingCart.products,
+    product,
+    quantityToBeAdded,
+    newQuantity
+  );
 };
+
+/**
+ * 
+ * @param {Object} existingProductInCart 
+ * @param {Object} product 
+ * @param {Number} quantityToBeAdded 
+ * @param {Number} newQuantity 
+ */
+export const getUpdatedProducts = (existingProductInCart, product, quantityToBeAdded, newQuantity = false  ) => {
+
+  const productExistsIndex = isProductInCart ()
+};
+
+export const isProductInCart = () => {}
