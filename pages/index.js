@@ -21,6 +21,11 @@ const HomePage = (props) => {
   // TODO instead of fetching the data in index.js?
   // TODO We can still fetch a single product and use it to display errors
 
+  // TODO Look into replacing useSWR with https://www.npmjs.com/package/next-with-apollo ?
+  
+  // TODO Read https://github.com/vercel/next.js/discussions/13310 
+  // TODO and https://nextjs.org/blog/next-9-4 and Incremental Static Regeneration and see if it is possible to implement
+
   const { data, error } = useSWR(
     FETCH_ALL_PRODUCTS_QUERY,
     (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
