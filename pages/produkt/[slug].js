@@ -1,6 +1,6 @@
 import { request } from 'graphql-request';
 import useSWR from 'swr';
-import { withRouter, useRouter } from 'next/router';
+import { withRouter } from 'next/router';
 
 import SingleProduct from 'components/Product/SingleProduct.component';
 
@@ -12,10 +12,10 @@ import { WOO_CONFIG } from 'utils/config/nextConfig';
 /**
  * Display a single product with dynamic pretty urls
  */
-const Produkt = () => {
+const Produkt = (props) => {
   // Destructure query string from navigation. Eg { id: "46", slug: "test-produkt-4" }
-  const router = useRouter();
-  const { slug } = router.query;
+
+  const { slug } = props.router.query;
 
   const FETCH_SINGLE_PRODUCT_QUERY = `
   query MyQuery {
