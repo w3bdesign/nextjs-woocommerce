@@ -24,8 +24,8 @@ const HomePage = (props) => {
   const { data, error } = useSWR(
     FETCH_ALL_PRODUCTS_QUERY,
     (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
-    { initialData }
-  );
+    { refreshInterval: 3600000 }
+  ); // Refresh once every hour
 
   return (
     <>
@@ -55,10 +55,3 @@ const HomePage = (props) => {
 };
 
 export default HomePage;
-
-export async function getStaticProps() {
-  // Default products to display on front page
-  return {
-    props: INITIAL_PRODUCTS, // will be passed to the page component as props
-  };
-}
