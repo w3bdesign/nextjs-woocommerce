@@ -11,16 +11,15 @@ import { WOO_CONFIG } from 'utils/config/nextConfig';
  * Category page displays all of the categories
  */
 const CategoryPage = () => {
-  const { data, error } = useSWR(FETCH_ALL_CATEGORIES_QUERY, (query) =>
-    request(WOO_CONFIG.GRAPHQL_URL, query)
-  );
-
+  const { data, error } = useSWR(
+    FETCH_ALL_CATEGORIES_QUERY,
+    (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
+    { refreshInterval: 86400000 }
+  ); // Refresh once per day
 
   return (
     <>
-      {data && (
-        <Categories categories={data} />
-      )}
+      {data && <Categories categories={data} />}
 
       {!data && !error && (
         <div className="h-64 mt-8 text-2xl text-center">
@@ -36,7 +35,6 @@ const CategoryPage = () => {
           Feil under lasting av kategorier ...
         </div>
       )}
-
     </>
   );
 };
