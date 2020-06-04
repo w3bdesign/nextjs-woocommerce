@@ -3,7 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import Link from 'next/link';
 
 import { AppContext } from 'utils/context/AppContext';
-import CloseXSVG from '../Search/CloseXSVG.component';
+import CloseXSVG from '../Search/SVG/CloseXSVG.component';
 
 /**
  * Displays the shopping cart contents.
