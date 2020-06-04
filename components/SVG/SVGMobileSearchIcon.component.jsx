@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 
-import MobileSearch from './MobileSearch.component';
-import CloseXSVG from './SVGCloseX.component';
+import MobileSearch from '../Search/MobileSearch.component';
+import SVGCloseX from './SVGCloseX.component';
 
 /**
  * The SVG that we use for search in the navbar for mobile.
  * Also includes logic for closing and opening the search form.
  */
-const MobileSearchSVGIcon = () => {
+const SVGMobileSearchIcon = () => {
   const [isExpanded, setisExpanded] = useState(false);
 
   const mobileSearchSlideDownAnimation = useSpring({
@@ -47,7 +47,7 @@ const MobileSearchSVGIcon = () => {
           className="absolute right-0 z-50 w-full p-4 text-black bg-white"
         >
           <div className="absolute right-0 mr-6 -mt-12 cursor-pointer">
-            <CloseXSVG isExpanded={isExpanded} setisExpanded={setisExpanded} />
+            <SVGCloseX isExpanded={isExpanded} setisExpanded={setisExpanded} />
           </div>
           <br />
           <MobileSearch />
@@ -57,4 +57,4 @@ const MobileSearchSVGIcon = () => {
   );
 };
 
-export default MobileSearchSVGIcon;
+export default SVGMobileSearchIcon;
