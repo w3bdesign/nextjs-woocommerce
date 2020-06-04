@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 
 import MobileSearch from './MobileSearch.component';
-import CloseXSVG from './CloseXSVG.component';
+import CloseXSVG from './SVGCloseX.component';
 
 /**
  * The SVG that we use for search in the navbar for mobile.
