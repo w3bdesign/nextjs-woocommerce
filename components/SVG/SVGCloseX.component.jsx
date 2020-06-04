@@ -2,7 +2,7 @@
  * The SVG that we display to close the cart or the mobile search 
  * @param {Object} props 
  */
-const CloseXSVG = (props) => {
+const SVGCloseX = (props) => {
 
 
   const { isExpanded, setisExpanded } = props;
@@ -60,4 +60,4 @@ const CloseXSVG = (props) => {
   );
 };
 
-export default CloseXSVG;
+export default SVGCloseX;

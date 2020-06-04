@@ -3,7 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import Link from 'next/link';
 
 import { AppContext } from 'utils/context/AppContext';
-import CloseXSVG from '../Search/SVG/CloseXSVG.component';
+import SVGCloseX from '../SVG/SVGCloseX.component';
 
 /**
  * Displays the shopping cart contents.
@@ -70,7 +70,7 @@ const Cart = () => {
           className="fixed top-0 right-0 z-50 h-full mr-0 text-center text-black bg-white"
         >
           <div className="right-0 pr-2 ml-48 text-lg cursor-pointer">
-            <CloseXSVG isExpanded={isExpanded} setisExpanded={setisExpanded} />
+            <SVGCloseX isExpanded={isExpanded} setisExpanded={setisExpanded} />
           </div>
 
           <div className="mt-10 text-2xl text-center border-b-2 border-gray-400 border-solid">
