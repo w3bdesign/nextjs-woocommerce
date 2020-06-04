@@ -6,6 +6,9 @@ import SingleProduct from 'components/Product/SingleProduct.component';
 
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
+// TODO Read https://github.com/vercel/next.js/discussions/13310
+// TODO and https://nextjs.org/blog/next-9-4 and Incremental Static Regeneration and see if it is possible to implement
+
 /**
  * Display a single product with dynamic pretty urls
  */
