@@ -14,6 +14,7 @@ import {
 } from '../../utils/functions/functions';
 
 import CartItem from './CartItem.component';
+import { WOO_CONFIG } from 'utils/config/nextConfig';
 
 import { GET_CART } from '../../utils/const/GQL_QUERIES';
 
@@ -27,6 +28,23 @@ const CartItemsContainer = () => {
   // TODO will use it in future variations of the project.
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
+
+  const onSuccess = (cartData) => {
+	console.log('Success from cart!');
+	console.log(cartData);
+  };
+
+  const onError = (errorMessage) => {
+    console.log('Error from cart!');
+    console.log(errorMessage);
+  };
+
+  const { data, error } = useSWR(
+    GET_CART,
+    (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
+    { refreshInterval: 3600000, onSuccess, onError }
+  ); // Refresh once every hour
+
 
   // Get Cart Data.
 
@@ -47,12 +65,14 @@ const CartItemsContainer = () => {
         </nav>
 
         {cart ? (
-          <p>Vi har innhold i handlekurven!</p>
+          <div className="mt-5">
+            <h2>Vi har innhold i handlekurven!</h2>
+          </div>
         ) : (
           <div className="container mt-5">
             <h2>Ingen varer i handlekurven</h2>
             <Link href="/">
-              <button className="btn btn-secondary woo-next-large-black-btn">
+              <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
                 <span className="woo-next-cart-checkout-txt">
                   Legg til varer
                 </span>
