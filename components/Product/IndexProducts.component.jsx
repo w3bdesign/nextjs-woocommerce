@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
  * @param {Object} props // Products
  */
 const IndexProducts = (props) => {
+  const products = props.products.products.nodes;
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
@@ -21,8 +22,8 @@ const IndexProducts = (props) => {
           </div>
         </nav>
 
-        {props.products.products.nodes.length ? (
-          props.products.products.nodes.map(
+        {products ? (
+          products.map(
             ({
               productId,
               name,
@@ -50,7 +51,6 @@ const IndexProducts = (props) => {
                   <p className="font-bold text-center">{name}</p>
                 </div>
                 {/* Display sale price when on sale */}
-
                 {onSale && (
                   <>
                     <div className="flex justify-center">
