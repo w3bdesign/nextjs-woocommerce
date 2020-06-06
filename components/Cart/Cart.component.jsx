@@ -141,7 +141,9 @@ const Cart = () => {
             }
             <div className="mx-auto mt-6">
               <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
-                GÅ TIL KASSE
+                <Link href="/cart">
+                  <a>GÅ TIL KASSE</a>
+                </Link>
               </button>
             </div>
           </div>
