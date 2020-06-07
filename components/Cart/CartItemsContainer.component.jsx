@@ -30,8 +30,13 @@ const CartItemsContainer = () => {
   const [requestError, setRequestError] = useState(null);
 
   const onSuccess = (cartData) => {
-	console.log('Success from cart!');
-	console.log(cartData);
+    console.log('Success from cart!');
+    console.log(cartData);
+    const updatedCart = getFormattedCart(cartData);
+    localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+
+    // Update cart data in React Context.
+    setCart(updatedCart);
   };
 
   const onError = (errorMessage) => {
@@ -44,7 +49,6 @@ const CartItemsContainer = () => {
     (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
     { refreshInterval: 3600000, onSuccess, onError }
   ); // Refresh once every hour
-
 
   // Get Cart Data.
 
@@ -74,7 +78,9 @@ const CartItemsContainer = () => {
             <Link href="/">
               <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
                 <span className="woo-next-cart-checkout-txt">
-                  Legg til varer
+                  <Link href="/produkter">
+                    <a>Legg til varer</a>
+                  </Link>
                 </span>
                 <i className="fas fa-long-arrow-alt-right" />
               </button>
