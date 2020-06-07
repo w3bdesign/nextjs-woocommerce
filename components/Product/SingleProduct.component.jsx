@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import AddToCartButton from 'components/Cart/AddToCartButton';
+import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 /**
@@ -9,6 +9,9 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
  * @param {Object} props // Product data
  */
 const SingleProduct = (props) => {
+  //const { product } = props.product.products.edges[0].node;
+  //console.log(product);
+
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // useEffect with empty array is the same as componentDidMount
@@ -29,7 +32,7 @@ const SingleProduct = (props) => {
   // Strip out HTML from description
   const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
 
-  const { product } = props;
+  const product = props.product.products.edges[0].node;
 
   return (
     <section className="py-8 bg-white">
@@ -65,7 +68,9 @@ const SingleProduct = (props) => {
                 </>
               )}
               {/* Display regular price when not on sale */}
-              {!onSale && <p className="pt-1 mt-4 text-2xl text-gray-900"> {price}</p>}
+              {!onSale && (
+                <p className="pt-1 mt-4 text-2xl text-gray-900"> {price}</p>
+              )}
               <br />
               <p className="pt-1 mt-4 text-2xl text-gray-900">
                 {DESCRIPTION_WITHOUT_HTML}

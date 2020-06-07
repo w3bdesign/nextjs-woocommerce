@@ -5,6 +5,7 @@ import useSWR from 'swr';
 import { AppContext } from 'utils/context/AppContext';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
+import { ADD_TO_CART } from 'utils/const/GQL_MUTATIONS';
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
 import {
@@ -12,7 +13,6 @@ import {
   getUpdatedItems,
   removeItemFromCart,
 } from 'utils/functions/functions';
-
 
 import { addFirstProduct } from 'utils/functions/functions';
 import { updateCart } from 'utils/functions/functions';
@@ -22,12 +22,9 @@ import { updateCart } from 'utils/functions/functions';
  * Adds product to shopping cart
  * @param {Object} props
  */
-const AddToCartButton = (props) => {
-  const { product } = props;
+const AddToCartButton = (product) => {
   const [cart, setCart] = useContext(AppContext);
-  const [ requestError, setRequestError ] = useState( null );
-
-  //const [ addToCart, { data: addToCartRes, loading: addToCartLoading, error: addToCartError }] = useMutation( ADD_TO_CART, {
+  const [requestError, setRequestError] = useState(null);
 
   const { data, error } = useSWR(
     GET_CART,
@@ -47,15 +44,41 @@ const AddToCartButton = (props) => {
     }
   ); // Refresh once every minute
 
-  const handleAddToCartClick = () => {		
-		setRequestError( null );
-		addToCart();
-	};
+
+  // https://gist.github.com/yusinto/d8506184efb73b7214be9beaa4d150c1
+
+  /*
+  const addToCart = (product) => {
+    
+    console.log('Add to cart triggered: ');
+    console.log(product);
+
+    const { data, error } = useSWR(
+      ADD_TO_CART,
+      (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
+      {
+        refreshInterval: 1000,
+        onSuccess: (cartData) => {
+          console.log('Success add to cart!!!!');
+        },
+        onError: (errorMessage) => {
+          console.log('Error from add to cart: ');
+          console.log(errorMessage);
+        },
+      }
+    );
+  };
+  */
+
+  const handleAddToCartClick = (product) => {
+    setRequestError(null);
+    addToCart(product);
+  };
 
   return (
     <>
       <button
-        onClick={() => handleAddToCartClick()}
+        onClick={() => handleAddToCartClick(product)}
         className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
       >
         KJØP
