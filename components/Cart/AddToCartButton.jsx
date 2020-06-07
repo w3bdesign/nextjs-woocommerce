@@ -1,6 +1,19 @@
 import { useState, useContext } from 'react';
+import { request } from 'graphql-request';
+import useSWR from 'swr';
 
 import { AppContext } from 'utils/context/AppContext';
+
+import { GET_CART } from 'utils/const/GQL_QUERIES';
+import { WOO_CONFIG } from 'utils/config/nextConfig';
+
+import {
+  getFormattedCart,
+  getUpdatedItems,
+  removeItemFromCart,
+} from 'utils/functions/functions';
+
+
 import { addFirstProduct } from 'utils/functions/functions';
 import { updateCart } from 'utils/functions/functions';
 
@@ -12,38 +25,32 @@ import { updateCart } from 'utils/functions/functions';
 const AddToCartButton = (props) => {
   const { product } = props;
   const [cart, setCart] = useContext(AppContext);
+  const [ requestError, setRequestError ] = useState( null );
 
-  const {
-    description,
-    image,
-    name,
-    onSale,
-    productId,
-    price,
-    regularPrice,
-    salePrice,
-  } = props.product.products.edges[0].node;
+  //const [ addToCart, { data: addToCartRes, loading: addToCartLoading, error: addToCartError }] = useMutation( ADD_TO_CART, {
 
-  const handleAddToCartClick = () => {
-    const quantityToBeAdded = 1;
-    
-    // If component is rendered on the client side
-    if (process.browser) {
-      let existingCart = localStorage.getItem('woocommerce-cart');
-      if (existingCart) {
-        existingCart = JSON.parse(existingCart)
-       
-        const updatedCart = updateCart (existingCart, product, quantityToBeAdded);
-        
-
-        console.log('We have an existing product in cart: ');
-        console.log(cart);
-      } else {
-        const NewCart = addFirstProduct(props);
-        setCart(NewCart);
-      }
+  const { data, error } = useSWR(
+    GET_CART,
+    (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
+    {
+      refreshInterval: 1000,
+      onSuccess: (cartData) => {
+        const updatedCart = getFormattedCart(cartData);
+        localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+        // Update cart data in React Context.
+        setCart(updatedCart);
+      },
+      onError: (errorMessage) => {
+        console.log('Error from cart: ');
+        console.log(errorMessage);
+      },
     }
-  };
+  ); // Refresh once every minute
+
+  const handleAddToCartClick = () => {		
+		setRequestError( null );
+		addToCart();
+	};
 
   return (
     <>

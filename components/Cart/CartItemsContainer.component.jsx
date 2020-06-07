@@ -29,18 +29,15 @@ const CartItemsContainer = () => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
 
-  const onSuccess = (cartData) => {
-    console.log('Success from cart!');
-    console.log(cartData);
+  const onSuccess = (cartData) => {   
     const updatedCart = getFormattedCart(cartData);
     localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
     // Update cart data in React Context.
     setCart(updatedCart);
   };
 
   const onError = (errorMessage) => {
-    console.log('Error from cart!');
+    console.log('Error from cart: ');
     console.log(errorMessage);
   };
 
@@ -69,22 +66,18 @@ const CartItemsContainer = () => {
         </nav>
 
         {cart ? (
-          <div className="mt-5">
-            <h2>Vi har innhold i handlekurven!</h2>
+          <div className="p-6 mx-auto mt-5">
+            <h2 className="text-lg">Vi har innhold i handlekurven!</h2>
           </div>
         ) : (
-          <div className="container mt-5">
-            <h2>Ingen varer i handlekurven</h2>
-            <Link href="/">
-              <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
-                <span className="woo-next-cart-checkout-txt">
-                  <Link href="/produkter">
-                    <a>Legg til varer</a>
-                  </Link>
-                </span>
-                <i className="fas fa-long-arrow-alt-right" />
-              </button>
-            </Link>
+          <div className="p-6 mx-auto mt-5">
+            <h2 className="text-lg">Ingen varer i handlekurven</h2>
+
+            <button className="px-4 py-2 m-4 font-bold uppercase bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
+              <Link href="/produkter">
+                <a>Legg til varer</a>
+              </Link>
+            </button>
           </div>
         )}
       </div>
