@@ -1,7 +1,5 @@
 ![Screenshot 1](./screenshots/screenshot1.jpg)
 
-![Screenshot 2](./screenshots/screenshot2.jpg)
-
 # Next.js Ecommerce site with Woocommerce backend
 
 ## This is still a work in progress
