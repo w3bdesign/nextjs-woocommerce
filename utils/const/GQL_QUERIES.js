@@ -1,3 +1,5 @@
+import gql from 'graphql-tag';
+
 /**
  * Fetch first 4 products from a specific category
  */
@@ -70,102 +72,99 @@ query MyQuery {
 }
 `;
 
-export const GET_CART = `
-query GET_CART {
-  cart {
-    contents {
-      nodes {
-        key
-        product {
-          id
-          productId
-          name
-          description
-          type
-          onSale
-          slug
-          averageRating
-          reviewCount
-          image {
+export const GET_CART = gql`
+  query GET_CART {
+    cart {
+      contents {
+        nodes {
+          key
+          product {
             id
-              sourceUrl
-              srcSet
-              altText
-              title       
-          }
-          galleryImages {
-            nodes {
+            productId
+            name
+            description
+            type
+            onSale
+            slug
+            averageRating
+            reviewCount
+            image {
               id
               sourceUrl
               srcSet
               altText
-              title   
+              title
+            }
+            galleryImages {
+              nodes {
+                id
+                sourceUrl
+                srcSet
+                altText
+                title
+              }
             }
           }
-
-        }
-        variation {
-          id
-          variationId
-          name
-          description
-          type
-          onSale
-          price
-          regularPrice
-          salePrice
-          image {
+          variation {
             id
-            sourceUrl
-            srcSet
-            altText
-            title      
+            variationId
+            name
+            description
+            type
+            onSale
+            price
+            regularPrice
+            salePrice
+            image {
+              id
+              sourceUrl
+              srcSet
+              altText
+              title
+            }
+            attributes {
+              nodes {
+                id
+                name
+                value
+              }
+            }
           }
-          attributes {
+          quantity
+          total
+          subtotal
+          subtotalTax
+        }
+      }
+      appliedCoupons {
+        nodes {
+          id
+          couponId
+          discountType
+          amount
+          dateExpiry
+          products {
             nodes {
               id
-              name
-              value
+            }
+          }
+          productCategories {
+            nodes {
+              id
             }
           }
         }
-        quantity
-        total
-        subtotal
-        subtotalTax
       }
+      subtotal
+      subtotalTax
+      shippingTax
+      shippingTotal
+      total
+      totalTax
+      feeTax
+      feeTotal
+      discountTax
+      discountTotal
     }
-    appliedCoupons {
-      nodes {
-        id
-        couponId
-        discountType
-        amount
-        dateExpiry
-        products {
-          nodes {
-            id
-          }
-        }
-        productCategories {
-          nodes {
-            id
-          }
-        }
-      }
-    }
-    subtotal
-    subtotalTax
-    shippingTax
-    shippingTotal
-    total
-    totalTax
-    feeTax
-    feeTotal
-    discountTax
-    discountTotal
   }
-}
 `;
-
-
