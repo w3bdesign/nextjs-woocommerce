@@ -1,5 +1,7 @@
-export const ADD_TO_CART = `
-  mutation ($input: AddToCartInput!) {
+import gql from 'graphql-tag';
+
+export const ADD_TO_CART = gql`
+  mutation($input: AddToCartInput!) {
     addToCart(input: $input) {
       cartItem {
         key
@@ -16,7 +18,7 @@ export const ADD_TO_CART = `
           image {
             id
             sourceUrl
-            altText      
+            altText
           }
           galleryImages {
             nodes {
@@ -39,7 +41,7 @@ export const ADD_TO_CART = `
           image {
             id
             sourceUrl
-            altText      
+            altText
           }
           attributes {
             nodes {
