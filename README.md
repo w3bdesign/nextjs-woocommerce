@@ -1,7 +1,7 @@
 <p align="center">
-<img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot1.jpg?" alt="Screenshot 1"/>
+![Screenshot 1](./screenshots/screenshot1.jpg)
 <br />
-<img src="https://github.com/w3bdesign/nextjs-woocommerce/blob/master/screenshot2.jpg?" alt="Screenshot 2"/>
+![Screenshot 2](./screenshots/screenshot2.jpg)
 </p>
 
 # Next.js Ecommerce site with Woocommerce backend
