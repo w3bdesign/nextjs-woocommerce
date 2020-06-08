@@ -1,33 +1,43 @@
-import { useState, useEffect } from 'react';
+//import { useState, useEffect } from 'react';
+
+
+import { ApolloProvider } from '@apollo/client';
+import ApolloClient from 'apollo-boost';
 
 import { AppProvider } from 'utils/context/AppContext';
 
 import Header from '../components/Header/Header.component';
 import Footer from '../components/Footer/Footer.component';
 
-import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner.component';
+//import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner.component';
 
 import '../styles/index.css';
 import '../styles/algolia.min.css';
 
+const client = new ApolloClient({
+  uri: 'http://localhost/wp/graphql',
+});
+
 const MyApp = ({ Component, pageProps }) => {
+  /*
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(false);
   }, []);
+  */
 
   return (
     <>
-      {/*Show LoadingSpinner and hide content to prevent FOUC (Flash of unstyled content)*/}
-      {loading && <LoadingSpinner />}
-      {!loading && (
+      {/*Show LoadingSpinner and hide content to prevent FOUC (Flash of unstyled content) {loading && <LoadingSpinner />}*/}
+
+      <ApolloProvider client={client}>
         <AppProvider>
           <Header />
           <Component {...pageProps} />
           <Footer />
         </AppProvider>
-      )}
+      </ApolloProvider>
     </>
   );
 };
