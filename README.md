@@ -1,8 +1,6 @@
-<p align="center">
 ![Screenshot 1](./screenshots/screenshot1.jpg)
-<br />
+
 ![Screenshot 2](./screenshots/screenshot2.jpg)
-</p>
 
 # Next.js Ecommerce site with Woocommerce backend
 
