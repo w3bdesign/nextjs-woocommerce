@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "@apollo/client": "^3.0.0-rc.2",
     "algoliasearch": "^4.2.0",
     "apollo-boost": "^0.4.9",
-    "graphql": "^15.0.0",
+    "graphql": "^15.1.0",
     "graphql-request": "^2.0.0",
     "graphql-tag": "^2.10.3",
     "next": "^9.4.4",

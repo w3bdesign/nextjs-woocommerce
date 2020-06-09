@@ -9,8 +9,8 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
  * @param {Object} props // Product data
  */
 const SingleProduct = (props) => {
-  //const { product } = props.product.products.edges[0].node;
-  //console.log(product);
+
+const { product} = props;
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -27,12 +27,10 @@ const SingleProduct = (props) => {
     price,
     regularPrice,
     salePrice,
-  } = props.product.products.edges[0].node;
+  } = product;
 
   // Strip out HTML from description
-  const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
-
-  const product = props.product.products.edges[0].node;
+  const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');  
 
   return (
     <section className="py-8 bg-white">

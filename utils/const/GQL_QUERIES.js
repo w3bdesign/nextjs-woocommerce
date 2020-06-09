@@ -1,5 +1,48 @@
 import gql from 'graphql-tag';
 
+export const GET_SINGLE_PRODUCT = gql` query Product($id: ID!) {
+	product(id: $id, idType: DATABASE_ID) {
+	  id
+	  productId
+	  averageRating
+	  slug
+	  description
+	  image {
+		id
+		uri
+		title
+		srcSet
+		sourceUrl
+	  }
+	  name
+	  ... on SimpleProduct {
+		price
+		id
+	  }
+	  ... on VariableProduct {
+		price
+		id
+	  }
+	  ... on ExternalProduct {
+		price
+		id
+		externalUrl
+	  }
+	  ... on GroupProduct {
+		products {
+		  nodes {
+			... on SimpleProduct {
+			  id
+			  price
+			}
+		  }
+		}
+		id
+	  }
+	}
+  }
+`;
+
 /**
  * Fetch first 4 products from a specific category
  */
