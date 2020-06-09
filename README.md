@@ -25,6 +25,7 @@ Start the server with ```npm run dev ```
 - Cart handling with createContext
 - Algolia search (work in progress)
 - Vercel useSWR for caching and graphql-request for data fetching
+- Apollo for GraphQL
 - Animations with React-Spring
 - Shows loading spinner created with Styled Components while loading data and error message if data can not be loaded
 - Default frontpage products loaded through a predefined JSON file with getStaticProps for preloading

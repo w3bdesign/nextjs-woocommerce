@@ -2,9 +2,7 @@ import Link from 'next/link';
 import { v4 } from 'uuid';
 import { useContext, useState, useEffect } from 'react';
 
-// import { useMutation, useQuery } from "@apollo/react-hooks";
-import { request } from 'graphql-request';
-import useSWR from 'swr';
+import { useQuery, useMutation } from '@apollo/client';
 
 import { AppContext } from '../../utils/context/AppContext';
 import {
@@ -29,26 +27,23 @@ const CartItemsContainer = () => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
 
-  const onSuccess = (cartData) => {   
-    const updatedCart = getFormattedCart(cartData);
-    localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-    // Update cart data in React Context.
-    setCart(updatedCart);
-  };
+  console.log("Cart from context: ");
+  console.log(cart);
 
-  const onError = (errorMessage) => {
-    console.log('Error from cart: ');
-    console.log(errorMessage);
-  };
-
-  const { data, error } = useSWR(
-    GET_CART,
-    (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
-    { refreshInterval: 3600000, onSuccess, onError }
-  ); // Refresh once every hour
-
-  // Get Cart Data.
-
+  const { loading, error, data, refetch } = useQuery(GET_CART, {
+    onCompleted: () => {
+      // Update cart in the localStorage.
+      const updatedCart = getFormattedCart(data);
+      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+      // Update cart data in React Context.
+      setCart(updatedCart);
+      console.warn( 'Completed GET_CART', data );
+    },
+    onError: (error) => {
+      console.warn('Error fetching cart');
+      setRequestError(error);
+    },
+  });
   // TODO We will focus on fetching the cart before we add more functionality
 
   return (

@@ -38,7 +38,7 @@ const IndexProducts = (props) => {
                 key={uuidv4()}
                 className="flex flex-col w-full p-6 md:w-1/2 xl:w-1/4"
               >
-                <Link href="/produkt/[post]" as={`/produkt/${slug}`}>
+                <Link href="/produkt/[post]" as={`/produkt/${slug}?productId=${productId}`}>
                   <a>
                     <img
                       id="product-image"
