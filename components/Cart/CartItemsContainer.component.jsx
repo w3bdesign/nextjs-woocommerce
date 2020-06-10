@@ -22,8 +22,7 @@ import GET_CART from "../../../queries/get-cart";
 import CLEAR_CART_MUTATION from "../../../mutations/clear-cart";
 */
 
-const CartItemsContainer = () => {
-  // TODO will use it in future variations of the project.
+const CartItemsContainer = () => {  
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
 
@@ -37,7 +36,7 @@ const CartItemsContainer = () => {
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
       // Update cart data in React Context.
       setCart(updatedCart);
-      console.warn( 'Completed GET_CART', data );
+     
     },
     onError: (error) => {
       console.warn('Error fetching cart');
@@ -60,7 +59,7 @@ const CartItemsContainer = () => {
           </div>
         </nav>
 
-        {data ? (
+        {cart ? (
           <div className="p-6 mx-auto mt-5">
             <h2 className="text-lg">Vi har innhold i handlekurven!</h2>
           </div>

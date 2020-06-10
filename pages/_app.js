@@ -1,11 +1,8 @@
 //import { useState, useEffect } from 'react';
 
 import { ApolloProvider } from '@apollo/client';
-//import ApolloClient from 'apollo-boost';
-import { ApolloClient } from 'apollo-client';
 
 import { AppProvider } from 'utils/context/AppContext';
-import { WOO_CONFIG } from 'utils/config/nextConfig';
 
 import Header from '../components/Header/Header.component';
 import Footer from '../components/Footer/Footer.component';
@@ -29,7 +26,6 @@ const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       {/*Show LoadingSpinner and hide content to prevent FOUC (Flash of unstyled content) {loading && <LoadingSpinner />}*/}
-
       <ApolloProvider client={client}>
         <AppProvider>
           <Header />
