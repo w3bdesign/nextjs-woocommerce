@@ -60,7 +60,7 @@ const CartItemsContainer = () => {
           </div>
         </nav>
 
-        {cart ? (
+        {data ? (
           <div className="p-6 mx-auto mt-5">
             <h2 className="text-lg">Vi har innhold i handlekurven!</h2>
           </div>
