@@ -1,8 +1,8 @@
 //import { useState, useEffect } from 'react';
 
-
 import { ApolloProvider } from '@apollo/client';
-import ApolloClient from 'apollo-boost';
+//import ApolloClient from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
 
 import { AppProvider } from 'utils/context/AppContext';
 import { WOO_CONFIG } from 'utils/config/nextConfig';
@@ -15,9 +15,7 @@ import Footer from '../components/Footer/Footer.component';
 import '../styles/index.css';
 import '../styles/algolia.min.css';
 
-const client = new ApolloClient({
-  uri: WOO_CONFIG.GRAPHQL_URL,
-});
+import client from '../utils/apollo/ApolloClient';
 
 const MyApp = ({ Component, pageProps }) => {
   /*
