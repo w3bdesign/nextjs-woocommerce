@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
+import { AppContext } from 'utils/context/AppContext';
 
 const CheckoutForm = () => {
   const initialState = {
@@ -14,7 +15,7 @@ const CheckoutForm = () => {
     country: 'NO',
     postcode: '1525',
     phone: '90561212',
-    email: 'testn@gmail.com',
+    email: 'test@gmail.com',
     company: 'Tech',
     createAccount: false,
     orderNotes: '',
