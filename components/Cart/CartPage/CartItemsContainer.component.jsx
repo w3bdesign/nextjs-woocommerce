@@ -4,17 +4,17 @@ import { useContext, useState, useEffect } from 'react';
 
 import { useQuery, useMutation } from '@apollo/client';
 
-import { AppContext } from '../../utils/context/AppContext';
+import { AppContext } from 'utils/context/AppContext';
 import {
   getFormattedCart,
   getUpdatedItems,
   removeItemFromCart,
-} from '../../utils/functions/functions';
+} from '../../../utils/functions/functions';
 
-import CartItem from './CartItem.component';
+import CartItem from 'components/Cart/CartPage/CartItem.component';
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
-import { GET_CART } from '../../utils/const/GQL_QUERIES';
+import { GET_CART } from 'utils/const/GQL_QUERIES';
 
 /*
 import UPDATE_CART from "../../../mutations/update-cart";
@@ -63,6 +63,8 @@ const CartItemsContainer = () => {
             <table className="table-auto">
               <thead>
                 <tr>
+                  <th className="px-4 py-2" scope="col" />
+                  <th className="px-4 py-2" scope="col" />
                   <th className="px-4 py-2" scope="col">
                     Produkt
                   </th>
@@ -78,25 +80,17 @@ const CartItemsContainer = () => {
                 </tr>
               </thead>
               <tbody>
-              <tr className="bg-gray-100">
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                </tr>
-                <tr className="bg-gray-100">
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                </tr>
-                <tr className="bg-gray-100">
-                  <td className="px-4 py-2 border">Testx</td>
-                  <td className="px-4 py-2 border">Testxx</td>
-                  <td className="px-4 py-2 border">Testxxxx</td>
-                  <td className="px-4 py-2 border">Test xxxxxxxxxx</td>
-                  
-                </tr>
+                {cart.products.length &&
+                  cart.products.map((item) => (
+                    <CartItem
+                      key={item.productId}
+                      item={item}
+                      // updateCartProcessing={updateCartProcessing}
+                      // products={cart.products}
+                      // handleRemoveProductClick={handleRemoveProductClick}
+                      // updateCart={updateCart}
+                    />
+                  ))}
               </tbody>
             </table>
           </div>
