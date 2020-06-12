@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Displays all of the products as long as length is defined.
  * Does a map() over the props array and utilizes uuidv4 for unique key values.
- * @param {Object} props // Products
+ * @param {Object} products 
  */
 const IndexProducts = ({ products }) => {
   return (
