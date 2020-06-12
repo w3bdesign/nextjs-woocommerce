@@ -4,6 +4,12 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { AppContext } from 'utils/context/AppContext';
 
+import {
+  getFormattedCart,
+  getUpdatedItems,
+  removeItemFromCart,
+} from 'utils/functions/functions';
+
 const CheckoutForm = () => {
   const initialState = {
     firstName: 'Test',
@@ -27,17 +33,20 @@ const CheckoutForm = () => {
   const { loading, error, data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      console.log('Data from add to cart button: ');
-      console.log(data);
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
       // Update cart data in React Context.
       setCart(updatedCart);
     },
   });
+
+  useEffect(() => {
+    if (null !== orderData) {
+      // Call the checkout mutation when the value for orderData changes/updates.
+      // checkout();
+    }
+  }, [orderData]);
 
   const [cart, setCart] = useContext(AppContext);
   const [input, setInput] = useState(initialState);
