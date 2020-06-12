@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
+import { INITIAL_STATE } from 'utils/const/INITIAL_STATE';
 import { AppContext } from 'utils/context/AppContext';
 
 import {
@@ -11,23 +12,10 @@ import {
 } from 'utils/functions/functions';
 
 const CheckoutForm = () => {
-  const initialState = {
-    firstName: 'Test',
-    lastName: 'Test',
-    address1: 'Test addresse',
-    address2: 'Test addresse',
-    city: 'Oslo',
-    state: 'Oslo',
-    country: 'NO',
-    postcode: '1525',
-    phone: '90561212',
-    email: 'test@gmail.com',
-    company: 'Tech',
-    createAccount: false,
-    orderNotes: '',
-    paymentMethod: 'cod',
-    errors: null,
-  };
+  const [cart, setCart] = useContext(AppContext);
+  const [input, setInput] = useState(INITIAL_STATE);
+  const [orderData, setOrderData] = useState(null);
+  const [requestError, setRequestError] = useState(null);
 
   // Get Cart Data.
   const { loading, error, data, refetch } = useQuery(GET_CART, {
@@ -41,6 +29,25 @@ const CheckoutForm = () => {
     },
   });
 
+  /*
+   * Handle form submit.
+   *
+   * @param {Object} event Event Object.
+   *
+   * @return {void}
+   */
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    const result = validateAndSanitizeCheckoutForm(input);
+    if (!result.isValid) {
+      setInput({ ...input, errors: result.errors });
+      return;
+    }
+    const checkOutData = createCheckoutData(input);
+    setOrderData(checkOutData);
+    setRequestError(null);
+  };
+
   useEffect(() => {
     if (null !== orderData) {
       // Call the checkout mutation when the value for orderData changes/updates.
@@ -48,10 +55,6 @@ const CheckoutForm = () => {
     }
   }, [orderData]);
 
-  const [cart, setCart] = useContext(AppContext);
-  const [input, setInput] = useState(initialState);
-  const [orderData, setOrderData] = useState(null);
-  const [requestError, setRequestError] = useState(null);
   return (
     <>
       <section className="py-8 bg-white">
