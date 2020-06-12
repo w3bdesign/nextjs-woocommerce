@@ -1,5 +1,3 @@
-//import { useState, useEffect } from 'react';
-
 import { ApolloProvider } from '@apollo/client';
 
 import { AppProvider } from 'utils/context/AppContext';
@@ -7,29 +5,17 @@ import { AppProvider } from 'utils/context/AppContext';
 import Header from '../components/Header/Header.component';
 import Footer from '../components/Footer/Footer.component';
 
-//import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner.component';
-
 import '../styles/index.css';
 import '../styles/algolia.min.css';
 
 import client from '../utils/apollo/ApolloClient';
 
-const MyApp = ({ Component, pageProps }) => {
-  /*
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
-  */
-
+const App = ({ Component, pageProps }) => {
   return (
     <>
-      {/*Show LoadingSpinner and hide content to prevent FOUC (Flash of unstyled content) {loading && <LoadingSpinner />}*/}
       <ApolloProvider client={client}>
         <AppProvider>
           <Header />
-
           <Component {...pageProps} />
           <Footer />
         </AppProvider>
@@ -38,4 +24,4 @@ const MyApp = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default App;
