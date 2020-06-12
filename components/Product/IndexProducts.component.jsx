@@ -6,8 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
  * Does a map() over the props array and utilizes uuidv4 for unique key values.
  * @param {Object} props // Products
  */
-const IndexProducts = (props) => {
-  const products = props.products.products.nodes;
+const IndexProducts = ({ products }) => {
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
@@ -38,7 +37,10 @@ const IndexProducts = (props) => {
                 key={uuidv4()}
                 className="flex flex-col w-full p-6 md:w-1/2 xl:w-1/4"
               >
-                <Link href="/produkt/[post]" as={`/produkt/${slug}?productId=${productId}`}>
+                <Link
+                  href="/produkt/[post]"
+                  as={`/produkt/${slug}?productId=${productId}`}
+                >
                   <a>
                     <img
                       id="product-image"

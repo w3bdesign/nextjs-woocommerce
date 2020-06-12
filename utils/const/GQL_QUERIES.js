@@ -76,7 +76,7 @@ export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
 /**
  * Fetch all Woocommerce products from GraphQL
  */
-export const FETCH_ALL_PRODUCTS_QUERY = `
+export const FETCH_ALL_PRODUCTS_QUERY = gql`
 query MyQuery {
   products(first: 8) {
     nodes {
