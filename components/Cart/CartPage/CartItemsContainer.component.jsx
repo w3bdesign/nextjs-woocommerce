@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { v4 } from 'uuid';
 import { useContext, useState, useEffect } from 'react';
 
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { AppContext } from 'utils/context/AppContext';
 import {

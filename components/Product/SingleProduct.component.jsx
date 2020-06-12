@@ -6,12 +6,9 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 /**
  * Shows a single product with an Add To Cart button.
  * Uses GraphQL for product data
- * @param {Object} props // Product data
+ * @param {Object} product // Product data
  */
-const SingleProduct = (props) => {
-
-const { product} = props;
-
+const SingleProduct = ({ product }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     // useEffect with empty array is the same as componentDidMount
@@ -30,7 +27,7 @@ const { product} = props;
   } = product;
 
   // Strip out HTML from description
-  const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');  
+  const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
 
   return (
     <section className="py-8 bg-white">
