@@ -26,9 +26,6 @@ const CartItemsContainer = () => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
 
-  console.log('Cart from context: ');
-  console.log(cart);
-
   const { loading, error, data, refetch } = useQuery(GET_CART, {
     onCompleted: () => {
       // Update cart in the localStorage.
