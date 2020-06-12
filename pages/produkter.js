@@ -1,30 +1,23 @@
-import { request } from 'graphql-request';
-import useSWR from 'swr';
-
 import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
-import { WOO_CONFIG } from 'utils/config/nextConfig';
+import client from 'utils/apollo/ApolloClient.js';
 
 /**
  * Displays all of the products.
- * Uses useSWR for data-fetching and caching.
+ * Uses Apollo for data-fetching and caching.
  * Displays loading spinner while loading.
  * Shows an error if the server is down or unreachable.
  */
-const Produkter = () => {
-  const { data, error } = useSWR(
-    FETCH_ALL_PRODUCTS_QUERY,
-    (query) => request(WOO_CONFIG.GRAPHQL_URL, query),
-    { refreshInterval: 3600000 }
-  ); // Refresh once every hour
+const Produkter = ({ products }) => {
+  const error = false;
 
   return (
     <>
-      {data && <IndexProducts products={data} />}
+      {products && <IndexProducts products={products} />}
 
-      {!data && !error && (
+      {!products && !error && (
         <div className="h-64 mt-8 text-2xl text-center">
           Laster ...
           <br />
@@ -43,3 +36,15 @@ const Produkter = () => {
 };
 
 export default Produkter;
+
+export async function getStaticProps() {
+  const result = await client.query({
+    query: FETCH_ALL_PRODUCTS_QUERY,
+  });
+
+  return {
+    props: {
+      products: result.data.products.nodes,
+    },
+  };
+}

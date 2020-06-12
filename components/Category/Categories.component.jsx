@@ -3,10 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Map over the categories and display them individually.
  * Uses uuidv4 for unique key IDs
- * @param {Object} props
+ * @param {Object} categories
  */
-const Categories = (props) => {
-  const productCategories = props.categories.productCategories.nodes;
+const Categories = ({ categories }) => {
   return (
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
@@ -18,7 +17,7 @@ const Categories = (props) => {
           </div>
         </nav>
 
-        {productCategories.map(({ name }) => (
+        {categories.map(({ name }) => (
           <div
             key={uuidv4()}
             className="flex flex-col w-full p-6 md:w-1/3 xl:w-1/4"
