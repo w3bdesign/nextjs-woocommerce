@@ -49,10 +49,6 @@ export const afterware = new ApolloLink((operation, forward) => {
       response: { headers },
     } = context;
 
-    console.log("Headers: ")
-    console.log(headers.get('woocommerce-session'))
-
-    
     const session = headers.get('woocommerce-session');
 
     if (session) {
