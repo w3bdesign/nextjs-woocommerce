@@ -2,10 +2,11 @@ import CartItemsContainer from '../components/Cart/CartPage/CartItemsContainer.c
 
 const Cart = () => {
   return (
-    <div>
+    <>
       Handlevogn: <br />
       <CartItemsContainer />
-    </div>
+      
+    </>
   );
 };
 
