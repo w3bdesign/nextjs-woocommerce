@@ -3,7 +3,7 @@ import { request } from 'graphql-request';
 import useSWR from 'swr';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { AppContext } from 'utils/context/AppContext';
 
@@ -37,26 +37,21 @@ const AddToCartButton = (props) => {
     productId: product.productId,
   };
 
-
-  	// Get Cart Data.
-	const { loading, error, data, refetch } = useQuery( GET_CART, {
-		notifyOnNetworkStatusChange: true,
-		onCompleted: () => {		
-
-      console.log("Data from add to cart button: ");
+  // Get Cart Data.
+  const { loading, error, data, refetch } = useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: () => {
+      console.log('Data from add to cart button: ');
       console.log(data);
-			// Update cart in the localStorage.
-      const updatedCart = getFormattedCart( data );
-      
+      // Update cart in the localStorage.
+      const updatedCart = getFormattedCart(data);
 
-			localStorage.setItem( 'woocommerce-cart', JSON.stringify( updatedCart ) );
+      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
-			// Update cart data in React Context.
-      setCart( updatedCart );
-    
-		}
-  } );
-  
+      // Update cart data in React Context.
+      setCart(updatedCart);
+    },
+  });
 
   const [
     addToCart,

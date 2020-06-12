@@ -1,15 +1,11 @@
 import { useState, useContext, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { INITIAL_STATE } from 'utils/const/INITIAL_STATE';
 import { AppContext } from 'utils/context/AppContext';
 
-import {
-  getFormattedCart,
-  getUpdatedItems,
-  removeItemFromCart,
-} from 'utils/functions/functions';
+import { getFormattedCart } from 'utils/functions/functions';
 
 const CheckoutForm = () => {
   const [cart, setCart] = useContext(AppContext);
@@ -50,7 +46,7 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     if (null !== orderData) {
-      // Call the checkout mutation when the value for orderData changes/updates.
+      // Do checkout mutation when the value for orderData changes.
       // checkout();
     }
   }, [orderData]);

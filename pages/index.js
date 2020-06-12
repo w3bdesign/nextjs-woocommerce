@@ -47,13 +47,6 @@ export async function getServerSideProps() {
     query: FETCH_ALL_PRODUCTS_QUERY,
   });
 
-  //console.log("getServerSideProps data: ")
-  //console.log(data)
-  console.log('getServerSideProps networkStatus: ');
-  console.log(networkStatus);
-  console.log('getServerSideProps loading: ');
-  console.log(loading);
-
   return {
     props: {
       // products: result.data.products.nodes,
