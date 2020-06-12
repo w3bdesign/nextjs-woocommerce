@@ -68,6 +68,14 @@ const CheckoutForm = () => {
           </nav>
         </div>
       </section>
+
+      {cart ? (
+        <form onSubmit={handleFormSubmit} className="woo-next-checkout-form">
+          <div className="row">Skjema kommer her</div>
+        </form>
+      ) : (
+        ''
+      )}
     </>
   );
 };
