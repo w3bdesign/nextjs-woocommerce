@@ -29,6 +29,7 @@ const MyApp = ({ Component, pageProps }) => {
       <ApolloProvider client={client}>
         <AppProvider>
           <Header />
+
           <Component {...pageProps} />
           <Footer />
         </AppProvider>

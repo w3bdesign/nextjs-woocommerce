@@ -10,11 +10,7 @@ import client from 'utils/apollo/ApolloClient.js';
  * @param {Object} props
  * Initial static data is sent as props from getStaticProps and loaded through 'utils/const/INITIAL_PRODUCTS'
  */
-const HomePage = ({ products }) => {
- 
-
-  const error = false;
-
+const HomePage = ({ products, loading, networkStatus }) => {
   return (
     <>
       <Hero />
@@ -25,7 +21,7 @@ const HomePage = ({ products }) => {
         // Add Hoodies section here
       }
 
-      {!products && (
+      {loading && (
         <div className="h-64 mt-8 text-2xl text-center">
           Laster produkter ...
           <br />
@@ -33,7 +29,7 @@ const HomePage = ({ products }) => {
         </div>
       )}
       {/* Display error message if error occured */}
-      {error && (
+      {networkStatus === 8 && (
         <div className="h-12 mt-8 text-2xl text-center">
           Feil under lasting av produkter ...
         </div>
@@ -44,14 +40,26 @@ const HomePage = ({ products }) => {
 
 export default HomePage;
 
-export async function getStaticProps() {
-  const result = await client.query({
+//export async function getStaticProps() {
+export async function getServerSideProps() {
+  const { data, loading, networkStatus } = await client.query({
+    //const result = await client.query({
     query: FETCH_ALL_PRODUCTS_QUERY,
   });
 
+  //console.log("getServerSideProps data: ")
+  //console.log(data)
+  console.log('getServerSideProps networkStatus: ');
+  console.log(networkStatus);
+  console.log('getServerSideProps loading: ');
+  console.log(loading);
+
   return {
     props: {
-      products: result.data.products.nodes,
+      // products: result.data.products.nodes,
+      products: data.products.nodes,
+      loading: loading,
+      networkStatus: networkStatus,
     },
   };
 }
