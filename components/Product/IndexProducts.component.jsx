@@ -11,10 +11,11 @@ import PageTitle from 'components/Header/PageTitle.component';
 const IndexProducts = ({ products }) => {
   return (
     <>
-      <PageTitle title="Produkter" />
-
-      <section className="py-4 bg-white">
-        <div className="container flex flex-wrap items-center mx-auto">
+    
+    <PageTitle title="Produkter" />
+    
+    <section className="py-4 bg-white">
+        <div id="product-container" className="container flex flex-wrap items-center mx-auto overflow-hidden">
           {products ? (
             products.map(
               ({
@@ -38,7 +39,8 @@ const IndexProducts = ({ products }) => {
                     <a>
                       <img
                         id="product-image"
-                        className="object-cover w-full h-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                       // className="object-cover w-full h-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                       className="w-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
                         src={image.sourceUrl}
                       />
                     </a>
@@ -73,6 +75,8 @@ const IndexProducts = ({ products }) => {
           )}
         </div>
       </section>
+
+      
     </>
   );
 };

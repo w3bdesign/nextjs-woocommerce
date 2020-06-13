@@ -19,24 +19,22 @@ const Navbar = () => {
             className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1"
             id="menu"
           >
-            <nav>
-              <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
-                <li>
-                  <Link href="/produkter">
-                    <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
-                      Produkter
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/kategorier">
-                    <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
-                      Kategorier
-                    </a>
-                  </Link>
-                </li>
-              </ul>
-            </nav>
+            <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
+              <li>
+                <Link href="/produkter">
+                  <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
+                    Produkter
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/kategorier">
+                  <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
+                    Kategorier
+                  </a>
+                </Link>
+              </li>
+            </ul>
           </div>
           <div className="order-1 md:order-2">
             <Link href="/">

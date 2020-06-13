@@ -3,9 +3,7 @@ import CartItemsContainer from '../components/Cart/CartPage/CartItemsContainer.c
 const Cart = () => {
   return (
     <>
-     
       <CartItemsContainer />
-      
     </>
   );
 };
