@@ -11,12 +11,7 @@ import PageTitle from 'components/Header/PageTitle.component';
 const IndexProducts = ({ products }) => {
   return (
     <>
-    <br/>    
-    
-   
       <PageTitle title="Produkter" />
-   
-          
 
       <section className="bg-white">
         <div
