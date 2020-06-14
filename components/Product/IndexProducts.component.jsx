@@ -11,11 +11,18 @@ import PageTitle from 'components/Header/PageTitle.component';
 const IndexProducts = ({ products }) => {
   return (
     <>
+    <br/>    
     
-    <PageTitle title="Produkter" />
-    
-    <section className="py-4 bg-white">
-        <div id="product-container" className="container flex flex-wrap items-center mx-auto overflow-hidden">
+   
+      <PageTitle title="Produkter" />
+   
+          
+
+      <section className="bg-white">
+        <div
+          id="product-container"
+          className="container flex flex-wrap items-center mx-auto overflow-hidden"
+        >
           {products ? (
             products.map(
               ({
@@ -30,7 +37,7 @@ const IndexProducts = ({ products }) => {
               }) => (
                 <div
                   key={uuidv4()}
-                  className="flex flex-col w-full p-6 md:w-1/2 xl:w-1/4"
+                  className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
                 >
                   <Link
                     href="/produkt/[post]"
@@ -39,8 +46,8 @@ const IndexProducts = ({ products }) => {
                     <a>
                       <img
                         id="product-image"
-                       // className="object-cover w-full h-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
-                       className="w-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                        // className="object-cover w-full h-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                        className="w-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
                         src={image.sourceUrl}
                       />
                     </a>
@@ -75,8 +82,6 @@ const IndexProducts = ({ products }) => {
           )}
         </div>
       </section>
-
-      
     </>
   );
 };

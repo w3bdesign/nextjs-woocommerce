@@ -3,6 +3,8 @@
  */
 const Hero = () => {
   return (
+    <>
+    
     <section
       id="hero"
       className="flex w-full pt-12 mx-auto mt-24 bg-right bg-cover md:pt-0 md:items-center"
@@ -22,6 +24,8 @@ const Hero = () => {
         </div>
       </div>
     </section>
+  </>
+
   );
 };
 

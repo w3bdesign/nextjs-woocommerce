@@ -3,7 +3,7 @@
 
 #hero {
   background-image: url('https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
-  max-width: 1050px;
+  /*max-width: 1050px;*/
   height: 24rem; 
 }
 
@@ -27,7 +27,20 @@
   max-width: 1100px;
 }
 
+@media only screen and ( min-width: 769px ) {
+#navbar-div {
+  margin-left: 350px;
+ /* margin-right: 50vw;*/
+}
+}
 
+@media only screen and ( max-width: 769px ) {
+  #navbar-div {
+    margin-left: auto;
+    margin-right: auto;
+   
+  }
+  }
 
 .ais-SearchBox-reset {
 	margin-left: 10px;
