@@ -12,7 +12,8 @@ import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
 const HomePage = ({ products }) => {
   return (
     <>
-      <Hero />
+    
+      <Hero/>
       {products && <IndexProducts products={products} />}
     </>
   );
