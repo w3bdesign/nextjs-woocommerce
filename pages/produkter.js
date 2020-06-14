@@ -17,11 +17,9 @@ const Produkter = ({ products }) => {
 
   return (
     <>
-      <PageTitle title="Produkter" marginleft="true"/>
-      
-      {
-      products && <IndexProducts products={products} />
-      }
+      <PageTitle title="Produkter" marginleft="true" />
+
+      {products && <IndexProducts products={products} />}
 
       {!products && !error && (
         <div className="h-64 mt-8 text-2xl text-center">

@@ -9,15 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 const IndexProducts = ({ products }) => {
   return (
     <>
-  
       <section className="container mx-auto bg-white">
-     
-        <div
-          id="product-container"
-          className="flex flex-wrap items-center"
-        >
-          
-           
+        <div id="product-container" className="flex flex-wrap items-center">
           {products ? (
             products.map(
               ({
@@ -41,7 +34,7 @@ const IndexProducts = ({ products }) => {
                     <a>
                       <img
                         id="product-image"
-                         className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                        className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
                         //className="w-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
                         src={image.sourceUrl}
                       />
