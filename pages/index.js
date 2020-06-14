@@ -1,5 +1,7 @@
 import Hero from 'components/Index/Hero.component';
 import IndexProducts from 'components/Product/IndexProducts.component';
+import PageTitle from 'components/Header/PageTitle.component';
+
 import client from 'utils/apollo/ApolloClient.js';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
@@ -14,6 +16,7 @@ const HomePage = ({ products }) => {
     <>
     
       <Hero/>
+      <PageTitle title="Produkter" />
       {products && <IndexProducts products={products} />}
     </>
   );

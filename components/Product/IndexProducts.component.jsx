@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
-import PageTitle from 'components/Header/PageTitle.component';
-
 /**
  * Displays all of the products as long as length is defined.
  * Does a map() over the props array and utilizes uuidv4 for unique key values.
@@ -11,18 +9,15 @@ import PageTitle from 'components/Header/PageTitle.component';
 const IndexProducts = ({ products }) => {
   return (
     <>
-    <br/>    
-    
-   
-      <PageTitle title="Produkter" />
-   
-          
-
-      <section className="bg-white">
+  
+      <section className="container mx-auto bg-white">
+     
         <div
           id="product-container"
-          className="container flex flex-wrap items-center mx-auto overflow-hidden"
+          className="flex flex-wrap items-center"
         >
+          
+           
           {products ? (
             products.map(
               ({
@@ -46,8 +41,8 @@ const IndexProducts = ({ products }) => {
                     <a>
                       <img
                         id="product-image"
-                        // className="object-cover w-full h-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
-                        className="w-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                         className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                        //className="w-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
                         src={image.sourceUrl}
                       />
                     </a>

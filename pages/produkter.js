@@ -1,7 +1,9 @@
 import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
+import PageTitle from 'components/Header/PageTitle.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
+
 import client from 'utils/apollo/ApolloClient.js';
 
 /**
@@ -15,7 +17,11 @@ const Produkter = ({ products }) => {
 
   return (
     <>
-      {products && <IndexProducts products={products} />}
+      <PageTitle title="Produkter" marginleft="true"/>
+      
+      {
+      products && <IndexProducts products={products} />
+      }
 
       {!products && !error && (
         <div className="h-64 mt-8 text-2xl text-center">

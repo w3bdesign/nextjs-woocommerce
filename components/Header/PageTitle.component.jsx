@@ -1,14 +1,20 @@
-const PageTitle = ({ title }) => {
+const PageTitle = ({ title, marginleft }) => {
   return (
-    <section className="py-4 bg-white">
-      <div className="container flex flex-wrap items-center mx-auto">
-        <div className="container py-2 mx-auto mt-16 text-center">
-          <span className="text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline">
+    <>
+      {marginleft ? (
+        <section className="container pl-6 mx-auto mt-24 bg-white">
+          <span className="py-2 text-xl font-bold tracking-wide text-left text-gray-800 no-underline uppercase hover:no-underline">
             {title}
           </span>
-        </div>
-      </div>
-    </section>
+        </section>
+      ) : (
+        <section className="container pl-4 mx-auto mt-24 bg-white">
+          <span className="py-2 text-xl font-bold tracking-wide text-left text-gray-800 no-underline uppercase hover:no-underline">
+            {title}
+          </span>
+        </section>
+      )}
+    </>
   );
 };
 
