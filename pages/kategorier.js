@@ -1,5 +1,7 @@
 import Categories from 'components/Category/Categories.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
+import PageTitle from 'components/Header/PageTitle.component';
+
 import client from 'utils/apollo/ApolloClient.js';
 
 import { FETCH_ALL_CATEGORIES_QUERY } from 'utils/const/GQL_QUERIES';
@@ -12,6 +14,8 @@ const CategoryPage = ({ categories }) => {
 
   return (
     <>
+      <PageTitle title="Kategorier" />
+
       {categories && <Categories categories={categories} />}
 
       {!categories && !error && (

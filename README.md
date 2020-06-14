@@ -24,8 +24,7 @@ Start the server with ```npm run dev ```
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Cart handling with createContext
 - Algolia search (work in progress)
-- Vercel useSWR for caching and graphql-request for data fetching (gradually being replaced with Apollo Client)
-- Apollo for GraphQL
+- Apollo Client with GraphQL
 - Animations with React-Spring
 - Shows loading spinner created with Styled Components while loading data and error message if data can not be loaded
 - Default frontpage products loaded through a predefined JSON file with getStaticProps for preloading

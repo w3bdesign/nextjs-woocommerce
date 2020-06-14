@@ -24,13 +24,13 @@
 }
 
 #product-container {
-  max-width: 1100px;
+/*  max-width: 1000px;*/
 }
 
 /* Fix for annoying CSS bug with NavBar moving slightly on front page only */
 @media only screen and (min-width: 769px) {
   #navbar-div {
-    margin-left: 350px;  
+    margin-left: 330px;
   }
 }
 
