@@ -2,7 +2,9 @@ import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
+import { CHECKOUT_MUTATION } from 'utils/const/GQL_MUTATIONS';
 import { INITIAL_STATE } from 'utils/const/INITIAL_STATE';
+
 import { AppContext } from 'utils/context/AppContext';
 
 import { getFormattedCart } from 'utils/functions/functions';
@@ -12,6 +14,24 @@ const CheckoutForm = () => {
   const [input, setInput] = useState(INITIAL_STATE);
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
+
+  // Checkout GraphQL mutation
+  const [
+    checkout,
+    { data: checkoutResponse, loading: checkoutLoading, error: checkoutError },
+  ] = useMutation(CHECKOUT_MUTATION, {
+    variables: {
+      input: orderData,
+    },
+    onCompleted: () => {
+      refetch();
+    },
+    onError: (error) => {
+      if (error) {
+        setRequestError(error);
+      }
+    },
+  });
 
   // Get Cart Data.
   const { loading, error, data, refetch } = useQuery(GET_CART, {
@@ -46,8 +66,8 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     if (null !== orderData) {
-      // Do checkout mutation when the value for orderData changes.
-      // checkout();
+      // Perform checkout mutation when the value for orderData changes.
+      checkout();
     }
   }, [orderData]);
 

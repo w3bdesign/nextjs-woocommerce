@@ -60,3 +60,23 @@ export const ADD_TO_CART = gql`
     }
   }
 `;
+
+export const CHECKOUT_MUTATION = gql`
+mutation CHECKOUT_MUTATION( $input: CheckoutInput! ) {
+  checkout(input: $input) {
+    clientMutationId
+    order {
+      id
+      orderId
+      refunds {
+        nodes {
+          amount
+        }
+      }
+      status
+    }
+    result
+    redirect
+  }
+}
+`;
