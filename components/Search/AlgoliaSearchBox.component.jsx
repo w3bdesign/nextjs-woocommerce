@@ -17,6 +17,7 @@ const searchClient = algoliasearch(
  */
 const AlgoliaSearchBox = () => {
   const [search, setSearch] = useState(null);
+  const [hasFocus, sethasFocus] = useState(false);
 
   return (
     <>
@@ -26,13 +27,22 @@ const AlgoliaSearchBox = () => {
             indexName="wp_posts_product"
             searchClient={searchClient}
           >
+            {/*We need to conditionally add a border because the element has position:fixed*/}
             <SearchBox
               translations={{
                 submitTitle: 'Søk',
                 resetTitle: 'Slett søketekst',
                 placeholder: 'Søk her ...',
               }}
-              className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+              className={`px-4 py-2 text-base bg-gray-100 border outline-none rounded ${
+                hasFocus ? 'border-black' : 'border-gray-400'
+              }`}
+              onFocus={() => {
+                sethasFocus(true);
+              }}
+              onBlur={() => {
+                sethasFocus(false);
+              }}
               onReset={() => {
                 setSearch(null);
               }}
