@@ -1,6 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
+import Billing from './Billing.component';
+
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from 'utils/const/GQL_MUTATIONS';
 import { INITIAL_STATE } from 'utils/const/INITIAL_STATE';
@@ -64,6 +66,23 @@ const CheckoutForm = () => {
     setRequestError(null);
   };
 
+  /*
+   * Handle onChange input.
+   *
+   * @param {Object} event Event Object.
+   *
+   * @return {void}
+   */
+  const handleOnChange = (event) => {
+    if ('createAccount' === event.target.name) {
+      const newState = { ...input, [event.target.name]: !input.createAccount };
+      setInput(newState);
+    } else {
+      const newState = { ...input, [event.target.name]: event.target.value };
+      setInput(newState);
+    }
+  };
+
   useEffect(() => {
     if (null !== orderData) {
       // Perform checkout mutation when the value for orderData changes.
@@ -74,9 +93,23 @@ const CheckoutForm = () => {
   return (
     <>
       {cart ? (
-        <form onSubmit={handleFormSubmit} className="woo-next-checkout-form">
-          <div className="row">Skjema kommer her</div>
-        </form>
+        <div className="container mx-auto">
+          <form onSubmit={handleFormSubmit} className="">
+            <div className="">
+              {/*Payment Details*/}
+              <div className="">
+                <h2 className="">Betalingsdetaljer</h2>
+                <Billing input={input} handleOnChange={handleOnChange} />
+              </div>
+
+              {/* Checkout Loading*/}
+              {checkoutLoading && <p>Behandler ordre ...</p>}
+              {requestError && (
+                <p>Feilmelding: {requestError} :( Vennligst prøv igjen.</p>
+              )}
+            </div>
+          </form>
+        </div>
       ) : (
         ''
       )}
