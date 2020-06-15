@@ -1,5 +1,5 @@
 import CheckoutForm from '../components/Checkout/CheckoutForm.component';
 
-const Checkout = () => <CheckoutForm />;
+const Handlekurv = () => <CheckoutForm />;
 
-export default Checkout;
+export default Handlekurv;

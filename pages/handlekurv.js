@@ -1,6 +1,6 @@
 import CartItemsContainer from '../components/Cart/CartPage/CartItemsContainer.component';
 
-const Cart = () => {
+const Handlekurv = () => {
   return (
     <>
       <CartItemsContainer />
@@ -8,4 +8,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default Handlekurv;

@@ -17,7 +17,7 @@ const Produkter = ({ products }) => {
 
   return (
     <>
-      <PageTitle title="Produkter" marginleft="true" />
+      <PageTitle title="Produkter" marginleft="50" />
 
       {products && <IndexProducts products={products} />}
 

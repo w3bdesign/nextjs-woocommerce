@@ -16,7 +16,7 @@ const Hero = () => {
           </h1>
 
           <a
-            className="inline-block px-6 py-3 text-xl leading-relaxed border border-gray-600 border-solid hover:underline"
+            className="inline-block px-6 py-3 text-xl leading-relaxed uppercase border border-gray-600 border-solid hover:underline"
             href="#"
           >
             Kjøp Nå

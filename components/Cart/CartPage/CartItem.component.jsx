@@ -41,28 +41,12 @@ const CartItem = ({
           ? item.totalPrice.toFixed(2)
           : item.totalPrice}
       </td>
+
+     
+
+
     </tr>
   );
 };
 
 export default CartItem;
-
-/*
-<tr className="bg-gray-100">
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                </tr>
-                <tr className="bg-gray-100">
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                  <td className="px-4 py-2 border">Test</td>
-                </tr>
-                <tr className="bg-gray-100">
-                  <td className="px-4 py-2 border">Testx</td>
-                  <td className="px-4 py-2 border">Testxx</td>
-                  <td className="px-4 py-2 border">Testxxxx</td>
-                  <td className="px-4 py-2 border">Test xxxxxxxxxx</td>
-                  */

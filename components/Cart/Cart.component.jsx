@@ -18,7 +18,7 @@ const Cart = () => {
 
   return (
     <>
-      <Link href="/cart">
+      <Link href="/handlekurv">
         <a className="inline-block pl-3 no-underline hover:text-black">
           <svg
             className="fill-current hover:text-black"
