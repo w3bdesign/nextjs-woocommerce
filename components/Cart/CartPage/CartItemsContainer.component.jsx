@@ -14,7 +14,6 @@ import {
 import CartItem from 'components/Cart/CartPage/CartItem.component';
 import PageTitle from 'components/Header/PageTitle.component';
 
-import { WOO_CONFIG } from 'utils/config/nextConfig';
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 
 /*
@@ -75,12 +74,25 @@ const CartItemsContainer = () => {
                       <CartItem
                         key={item.productId}
                         item={item}
+                        products={cart.products}
                         // updateCartProcessing={updateCartProcessing}
-                        // products={cart.products}
                         // handleRemoveProductClick={handleRemoveProductClick}
                         // updateCart={updateCart}
                       />
                     ))}
+
+                  <tr>
+                    <td>
+                      <Link href="/kasse">
+                        <a
+                          className="inline-block px-6 py-3 mt-6 text-xl leading-relaxed uppercase border border-gray-600 border-solid hover:underline"
+                          href="#"
+                        >
+                          gå til kasse
+                        </a>
+                      </Link>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
