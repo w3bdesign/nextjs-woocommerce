@@ -171,7 +171,7 @@ const Billing = ({ input, handleOnChange }) => {
         <div className="p-0 pr-2 col-lg-6 col-md-12">
           <div className="form-group">
             <label htmlFor="phone">
-             Telefon
+              Telefon
               <abbr className="required" title="required">
                 *
               </abbr>
@@ -207,6 +207,15 @@ const Billing = ({ input, handleOnChange }) => {
           </div>
         </div>
       </div>
+
+      <br />
+
+      { // https://tailwindcss.com/components/forms/# 
+      }
+
+      
+
+      
     </>
   );
 };

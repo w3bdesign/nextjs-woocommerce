@@ -93,23 +93,21 @@ const CheckoutForm = () => {
   return (
     <>
       {cart ? (
-        <div className="container mx-auto">
-          <form onSubmit={handleFormSubmit} className="">
+        <form onSubmit={handleFormSubmit} className="">
+          <div className="">
+            {/*Payment Details*/}
             <div className="">
-              {/*Payment Details*/}
-              <div className="">
-                <h2 className="">Betalingsdetaljer</h2>
-                <Billing input={input} handleOnChange={handleOnChange} />
-              </div>
-
-              {/* Checkout Loading*/}
-              {checkoutLoading && <p>Behandler ordre ...</p>}
-              {requestError && (
-                <p>Feilmelding: {requestError} :( Vennligst prøv igjen.</p>
-              )}
+              <h2 className="">Betalingsdetaljer</h2>
+              <Billing input={input} handleOnChange={handleOnChange} />
             </div>
-          </form>
-        </div>
+
+            {/* Checkout Loading*/}
+            {checkoutLoading && <p>Behandler ordre ...</p>}
+            {requestError && (
+              <p>Feilmelding: {requestError} :( Vennligst prøv igjen.)</p>
+            )}
+          </div>
+        </form>
       ) : (
         ''
       )}
