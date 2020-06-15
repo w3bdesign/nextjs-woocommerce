@@ -93,7 +93,7 @@ const CheckoutForm = () => {
   return (
     <>
       {cart ? (
-        <form onSubmit={handleFormSubmit} className="w-full max-w-lg">
+        <form onSubmit={handleFormSubmit} className="">
           <div className="">
             {/*Payment Details*/}
             <div className="">
