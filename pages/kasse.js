@@ -1,5 +1,10 @@
-import CheckoutForm from '../components/Checkout/CheckoutForm.component';
+import PageTitle from 'components/Header/PageTitle.component';
+import CheckoutForm from 'components/Checkout/CheckoutForm.component';
 
-const Handlekurv = () => <CheckoutForm />;
-
+const Handlekurv = () => (
+  <>
+    <PageTitle title="Kasse" />
+    <CheckoutForm />
+  </>
+);
 export default Handlekurv;
