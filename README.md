@@ -42,6 +42,7 @@ Start the server with ```npm run dev ```
 
 - Add more cart functionality
 - Add checkout functionality
+- Validate remote Woocommerce session (or delete old session?)
 - Hide products not in stock
 - Add better SEO
 - Add price to Algolia search (Wordpress plugin has been developed)
