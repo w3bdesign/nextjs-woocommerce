@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import Billing from './Billing.component';
-import Payment from "./Payment.component";
+import Payment from './Payment.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from 'utils/const/GQL_MUTATIONS';
@@ -106,12 +106,10 @@ const CheckoutForm = () => {
               <h2 className="">Betalingsdetaljer</h2>
               <Billing input={input} handleOnChange={handleOnChange} />
             </div>
-
             {/*Payment*/}
             <div className="">
-							<Payment input={ input } handleOnChange={ handleOnChange }/>
-              </div>
-
+              <Payment input={input} handleOnChange={handleOnChange} />
+            </div>
             <div>
               <button
                 className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
@@ -120,14 +118,14 @@ const CheckoutForm = () => {
                 BESTILL
               </button>
             </div>
-
+            //TODO Add error handling here
             {/* Checkout Loading*/}
             {
-            //checkoutLoading && <p>Behandler ordre ...</p>
+              //checkoutLoading && <p>Behandler ordre ...</p>
             }
             {
-            //requestError && <p>Feilmelding: {requestError} </p>
-          }
+              //requestError && <p>Feilmelding: {requestError} </p>
+            }
           </div>
         </form>
       ) : (
