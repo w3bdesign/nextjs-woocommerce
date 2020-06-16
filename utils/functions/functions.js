@@ -1,3 +1,5 @@
+import { v4 } from 'uuid';
+
 /**
  * Convert price from string to floating value and convert it to use two decimals
  * @param {String} string
