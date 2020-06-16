@@ -41,8 +41,6 @@ const AddToCartButton = (props) => {
   const { loading, error, data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      console.log('Data from add to cart button: ');
-      console.log(data);
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
 
@@ -75,7 +73,7 @@ const AddToCartButton = (props) => {
     onError: (error) => {
       if (error) {
         console.log('Error inside add to cart');
-        //setRequestError(error.graphQLErrors[0].message);
+        setRequestError(error);
         console.log(error);
       }
     },

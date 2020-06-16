@@ -80,22 +80,18 @@ const CartItemsContainer = () => {
                         // updateCart={updateCart}
                       />
                     ))}
-
-                  <tr>
-                    <td>
-                      <Link href="/kasse">
-                        <a
-                          className="inline-block px-6 py-3 mt-6 text-xl leading-relaxed uppercase border border-gray-600 border-solid hover:underline"
-                          href="#"
-                        >
-                          gå til kasse
-                        </a>
-                      </Link>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
+
+              <div className="mt-4">
+                <Link href="/kasse">
+                  <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
+                    GÅ TIL KASSE
+                  </button>
+                </Link>
+              </div>
             </div>
+            
           ) : (
             <div className="p-6 mx-auto mt-5">
               <h2 className="text-lg">Ingen varer i handlekurven</h2>

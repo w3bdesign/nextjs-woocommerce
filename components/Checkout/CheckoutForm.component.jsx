@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import Billing from './Billing.component';
+import Payment from "./Payment.component";
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from 'utils/const/GQL_MUTATIONS';
@@ -9,7 +10,12 @@ import { INITIAL_STATE } from 'utils/const/INITIAL_STATE';
 
 import { AppContext } from 'utils/context/AppContext';
 
-import { getFormattedCart } from 'utils/functions/functions';
+import {
+  getFormattedCart,
+  createCheckoutData,
+} from 'utils/functions/functions';
+
+import validateAndSanitizeCheckoutForm from 'utils/validator/checkoutValidator';
 
 const CheckoutForm = () => {
   const [cart, setCart] = useContext(AppContext);
@@ -101,11 +107,27 @@ const CheckoutForm = () => {
               <Billing input={input} handleOnChange={handleOnChange} />
             </div>
 
+            {/*Payment*/}
+            <div className="">
+							<Payment input={ input } handleOnChange={ handleOnChange }/>
+              </div>
+
+            <div>
+              <button
+                className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
+                type="submit"
+              >
+                BESTILL
+              </button>
+            </div>
+
             {/* Checkout Loading*/}
-            {checkoutLoading && <p>Behandler ordre ...</p>}
-            {requestError && (
-              <p>Feilmelding: {requestError} :( Vennligst prøv igjen.)</p>
-            )}
+            {
+            //checkoutLoading && <p>Behandler ordre ...</p>
+            }
+            {
+            //requestError && <p>Feilmelding: {requestError} </p>
+          }
           </div>
         </form>
       ) : (

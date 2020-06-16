@@ -15,6 +15,7 @@ const searchClient = algoliasearch(
  */
 const MobileSearch = () => {
   const [search, setSearch] = useState(null);
+  const [hasFocus, sethasFocus] = useState(false);
   return (
     <>
       <div className="inline mt-4">
@@ -25,7 +26,15 @@ const MobileSearch = () => {
               resetTitle: 'Slett søketekst',
               placeholder: 'Søk her ...',
             }}
-            className="px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+            className={`px-4 py-2 text-base bg-gray-100 border outline-none rounded ${
+              hasFocus ? 'border-black' : 'border-gray-400'
+            }`}
+            onFocus={() => {
+              sethasFocus(true);
+            }}
+            onBlur={() => {
+              sethasFocus(false);
+            }}
             onReset={() => {
               setSearch(null);
             }}

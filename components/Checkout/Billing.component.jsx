@@ -19,7 +19,6 @@ const Billing = ({ input, handleOnChange }) => {
               value={input.firstName}
               type="text"
               name="firstName"
-              className="form-control woo-next-checkout-input"
               id="first-name"
             />
             <Error errors={input.errors} fieldName={'firstName'} />
@@ -210,12 +209,165 @@ const Billing = ({ input, handleOnChange }) => {
 
       <br />
 
-      { // https://tailwindcss.com/components/forms/# 
+      {
+        // https://tailwindcss.com/components/forms/#
       }
 
-      
+      <section className="relative text-gray-700 body-font">
+        <div className="container px-5 py-24 mx-auto">
+          <div className="flex flex-col w-full mb-12 text-center">
+            <h1 className="mb-4 text-2xl font-medium text-gray-900 sm:text-3xl title-font">
+              Betalingsdetaljer
+            </h1>
+          </div>
+          <div className="mx-auto lg:w-1/2 md:w-2/3">
+            <div className="flex flex-wrap -m-2">
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Fornavn"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="firstName"
+                  id="first-name"
+                />
+                <Error errors={input.errors} fieldName={'firstName'} />
+              </div>
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Etternavn"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.lastName}
+                  name="lastName"
+                  id="last-name"
+                />
+                <Error errors={input.errors} fieldName={'lastName'} />
+              </div>
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Firmanavn"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="company"
+                  id="company"
+                />
+                <Error errors={input.errors} fieldName={'company'} />
+              </div>
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Addresse"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="address1"
+                  id="address1"
+                />
+                <Error errors={input.errors} fieldName={'address1'} />
+              </div>
 
-      
+              <div className="w-1/2 p-2">
+                <select
+                  onChange={handleOnChange}
+                  value={input.country}
+                  name="country"
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  id="country-select"
+                >
+                  <option value="">Velg ditt land ...</option>
+                  {countryList.length &&
+                    countryList.map((country, index) => (
+                      <option
+                        key={`${country}-${index}`}
+                        value={country.countryCode}
+                      >
+                        {country.countryName}
+                      </option>
+                    ))}
+                </select>
+                <Error errors={input.errors} fieldName={'country'} />
+              </div>
+
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Addresse"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="address1"
+                  id="address1"
+                />
+                <Error errors={input.errors} fieldName={'address1'} />
+              </div>
+
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Addresse"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="address1"
+                  id="address1"
+                />
+                <Error errors={input.errors} fieldName={'address1'} />
+              </div>
+
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Addresse"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="address1"
+                  id="address1"
+                />
+                <Error errors={input.errors} fieldName={'address1'} />
+              </div>
+
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Addresse"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="address1"
+                  id="address1"
+                />
+                <Error errors={input.errors} fieldName={'address1'} />
+              </div>
+
+              <div className="w-1/2 p-2">
+                <input
+                  className="w-full px-4 py-2 text-base bg-gray-200 border border-gray-400 rounded focus:outline-none focus:border-black"
+                  placeholder="Addresse"
+                  type="text"
+                  onChange={handleOnChange}
+                  value={input.firstName}
+                  name="address1"
+                  id="address1"
+                />
+                <Error errors={input.errors} fieldName={'address1'} />
+              </div>
+
+              <div className="w-full p-2">
+                <button className="flex px-4 py-2 mx-auto font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
+                  BESTILL
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 };
