@@ -2,7 +2,7 @@
 
 # Next.js Ecommerce site with Woocommerce backend
 
-## This is still a work in progress
+## This is still a work in progress, but you can place orders and add products to cart.
 
 Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
 
@@ -22,7 +22,8 @@ Start the server with ```npm run dev ```
 ## Features
 
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
-- Cart handling with createContext
+- Cart handling with createContext and GraphQL mutations
+- Able to place orders remotely with Woocommerce (bank transfers only for now)
 - Algolia search (work in progress)
 - Apollo Client with GraphQL
 - Animations with React-Spring
@@ -34,8 +35,8 @@ Start the server with ```npm run dev ```
 - Pretty URLs with builtin Nextjs functionality
 - Tailwind CSS for styling
 - Minimalistic and responsive design
-- JSDoc comments on all functions
-- Currently connected to live Woocommerce installation instead of using a local installation
+- JSDoc comments
+- Currently connected to a local installation
 
 ## TODO
 
@@ -43,6 +44,6 @@ Start the server with ```npm run dev ```
 - Add checkout functionality
 - Hide products not in stock
 - Add better SEO
-- Add price to Algolia search
+- Add price to Algolia search (Wordpress plugin has been developed)
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
