@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import Billing from './Billing.component';
-import CartItemsContainer from "../Cart/CartPage/CartItemsContainer.component";
+import OrderDetails from "./OrderDetails.component";
 //import Payment from './Payment.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
@@ -101,14 +101,15 @@ const CheckoutForm = () => {
     <>
       {cart ? (
         <form onSubmit={handleFormSubmit} className="">
-          <div className="">
-            {/*	Order*/}           
-            <CartItemsContainer cart={cart} />
-
-            {/*Payment Details*/}
-            <div className="">
-              <Billing input={input} handleOnChange={handleOnChange} />
+          <div className="container mx-auto">
+            {/*	Order*/} 
+               
+            <OrderDetails cart={cart} />
+            {/*Payment Details*/} 
+            <div className="">                 
+            <Billing input={input} handleOnChange={handleOnChange} />
             </div>
+          
 
             {/* Checkout Loading*/}
             {checkoutLoading}
