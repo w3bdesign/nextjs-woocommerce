@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import SVGX from "components/SVG/SVGX.component"
-
+import SVGX from 'components/SVG/SVGX.component';
 
 const CartItem = ({
   item,
@@ -16,16 +15,11 @@ const CartItem = ({
     <tr className="bg-gray-100">
       <td className="px-4 py-2 border">
         <span>
-          <SVGX 
-          onClick={() => {
-            //setisExpanded(!isExpanded);
-          }}
+          <SVGX
+            onClick={() => {
+              //setisExpanded(!isExpanded);
+            }}
           />
-        
-         
-         
-        
-          
         </span>
       </td>
       <td className="px-4 py-2 border">
@@ -44,7 +38,9 @@ const CartItem = ({
       </td>
 
       <td className="px-4 py-2 border">
-        <input type="number" min="1" value={productCount} />
+        <input 
+        className="w-6"
+        type="number" min="1" value={productCount} />
       </td>
 
       <td className="px-4 py-2 border">
@@ -52,10 +48,6 @@ const CartItem = ({
           ? item.totalPrice.toFixed(2)
           : item.totalPrice}
       </td>
-
-     
-
-
     </tr>
   );
 };
