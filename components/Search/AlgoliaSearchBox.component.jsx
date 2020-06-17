@@ -34,7 +34,7 @@ const AlgoliaSearchBox = () => {
                 resetTitle: 'Slett søketekst',
                 placeholder: 'Søk her ...',
               }}
-              className={`px-4 py-2 text-base bg-gray-100 border outline-none rounded ${
+              className={`px-4 py-2 text-base bg-white border outline-none rounded ${
                 hasFocus ? 'border-black' : 'border-gray-400'
               }`}
               onFocus={() => {
