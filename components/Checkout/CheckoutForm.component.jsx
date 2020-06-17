@@ -103,29 +103,12 @@ const CheckoutForm = () => {
           <div className="">
             {/*Payment Details*/}
             <div className="">
-              <h2 className="">Betalingsdetaljer</h2>
               <Billing input={input} handleOnChange={handleOnChange} />
             </div>
-            {/*Payment*/}
-            <div className="">
-              <Payment input={input} handleOnChange={handleOnChange} />
-            </div>
-            <div>
-              <button
-                className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
-                type="submit"
-              >
-                BESTILL
-              </button>
-            </div>
-            //TODO Add error handling here
+
             {/* Checkout Loading*/}
-            {
-              //checkoutLoading && <p>Behandler ordre ...</p>
-            }
-            {
-              //requestError && <p>Feilmelding: {requestError} </p>
-            }
+            {checkoutLoading && <p>Behandler ordre ...</p>}
+            {requestError && <p>Feilmelding: {requestError} </p>}
           </div>
         </form>
       ) : (
