@@ -43,12 +43,17 @@ const CartItemsContainer = () => {
 
   return (
     <>
+      {
+      /*
       <PageTitle title="Handlekurv" />
+      */
+      }
 
       <section className="py-8 bg-white">
         <div className="container flex flex-wrap items-center mx-auto">
           {cart ? (
             <div className="p-6 mx-auto mt-5">
+              <PageTitle title="Handlekurv" />
               <table className="table-auto">
                 <thead>
                   <tr>

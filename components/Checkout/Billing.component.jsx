@@ -1,6 +1,7 @@
 import Error from './Error.component';
+import CheckoutTitle from 'components/Header/CheckoutTitle.component';
 
-const countryList = [{ countryCode: 'NO', countryName: 'Norge' }];
+
 
 const Billing = ({ input, handleOnChange }) => {
   return (
@@ -11,12 +12,10 @@ const Billing = ({ input, handleOnChange }) => {
       }
 
       <section className="relative text-gray-700 body-font">
-        <div className="container px-5 py-24 mx-auto">
-          <div className="flex flex-col w-full mb-12 text-center">
-            <h1 className="mb-4 text-2xl font-medium text-gray-900 sm:text-3xl title-font">
-              Betalingsdetaljer
-            </h1>
-          </div>
+        <div className="container px-5 py-2 mx-auto">
+          
+            <CheckoutTitle title="Betalingsdetaljer" />           
+         
           <div className="mx-auto lg:w-1/2 md:w-2/3">
             <div className="flex flex-wrap -m-2">
               <div className="w-1/2 p-2">
