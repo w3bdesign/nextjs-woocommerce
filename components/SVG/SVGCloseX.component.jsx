@@ -1,19 +1,12 @@
 /**
- * The SVG that we display to close the cart or the mobile search 
- * @param {Object} props 
+ * The SVG that we display to close the cart or the mobile search
  */
-const SVGCloseX = (props) => {
-
-
-  const { isExpanded, setisExpanded } = props;
+const SVGCloseX = () => {
   return (
     <>
       <svg
         width="80px"
         height="80px"
-        onClick={() => {
-          setisExpanded(!isExpanded);
-        }}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 234.6 45.47"
       >
