@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { v4 } from 'uuid';
 
-import SVGCloseX from 'components/SVG/SVGCloseX.component';
+import SVGX from 'components/SVG/SVGX.component';
 
 const CartItem = ({
   item,
@@ -15,7 +14,13 @@ const CartItem = ({
   return (
     <tr className="bg-gray-100">
       <td className="px-4 py-2 border">
-        <SVGCloseX />
+        <span>
+          <SVGX
+            onClick={() => {
+              //setisExpanded(!isExpanded);
+            }}
+          />
+        </span>
       </td>
       <td className="px-4 py-2 border">
         <img
@@ -33,7 +38,9 @@ const CartItem = ({
       </td>
 
       <td className="px-4 py-2 border">
-        <input type="number" min="1" value={productCount} />
+        <input 
+        className="w-12"
+        type="number" min="1" value={productCount} />
       </td>
 
       <td className="px-4 py-2 border">
@@ -41,10 +48,6 @@ const CartItem = ({
           ? item.totalPrice.toFixed(2)
           : item.totalPrice}
       </td>
-
-     
-
-
     </tr>
   );
 };

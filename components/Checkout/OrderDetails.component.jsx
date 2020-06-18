@@ -9,11 +9,10 @@ const OrderDetails = ({ cart }) => {
           {cart ? (
             <div className="p-6 mx-auto mt-5">
               <CheckoutTitle title="Handlekurv" />
-              
+
               <table className="table-auto">
                 <thead>
-                  <tr>
-                    <th className="px-4 py-2" scope="col" />
+                  <tr>                   
                     <th className="px-4 py-2" scope="col" />
                     <th className="px-4 py-2" scope="col">
                       Produkt

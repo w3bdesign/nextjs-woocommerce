@@ -67,6 +67,7 @@ export const afterware = new ApolloLink((operation, forward) => {
 
 // Apollo GraphQL client.
 const client = new ApolloClient({
+  ssrMode: typeof window === 'undefined',
   link: middleware.concat(
     afterware.concat(
       createHttpLink({

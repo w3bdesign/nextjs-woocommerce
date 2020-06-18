@@ -14,8 +14,7 @@ import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
 const HomePage = ({ products }) => {
   return (
     <>
-    
-      <Hero/>
+      <Hero />
       <PageTitle title="Produkter" />
       {products && <IndexProducts products={products} />}
     </>
@@ -24,10 +23,10 @@ const HomePage = ({ products }) => {
 
 export default HomePage;
 
-//export async function getStaticProps() {
-export async function getServerSideProps() {
+export async function getStaticProps() {
+  //export async function getServerSideProps() {
+
   const { data, loading, networkStatus } = await client.query({
-    //const result = await client.query({
     query: FETCH_ALL_PRODUCTS_QUERY,
   });
 
@@ -37,5 +36,6 @@ export async function getServerSideProps() {
       loading: loading,
       networkStatus: networkStatus,
     },
+    unstable_revalidate: 5,
   };
 }
