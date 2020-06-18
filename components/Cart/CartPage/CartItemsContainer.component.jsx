@@ -11,8 +11,9 @@ import {
   removeItemFromCart,
 } from '../../../utils/functions/functions';
 
-import CartItem from 'components/Cart/CartPage/CartItem.component';
 import PageTitle from 'components/Header/PageTitle.component';
+import RegularCart from './RegularCart.component';
+import MobileCart from './MobileCart.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 
@@ -43,52 +44,14 @@ const CartItemsContainer = () => {
 
   return (
     <>
-      {
-      /*
-      <PageTitle title="Handlekurv" />
-      */
-      }
-
       <section className="py-8 bg-white">
         <div className="container flex flex-wrap items-center mx-auto">
           {cart ? (
-            <div 
-            className="p-6 mx-auto mt-5"
-            >
+            <div className="p-6 mx-auto mt-5">
               <PageTitle title="Handlekurv" />
-              <table className="table-auto">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2" scope="col" />
-                    <th className="px-4 py-2" scope="col" />
-                    <th className="px-4 py-2" scope="col">
-                      Produkt
-                    </th>
-                    <th className="px-4 py-2" scope="col">
-                      Pris
-                    </th>
-                    <th className="px-4 py-2" scope="col">
-                      Antall
-                    </th>
-                    <th className="px-4 py-2" scope="col">
-                      Total
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cart.products.length &&
-                    cart.products.map((item) => (
-                      <CartItem
-                        key={item.productId}
-                        item={item}
-                        products={cart.products}
-                        // updateCartProcessing={updateCartProcessing}
-                        // handleRemoveProductClick={handleRemoveProductClick}
-                        // updateCart={updateCart}
-                      />
-                    ))}
-                </tbody>
-              </table>
+
+              <RegularCart cart={cart} />
+              <MobileCart cart={cart} />
 
               <div className="mt-4">
                 <Link href="/kasse">
@@ -98,7 +61,6 @@ const CartItemsContainer = () => {
                 </Link>
               </div>
             </div>
-            
           ) : (
             <div className="p-6 mx-auto mt-5">
               <h2 className="text-lg">Ingen varer i handlekurven</h2>

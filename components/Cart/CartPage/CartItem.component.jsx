@@ -39,7 +39,7 @@ const CartItem = ({
 
       <td className="px-4 py-2 border">
         <input 
-        className="w-6"
+        className="w-12"
         type="number" min="1" value={productCount} />
       </td>
 
