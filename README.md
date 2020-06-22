@@ -28,8 +28,7 @@ Start the server with ```npm run dev ```
 - Apollo Client with GraphQL
 - Animations with React-Spring
 - Shows loading spinner created with Styled Components while loading data and error message if data can not be loaded
-- Default frontpage products loaded through a predefined JSON file with getStaticProps for preloading
-- Mobile menu and cart slide-out with animations
+- Mobile menu
 - List all product categories on a separate page
 - Link to individual product
 - Pretty URLs with builtin Nextjs functionality
@@ -40,11 +39,9 @@ Start the server with ```npm run dev ```
 
 ## TODO
 
-- Add more cart functionality
-- Add checkout functionality
 - Validate remote Woocommerce session (or delete old session?)
 - Hide products not in stock
 - Add better SEO
-- Add price to Algolia search (Wordpress plugin has been developed)
+- Add price to Algolia search (Wordpress plugin has been developed, needs to be integrated)
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
