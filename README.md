@@ -4,7 +4,7 @@
 
 ## This is still a work in progress, but you can place orders and add products to cart.
 
-Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
+### The live URL to this site is currently connected to a local installation, so it will not work properly.
 
 1. Install and activate the following plugins, in your WordPress plugin directory:
 
