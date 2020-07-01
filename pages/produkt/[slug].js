@@ -1,5 +1,4 @@
 import { request } from 'graphql-request';
-import useSWR from 'swr';
 import { withRouter } from 'next/router';
 
 import SingleProduct from 'components/Product/SingleProduct.component';

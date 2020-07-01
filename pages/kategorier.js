@@ -47,5 +47,6 @@ export async function getStaticProps() {
     props: {
       categories: result.data.productCategories.nodes,
     },
+    unstable_revalidate: 10,
   };
 }
