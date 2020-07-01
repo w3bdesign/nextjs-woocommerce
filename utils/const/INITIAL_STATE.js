@@ -12,7 +12,7 @@ export const INITIAL_STATE = {
   country: 'NO',
   postcode: '1525',
   phone: '90561212',
-  email: 'test@gmail.com',
+  email: 'test@testemailgmail.com',
   company: 'Tech',
   createAccount: false,
   orderNotes: '',
