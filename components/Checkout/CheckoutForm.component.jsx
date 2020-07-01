@@ -2,7 +2,8 @@ import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import Billing from './Billing.component';
-import OrderDetails from "./OrderDetails.component";
+import OrderDetails from './OrderDetails.component';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 //import Payment from './Payment.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
@@ -102,22 +103,31 @@ const CheckoutForm = () => {
       {cart ? (
         <form onSubmit={handleFormSubmit} className="">
           <div className="container mx-auto">
-            {/*	Order*/} 
-               
+            {/*	Order*/}
+
             <OrderDetails cart={cart} />
-            {/*Payment Details*/} 
-            <div className="">                 
-            <Billing input={input} handleOnChange={handleOnChange} />
+            {/*Payment Details*/}
+            <div className="">
+              <Billing input={input} handleOnChange={handleOnChange} />
             </div>
-          
 
             {/* Checkout Loading*/}
-            {checkoutLoading}
+
+            {checkoutLoading && (
+              <div className="text-xl text-center">
+                Behandler ordre, vennligst vent ...
+                <br />
+                <LoadingSpinner />
+              </div>
+            )}
+
             {requestError}
           </div>
         </form>
       ) : (
-        ''
+        <div className="container m-12 mx-auto text-xl text-center">
+          Takk for din ordre!
+        </div>
       )}
     </>
   );
