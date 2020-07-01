@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,6 @@
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
     "graphql": "^15.2.0",
-    "graphql-request": "^2.0.0",
     "graphql-tag": "^2.10.3",
     "next": "^9.4.4",
     "nprogress": "^0.2.0",

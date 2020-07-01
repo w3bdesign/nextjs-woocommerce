@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react';
-import { request } from 'graphql-request';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,9 +16,6 @@ import {
   getUpdatedItems,
   removeItemFromCart,
 } from 'utils/functions/functions';
-
-import { addFirstProduct } from 'utils/functions/functions';
-import { updateCart } from 'utils/functions/functions';
 
 /**
  * Display and process product object when we click on the Add To Cart button
@@ -44,9 +40,7 @@ const AddToCartButton = (props) => {
     onCompleted: () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
       // Update cart data in React Context.
       setCart(updatedCart);
     },
@@ -87,18 +81,24 @@ const AddToCartButton = (props) => {
 
   return (
     <>
-      <button
-        onClick={handleAddToCartClick}
-        className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
-      >
-        KJØP
-      </button>
+      {!addToCartLoading && (
+        <button
+          onClick={handleAddToCartClick}
+          className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
+        >
+          KJØP
+        </button>
+      )}
       {addToCartLoading && (
-        <div className="text-xl text-center">
-          Legger i handlekurv, vennligst vent ...
-          <br />
-          <LoadingSpinner />
-        </div>
+        <>
+          <div className="mt-4 text-xl text-left">
+            Legger i handlekurv, vennligst vent ...
+            <br />
+          </div>
+          <div className="absolute ml-32">
+            <LoadingSpinner />
+          </div>
+        </>
       )}
     </>
   );
