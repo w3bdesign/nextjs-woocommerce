@@ -40,7 +40,7 @@ const CartItemsContainer = () => {
       setRequestError(error);
     },
   });
-  // TODO We will focus on fetching the cart before we add more functionality
+  // TODO Add more functionality
 
   return (
     <>
