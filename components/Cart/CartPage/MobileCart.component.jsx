@@ -8,7 +8,7 @@ const MobileCart = ({ cart }) => {
     >
       <div className="flex items-center justify-center">
         <div className="container">
-          <table className="flex flex-row flex-no-wrap my-5 overflow-hidden rounded-lg sm:bg-white sm:shadow-lg" style={{width: "360px"}}>
+          <table className="flex flex-row flex-no-wrap my-5 overflow-hidden rounded-lg sm:bg-white sm:shadow-lg" style={{width: "365px"}}>
             <thead className="text-black">
               <tr className="flex flex-col mb-2 bg-gray-200 rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0">
                 <th className="p-3 text-left">Fjern</th>

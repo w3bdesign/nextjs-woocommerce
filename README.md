@@ -4,15 +4,16 @@
 
 ## This is still a work in progress, but you can place orders and add products to cart.
 
-Live url: <a href="https://nextjs-woocommerce.now.sh/">https://nextjs-woocommerce.now.sh/</a>
+### The live URL to this site is currently connected to a local installation, so it will not work properly.
 
-1. Clone and activate the following plugins , in your WordPress plugin directory:
+1. Install and activate the following plugins, in your WordPress plugin directory:
 
 * [wp-graphql](https://github.com/wp-graphql/wp-graphql) Exposes graphql for WordPress .
 * [wp-graphiql](https://github.com/wp-graphql/wp-graphiql) Provides GraphiQL IDE (playground) to the WP-Admin.
 * [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds Woocommerce functionality to a WPGraphQL schema.
+* [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
 
-You can also import default wooCommerce products that come with wooCommerce Plugin for development ( if you don't have any products in your WordPress install ) `WP Dashboard > Tools > Import > WooCommerce products(CSV)`: The WooCommerce default products csv file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv`
+You can also import default Woocommerce products that come with wooCommerce Plugin for development ( if you don't have any products in your WordPress install ) `WP Dashboard > Tools > Import > WooCommerce products(CSV)`: The WooCommerce default products csv file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv`
 
 2. Clone or fork the repo and modify ```nextConfig.js```
 3. Modify the values according to your setup
@@ -40,11 +41,9 @@ Start the server with ```npm run dev ```
 
 ## TODO
 
-- Add more cart functionality
-- Add checkout functionality
 - Validate remote Woocommerce session (or delete old session?)
 - Hide products not in stock
 - Add better SEO
-- Add price to Algolia search (Wordpress plugin has been developed)
+- Add price to Algolia search (Wordpress plugin has been developed, needs to be integrated)
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
