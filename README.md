@@ -28,7 +28,7 @@ Start the server with ```npm run dev ```
 - Apollo Client with GraphQL
 - Animations with React-Spring
 - Shows loading spinner created with Styled Components while loading data and error message if data can not be loaded
-- Default frontpage products loaded through a predefined JSON file with getStaticProps for preloading
+- Shows page load progress with Nprogress during navigation
 - Mobile menu and cart slide-out with animations
 - List all product categories on a separate page
 - Link to individual product
