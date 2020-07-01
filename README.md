@@ -41,9 +41,8 @@ Start the server with ```npm run dev ```
 
 ## TODO
 
-- Validate remote Woocommerce session (or delete old session?)
+- Add animations with Animate.css
 - Hide products not in stock
 - Add better SEO
-- Add price to Algolia search (Wordpress plugin has been developed, needs to be integrated)
 - Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
