@@ -24,8 +24,8 @@ const rotateAnimation = keyframes`
 `;
 
 const Circle = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50px;
   border: 10px solid black;
   border-right: 10px solid white;
@@ -42,5 +42,5 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 130px;
+  height: 110px;
 `;

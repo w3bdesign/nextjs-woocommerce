@@ -24,6 +24,7 @@ const CheckoutForm = () => {
   const [input, setInput] = useState(INITIAL_STATE);
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
+  const [orderCompleted, setorderCompleted] = useState(false);
 
   // Checkout GraphQL mutation
   const [
@@ -34,6 +35,7 @@ const CheckoutForm = () => {
       input: orderData,
     },
     onCompleted: () => {
+      setorderCompleted(true);
       refetch();
     },
     onError: (error) => {
@@ -125,9 +127,13 @@ const CheckoutForm = () => {
           </div>
         </form>
       ) : (
-        <div className="container m-12 mx-auto text-xl text-center">
-          Takk for din ordre!
-        </div>
+        <>
+          {orderCompleted && (
+            <div className="container m-12 mx-auto text-xl text-center">
+              Takk for din ordre!
+            </div>
+          )}
+        </>
       )}
     </>
   );
