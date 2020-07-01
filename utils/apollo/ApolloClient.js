@@ -23,6 +23,16 @@ export const middleware = new ApolloLink((operation, forward) => {
    * If session data exist in local storage, set value as session header.
    */
   const session = process.browser ? localStorage.getItem('woo-session') : null;
+  const sessionAge = process.browser
+    ? localStorage.getItem('woo-session-expiry')
+    : null;
+
+  const oneDay = 60 * 60 * 24 * 1000;
+  const olderThan24h = new Date() - sessionAge > oneDay;
+  if (olderThan24h && process.browser) {
+    localStorage.removeItem('woo-session');
+    localStorage.removeItem('woo-session-expiry');
+  }
 
   if (session) {
     operation.setContext(({ headers = {} }) => ({
@@ -59,6 +69,7 @@ export const afterware = new ApolloLink((operation, forward) => {
         // Update session new data if changed.
       } else if (localStorage.getItem('woo-session') !== session) {
         localStorage.setItem('woo-session', headers.get('woocommerce-session'));
+        localStorage.setItem('woo-session-expiry', new Date());
       }
     }
     return response;

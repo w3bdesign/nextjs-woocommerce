@@ -24,8 +24,6 @@ const HomePage = ({ products }) => {
 export default HomePage;
 
 export async function getStaticProps() {
-  //export async function getServerSideProps() {
-
   const { data, loading, networkStatus } = await client.query({
     query: FETCH_ALL_PRODUCTS_QUERY,
   });
@@ -36,6 +34,6 @@ export async function getStaticProps() {
       loading: loading,
       networkStatus: networkStatus,
     },
-    unstable_revalidate: 5,
+    unstable_revalidate: 10,
   };
 }
