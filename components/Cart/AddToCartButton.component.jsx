@@ -87,18 +87,24 @@ const AddToCartButton = (props) => {
 
   return (
     <>
-      <button
-        onClick={handleAddToCartClick}
-        className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
-      >
-        KJØP
-      </button>
+      {!addToCartLoading && (
+        <button
+          onClick={handleAddToCartClick}
+          className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
+        >
+          KJØP
+        </button>
+      )}
       {addToCartLoading && (
-        <div className="text-xl text-center">
-          Legger i handlekurv, vennligst vent ...
-          <br />
-          <LoadingSpinner />
-        </div>
+        <>
+          <div className="mt-4 text-xl text-left">
+            Legger i handlekurv, vennligst vent ...
+            <br />
+          </div>
+          <div className="absolute ml-32">
+            <LoadingSpinner />
+          </div>
+        </>
       )}
     </>
   );
