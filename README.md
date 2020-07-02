@@ -27,7 +27,7 @@ Start the server with ```npm run dev ```
 - Able to place orders remotely with Woocommerce (bank transfers only for now)
 - Algolia search (work in progress)
 - Apollo Client with GraphQL
-- Animations with React-Spring
+- Animations with React-Spring and Animate.css
 - Shows loading spinner created with Styled Components while loading data and error message if data can not be loaded
 - Shows page load progress with Nprogress during navigation
 - Mobile menu and cart slide-out with animations
@@ -41,7 +41,6 @@ Start the server with ```npm run dev ```
 
 ## TODO
 
-- Add animations with Animate.css
 - Hide products not in stock
 - Add better SEO
 - Add a better README.md
