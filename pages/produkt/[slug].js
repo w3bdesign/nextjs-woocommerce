@@ -1,4 +1,3 @@
-import { request } from 'graphql-request';
 import { withRouter } from 'next/router';
 
 import SingleProduct from 'components/Product/SingleProduct.component';

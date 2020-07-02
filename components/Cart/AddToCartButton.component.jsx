@@ -25,7 +25,8 @@ import {
 const AddToCartButton = (props) => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
-  const [showViewCart, setShowViewCart] = useState(false);
+  const [showViewCart, setShowViewCart] = useState(false);  
+  const [showAddToCart, setshowAddToCart] = useState(false);  
 
   const product = props.product;
 
@@ -63,7 +64,8 @@ const AddToCartButton = (props) => {
       refetch();
       // Show View Cart Button
       setShowViewCart(true);
-      console.warn('Completed ADD_TO_CART', data);
+      setshowAddToCart(true)
+     
     },
     onError: (error) => {
       if (error) {
@@ -81,14 +83,14 @@ const AddToCartButton = (props) => {
 
   return (
     <>
-      {!addToCartLoading && (
-        <button
-          onClick={handleAddToCartClick}
-          className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400"
-        >
-          KJØP
-        </button>
-      )}
+      <button
+        onClick={handleAddToCartClick}
+        className={`px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400 ${
+          addToCartLoading && `animate__animated animate__fadeOut`} ${showAddToCart && `animate__animated animate__fadeIn` }`}
+      >
+        KJØP
+      </button>
+
       {addToCartLoading && (
         <>
           <div className="mt-4 text-xl text-left">
