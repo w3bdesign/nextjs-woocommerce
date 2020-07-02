@@ -9,6 +9,7 @@ import Footer from '../components/Footer/Footer.component';
 
 import '../styles/index.css';
 import '../styles/algolia.min.css';
+import '../styles/animate.min.css';
 import 'nprogress/nprogress.css';
 
 import client from '../utils/apollo/ApolloClient';

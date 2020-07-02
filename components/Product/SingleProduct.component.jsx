@@ -44,6 +44,7 @@ const SingleProduct = ({ product }) => {
             <img
               id="product-image"
               className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
+              alt={name}
               src={image.sourceUrl}
             />
             <div className="ml-8">

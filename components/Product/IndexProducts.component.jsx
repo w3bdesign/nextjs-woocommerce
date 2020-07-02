@@ -35,7 +35,7 @@ const IndexProducts = ({ products }) => {
                       <img
                         id="product-image"
                         className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
-                        //className="w-64 transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
+                        alt={name}
                         src={image.sourceUrl}
                       />
                     </a>
