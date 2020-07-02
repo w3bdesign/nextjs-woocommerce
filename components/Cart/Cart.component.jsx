@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 
 import Link from 'next/link';
 
@@ -9,8 +9,7 @@ import { AppContext } from 'utils/context/AppContext';
  * Currently only displays a sample cart.
  * Displays amount of items in cart.
  */
-const Cart = () => {
-  const [isExpanded, setisExpanded] = useState(false);
+const Cart = () => {  
   const [cart, setCart] = useContext(AppContext);
 
   const productsCount =
