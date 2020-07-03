@@ -1,21 +1,13 @@
 import Error from './Error.component';
 import CheckoutTitle from 'components/Header/CheckoutTitle.component';
 
-
-
 const Billing = ({ input, handleOnChange }) => {
+  // https://react-hook-form.com/get-started#Quickstart
   return (
     <>
-      {
-        // https://tailwindcss.com/components/forms/#
-        // https://react-hook-form.com/get-started#Quickstart
-      }
-
       <section className="relative text-gray-700 body-font">
         <div className="container px-5 py-2 mx-auto">
-          
-            <CheckoutTitle title="Betalingsdetaljer" />           
-         
+          <CheckoutTitle title="Betalingsdetaljer" />
           <div className="mx-auto lg:w-1/2 md:w-2/3">
             <div className="flex flex-wrap -m-2">
               <div className="w-1/2 p-2">
@@ -44,7 +36,6 @@ const Billing = ({ input, handleOnChange }) => {
                 />
                 <Error errors={input.errors} fieldName={'lastName'} />
               </div>
-
               <div className="w-1/2 p-2">
                 <label className="pb-4">Adresse</label>
                 <input
@@ -58,7 +49,6 @@ const Billing = ({ input, handleOnChange }) => {
                 />
                 <Error errors={input.errors} fieldName={'address1'} />
               </div>
-
               <div className="w-1/2 p-2">
                 <label className="pb-4">Postnummer</label>
                 <input
@@ -72,7 +62,6 @@ const Billing = ({ input, handleOnChange }) => {
                 />
                 <Error errors={input.errors} fieldName={'postcode'} />
               </div>
-
               <div className="w-1/2 p-2">
                 <label className="pb-4">Sted</label>
                 <input
@@ -86,7 +75,6 @@ const Billing = ({ input, handleOnChange }) => {
                 />
                 <Error errors={input.errors} fieldName={'city'} />
               </div>
-
               <div className="w-1/2 p-2">
                 <label className="pb-4">Epost</label>
                 <input
@@ -100,7 +88,6 @@ const Billing = ({ input, handleOnChange }) => {
                 />
                 <Error errors={input.errors} fieldName={'email'} />
               </div>
-
               <div className="w-1/2 p-2">
                 <label className="pb-4">Telefon</label>
                 <input
@@ -114,7 +101,6 @@ const Billing = ({ input, handleOnChange }) => {
                 />
                 <Error errors={input.errors} fieldName={'phone'} />
               </div>
-
               <div className="w-1/2 p-2">
                 <input
                   className="hidden"
@@ -124,7 +110,6 @@ const Billing = ({ input, handleOnChange }) => {
                   checked
                 />
               </div>
-
               <div className="w-full p-2">
                 <button className="flex px-4 py-2 mx-auto font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
                   BESTILL
