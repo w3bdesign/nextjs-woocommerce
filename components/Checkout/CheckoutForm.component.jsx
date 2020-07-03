@@ -106,15 +106,12 @@ const CheckoutForm = () => {
         <form onSubmit={handleFormSubmit} className="">
           <div className="container mx-auto">
             {/*	Order*/}
-
             <OrderDetails cart={cart} />
             {/*Payment Details*/}
             <div className="">
               <Billing input={input} handleOnChange={handleOnChange} />
             </div>
-
             {/* Checkout Loading*/}
-
             {checkoutLoading && (
               <div className="text-xl text-center">
                 Behandler ordre, vennligst vent ...
@@ -122,7 +119,6 @@ const CheckoutForm = () => {
                 <LoadingSpinner />
               </div>
             )}
-
             {requestError}
           </div>
         </form>
