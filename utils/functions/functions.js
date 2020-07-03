@@ -185,10 +185,6 @@ export const removeItemFromCart = (productId) => {
  * @param {String} data Cart data
  */
 export const getFormattedCart = (data) => {
-  console.log('Data from formatted cart before any processing: ');
-  console.log(data);
- 
-
   let formattedCart = null;
 
   if (undefined === data || !data.cart.contents.nodes.length) {
@@ -227,9 +223,6 @@ export const getFormattedCart = (data) => {
 
   formattedCart.totalProductsCount = totalProductsCount;
   formattedCart.totalProductsPrice = data.cart.total;
-
-  console.log('Before end formattedCart: ');
-  console.log(formattedCart);
 
   return formattedCart;
 };
