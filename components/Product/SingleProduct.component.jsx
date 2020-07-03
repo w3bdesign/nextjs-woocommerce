@@ -89,9 +89,9 @@ const SingleProduct = ({ product }) => {
                   <option value="sort">Large</option>
                 </select>
               </p>
-              <p className="pt-1 mt-2">
+              <div className="pt-1 mt-2">
                 <AddToCartButton product={product} />
-              </p>
+              </div>
             </div>
           </div>
         </div>
