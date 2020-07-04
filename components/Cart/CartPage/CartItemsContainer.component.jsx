@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { v4 } from 'uuid';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 

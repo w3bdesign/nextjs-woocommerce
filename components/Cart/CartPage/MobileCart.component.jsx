@@ -1,6 +1,6 @@
 import MobileCartItem from './MobileCartItem.component';
 
-const MobileCart = ({ cart }) => {
+const MobileCart = ({ cart, handleRemoveProductClick }) => {
   return (
     <section
       //className="container mx-auto bg-white md:hidden lg:hidden xl:hidden"
@@ -8,7 +8,10 @@ const MobileCart = ({ cart }) => {
     >
       <div className="flex items-center justify-center">
         <div className="container">
-          <table className="flex flex-row flex-no-wrap my-5 overflow-hidden rounded-lg sm:bg-white sm:shadow-lg" style={{width: "365px"}}>
+          <table
+            className="flex flex-row flex-no-wrap my-5 overflow-hidden rounded-lg sm:bg-white sm:shadow-lg"
+            style={{ width: '365px' }}
+          >
             <thead className="text-black">
               <tr className="flex flex-col mb-2 bg-gray-200 rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0">
                 <th className="p-3 text-left">Fjern</th>
@@ -113,19 +116,14 @@ const MobileCart = ({ cart }) => {
         </div>
       </div>
 
-      <div
-        //className="flex flex-col"
-        className="flex flex-col justify-between"
-      >
+      <div className="flex flex-col justify-between">
         {cart.products.length &&
           cart.products.map((item) => (
             <MobileCartItem
               key={item.productId}
               item={item}
               products={cart.products}
-              // updateCartProcessing={updateCartProcessing}
-              // handleRemoveProductClick={handleRemoveProductClick}
-              // updateCart={updateCart}
+              handleRemoveProductClick={handleRemoveProductClick}
             />
           ))}
       </div>
