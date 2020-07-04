@@ -1,4 +1,4 @@
-import CartItemsContainer from '../components/Cart/CartPage/CartItemsContainer.component';
+import CartItemsContainer from 'components/Cart/CartPage/CartItemsContainer.component';
 
 const Handlekurv = () => {
   return (
