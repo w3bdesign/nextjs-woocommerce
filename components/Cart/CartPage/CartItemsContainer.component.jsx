@@ -110,7 +110,7 @@ const CartItemsContainer = () => {
               </div>
               {updateCartProcessing && (
                 <>
-                  <div className="mt-4 text-xl text-left">
+                  <div className="mt-4 text-xl text-center">
                     Oppdaterer antall, vennligst vent ...
                     <br />
                   </div>
