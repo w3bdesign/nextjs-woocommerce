@@ -67,16 +67,13 @@ const CartItemsContainer = () => {
         },
       });
 
-      // Clear out the cart in localStorage and the cart to null
-      if(updatedItems[0].quantity === 0 && process.browser) {
-        setCart(null)
-        localStorage.removeItem('woocommerce-cart')
-        localStorage.removeItem('woo-session')
-      }
+    
+
     }
   };
 
   const { loading, error, data, refetch } = useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.      
       const updatedCart = getFormattedCart(data);
