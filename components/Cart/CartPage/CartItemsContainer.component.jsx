@@ -32,8 +32,6 @@ const CartItemsContainer = () => {
     },
   ] = useMutation(UPDATE_CART, {
     onCompleted: () => {
-      
-
       refetch();
     },
     onError: (error) => {
@@ -66,16 +64,13 @@ const CartItemsContainer = () => {
           },
         },
       });
-
-    
-
     }
   };
 
   const { loading, error, data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      // Update cart in the localStorage.      
+      // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
       // Update cart data in React Context.
@@ -86,7 +81,6 @@ const CartItemsContainer = () => {
       setRequestError(error);
     },
   });
-  
 
   return (
     <>

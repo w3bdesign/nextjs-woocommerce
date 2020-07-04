@@ -17,8 +17,8 @@ You can also import default Woocommerce products that come with wooCommerce Plug
 
 2. Clone or fork the repo and modify ```nextConfig.js```
 3. Modify the values according to your setup
-
-Start the server with ```npm run dev ```
+4. Start the server with ```npm run dev ```
+5. Enable COD (Cash On Demand) payment method in WooCommerce
 
 ## Features
 
