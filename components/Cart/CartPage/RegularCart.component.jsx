@@ -1,6 +1,6 @@
 import CartItem from './CartItem.component';
 
-const RegularCart = ({ cart }) => {
+const RegularCart = ({ cart, handleRemoveProductClick }) => {
   return (
     <table className="hidden table-auto md:block lg:block xl:block">
       <thead>
@@ -28,9 +28,7 @@ const RegularCart = ({ cart }) => {
               key={item.productId}
               item={item}
               products={cart.products}
-              // updateCartProcessing={updateCartProcessing}
-              // handleRemoveProductClick={handleRemoveProductClick}
-              // updateCart={updateCart}
+              handleRemoveProductClick={handleRemoveProductClick}
             />
           ))}
       </tbody>
