@@ -108,6 +108,7 @@ const Billing = ({ input, handleOnChange }) => {
                   name="paymentMethod"
                   type="radio"
                   checked
+                  readOnly
                 />
               </div>
               <div className="w-full p-2">

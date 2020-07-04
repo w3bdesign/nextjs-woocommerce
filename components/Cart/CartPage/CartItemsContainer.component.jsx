@@ -32,6 +32,8 @@ const CartItemsContainer = () => {
     },
   ] = useMutation(UPDATE_CART, {
     onCompleted: () => {
+      
+
       refetch();
     },
     onError: (error) => {
@@ -64,12 +66,19 @@ const CartItemsContainer = () => {
           },
         },
       });
+
+      // Clear out the cart in localStorage and the cart to null
+      if(updatedItems[0].quantity === 0 && process.browser) {
+        setCart(null)
+        localStorage.removeItem('woocommerce-cart')
+        localStorage.removeItem('woo-session')
+      }
     }
   };
 
   const { loading, error, data, refetch } = useQuery(GET_CART, {
     onCompleted: () => {
-      // Update cart in the localStorage.
+      // Update cart in the localStorage.      
       const updatedCart = getFormattedCart(data);
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
       // Update cart data in React Context.
@@ -80,7 +89,7 @@ const CartItemsContainer = () => {
       setRequestError(error);
     },
   });
-  // TODO Add more functionality
+  
 
   return (
     <>
