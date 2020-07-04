@@ -11,26 +11,28 @@ const MobileCartItem = ({ item }) => {
         <SVGX />
       </div>
 
-      <div className="inline-block pt-2">
-        {item.name}
-        
-      </div>
+      <div className="inline-block pt-2">{item.name}</div>
 
       <div className="inline-block pt-2">
         {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
-      
       </div>
 
       <div className="inline-block pt-2">
-        <input className="w-12" type="number" min="1" value={productCount} />
-      
+        <input
+          className="w-12"
+          type="number"
+          min="1"
+          defaultValue={productCount}
+          onChange={() => {
+            console.log('Changed quantity ...');
+          }}
+        />
       </div>
 
       <div className="inline-block pt-2">
         {'string' !== typeof item.totalPrice
           ? item.totalPrice.toFixed(2)
           : item.totalPrice}
-       
       </div>
     </>
   );

@@ -30,7 +30,15 @@ const CartItem = ({ item, products, handleRemoveProductClick }) => {
       </td>
 
       <td className="px-4 py-2 border">
-        <input className="w-12" type="number" min="1" value={productCount} />
+        <input
+          className="w-12"
+          type="number"
+          min="1"
+          defaultValue={productCount}
+          onChange={() => {
+            console.log('Changed quantity ...');
+          }}
+        />
       </td>
 
       <td className="px-4 py-2 border">
