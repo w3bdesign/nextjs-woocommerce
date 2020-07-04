@@ -1,6 +1,8 @@
 import { withRouter } from 'next/router';
 
-import SingleProduct from 'components/Product/SingleProduct.component';
+import IndexProducts from 'components/Product/IndexProducts.component';
+import PageTitle from 'components/Header/PageTitle.component';
+
 import client from 'utils/apollo/ApolloClient';
 
 import { GET_PRODUCTS_FROM_CATEGORY } from 'utils/const/GQL_QUERIES';
@@ -8,15 +10,19 @@ import { GET_PRODUCTS_FROM_CATEGORY } from 'utils/const/GQL_QUERIES';
 /**
  * Display a single product with dynamic pretty urls
  */
-const Produkt = (props) => {
-  const { product } = props;
+const Produkt = ({ categoryName, products }) => {
+ 
 
   const error = false;
 
   return (
     <>
-      {product ? (
-        <SingleProduct product={product} />
+      {products ? (
+        <>
+          <PageTitle title={categoryName} marginleft="50" />
+
+          <IndexProducts products={products} />
+        </>
       ) : (
         <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
       )}
@@ -32,12 +38,10 @@ const Produkt = (props) => {
 
 export default withRouter(Produkt);
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   let {
-    query: { slug, productId },
+    query: { id },
   } = context;
-
-  const id = productId;
 
   const res = await client.query({
     query: GET_PRODUCTS_FROM_CATEGORY,
@@ -45,6 +49,9 @@ export async function getStaticProps(context) {
   });
 
   return {
-    props: { product: res.data.product },
+    props: {
+      categoryName: res.data.productCategory.name,
+      products: res.data.productCategory.products.nodes,
+    },
   };
 }
