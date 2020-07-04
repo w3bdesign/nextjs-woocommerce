@@ -91,11 +91,15 @@ const CartItemsContainer = () => {
               <PageTitle title="Handlekurv" />
               <RegularCart
                 cart={cart}
-                handleRemoveProductClick={handleRemoveProductClick}
+                updateCartProcessing={updateCartProcessing}
+                handleRemoveProductClick={handleRemoveProductClick} 
+                updateCart={updateCart}               
               />
               <MobileCart
                 cart={cart}
-                handleRemoveProductClick={handleRemoveProductClick}
+                updateCartProcessing={updateCartProcessing}
+                handleRemoveProductClick={handleRemoveProductClick}  
+                updateCart={updateCart}              
               />
               <div className="mt-4">
                 <Link href="/kasse">
