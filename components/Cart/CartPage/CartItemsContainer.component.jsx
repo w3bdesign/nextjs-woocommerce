@@ -13,6 +13,7 @@ import {
 import PageTitle from 'components/Header/PageTitle.component';
 import RegularCart from './RegularCart.component';
 import MobileCart from './MobileCart.component';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { UPDATE_CART } from 'utils/const/GQL_MUTATIONS';
@@ -103,6 +104,17 @@ const CartItemsContainer = () => {
                   </button>
                 </Link>
               </div>
+              {updateCartProcessing && (
+                <>
+                  <div className="mt-4 text-xl text-left">
+                    Oppdaterer antall, vennligst vent ...
+                    <br />
+                  </div>
+                  <div>
+                    <LoadingSpinner />
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <div className="p-6 mx-auto mt-5">

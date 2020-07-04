@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { AppContext } from 'utils/context/AppContext';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { ADD_TO_CART } from 'utils/const/GQL_MUTATIONS';
