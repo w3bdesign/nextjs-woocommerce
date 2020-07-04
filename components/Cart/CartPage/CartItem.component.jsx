@@ -2,25 +2,17 @@ import { useState } from 'react';
 
 import SVGX from 'components/SVG/SVGX.component';
 
-const CartItem = ({
-  item,
-  products,
-  updateCartProcessing,
-  handleRemoveProductClick,
-  updateCart,
-}) => {
+const CartItem = ({ item, products, handleRemoveProductClick }) => {
   const [productCount, setProductCount] = useState(item.qty);
 
   return (
     <tr className="bg-gray-100">
       <td className="px-4 py-2 border">
-        <span>
-          <SVGX
-            onClick={() => {
-              //setisExpanded(!isExpanded);
-            }}
-          />
-        </span>
+        <SVGX
+          cartKey={item.cartKey}
+          handleRemoveProductClick={handleRemoveProductClick}
+          products={products}
+        />
       </td>
       <td className="px-4 py-2 border">
         <img
@@ -38,9 +30,15 @@ const CartItem = ({
       </td>
 
       <td className="px-4 py-2 border">
-        <input 
-        className="w-12"
-        type="number" min="1" value={productCount} />
+        <input
+          className="w-12"
+          type="number"
+          min="1"
+          defaultValue={productCount}
+          onChange={() => {
+            console.log('Changed quantity ...');
+          }}
+        />
       </td>
 
       <td className="px-4 py-2 border">

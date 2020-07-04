@@ -26,9 +26,10 @@ export const middleware = new ApolloLink((operation, forward) => {
   const sessionAge = process.browser
     ? localStorage.getItem('woo-session-expiry')
     : null;
-
+  const todaysDate = new Date();
   const oneDay = 60 * 60 * 24 * 1000;
-  const olderThan24h = new Date() - sessionAge > oneDay;
+  const olderThan24h = new Date(todaysDate) - new Date(sessionAge) > oneDay;
+
   if (olderThan24h && process.browser) {
     localStorage.removeItem('woo-session');
     localStorage.removeItem('woo-session-expiry');
