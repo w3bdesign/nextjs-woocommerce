@@ -118,6 +118,56 @@ export const FETCH_ALL_CATEGORIES_QUERY = gql`
   }
 `;
 
+export const GET_PRODUCTS_FROM_CATEGORY = gql`
+  query ProductsFromCategory($id: ID!) {
+    productCategory(id: $id) {
+      id
+      name
+      products(first: 50) {
+        nodes {
+          id
+          productId
+          averageRating
+          slug
+          description
+          image {
+            id
+            uri
+            title
+            srcSet
+            sourceUrl
+          }
+          name
+          ... on SimpleProduct {
+            price
+            id
+          }
+          ... on VariableProduct {
+            price
+            id
+          }
+          ... on ExternalProduct {
+            price
+            id
+            externalUrl
+          }
+          ... on GroupProduct {
+            products {
+              nodes {
+                ... on SimpleProduct {
+                  id
+                  price
+                }
+              }
+            }
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CART = gql`
   query GET_CART {
     cart {
