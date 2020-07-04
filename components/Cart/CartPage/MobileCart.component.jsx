@@ -1,6 +1,6 @@
 import MobileCartItem from './MobileCartItem.component';
 
-const MobileCart = ({ cart, handleRemoveProductClick }) => {
+const MobileCart = ({ cart, handleRemoveProductClick, updateCart }) => {
   return (
     <section
       //className="container mx-auto bg-white md:hidden lg:hidden xl:hidden"
@@ -124,6 +124,7 @@ const MobileCart = ({ cart, handleRemoveProductClick }) => {
               item={item}
               products={cart.products}
               handleRemoveProductClick={handleRemoveProductClick}
+              updateCart={updateCart}
             />
           ))}
       </div>

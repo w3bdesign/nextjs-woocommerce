@@ -68,6 +68,7 @@ const CartItemsContainer = () => {
   };
 
   const { loading, error, data, refetch } = useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
@@ -80,7 +81,6 @@ const CartItemsContainer = () => {
       setRequestError(error);
     },
   });
-  // TODO Add more functionality
 
   return (
     <>
@@ -91,11 +91,15 @@ const CartItemsContainer = () => {
               <PageTitle title="Handlekurv" />
               <RegularCart
                 cart={cart}
-                handleRemoveProductClick={handleRemoveProductClick}
+                updateCartProcessing={updateCartProcessing}
+                handleRemoveProductClick={handleRemoveProductClick} 
+                updateCart={updateCart}               
               />
               <MobileCart
                 cart={cart}
-                handleRemoveProductClick={handleRemoveProductClick}
+                updateCartProcessing={updateCartProcessing}
+                handleRemoveProductClick={handleRemoveProductClick}  
+                updateCart={updateCart}              
               />
               <div className="mt-4">
                 <Link href="/kasse">
@@ -106,7 +110,7 @@ const CartItemsContainer = () => {
               </div>
               {updateCartProcessing && (
                 <>
-                  <div className="mt-4 text-xl text-left">
+                  <div className="mt-4 text-xl text-center">
                     Oppdaterer antall, vennligst vent ...
                     <br />
                   </div>

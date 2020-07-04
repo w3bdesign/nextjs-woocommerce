@@ -107,10 +107,12 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
  * Fetch all categories from GraphQL
  */
 export const FETCH_ALL_CATEGORIES_QUERY = gql`
-  query MyQuery {
-    productCategories {
+  query Categories {
+    productCategories(first: 10) {
       nodes {
+        id
         name
+        slug
       }
     }
   }

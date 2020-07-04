@@ -1,9 +1,55 @@
 import { useState } from 'react';
+import { v4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
 
-const CartItem = ({ item, products, handleRemoveProductClick }) => {
+import { getUpdatedItems } from '../../../utils/functions/functions';
+
+const CartItem = ({
+  item,
+  products,
+  handleRemoveProductClick,  
+  updateCart,
+}) => {
   const [productCount, setProductCount] = useState(item.qty);
+
+  console.log("Update cart: ");
+  console.log(updateCart);
+
+  /*
+   * When user changes the quantity, update the cart in localStorage
+   * Also update the cart in the global Context
+   *
+   * @param {Object} event cartKey
+   *
+   * @return {void}
+   */
+  const handleQuantityChange = (event, cartKey) => {
+    if (process.browser) {
+      event.stopPropagation();
+      // If the previous update cart mutation request is still processing, then return.
+      
+      /*if (updateCartProcessing) {
+        return;
+      }*/
+      // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
+      const newQty = event.target.value ? parseInt(event.target.value) : 1;
+      // Set the new qty in state.
+      setProductCount(newQty);
+      if (products.length) {
+        const updatedItems = getUpdatedItems(products, newQty, cartKey);
+
+        updateCart({
+          variables: {
+            input: {
+              clientMutationId: v4(),
+              items: updatedItems,
+            },
+          },
+        });
+      }
+    }
+  };
 
   return (
     <tr className="bg-gray-100">
@@ -35,9 +81,7 @@ const CartItem = ({ item, products, handleRemoveProductClick }) => {
           type="number"
           min="1"
           defaultValue={productCount}
-          onChange={() => {
-            console.log('Changed quantity ...');
-          }}
+          onChange={(event) => handleQuantityChange(event, item.cartKey)}
         />
       </td>
 
