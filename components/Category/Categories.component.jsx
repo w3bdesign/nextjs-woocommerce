@@ -6,14 +6,10 @@ import { v4 as uuidv4 } from 'uuid';
  * @param {Object} categories
  */
 const Categories = ({ categories }) => {
- 
   return (
     <>
-    
       <section className="container mx-auto bg-white">
-      
         <div className="flex ">
-        
           {categories.map(({ name }) => (
             <div
               key={uuidv4()}
@@ -21,7 +17,6 @@ const Categories = ({ categories }) => {
             >
               <div className="flex items-center justify-center w-full h-16 text-center border border-gray-300 rounded-lg shadow hover:shadow-outline">
                 <p className="text-lg">{name}</p>
-               
               </div>
             </div>
           ))}
