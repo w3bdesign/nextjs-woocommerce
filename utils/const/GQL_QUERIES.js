@@ -37,9 +37,12 @@ export const GET_SINGLE_PRODUCT = gql`
         nodes {
           id
           name
-          stockStatus
-          price
+          stockStatus          
           stockQuantity
+          purchasable
+          onSale
+          salePrice
+          regularPrice
         }
       }
       }
