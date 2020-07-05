@@ -42,6 +42,7 @@ You can also import default Woocommerce products that come with wooCommerce Plug
 
 ## TODO
 
+- Make search results from Algolia clickable
 - Hide products not in stock
 - Add better SEO
 - Add a better README.md
