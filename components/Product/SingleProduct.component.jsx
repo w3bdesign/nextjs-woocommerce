@@ -14,6 +14,9 @@ const SingleProduct = ({ product }) => {
     setIsLoading(false);
   }, []);
 
+  console.log("Product information: ");
+  console.log(product);
+
   const {
     description,
     image,
