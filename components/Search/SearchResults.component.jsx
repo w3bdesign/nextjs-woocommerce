@@ -25,7 +25,7 @@ const SearchResults = ({
               <span className="m-2 text-base line-through">
                 kr {regular_price}
               </span>
-              <span className="m-2 text-base">{sale_price}</span>
+              <span className="m-2 text-base">kr {sale_price}</span>
             </>
           )}
           {!on_sale && (
