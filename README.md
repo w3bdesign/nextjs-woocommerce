@@ -23,11 +23,11 @@ You can also import default Woocommerce products that come with wooCommerce Plug
 
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Cart handling with createContext and GraphQL mutations
-- Able to place orders remotely with Woocommerce (bank transfers only for now)
-- Algolia search (work in progress)
+- Able to place orders with WooCommerce (Cash On Delivery only for now)
+- Algolia search
 - Apollo Client with GraphQL
 - Animations with React-Spring and Animate.css
-- Shows loading spinner created with Styled Components while loading data and error message if data can not be loaded
+- Loading spinner created with Styled Components
 - Shows page load progress with Nprogress during navigation
 - Mobile menu and cart slide-out with animations
 - List all product categories on a separate page
@@ -36,7 +36,6 @@ You can also import default Woocommerce products that come with wooCommerce Plug
 - Tailwind CSS for styling
 - Minimalistic and responsive design
 - JSDoc comments
-- Currently connected to a local installation
 
 ## TODO
 
