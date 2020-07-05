@@ -13,8 +13,11 @@
 - [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
 
 1. Make sure WooCommerce has some products already
+
    The WooCommerce default products csv file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv`
+   
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
+
 2. Clone or fork the repo and modify `nextConfig.js`
 3. Modify the values according to your setup
 4. Start the server with `npm run dev`
