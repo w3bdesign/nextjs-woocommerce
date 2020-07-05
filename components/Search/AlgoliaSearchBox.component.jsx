@@ -24,7 +24,7 @@ const AlgoliaSearchBox = () => {
       <div className="hidden mt-2 md:inline xl:inline">
         <div className="">
           <InstantSearch
-            indexName="wp_posts_product"
+            indexName={WOO_CONFIG.ALGOLIA_INDEX_NAME}
             searchClient={searchClient}
           >
             {/*We need to conditionally add a border because the element has position:fixed*/}
