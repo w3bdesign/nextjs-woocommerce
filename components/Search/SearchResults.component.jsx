@@ -3,11 +3,8 @@
  * @param {Object} props
  */
 const SearchResults = ({
-  hit: { product_image, product_name, regular_price, sale_price },
+  hit: { product_image, product_name, regular_price, sale_price, on_sale },
 }) => {
-
-  console.log("Search: ");
-  console.log(sale_price);
   return (
     <article className="hit">
       <div className="flex p-6 bg-white">
@@ -23,13 +20,17 @@ const SearchResults = ({
             <span class="text-lg font-bold">{product_name}</span>
           )}
           <br />
-          {sale_price && (
+          {on_sale && (
             <>
-              <span className="m-2 text-base line-through">kr {regular_price}</span>
+              <span className="m-2 text-base line-through">
+                kr {regular_price}
+              </span>
               <span className="m-2 text-base">{sale_price}</span>
             </>
           )}
-          {!sale_price && <span className="m-2 text-base">kr {regular_price}</span>}
+          {!on_sale && (
+            <span className="m-2 text-base">kr {regular_price}</span>
+          )}
         </div>
       </div>
     </article>
