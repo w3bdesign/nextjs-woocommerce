@@ -1,7 +1,7 @@
 /**
  * The SVG that we display to close the cart or the mobile search
  */
-const SVGCloseX = () => {
+const SVGCloseX = ({ setisExpanded }) => {
   return (
     <>
       <svg
@@ -9,6 +9,9 @@ const SVGCloseX = () => {
         height="80px"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 234.6 45.47"
+        onClick={() => {
+          setisExpanded(false);
+        }}
       >
         <path
           d="M202.83,209.89H181v-42H186v37.56h16.87Z"
