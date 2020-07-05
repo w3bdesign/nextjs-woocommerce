@@ -1,26 +1,35 @@
 /**
  * Displays search results from Algolia
- * @param {Object} param0 
+ * @param {Object} props
  */
-const SearchResults = ({ hit }) => {
+const SearchResults = ({
+  hit: { product_image, product_name, regular_price, sale_price },
+}) => {
+
+  console.log("Search: ");
+  console.log(sale_price);
   return (
     <article className="hit">
       <div className="flex p-6 bg-white">
         <header className="hit-image-container">
           <img
-            src={hit.images.thumbnail.url}
-            alt={hit.name}
+            src={product_image}
+            alt={product_name}
             className="w-12 hit-image"
           />
         </header>
         <div className="pl-4 text-left">
-          {hit.post_title && (
-            <span class="text-lg  font-bold">{hit.post_title}</span>
+          {product_name && (
+            <span class="text-lg font-bold">{product_name}</span>
           )}
           <br />
-          {hit.content && <span class="text-base">{hit.content}</span>}
-          <br />
-          {hit.price && <span class="text-base">kr {hit.price}</span>}
+          {sale_price && (
+            <>
+              <span className="m-2 text-base line-through">kr {regular_price}</span>
+              <span className="m-2 text-base">{sale_price}</span>
+            </>
+          )}
+          {!sale_price && <span className="m-2 text-base">kr {regular_price}</span>}
         </div>
       </div>
     </article>
