@@ -14,7 +14,7 @@
 
 1. Make sure WooCommerce has some products already or import some sample products
 
-   The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/sample_products.csv) 
+   The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/)
 
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
