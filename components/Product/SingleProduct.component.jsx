@@ -19,9 +19,6 @@ const SingleProduct = ({ product }) => {
     setIsLoading(false);
   }, []);
 
-  //console.log("Product information: ");
-  //console.log(product);
-
   const {
     description,
     image,
@@ -77,7 +74,6 @@ const SingleProduct = ({ product }) => {
               <p className="pt-1 mt-4 text-2xl text-gray-900">
                 {DESCRIPTION_WITHOUT_HTML}
               </p>
-
               {product.variations && (
                 <p className="pt-1 mt-4 text-xl text-gray-900">
                   <span className="py-2">Varianter</span>
@@ -85,12 +81,14 @@ const SingleProduct = ({ product }) => {
                     id="variant"
                     name="variant"
                     className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
-                    onChange={(e) => {setselectedVariation(e.target.value)}}
+                    onChange={(e) => {
+                      setselectedVariation(e.target.value);
+                    }}
                   >
                     {product.variations.nodes.map(
                       ({ id, name, variationId }) => {
+                        // Remove product name from variation name
                         const filteredName = name.split('- ').pop();
-
                         return (
                           <option key={id} value={variationId}>
                             {filteredName}
@@ -101,10 +99,15 @@ const SingleProduct = ({ product }) => {
                   </select>
                 </p>
               )}
-
               <div className="pt-1 mt-2">
-                {!product.variations && <AddToCartButton product={product} />}
-                {product.variations && <AddToCartButton product={selectedVariation} />}
+                {
+                  // Display default AddToCart button if we dont have variations. If we do, send the variationId to AddToCart button
+                }
+                {product.variations ? (
+                  <AddToCartButton product={selectedVariation} />
+                ) : (
+                  <AddToCartButton product={product} />
+                )}
               </div>
             </div>
           </div>
