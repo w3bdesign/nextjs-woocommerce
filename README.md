@@ -2,6 +2,8 @@
 
 # Next.js Ecommerce site with Woocommerce backend
 
+## Live URL: https://nextjs-woocommerce.now.sh/
+
 1. Install and activate the following plugins, in your WordPress plugin directory:
 
 * [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for Wordpress.
