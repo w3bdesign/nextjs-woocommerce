@@ -12,10 +12,10 @@
 - [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds Woocommerce functionality to a WPGraphQL schema.
 - [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
 
-1. Make sure WooCommerce has some products already
+1. Make sure WooCommerce has some products already or import some sample products
 
-   The WooCommerce default products csv file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv`
-   
+   The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv`
+
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
 2. Clone or fork the repo and modify `nextConfig.js`
