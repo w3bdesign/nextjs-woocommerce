@@ -23,6 +23,29 @@ export const GET_SINGLE_PRODUCT = gql`
       ... on VariableProduct {
         price
         id
+        paColors {
+          nodes {
+            name
+          }
+        }
+        paSizes {
+          nodes {
+            name
+          }
+        }
+        variations {
+        nodes {
+          id
+          variationId
+          name
+          stockStatus          
+          stockQuantity
+          purchasable
+          onSale
+          salePrice
+          regularPrice          
+        }
+      }
       }
       ... on ExternalProduct {
         price

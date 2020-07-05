@@ -10,9 +10,17 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
  */
 const SingleProduct = ({ product }) => {
   const [isLoading, setIsLoading] = useState(true);
+  // Set first variation as default selected variant
+  const [selectedVariation, setselectedVariation] = useState(
+    product.variations.nodes[0].variationId
+  );
+
   useEffect(() => {
     setIsLoading(false);
   }, []);
+
+  //console.log("Product information: ");
+  //console.log(product);
 
   const {
     description,
@@ -69,28 +77,34 @@ const SingleProduct = ({ product }) => {
               <p className="pt-1 mt-4 text-2xl text-gray-900">
                 {DESCRIPTION_WITHOUT_HTML}
               </p>
-              {/*
-              <p className="pt-1 mt-4 text-xl text-gray-900">
-                <span className="py-2">Farge</span>
-                <select
-                  id="farge"
-                  className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
-                >
-                  <option value="sort">Blå</option>
-                </select>
-              </p>
-              <p className="pt-1 mt-2 text-xl text-gray-900 ">
-                <span className="py-2">Størrelse</span>
-                <select
-                  id="størrelse"
-                  className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
-                >
-                  <option value="sort">Large</option>
-                </select>
-              </p>
-              */}
+
+              {product.variations && (
+                <p className="pt-1 mt-4 text-xl text-gray-900">
+                  <span className="py-2">Varianter</span>
+                  <select
+                    id="variant"
+                    name="variant"
+                    className="block w-64 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+                    onChange={(e) => {setselectedVariation(e.target.value)}}
+                  >
+                    {product.variations.nodes.map(
+                      ({ id, name, variationId }) => {
+                        const filteredName = name.split('- ').pop();
+
+                        return (
+                          <option key={id} value={variationId}>
+                            {filteredName}
+                          </option>
+                        );
+                      }
+                    )}
+                  </select>
+                </p>
+              )}
+
               <div className="pt-1 mt-2">
-                <AddToCartButton product={product} />
+                {!product.variations && <AddToCartButton product={product} />}
+                {product.variations && <AddToCartButton product={selectedVariation} />}
               </div>
             </div>
           </div>
