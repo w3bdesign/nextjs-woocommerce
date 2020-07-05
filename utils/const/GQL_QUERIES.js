@@ -33,6 +33,15 @@ export const GET_SINGLE_PRODUCT = gql`
             name
           }
         }
+        variations {
+        nodes {
+          id
+          name
+          stockStatus
+          price
+          stockQuantity
+        }
+      }
       }
       ... on ExternalProduct {
         price
