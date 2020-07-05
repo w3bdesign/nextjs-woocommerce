@@ -11,7 +11,6 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 const SingleProduct = ({ product }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    // useEffect with empty array is the same as componentDidMount
     setIsLoading(false);
   }, []);
 
@@ -20,7 +19,6 @@ const SingleProduct = ({ product }) => {
     image,
     name,
     onSale,
-    productId,
     price,
     regularPrice,
     salePrice,
@@ -71,6 +69,7 @@ const SingleProduct = ({ product }) => {
               <p className="pt-1 mt-4 text-2xl text-gray-900">
                 {DESCRIPTION_WITHOUT_HTML}
               </p>
+              {/*
               <p className="pt-1 mt-4 text-xl text-gray-900">
                 <span className="py-2">Farge</span>
                 <select
@@ -89,6 +88,7 @@ const SingleProduct = ({ product }) => {
                   <option value="sort">Large</option>
                 </select>
               </p>
+              */}
               <div className="pt-1 mt-2">
                 <AddToCartButton product={product} />
               </div>
