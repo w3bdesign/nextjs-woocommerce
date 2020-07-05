@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { v4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
-
 import { getUpdatedItems } from 'utils/functions/functions';
 
 const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {

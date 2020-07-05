@@ -24,57 +24,21 @@ const MobileCart = ({ cart, handleRemoveProductClick, updateCart }) => {
                   </tr>
                 ))}
             </thead>
-
             <tbody className="flex-1 sm:flex-none">
-              {/*
-            {cart.products.length &&
-                cart.products.map((item) => (
-
-            <MobileCartItem
-              key={item.productId}
-              item={item}
-              products={cart.products}
-              handleRemoveProductClick={handleRemoveProductClick}
-              updateCart={updateCart}
-            />
-            ))}
-
-              */}
-
               {cart.products.length &&
                 cart.products.map((item) => (
-                  <tr className="flex flex-col mb-2 flex-no wrap sm:table-row sm:mb-0">
-                    <td className="h-12 p-3 border-2 border-gray-400 ">
-                      <SVGX />
-                    </td>
-                    <td className="h-12 p-3 border-l-2 border-r-2 border-gray-400 ">
-                      {item.name}
-                    </td>
-                    <td className="h-12 p-3 border-2 border-gray-400 ">
-                      kr{item.price.toFixed(2)}
-                    </td>
-                    <td className="h-12 p-3 border-l-2 border-r-2 border-gray-400 ">
-                      {item.qty}
-                    </td>
-                    <td className="h-12 p-3 border-2 border-gray-400 ">
-                      {item.totalPrice}
-                    </td>
-                  </tr>
+                  <MobileCartItem
+                    key={item.productId}
+                    item={item}
+                    products={cart.products}
+                    handleRemoveProductClick={handleRemoveProductClick}
+                    updateCart={updateCart}
+                  />
                 ))}
             </tbody>
           </table>
         </div>
       </div>
-
-      {/*
-     <MobileCartItem
-              key={item.productId}
-              item={item}
-              products={cart.products}
-              handleRemoveProductClick={handleRemoveProductClick}
-              updateCart={updateCart}
-            />
-            */}
     </section>
   );
 };
