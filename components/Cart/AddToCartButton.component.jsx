@@ -9,13 +9,8 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { ADD_TO_CART } from 'utils/const/GQL_MUTATIONS';
-import { WOO_CONFIG } from 'utils/config/nextConfig';
 
-import {
-  getFormattedCart,
-  getUpdatedItems,
-  removeItemFromCart,
-} from 'utils/functions/functions';
+import { getFormattedCart } from 'utils/functions/functions';
 
 /**
  * Display and process product object when we click on the Add To Cart button
@@ -25,14 +20,17 @@ import {
 const AddToCartButton = (props) => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
-  const [showViewCart, setShowViewCart] = useState(false);  
-  const [showAddToCart, setshowAddToCart] = useState(false);  
+  const [showViewCart, setShowViewCart] = useState(false);
+  const [showAddToCart, setshowAddToCart] = useState(false);
 
   const product = props.product;
 
+  console.log(props);
+
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
-    productId: product.productId,
+    //productId: product.productId,
+    productId: product
   };
 
   // Get Cart Data.
@@ -64,8 +62,7 @@ const AddToCartButton = (props) => {
       refetch();
       // Show View Cart Button
       setShowViewCart(true);
-      setshowAddToCart(true)
-     
+      setshowAddToCart(true);
     },
     onError: (error) => {
       if (error) {
@@ -86,7 +83,8 @@ const AddToCartButton = (props) => {
       <button
         onClick={handleAddToCartClick}
         className={`px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400 ${
-          addToCartLoading && `animate__animated animate__fadeOutUp`} ${showAddToCart && `animate__animated animate__fadeInDown` }`}
+          addToCartLoading && `animate__animated animate__fadeOutUp`
+        } ${showAddToCart && `animate__animated animate__fadeInDown`}`}
       >
         KJØP
       </button>
