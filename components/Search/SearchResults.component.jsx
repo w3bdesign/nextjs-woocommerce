@@ -29,7 +29,7 @@ const SearchResults = ({
             </>
           )}
           {!on_sale && (
-            <span className="ml-2 text-base">kr {regular_price}</span>
+            <span className="text-base">kr {regular_price}</span>
           )}
         </div>
       </div>
