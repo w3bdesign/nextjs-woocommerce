@@ -22,14 +22,14 @@ const SearchResults = ({
           <br />
           {on_sale && (
             <>
-              <span className="m-2 text-base line-through">
+              <span className="text-base line-through">
                 kr {regular_price}
               </span>
-              <span className="m-2 text-base">kr {sale_price}</span>
+              <span className="ml-2 text-base">kr {sale_price}</span>
             </>
           )}
           {!on_sale && (
-            <span className="m-2 text-base">kr {regular_price}</span>
+            <span className="ml-2 text-base">kr {regular_price}</span>
           )}
         </div>
       </div>
