@@ -2,19 +2,10 @@ import { useState } from 'react';
 import { v4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
+import { getUpdatedItems } from 'utils/functions/functions';
 
-import { getUpdatedItems } from '../../../utils/functions/functions';
-
-const CartItem = ({
-  item,
-  products,
-  handleRemoveProductClick,  
-  updateCart,
-}) => {
+const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
   const [productCount, setProductCount] = useState(item.qty);
-
-  console.log("Update cart: ");
-  console.log(updateCart);
 
   /*
    * When user changes the quantity, update the cart in localStorage
@@ -27,18 +18,17 @@ const CartItem = ({
   const handleQuantityChange = (event, cartKey) => {
     if (process.browser) {
       event.stopPropagation();
-      // If the previous update cart mutation request is still processing, then return.
-      
-      /*if (updateCartProcessing) {
+      // Return if the previous update cart mutation request is still processing
+      /*
+      if (updateCartProcessing) {
         return;
       }*/
       // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
       const newQty = event.target.value ? parseInt(event.target.value) : 1;
-      // Set the new qty in state.
+      // Set the new quantity in state.
       setProductCount(newQty);
       if (products.length) {
         const updatedItems = getUpdatedItems(products, newQty, cartKey);
-
         updateCart({
           variables: {
             input: {
@@ -50,7 +40,6 @@ const CartItem = ({
       }
     }
   };
-
   return (
     <tr className="bg-gray-100">
       <td className="px-4 py-2 border">
