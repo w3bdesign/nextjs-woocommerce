@@ -46,12 +46,8 @@ const SVGMobileSearchIcon = () => {
           style={mobileSearchSlideDownAnimation}
           className="absolute right-0 z-50 w-full p-4 text-black bg-white"
         >
-          <div className="absolute right-0 mr-6 -mt-12 cursor-pointer">
-            <SVGCloseX
-              onClick={() => {
-                setisExpanded(!isExpanded);
-              }}
-            />
+          <div className="cursor-pointer">
+            <SVGCloseX setisExpanded={setisExpanded} />
           </div>
           <br />
           <MobileSearch />
