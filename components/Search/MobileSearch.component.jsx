@@ -19,7 +19,7 @@ const MobileSearch = () => {
   return (
     <>
       <div className="inline mt-4">
-        <InstantSearch indexName="wp_posts_product" searchClient={searchClient}>
+        <InstantSearch indexName={WOO_CONFIG.ALGOLIA_INDEX_NAME} searchClient={searchClient}>
           <SearchBox
             translations={{
               submitTitle: 'Søk',
