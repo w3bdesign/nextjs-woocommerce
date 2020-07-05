@@ -1,19 +1,21 @@
 // Only add variables and information that can be public here
 
 // Live details
-/*
+
 export const WOO_CONFIG = {
-  GRAPHQL_URL: 'https://davethemogul.com/graphql',
+  GRAPHQL_URL: 'https://woocommerce.dfweb.no/graphql',
   ALGOLIA_APP_ID: '7L9M5Y0B1K',
-  ALGOLIA_PUBLIC_API_KEY: '8010bfd6bde5db13f07f3e6b131fe373',
+  ALGOLIA_PUBLIC_API_KEY: '925cc92373120f1bf477bb8ce0e71649',
 };
-*/
 
 // Development details
+
+/*
 export const WOO_CONFIG = {
   GRAPHQL_URL: 'http://localhost/wp/graphql',
   ALGOLIA_APP_ID: '7L9M5Y0B1K',
-  ALGOLIA_PUBLIC_API_KEY: '8010bfd6bde5db13f07f3e6b131fe373',
+  ALGOLIA_PUBLIC_API_KEY: '925cc92373120f1bf477bb8ce0e71649',
 };
+*/
 
 export default WOO_CONFIG;
