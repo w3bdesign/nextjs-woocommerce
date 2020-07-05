@@ -2,9 +2,7 @@
 
 # Next.js Ecommerce site with Woocommerce backend
 
-## This is still a work in progress, but you can place orders and add products to cart.
-
-### The live URL to this site is currently connected to a local installation, so it will not work properly.
+## Live URL: https://nextjs-woocommerce.now.sh/
 
 1. Install and activate the following plugins, in your WordPress plugin directory:
 
@@ -43,6 +41,7 @@ You can also import default Woocommerce products that come with wooCommerce Plug
 ## TODO
 
 - Make search results from Algolia clickable
+- Add support for variable products / product variations
 - Hide products not in stock
 - Add better SEO
 - Add a better README.md
