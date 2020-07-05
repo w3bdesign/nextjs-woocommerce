@@ -43,7 +43,6 @@
 
 ## TODO
 
-- Make search results from Algolia clickable
 - Add support for variable products / product variations
 - Hide products not in stock
 - Add better SEO
