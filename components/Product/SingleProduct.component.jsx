@@ -10,10 +10,7 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
  */
 const SingleProduct = ({ product }) => {
   const [isLoading, setIsLoading] = useState(true);
-  // Set first variation as default selected variant
-  const [selectedVariation, setselectedVariation] = useState(
-    product.variations.nodes[0].variationId
-  );
+  const [selectedVariation, setselectedVariation] = useState(64);
 
   useEffect(() => {
     setIsLoading(false);

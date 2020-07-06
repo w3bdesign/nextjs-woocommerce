@@ -41,7 +41,8 @@
 
 ## TODO
 
-- Display product variation in cart / checkout
+- Display product variation name in cart / checkout
+- Implement React-hook-form for validation
 - Hide products not in stock
 - Add better SEO
 - Add a better README.md

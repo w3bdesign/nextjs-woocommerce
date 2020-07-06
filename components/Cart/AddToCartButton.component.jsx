@@ -25,12 +25,16 @@ const AddToCartButton = (props) => {
 
   const product = props.product;
 
+  const productId = product.productId ? product.productId : product;
+
+  console.log("Props from Addtocart");
   console.log(props);
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
     //productId: product.productId,
-    productId: product
+    //productId: product
+    productId: productId
   };
 
   // Get Cart Data.
