@@ -11,6 +11,7 @@ import { AppContext } from 'utils/context/AppContext';
  */
 const Cart = () => {  
   const [cart, setCart] = useContext(AppContext);
+ 
 
   const productsCount =
     null !== cart && Object.keys(cart).length ? cart.totalProductsCount : '';

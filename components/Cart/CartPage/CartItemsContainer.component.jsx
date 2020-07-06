@@ -74,6 +74,9 @@ const CartItemsContainer = () => {
       const updatedCart = getFormattedCart(data);
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
       // Update cart data in React Context.
+
+
+     
       setCart(updatedCart);
     },
     onError: (error) => {

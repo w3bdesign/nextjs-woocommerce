@@ -25,10 +25,12 @@ const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
       }*/
       // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
       const newQty = event.target.value ? parseInt(event.target.value) : 1;
+
       // Set the new quantity in state.
       setProductCount(newQty);
       if (products.length) {
         const updatedItems = getUpdatedItems(products, newQty, cartKey);
+
         updateCart({
           variables: {
             input: {
