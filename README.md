@@ -43,6 +43,7 @@
 
 - Display product variation name in cart / checkout
 - Implement React-hook-form for validation
+- Fix bug with changing quantity for variable products
 - Hide products not in stock
 - Add better SEO
 - Add a better README.md
