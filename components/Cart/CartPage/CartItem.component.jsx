@@ -7,12 +7,6 @@ import { getUpdatedItems } from 'utils/functions/functions';
 const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
   const [productCount, setProductCount] = useState(item.qty);
 
-  console.log("Cart item: ");
-  console.log(item);
-  console.log("Cart products: ");
-  console.log(products);
-
-
   /*
    * When user changes the quantity, update the cart in localStorage
    * Also update the cart in the global Context
@@ -63,13 +57,10 @@ const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
           alt={item.image.title}
         />
       </td>
-
       <td className="px-4 py-2 border">{item.name}</td>
-
       <td className="px-4 py-2 border">
         {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
       </td>
-
       <td className="px-4 py-2 border">
         <input
           className="w-12"
@@ -79,7 +70,6 @@ const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
           onChange={(event) => handleQuantityChange(event, item.cartKey)}
         />
       </td>
-
       <td className="px-4 py-2 border">
         {'string' !== typeof item.totalPrice
           ? item.totalPrice.toFixed(2)
