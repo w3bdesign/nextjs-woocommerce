@@ -26,24 +26,22 @@
 ## Features
 
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
-- Cart handling with createContext and GraphQL mutations
-- Able to place orders with WooCommerce (Cash On Delivery only for now)
+- Support for simple products and variable products
+- Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
 - Algolia search
 - Apollo Client with GraphQL
 - Animations with React-Spring and Animate.css
 - Loading spinner created with Styled Components
 - Shows page load progress with Nprogress during navigation
-- Mobile menu and cart slide-out with animations
-- List all product categories on a separate page
-- Link to individual product
+- Fully responsive design
+- Category and product listings
 - Pretty URLs with builtin Nextjs functionality
 - Tailwind CSS for styling
-- Minimalistic and responsive design
 - JSDoc comments
 
 ## TODO
 
-- Add support for variable products / product variations
+- Display product variation in cart / checkout
 - Hide products not in stock
 - Add better SEO
 - Add a better README.md
