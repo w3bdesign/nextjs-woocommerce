@@ -198,16 +198,18 @@ export const getFormattedCart = (data) => {
   formattedCart.products = [];
   let totalProductsCount = 0;
 
-  for (let i = 0; i < givenProducts.length; i++) {
+  let i = 0;
+  givenProducts.forEach(() => {
     const givenProduct = givenProducts[i].product;
     const product = {};
-    const total = getFloatVal(givenProducts[i].total);
+    // Convert price to a float value
+    const convertedCurrency = givenProducts[i].total.replace(/[^0-9.-]+/g, '');
 
     product.productId = givenProduct.productId;
     product.cartKey = givenProducts[i].key;
     product.name = givenProduct.name;
     product.qty = givenProducts[i].quantity;
-    product.price = total / product.qty;
+    product.price = convertedCurrency / product.qty;
     product.totalPrice = givenProducts[i].total;
     product.image = {
       sourceUrl: givenProduct.image.sourceUrl,
@@ -216,14 +218,13 @@ export const getFormattedCart = (data) => {
     };
 
     totalProductsCount += givenProducts[i].quantity;
-
     // Push each item into the products array.
     formattedCart.products.push(product);
-  }
+    i++;
+  });
 
   formattedCart.totalProductsCount = totalProductsCount;
   formattedCart.totalProductsPrice = data.cart.total;
-
   return formattedCart;
 };
 
