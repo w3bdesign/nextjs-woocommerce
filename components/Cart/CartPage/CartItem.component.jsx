@@ -7,6 +7,12 @@ import { getUpdatedItems } from 'utils/functions/functions';
 const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
   const [productCount, setProductCount] = useState(item.qty);
 
+  console.log("Cart item: ");
+  console.log(item);
+  console.log("Cart products: ");
+  console.log(products);
+
+
   /*
    * When user changes the quantity, update the cart in localStorage
    * Also update the cart in the global Context
