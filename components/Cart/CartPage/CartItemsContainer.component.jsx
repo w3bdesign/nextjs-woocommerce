@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { v4 } from 'uuid';
 import { useContext, useState } from 'react';
-
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { AppContext } from 'utils/context/AppContext';
@@ -74,17 +73,12 @@ const CartItemsContainer = () => {
       const updatedCart = getFormattedCart(data);
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
       // Update cart data in React Context.
-
-
-     
       setCart(updatedCart);
     },
-    onError: (error) => {
-      console.warn('Error fetching cart');
+    onError: (error) => {     
       setRequestError(error);
     },
   });
-
   return (
     <>
       <section className="py-8 bg-white">
@@ -95,14 +89,14 @@ const CartItemsContainer = () => {
               <RegularCart
                 cart={cart}
                 updateCartProcessing={updateCartProcessing}
-                handleRemoveProductClick={handleRemoveProductClick} 
-                updateCart={updateCart}               
+                handleRemoveProductClick={handleRemoveProductClick}
+                updateCart={updateCart}
               />
               <MobileCart
                 cart={cart}
                 updateCartProcessing={updateCartProcessing}
-                handleRemoveProductClick={handleRemoveProductClick}  
-                updateCart={updateCart}              
+                handleRemoveProductClick={handleRemoveProductClick}
+                updateCart={updateCart}
               />
               <div className="mt-4">
                 <Link href="/kasse">

@@ -4,7 +4,13 @@ import { v4 } from 'uuid';
 import SVGX from 'components/SVG/SVGX.component';
 import { getUpdatedItems } from 'utils/functions/functions';
 
-const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
+const CartItem = ({
+  item,
+  products,
+  handleRemoveProductClick,
+  updateCart,
+  updateCartProcessing,
+}) => {
   const [productCount, setProductCount] = useState(item.qty);
 
   /*
@@ -19,10 +25,10 @@ const CartItem = ({ item, products, handleRemoveProductClick, updateCart }) => {
     if (process.browser) {
       event.stopPropagation();
       // Return if the previous update cart mutation request is still processing
-      /*
+
       if (updateCartProcessing) {
         return;
-      }*/
+      }
       // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
       const newQty = event.target.value ? parseInt(event.target.value) : 1;
 
