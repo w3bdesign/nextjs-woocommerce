@@ -30,6 +30,7 @@
 - Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
 - Algolia search
 - Apollo Client with GraphQL
+- React Hook Form with form validation
 - Animations with React-Spring and Animate.css
 - Loading spinner created with Styled Components
 - Shows page load progress with Nprogress during navigation
@@ -42,7 +43,6 @@
 ## TODO
 
 - Display product variation name in cart / checkout
-- Implement React-hook-form for validation
 - Hide products not in stock
 - Add better SEO
 - Add a better README.md
