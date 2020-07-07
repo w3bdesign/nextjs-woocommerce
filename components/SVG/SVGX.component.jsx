@@ -3,8 +3,6 @@
  */
 
 const SVGX = ({ cartKey, products, handleRemoveProductClick }) => {
-  //console.log("Props: ");
-  //console.log(props);
   return (
     <>
       <svg
@@ -20,7 +18,7 @@ const SVGX = ({ cartKey, products, handleRemoveProductClick }) => {
         strokeLinejoin="round"
         className="cursor-pointer feather feather-x"
         onClick={(event) => {
-          handleRemoveProductClick( event, cartKey, products )
+          handleRemoveProductClick(event, cartKey, products);
         }}
       >
         <line x1="18" y1="6" x2="6" y2="18"></line>

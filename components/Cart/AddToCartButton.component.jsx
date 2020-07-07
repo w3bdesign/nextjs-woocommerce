@@ -15,26 +15,19 @@ import { getFormattedCart } from 'utils/functions/functions';
 /**
  * Display and process product object when we click on the Add To Cart button
  * Adds product to shopping cart
- * @param {Object} props
+ * @param {Object} product
  */
-const AddToCartButton = (props) => {
+const AddToCartButton = ({ product }) => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
   const [showViewCart, setShowViewCart] = useState(false);
   const [showAddToCart, setshowAddToCart] = useState(false);
 
-  const product = props.product;
-
   const productId = product.productId ? product.productId : product;
-
-  console.log("Props from Addtocart");
-  console.log(props);
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
-    //productId: product.productId,
-    //productId: product
-    productId: productId
+    productId: productId,
   };
 
   // Get Cart Data.
@@ -59,8 +52,7 @@ const AddToCartButton = (props) => {
     onCompleted: (data) => {
       // If error.
       if (addToCartError) {
-        console.log('Add to cart error');
-        //setRequestError(addToCartError.graphQLErrors[0].message);
+        setRequestError(addToCartError.graphQLErrors[0].message);
       }
       // Update the cart with new values in React context.
       refetch();
@@ -70,9 +62,7 @@ const AddToCartButton = (props) => {
     },
     onError: (error) => {
       if (error) {
-        console.log('Error inside add to cart');
         setRequestError(error);
-        console.log(error);
       }
     },
   });
