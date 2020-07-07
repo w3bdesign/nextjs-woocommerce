@@ -30,7 +30,7 @@
 - Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
 - Algolia search
 - Apollo Client with GraphQL
-- React Hook Form with form validation
+- React Hook Form with form validation and error display
 - Animations with React-Spring and Animate.css
 - Loading spinner created with Styled Components
 - Shows page load progress with Nprogress during navigation
