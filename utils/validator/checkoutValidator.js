@@ -1,4 +1,9 @@
 const validateAndSanitizeCheckoutForm = (data) => {
+
+  console.log(data)
+
+  
+
   return {
     isValid: true,
   };

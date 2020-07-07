@@ -17,8 +17,6 @@ import {
   createCheckoutData,
 } from 'utils/functions/functions';
 
-import validateAndSanitizeCheckoutForm from 'utils/validator/checkoutValidator';
-
 const CheckoutForm = () => {
   const [cart, setCart] = useContext(AppContext);
   const [input, setInput] = useState(INITIAL_STATE);
@@ -57,42 +55,6 @@ const CheckoutForm = () => {
     },
   });
 
-  /*
-   * Handle form submit.
-   *
-   * @param {Object} event Event Object.
-   *
-   * @return {void}
-   */
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const result = validateAndSanitizeCheckoutForm(input);
-    if (!result.isValid) {
-      setInput({ ...input, errors: result.errors });
-      return;
-    }
-    const checkOutData = createCheckoutData(input);
-    setOrderData(checkOutData);
-    setRequestError(null);
-  };
-
-  /*
-   * Handle onChange input.
-   *
-   * @param {Object} event Event Object.
-   *
-   * @return {void}
-   */
-  const handleOnChange = (event) => {
-    if ('createAccount' === event.target.name) {
-      const newState = { ...input, [event.target.name]: !input.createAccount };
-      setInput(newState);
-    } else {
-      const newState = { ...input, [event.target.name]: event.target.value };
-      setInput(newState);
-    }
-  };
-
   useEffect(() => {
     if (null !== orderData) {
       // Perform checkout mutation when the value for orderData changes.
@@ -100,28 +62,32 @@ const CheckoutForm = () => {
     }
   }, [orderData]);
 
+  const onSubmit = (data) => {
+    const checkOutData = createCheckoutData(data);
+    setOrderData(checkOutData);
+    setRequestError(null);
+  };
+
   return (
     <>
       {cart ? (
-        <form onSubmit={handleFormSubmit} className="">
-          <div className="container mx-auto">
-            {/*	Order*/}
-            <OrderDetails cart={cart} />
-            {/*Payment Details*/}
-            <div className="">
-              <Billing input={input} handleOnChange={handleOnChange} />
-            </div>
-            {/* Checkout Loading*/}
-            {checkoutLoading && (
-              <div className="text-xl text-center">
-                Behandler ordre, vennligst vent ...
-                <br />
-                <LoadingSpinner />
-              </div>
-            )}
-            {requestError}
+        <div className="container mx-auto">
+          {/*	Order*/}
+          <OrderDetails cart={cart} />
+          {/*Payment Details*/}
+          <div className="">
+            <Billing onSubmit={onSubmit} />
           </div>
-        </form>
+          {/* Checkout Loading*/}
+          {checkoutLoading && (
+            <div className="text-xl text-center">
+              Behandler ordre, vennligst vent ...
+              <br />
+              <LoadingSpinner />
+            </div>
+          )}
+          {requestError}
+        </div>
       ) : (
         <>
           {orderCompleted && (
