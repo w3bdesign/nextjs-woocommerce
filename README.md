@@ -22,6 +22,9 @@
 3. Modify the values according to your setup
 4. Start the server with `npm run dev`
 5. Enable COD (Cash On Demand) payment method in WooCommerce
+6. Add a product to the cart
+7. Proceed to checkout (Gå til kasse)
+8. Fill in your details and place the order
 
 ## Features
 
