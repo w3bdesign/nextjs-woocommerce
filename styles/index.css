@@ -28,7 +28,9 @@
 }
 
 /* Fix for annoying CSS bug with NavBar moving slightly on front page only */
-@media only screen and (min-width: 769px) {
+/*@media only screen and (min-width: 769px) {*/
+  
+ @media only screen and (min-width: 1600px) {
   #navbar-div {
     margin-left: 330px;
   }
