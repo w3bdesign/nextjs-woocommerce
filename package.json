@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "0.9.81",
+  "version": "0.9.82",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
+    "@types/react": "^16.9.41",
     "algoliasearch": "^4.3.0",
     "apollo-boost": "^0.4.9",
     "apollo-cache-inmemory": "^1.6.6",
