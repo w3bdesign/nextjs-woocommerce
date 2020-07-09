@@ -3,13 +3,13 @@ const PageTitle = ({ title, marginleft }) => {
     <>
       {marginleft ? (
         <section className="container pl-8 mx-auto mt-24 text-center bg-white">
-          <span className="py-2 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline">
+          <span className="py-2 text-xl font-bold tracking-wide text-center text-gray-800 no-underline uppercase hover:no-underline">
             {title}
           </span>
         </section>
       ) : (
         <section className="container pl-4 mx-auto mt-24 text-center bg-white">
-          <span className="py-2 text-xl font-bold tracking-wide text-gray-800 no-underline uppercase hover:no-underline">
+          <span className="py-2 text-xl font-bold tracking-wide text-center text-gray-800 no-underline uppercase hover:no-underline">
             {title}
           </span>
         </section>
