@@ -34,7 +34,7 @@ const Billing = ({ onSubmit }) => {
     <>
       <section className="relative text-gray-700 body-font">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="container py-2 mx-auto ml-8">
+          <div className="container py-2 mx-auto ml-6">
             <CheckoutTitle title="Betalingsdetaljer" />
             <div className="mx-auto lg:w-1/2 md:w-2/3">
               <div className="flex flex-wrap -m-2">
