@@ -2,10 +2,8 @@
 @tailwind components;
 
 #hero {
-  /*background-image: url('https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');*/
-  background-image: url("../public/images/hero.jpg");
-  height:385px;
-  /*height: 24rem;*/
+  background-image: url('../public/images/hero.jpg');
+  height: 24rem;
 }
 
 #mobile-menu {
@@ -26,8 +24,8 @@
 
 /* Fix for annoying CSS bug with NavBar moving slightly on front page only */
 /*@media only screen and (min-width: 769px) {*/
-  
- @media only screen and (min-width: 1600px) {
+
+@media only screen and (min-width: 1600px) {
   #navbar-div {
     margin-left: 330px;
   }
