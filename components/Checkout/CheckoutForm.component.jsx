@@ -8,7 +8,6 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
 import { GET_CART } from 'utils/const/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from 'utils/const/GQL_MUTATIONS';
-import { INITIAL_STATE } from 'utils/const/INITIAL_STATE';
 
 import { AppContext } from 'utils/context/AppContext';
 
@@ -19,7 +18,7 @@ import {
 
 const CheckoutForm = () => {
   const [cart, setCart] = useContext(AppContext);
-  const [input, setInput] = useState(INITIAL_STATE);
+  
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
   const [orderCompleted, setorderCompleted] = useState(false);

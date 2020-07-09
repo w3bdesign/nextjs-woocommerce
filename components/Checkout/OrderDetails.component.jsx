@@ -9,7 +9,6 @@ const OrderDetails = ({ cart }) => {
           {cart ? (
             <div className="p-6 mx-auto mt-5">
               <CheckoutTitle title="Handlekurv" />
-
               <table className="table-auto">
                 <thead>
                   <tr>                   
@@ -34,10 +33,7 @@ const OrderDetails = ({ cart }) => {
                       <OrderDetailsCartItem
                         key={item.productId}
                         item={item}
-                        products={cart.products}
-                        // updateCartProcessing={updateCartProcessing}
-                        // handleRemoveProductClick={handleRemoveProductClick}
-                        // updateCart={updateCart}
+                        products={cart.products}                       
                       />
                     ))}
                 </tbody>

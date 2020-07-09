@@ -1,7 +1,6 @@
 import { v4 } from 'uuid';
 
 import MobileCartItem from './MobileCartItem.component';
-import SVGX from 'components/SVG/SVGX.component';
 
 const MobileCart = ({ cart, handleRemoveProductClick, updateCart }) => {
   return (

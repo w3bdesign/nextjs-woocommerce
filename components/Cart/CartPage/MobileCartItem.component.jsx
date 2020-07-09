@@ -9,6 +9,7 @@ const MobileCartItem = ({
   products,
   handleRemoveProductClick,
   updateCart,
+  updateCartProcessing,
 }) => {
   const [productCount, setProductCount] = useState(item.qty);
 
@@ -24,10 +25,9 @@ const MobileCartItem = ({
     if (process.browser) {
       event.stopPropagation();
       // Return if the previous update cart mutation request is still processing
-      /*
       if (updateCartProcessing) {
         return;
-      }*/
+      }
       // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
       const newQty = event.target.value ? parseInt(event.target.value) : 1;
       // Set the new quantity in state.
@@ -49,32 +49,30 @@ const MobileCartItem = ({
   return (
     <>
       <tr className="flex flex-col mb-2 flex-no wrap sm:table-row sm:mb-0">
-        <td className="h-12 p-3 border-2 border-gray-400 ">
-        <SVGX
-          cartKey={item.cartKey}
-          handleRemoveProductClick={handleRemoveProductClick}
-          products={products}
-        />
+        <td className="h-12 p-3">
+          <SVGX
+            cartKey={item.cartKey}
+            handleRemoveProductClick={handleRemoveProductClick}
+            products={products}
+          />
         </td>
-        <td className="h-12 p-3 border-l-2 border-r-2 border-gray-400 ">
-          {item.name}
+        <td className="h-12 p-3">{item.name}</td>
+        <td className="h-12 p-3">
+          kr{'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
         </td>
-        <td className="h-12 p-3 border-2 border-gray-400 ">
-        {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
+        <td className="h-12 p-3">
+          <input
+            className="w-12"
+            type="number"
+            min="1"
+            defaultValue={productCount}
+            onChange={(event) => handleQuantityChange(event, item.cartKey)}
+          />
         </td>
-        <td className="h-12 p-3 border-l-2 border-r-2 border-gray-400 ">
-        <input
-          className="w-12"
-          type="number"
-          min="1"
-          defaultValue={productCount}
-          onChange={(event) => handleQuantityChange(event, item.cartKey)}
-        />
-        </td>
-        <td className="h-12 p-3 border-2 border-gray-400 ">
-        {'string' !== typeof item.totalPrice
-          ? item.totalPrice.toFixed(2)
-          : item.totalPrice}
+        <td className="h-12 p-3">
+          {'string' !== typeof item.totalPrice
+            ? item.totalPrice.toFixed(2)
+            : item.totalPrice}
         </td>
       </tr>
     </>
