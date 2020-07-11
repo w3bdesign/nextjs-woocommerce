@@ -42,6 +42,7 @@
 - Pretty URLs with builtin Nextjs functionality
 - Tailwind CSS for styling
 - JSDoc comments
+- WooCommerce cart session is automatically deleted after 48 hours to prevent GraphQL session expiration errors
 
 ## TODO
 

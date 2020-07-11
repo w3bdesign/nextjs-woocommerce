@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import Billing from './Billing.component';
 import OrderDetails from './OrderDetails.component';
+import MobileOrderDetails from './MobileOrderDetails.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 //import Payment from './Payment.component';
 
@@ -18,7 +19,7 @@ import {
 
 const CheckoutForm = () => {
   const [cart, setCart] = useContext(AppContext);
-  
+
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
   const [orderCompleted, setorderCompleted] = useState(false);
@@ -73,10 +74,11 @@ const CheckoutForm = () => {
         <div className="container mx-auto">
           {/*	Order*/}
           <OrderDetails cart={cart} />
+          <MobileOrderDetails cart={cart} />
+
           {/*Payment Details*/}
-          <div className="">
-            <Billing onSubmit={onSubmit} />
-          </div>
+          <Billing onSubmit={onSubmit} />
+
           {/* Checkout Loading*/}
           {checkoutLoading && (
             <div className="text-xl text-center">
