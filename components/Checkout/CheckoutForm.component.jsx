@@ -92,7 +92,7 @@ const CheckoutForm = () => {
       ) : (
         <>
           {orderCompleted && (
-            <div className="container mt-20 text-xl text-center">
+            <div className="container h-24 m-12 mx-auto mt-32 text-xl text-center">
               Takk for din ordre!
             </div>
           )}
