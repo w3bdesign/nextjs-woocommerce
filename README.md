@@ -17,9 +17,7 @@
 
    https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox)
 
-   https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)
-
-   depending on your browser.
+   https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)   
 
    Rename .env.example to .env so the Apollo debugger will correctly load. It will not load if the NODE_ENV variable is not correctly set.
 
