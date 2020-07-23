@@ -22,7 +22,7 @@ const CheckoutForm = () => {
 
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
-  const [orderCompleted, setorderCompleted] = useState(false);
+  const [orderCompleted, setorderCompleted] = useState(false); 
 
   // Checkout GraphQL mutation
   const [
@@ -70,7 +70,7 @@ const CheckoutForm = () => {
 
   return (
     <>
-      {cart ? (
+      {cart && !orderCompleted ? (
         <div className="container mx-auto">
           {/*	Order*/}
           <OrderDetails cart={cart} />
