@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 
 import Billing from './Billing.component';
 import OrderDetails from './OrderDetails.component';

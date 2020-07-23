@@ -1,4 +1,4 @@
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client'
 import { AppProvider } from 'utils/context/AppContext';
 
 import Router from 'next/router';
