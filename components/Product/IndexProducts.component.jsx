@@ -32,12 +32,14 @@ const IndexProducts = ({ products }) => {
                     as={`/produkt/${slug}?productId=${productId}`}
                   >
                     <a>
-                      <img
-                        id="product-image"
-                        className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
-                        alt={name}
-                        src={image.sourceUrl}
-                      />
+                      {image && (
+                        <img
+                          id="product-image"
+                          className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                          alt={name}
+                          src={image.sourceUrl}
+                        />
+                      )}
                     </a>
                   </Link>
                   <div className="flex justify-center pt-3">

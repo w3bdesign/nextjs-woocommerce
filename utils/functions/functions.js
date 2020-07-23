@@ -96,12 +96,12 @@ export const getUpdatedProducts = (
     product.productId
   );
 
-  // If product exits ( index of that product found in the array ), update the product quantity and totalPrice
+  // If product exists ( index of that product was found in the array ), update the product quantity and totalPrice
   if (-1 < productExitsIndex) {
     let updatedProducts = existingProductsInCart;
     let updatedProduct = updatedProducts[productExitsIndex];
 
-    // If have new qty of the product available, set that else add the qtyToBeAdded
+    // If have new quantity of the product available, set that, else add the qtyToBeAdded
     updatedProduct.qty = newQty
       ? parseInt(newQty)
       : parseInt(updatedProduct.qty + qtyToBeAdded);

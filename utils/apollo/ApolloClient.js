@@ -1,18 +1,20 @@
 import fetch from 'node-fetch';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
-import { ApolloLink } from 'apollo-link';
+import {
+  ApolloClient,
+  InMemoryCache,
+  createHttpLink,
+  ApolloLink,
+  //IntrospectionFragmentMatcher,
+} from '@apollo/client';
 
-import { IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import introspectionQueryResultData from './fragmentTypes';
 
 import { WOO_CONFIG } from 'utils/config/nextConfig';
 
 // Fragment matcher.
-const fragmentMatcher = new IntrospectionFragmentMatcher({
+/*const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData,
-});
+});*/
 
 /**
  * Middleware operation
@@ -88,7 +90,8 @@ const client = new ApolloClient({
       })
     )
   ),
-  cache: new InMemoryCache({ fragmentMatcher }),
+  //cache: new InMemoryCache({ possibleTypes: introspectionQueryResultData }),
+  cache: new InMemoryCache(),
 });
 
 export default client;
