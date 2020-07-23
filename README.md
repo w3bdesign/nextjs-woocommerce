@@ -12,15 +12,15 @@
 - [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds Woocommerce functionality to a WPGraphQL schema.
 - [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
 
-2. For debugging and testing, install either
+2. For debugging and testing, install either:
 
-https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox) or
+   https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox)
 
-https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)
+   https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)
 
-depending on your browser.
+   depending on your browser.
 
-Rename .env.example to .env so the Apollo debugger will correctly load. It will not load if the NODE_ENV variable is not correctly set.
+   Rename .env.example to .env so the Apollo debugger will correctly load. It will not load if the NODE_ENV variable is not correctly set.
 
 3. Make sure WooCommerce has some products already or import some sample products
 
