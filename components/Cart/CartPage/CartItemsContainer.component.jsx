@@ -9,7 +9,7 @@ import {
   getUpdatedItems,
 } from '../../../utils/functions/functions';
 
-import PageTitle from 'components/Header/PageTitle.component';
+import PageTitle from 'components/Title/PageTitle.component';
 import RegularCart from './RegularCart.component';
 import MobileCart from './MobileCart.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';

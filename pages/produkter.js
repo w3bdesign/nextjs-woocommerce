@@ -1,7 +1,7 @@
 import Header from 'components/Header/Header.component';
 import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
-import PageTitle from 'components/Header/PageTitle.component';
+import PageTitle from 'components/Title/PageTitle.component';
 
 import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
 

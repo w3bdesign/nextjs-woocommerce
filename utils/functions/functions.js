@@ -1,5 +1,7 @@
 import { v4 } from 'uuid';
 
+import { WOO_CONFIG } from 'utils/config/nextConfig';
+
 /**
  * Convert price from string to floating value and convert it to use two decimals
  * @param {String} string
@@ -193,6 +195,8 @@ export const getFormattedCart = (data) => {
 
   const givenProducts = data.cart.contents.nodes;
 
+  console.log(givenProducts);
+
   // Create an empty object.
   formattedCart = {};
   formattedCart.products = [];
@@ -211,11 +215,18 @@ export const getFormattedCart = (data) => {
     product.qty = givenProducts[i].quantity;
     product.price = convertedCurrency / product.qty;
     product.totalPrice = givenProducts[i].total;
-    product.image = {
-      sourceUrl: givenProduct.image.sourceUrl,
-      srcSet: givenProduct.image.srcSet,
-      title: givenProduct.image.title,
-    };
+    // Ensure we can add products without images to the cart
+    givenProduct.image
+      ? (product.image = {
+          sourceUrl: givenProduct.image.sourceUrl,
+          srcSet: givenProduct.image.srcSet,
+          title: givenProduct.image.title,
+        })
+      : (product.image = {
+          sourceUrl: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
+          srcSet: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
+          title: givenProduct.name,
+        });
 
     totalProductsCount += givenProducts[i].quantity;
     // Push each item into the products array.
