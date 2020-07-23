@@ -1,7 +1,8 @@
 import { withRouter } from 'next/router';
 
+import Header from 'components/Header/Header.component';
 import IndexProducts from 'components/Product/IndexProducts.component';
-import PageTitle from 'components/Header/PageTitle.component';
+import PageTitle from 'components/Title/PageTitle.component';
 
 import client from 'utils/apollo/ApolloClient';
 
@@ -11,12 +12,11 @@ import { GET_PRODUCTS_FROM_CATEGORY } from 'utils/const/GQL_QUERIES';
  * Display a single product with dynamic pretty urls
  */
 const Produkt = ({ categoryName, products }) => {
- 
-
-  const error = false;
+  let error = false;
 
   return (
     <>
+      <Header title={`- ${categoryName && categoryName}`} />
       {products ? (
         <>
           <PageTitle title={categoryName} marginleft="50" />
