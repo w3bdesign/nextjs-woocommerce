@@ -23,6 +23,7 @@ import { WOO_CONFIG } from 'utils/config/nextConfig';
 export const middleware = new ApolloLink((operation, forward) => {
   /**
    * If session data exist in local storage, set value as session header.
+   * Here we also delete the session if it is older than 24 hours
    */
   const session = process.browser ? localStorage.getItem('woo-session') : null;
   const sessionAge = process.browser
