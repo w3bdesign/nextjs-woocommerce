@@ -13,7 +13,11 @@
 - [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
 - [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
 
-1. Make sure WooCommerce has some products already or import some sample products
+2. For debugging and testing, install either https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox) or https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome) depending on your browser. 
+
+Rename .env.example to .env so the Apollo debugger will correctly load. It will not load if the NODE_ENV variable is not correctly set. 
+
+3. Make sure WooCommerce has some products already or import some sample products
 
    The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/)
 
