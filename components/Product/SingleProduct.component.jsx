@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
+import { WOO_CONFIG } from 'utils/config/nextConfig';
+
 /**
  * Shows a single product with an Add To Cart button.
  * Uses GraphQL for product data
@@ -41,12 +43,22 @@ const SingleProduct = ({ product }) => {
       ) : (
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
           <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
-            <img
-              id="product-image"
-              className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
-              alt={name}
-              src={image.sourceUrl}
-            />
+            {image ? (
+              <img
+                id="product-image"
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
+                alt={name}
+                src={image.sourceUrl}
+              />
+            ) : (
+              <img
+                id="product-image"
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
+                alt={name}
+                src={WOO_CONFIG.PLACEHOLDER_LARGE_IMAGE_URL}
+              />
+            )}
+
             <div className="ml-8">
               <p className="text-3xl font-bold text-left">{name}</p>
               <br />

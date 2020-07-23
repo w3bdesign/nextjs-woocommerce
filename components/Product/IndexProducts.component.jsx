@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
+import { WOO_CONFIG } from 'utils/config/nextConfig';
+
 /**
  * Displays all of the products as long as length is defined.
  * Does a map() over the props array and utilizes uuidv4 for unique key values.
@@ -32,19 +34,36 @@ const IndexProducts = ({ products }) => {
                     as={`/produkt/${slug}?productId=${productId}`}
                   >
                     <a>
-                      {image && (
+                      {image ? (
                         <img
                           id="product-image"
                           className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
                           alt={name}
                           src={image.sourceUrl}
                         />
+                      ) : (
+                        <img
+                          id="product-image"
+                          className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                          alt={name}
+                          src={WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL}
+                        />
                       )}
                     </a>
                   </Link>
-                  <div className="flex justify-center pt-3">
-                    <p className="font-bold text-center">{name}</p>
-                  </div>
+                  <Link
+                    href="/produkt/[post]"
+                    as={`/produkt/${slug}?productId=${productId}`}
+                  >
+                    <a>
+                      <div className="flex justify-center pt-3">
+                        <p className="font-bold text-center cursor-pointer">
+                          {name}
+                        </p>
+                      </div>
+                    </a>
+                  </Link>
+
                   {/* Display sale price when on sale */}
                   {onSale && (
                     <>

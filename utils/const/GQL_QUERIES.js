@@ -34,18 +34,18 @@ export const GET_SINGLE_PRODUCT = gql`
           }
         }
         variations {
-        nodes {
-          id
-          variationId
-          name
-          stockStatus          
-          stockQuantity
-          purchasable
-          onSale
-          salePrice
-          regularPrice          
+          nodes {
+            id
+            variationId
+            name
+            stockStatus
+            stockQuantity
+            purchasable
+            onSale
+            salePrice
+            regularPrice
+          }
         }
-      }
       }
       ... on ExternalProduct {
         price
@@ -98,11 +98,11 @@ export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
  `;
 
 /**
- * Fetch all Woocommerce products from GraphQL
+ * Fetch first 24 Woocommerce products from GraphQL
  */
 export const FETCH_ALL_PRODUCTS_QUERY = gql`
   query MyQuery {
-    products(first: 8) {
+    products(first: 24) {
       nodes {
         productId
         name
@@ -127,11 +127,11 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
 `;
 
 /**
- * Fetch all categories from GraphQL
+ * Fetch first 20 categories from GraphQL
  */
 export const FETCH_ALL_CATEGORIES_QUERY = gql`
   query Categories {
-    productCategories(first: 10) {
+    productCategories(first: 20) {
       nodes {
         id
         name
