@@ -195,8 +195,6 @@ export const getFormattedCart = (data) => {
 
   const givenProducts = data.cart.contents.nodes;
 
-  console.log(givenProducts);
-
   // Create an empty object.
   formattedCart = {};
   formattedCart.products = [];
