@@ -1,6 +1,7 @@
+import Header from 'components/Header/Header.component';
 import Categories from 'components/Category/Categories.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
-import PageTitle from 'components/Header/PageTitle.component';
+import PageTitle from 'components/Title/PageTitle.component';
 
 import client from 'utils/apollo/ApolloClient.js';
 
@@ -14,6 +15,7 @@ const CategoryPage = ({ categories }) => {
 
   return (
     <>
+      <Header title="- Kategorier" />
       <PageTitle title="Kategorier" />
 
       {categories && <Categories categories={categories} />}

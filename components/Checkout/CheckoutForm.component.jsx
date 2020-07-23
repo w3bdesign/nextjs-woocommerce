@@ -19,7 +19,6 @@ import {
 
 const CheckoutForm = () => {
   const [cart, setCart] = useContext(AppContext);
-
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
   const [orderCompleted, setorderCompleted] = useState(false); 

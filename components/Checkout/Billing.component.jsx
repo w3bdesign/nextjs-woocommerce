@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 
-import CheckoutTitle from 'components/Header/CheckoutTitle.component';
+import CheckoutTitle from 'components/Title/CheckoutTitle.component';
 
 const Input = ({
   name,

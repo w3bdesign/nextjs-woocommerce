@@ -1,3 +1,4 @@
+import Header from 'components/Header/Header.component';
 import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 import PageTitle from 'components/Header/PageTitle.component';
@@ -17,6 +18,7 @@ const Produkter = ({ products }) => {
 
   return (
     <>
+      <Header title="- Produkter" />
       <PageTitle title="Produkter" marginleft="50" />
 
       {products && <IndexProducts products={products} />}

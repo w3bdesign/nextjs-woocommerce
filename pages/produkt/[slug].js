@@ -1,21 +1,21 @@
 import { withRouter } from 'next/router';
 
 import SingleProduct from 'components/Product/SingleProduct.component';
+import Header from 'components/Header/Header.component';
+
 import client from 'utils/apollo/ApolloClient';
 
-import { WOO_CONFIG } from 'utils/config/nextConfig';
 import { GET_SINGLE_PRODUCT } from 'utils/const/GQL_QUERIES';
 
 /**
  * Display a single product with dynamic pretty urls
  */
-const Produkt = (props) => {
-  const { product } = props;
-
-  const error = false;
+const Produkt = ({ product }) => {
+  let error = false;
 
   return (
     <>
+      <Header title={`- ${product.name && product.name}`} />
       {product ? (
         <SingleProduct product={product} />
       ) : (
