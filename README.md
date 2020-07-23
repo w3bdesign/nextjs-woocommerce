@@ -33,6 +33,7 @@
 - Support for simple products and variable products
 - Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
 - Algolia search
+- Placeholder for products without images
 - Apollo Client with GraphQL
 - React Hook Form with form validation and error display
 - Animations with React-Spring and Animate.css
