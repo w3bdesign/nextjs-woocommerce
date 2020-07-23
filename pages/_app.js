@@ -4,12 +4,11 @@ import { AppProvider } from 'utils/context/AppContext';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 
-import Header from '../components/Header/Header.component';
 import Footer from '../components/Footer/Footer.component';
 
-import '../styles/index.css';
-import '../styles/algolia.min.css';
-import '../styles/animate.min.css';
+import "styles/index.css";
+import 'styles/algolia.min.css';
+import 'styles/animate.min.css';
 import 'nprogress/nprogress.css';
 
 import client from '../utils/apollo/ApolloClient';
@@ -22,8 +21,7 @@ const App = ({ Component, pageProps }) => {
   return (
     <>
       <ApolloProvider client={client}>
-        <AppProvider>
-          <Header />
+        <AppProvider>         
           <Component {...pageProps} />
           <Footer />
         </AppProvider>

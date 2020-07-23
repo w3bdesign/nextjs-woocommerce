@@ -1,4 +1,4 @@
-import CheckoutTitle from 'components/Header/CheckoutTitle.component';
+import CheckoutTitle from 'components/Title/CheckoutTitle.component';
 import OrderDetailsCartItem from './OrderDetailsCartItem.component';
 
 const OrderDetails = ({ cart }) => {

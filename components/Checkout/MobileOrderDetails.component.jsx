@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 
 import MobileOrderDetailsItem from './MobileOrderDetailsItem.component';
-import CheckoutTitle from 'components/Header/CheckoutTitle.component';
+import CheckoutTitle from 'components/Title/CheckoutTitle.component';
 
 const MobileOrderDetails = ({ cart }) => {
   return (
