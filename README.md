@@ -13,9 +13,15 @@
 - [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
 - [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
 
-2. For debugging and testing, install either https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox) or https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome) depending on your browser. 
+2. For debugging and testing, install either
 
-Rename .env.example to .env so the Apollo debugger will correctly load. It will not load if the NODE_ENV variable is not correctly set. 
+https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox) or
+
+https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)
+
+depending on your browser.
+
+Rename .env.example to .env so the Apollo debugger will correctly load. It will not load if the NODE_ENV variable is not correctly set.
 
 3. Make sure WooCommerce has some products already or import some sample products
 
@@ -23,13 +29,13 @@ Rename .env.example to .env so the Apollo debugger will correctly load. It will 
 
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
-2. Clone or fork the repo and modify `nextConfig.js`
-3. Modify the values according to your setup
-4. Start the server with `npm run dev`
-5. Enable COD (Cash On Demand) payment method in WooCommerce
-6. Add a product to the cart
-7. Proceed to checkout (Gå til kasse)
-8. Fill in your details and place the order
+4. Clone or fork the repo and modify `nextConfig.js`
+5. Modify the values according to your setup
+6. Start the server with `npm run dev`
+7. Enable COD (Cash On Demand) payment method in WooCommerce
+8. Add a product to the cart
+9. Proceed to checkout (Gå til kasse)
+10. Fill in your details and place the order
 
 ## Features
 
@@ -55,5 +61,4 @@ Rename .env.example to .env so the Apollo debugger will correctly load. It will 
 - Display product variation name in cart / checkout
 - Hide products not in stock
 - Add better SEO
-- Add a better README.md
 - Implement https://github.com/cyrilwanner/next-optimized-images for production
