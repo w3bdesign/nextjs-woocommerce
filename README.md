@@ -41,6 +41,7 @@
 - Support for simple products and variable products
 - Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
 - Algolia search
+- Meets WCAG accessibility standards where possible
 - Placeholder for products without images
 - Apollo Client with GraphQL
 - React Hook Form with form validation and error display

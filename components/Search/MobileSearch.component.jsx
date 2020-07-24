@@ -27,7 +27,7 @@ const MobileSearch = () => {
             translations={{
               submitTitle: 'Søk',
               resetTitle: 'Slett søketekst',
-              placeholder: 'Søk her ...',
+              placeholder: 'Søk etter produkter',
             }}
             className={`px-4 py-2 text-base bg-white border outline-none rounded ${
               hasFocus ? 'border-black' : 'border-gray-400'
