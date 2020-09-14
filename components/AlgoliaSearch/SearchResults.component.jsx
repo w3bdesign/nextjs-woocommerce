@@ -2,7 +2,15 @@ import Link from 'next/link';
 
 /**
  * Displays search results from Algolia
- * @param {Object} props
+ * @param {Object} hit {
+ * @param {String} product_image Product image from WooCommerce
+ * @param {String} product_name Name of product
+ * @param {Float} regular_price Price without discount
+ * @param {Float} sale_price Price when on sale
+ * @param {Boolean} on_sale Is the product on sale? True or false
+ * @param {String} short_description Short description of product
+ * @param {Integer} objectID ID of product
+ }
  */
 const SearchResults = ({
   hit: {
@@ -15,11 +23,14 @@ const SearchResults = ({
     objectID,
   },
 }) => {
+  // Replace empty spaces with dash (-)
+  const trimmedProductName = product_name.replace(/ /g, '-');
+
   return (
     <article className="cursor-pointer hit">
       <Link
         href="/produkt/[post]"
-        as={`/produkt/${product_name}?productId=${objectID}`}
+        as={`/produkt/${trimmedProductName}?productId=${objectID}`}
       >
         <div className="flex p-6 bg-white">
           <header className="hit-image-container">
