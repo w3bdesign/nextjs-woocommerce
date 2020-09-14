@@ -56,11 +56,13 @@
 
 ## Known limitations
 
-Overall the application is working as intended, but it has not been tested extensively in a production environment. More testing and debugging is required before deploying it in a production nevironment. 
- 
+Overall the application is working as intended, but it has not been tested extensively in a production environment. 
+More testing and debugging is required before deploying it in a production nevironment. 
+
 With that said, keep the following in mind:
 
-- Currently only simple products and variable products work without any issues. External/affilate products are not working.
+- Currently only simple products and variable products work without any issues. Other product types are not known to work.
+- Only Cash On Delivery (COD) is currently supported. More payment methods may be added later.
 
 ## TODO
 
