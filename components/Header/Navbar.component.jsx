@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import Cart from '../Cart/Cart.component';
-import Search from '../Search/AlgoliaSearchBox.component';
+import Search from '../AlgoliaSearch/AlgoliaSearchBox.component';
 import SVGMobileSearchIcon from '../SVG/SVGMobileSearchIcon.component';
 import Hamburger from './Hamburger.component';
 

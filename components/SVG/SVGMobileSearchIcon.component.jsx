@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 
-import MobileSearch from '../Search/MobileSearch.component';
+import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
 import SVGCloseX from './SVGCloseX.component';
 
 /**
