@@ -42,7 +42,7 @@ const SearchResults = ({
           </header>
           <div className="pl-4 text-left">
             {product_name && (
-              <span class="text-lg font-bold">{product_name}</span>
+              <span className="text-lg font-bold">{product_name}</span>
             )}
             <br />
             {on_sale && (
