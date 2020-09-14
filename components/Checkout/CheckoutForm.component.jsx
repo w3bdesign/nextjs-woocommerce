@@ -21,7 +21,7 @@ const CheckoutForm = () => {
   const [cart, setCart] = useContext(AppContext);
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
-  const [orderCompleted, setorderCompleted] = useState(false); 
+  const [orderCompleted, setorderCompleted] = useState(false);
 
   // Checkout GraphQL mutation
   const [
@@ -74,10 +74,15 @@ const CheckoutForm = () => {
           {/*	Order*/}
           <OrderDetails cart={cart} />
           <MobileOrderDetails cart={cart} />
-
           {/*Payment Details*/}
           <Billing onSubmit={onSubmit} />
-
+          {/*Error display*/}
+          {requestError && (
+            <div className="h-32 text-xl text-center text-red-600">
+              En feil har oppstått. Feilmeldingen er: <br />$
+              {requestError.toString()}
+            </div>
+          )}
           {/* Checkout Loading*/}
           {checkoutLoading && (
             <div className="text-xl text-center">
@@ -86,7 +91,6 @@ const CheckoutForm = () => {
               <LoadingSpinner />
             </div>
           )}
-          {requestError}
         </div>
       ) : (
         <>
