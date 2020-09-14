@@ -25,12 +25,11 @@ const AlgoliaSearchBox = () => {
         <div className="">
           <InstantSearch
             indexName={WOO_CONFIG.ALGOLIA_INDEX_NAME}
-            searchClient={searchClient}            
+            searchClient={searchClient}
           >
             {/*We need to conditionally add a border because the element has position:fixed*/}
-           
             <SearchBox
-            aria-label="Søk her"
+              aria-label="Søk her"
               translations={{
                 submitTitle: 'Søk',
                 resetTitle: 'Slett søketekst',

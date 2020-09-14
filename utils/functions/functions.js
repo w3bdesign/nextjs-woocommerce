@@ -143,7 +143,7 @@ const isProductInCart = (existingProductsInCart, productId) => {
 };
 
 /**
- * Remove Item from the cart.
+ * Remove item from the cart.
  *
  * @param {Integer} productId Product Id.
  * @return {any | string} Updated cart
