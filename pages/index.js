@@ -36,6 +36,6 @@ export async function getStaticProps() {
       loading: loading,
       networkStatus: networkStatus,
     },
-    unstable_revalidate: 10,
+    revalidate: 10,
   };
 }

@@ -36,7 +36,7 @@ export default withRouter(Produkt);
 export async function getServerSideProps({ query: { productId } }) {
   const res = await client.query({
     query: GET_SINGLE_PRODUCT,
-    variables: { productId },
+    variables: { id: productId },
   });
 
   return {
