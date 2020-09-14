@@ -20,7 +20,6 @@ const Produkt = ({ categoryName, products }) => {
       {products ? (
         <>
           <PageTitle title={categoryName} marginleft="50" />
-
           <IndexProducts products={products} />
         </>
       ) : (
