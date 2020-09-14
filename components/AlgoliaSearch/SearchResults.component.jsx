@@ -15,6 +15,9 @@ const SearchResults = ({
     objectID,
   },
 }) => {
+  console.log("Product image: ");
+  console.log(product_image);
+  
   return (
     <article className="cursor-pointer hit">
       <Link
