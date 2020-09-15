@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Map over the categories and display them individually.
  * Uses uuidv4 for unique key IDs
- * @param {Object} categories
+ * @param {Object} categories Product categories
  */
 const Categories = ({ categories }) => {
   return (

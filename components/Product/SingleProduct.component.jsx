@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import { WOO_CONFIG } from 'utils/config/nextConfig';
+import WOO_CONFIG  from 'utils/config/nextConfig';
 
 /**
  * Shows a single product with an Add To Cart button.
