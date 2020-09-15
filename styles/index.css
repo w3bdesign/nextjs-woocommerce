@@ -11,7 +11,7 @@
 }
 
 #closeXsearch {
-  padding-left: 6px;
+  padding-left: 10px;
 
 }
 
@@ -26,7 +26,7 @@
 /* Fix Algolia mobile-searchbox design issues */
 
 .ais-SearchBox-submit {
-	width: 50px;
+	width: 48px;
 }
 
 .ais-SearchBox-submitIcon {
