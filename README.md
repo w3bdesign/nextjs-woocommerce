@@ -67,6 +67,7 @@ With that said, keep the following in mind:
 
 ## TODO
 
+- Copy billing address to shipping address
 - Display product variation name in cart / checkout
 - Hide products not in stock
 - Add better SEO
