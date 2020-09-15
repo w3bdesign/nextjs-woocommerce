@@ -24,7 +24,10 @@
 }
 
 .ais-SearchBox-submitIcon {
-	margin-left: 100px;
+  margin-left: 100px;
+  /* Override default CSS to make the icon a little larger */
+  height: 15px !important;
+  width:15px !important;
 }
 
 /* Fix for annoying CSS bug with NavBar moving slightly on front page only */
