@@ -44,7 +44,7 @@ Optional plugins:
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Support for simple products and variable products
 - Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
-- Algolia search
+- Algolia search (requires [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer))
 - Meets WCAG accessibility standards where possible
 - Placeholder for products without images
 - Apollo Client with GraphQL
