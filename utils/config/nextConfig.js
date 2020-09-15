@@ -7,7 +7,8 @@ export const WOO_CONFIG = {
   ALGOLIA_APP_ID: '7L9M5Y0B1K',
   ALGOLIA_PUBLIC_API_KEY: '1536a3704dfa8b3e42f82e5f95601d47',
   ALGOLIA_INDEX_NAME: 'dfweb',
-  PLACEHOLDER_IMAGE_URL: 'https://via.placeholder.com/272',
+  PLACEHOLDER_SMALL_IMAGE_URL: 'https://res.cloudinary.com/duelisue0/image/upload/v1595540954/Nextjs-Woocommerce/placeholder-272-272_pg8t0z.jpg',
+  PLACEHOLDER_LARGE_IMAGE_URL: 'https://res.cloudinary.com/duelisue0/image/upload/v1595541416/Nextjs-Woocommerce/placeholder-616-616_beecp5.jpg',
 };
 
 // Development details
