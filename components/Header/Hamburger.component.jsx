@@ -14,12 +14,12 @@ const Hamburger = () => {
     to: [
       {
         opacity: isExpanded ? 1 : 0,
-        marginTop: isExpanded ? '180px' : '-180px',
+        marginTop: isExpanded ? '335px' : '-180px',
       },
     ],
     from: {
       opacity: isExpanded ? 1 : 0,
-      marginTop: isExpanded ? '180px' : '-180px',
+      marginTop: isExpanded ? '335px' : '-180px',
     },
   });
 
@@ -99,7 +99,7 @@ const Hamburger = () => {
           className="absolute right-0 z-10 w-full text-center text-black bg-white "
         >
           <ul>
-            <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
+            <li className="w-full p-4 border-t border-gray-400 border-solid rounded">
               <Link href="/">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
@@ -109,7 +109,7 @@ const Hamburger = () => {
                 </a>
               </Link>
             </li>
-            <li className="w-full p-4 border-b border-gray-400 border-solid rounded">
+            <li className="w-full p-4 border-t border-gray-400 border-solid rounded">
               <Link href="/produkter">
                 <a
                   className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
@@ -121,7 +121,7 @@ const Hamburger = () => {
             </li>
             <li
               id="mobile-li"
-              className="w-full p-4 border-b border-gray-400 border-solid rounded"
+              className="w-full p-4 border-t border-b border-gray-400 border-solid rounded"
             >
               <Link href="/kategorier">
                 <a
