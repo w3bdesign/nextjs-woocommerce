@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 
-import { WOO_CONFIG } from 'utils/config/nextConfig';
+import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
  * Convert price from string to floating value and convert it to use two decimals

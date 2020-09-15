@@ -9,7 +9,7 @@ import {
 
 import introspectionQueryResultData from './fragmentTypes';
 
-import { WOO_CONFIG } from 'utils/config/nextConfig';
+import WOO_CONFIG  from 'utils/config/nextConfig';
 
 // Fragment matcher.
 /*const fragmentMatcher = new IntrospectionFragmentMatcher({
