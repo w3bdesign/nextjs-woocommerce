@@ -15,12 +15,12 @@ const SVGMobileSearchIcon = () => {
     to: [
       {
         opacity: isExpanded ? 1 : 0,
-        marginTop: isExpanded ? '30px' : '-180px',
+        marginTop: isExpanded ? '20px' : '-180px',
       },
     ],
     from: {
       opacity: isExpanded ? 1 : 0,
-      marginTop: isExpanded ? '30px' : '-180px',
+      marginTop: isExpanded ? '20px' : '-180px',
     },
   });
 
@@ -46,10 +46,10 @@ const SVGMobileSearchIcon = () => {
           style={mobileSearchSlideDownAnimation}
           className="absolute right-0 z-50 w-full p-4 text-black bg-white"
         >
-          <div className="cursor-pointer">
+          <div id="closeXsearch" className="mt-2 ml-64 cursor-pointer">
             <SVGCloseX setisExpanded={setisExpanded} />
           </div>
-          <br />
+         
           <MobileSearch />
         </animated.div>
       )}
