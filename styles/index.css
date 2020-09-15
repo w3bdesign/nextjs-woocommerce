@@ -25,10 +25,9 @@
 
 /* Fix Algolia mobile-searchbox design issues */
 
-#mobilesearchdiv {
- 
+#mobilesearchdiv { 
     margin-top: -70px !important;
-    margin-left: -55px;
+    margin-left: -40px;
   
 }
 
