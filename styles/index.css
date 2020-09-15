@@ -26,11 +26,11 @@
 /* Fix Algolia mobile-searchbox design issues */
 
 .ais-SearchBox-submit {
-	width: 45px;
+	width: 50px;
 }
 
 .ais-SearchBox-submitIcon {
-  margin-left: 85px;
+  margin-left: 90px;
   /* Override default CSS to make the icon a little larger */
   height: 15px !important;
   width:15px !important;
