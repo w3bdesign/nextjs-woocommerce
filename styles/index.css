@@ -23,6 +23,10 @@
   margin-top: -20px;
 }
 
+.ais-SearchBox-submitIcon {
+	margin-left: 100px;
+}
+
 /* Fix for annoying CSS bug with NavBar moving slightly on front page only */
 /*@media only screen and (min-width: 769px) {*/
 
