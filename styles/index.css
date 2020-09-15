@@ -10,6 +10,11 @@
   width: 300px;
 }
 
+#closeXsearch {
+  padding-left: 6px;
+
+}
+
 #close-cart-p {
   margin-top: 2px;
 }
