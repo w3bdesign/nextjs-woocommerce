@@ -1,16 +1,21 @@
 ![Screenshot 1](./screenshots/screenshot1.jpg)
 
-# Next.js Ecommerce site with Woocommerce backend
+# NextJS Ecommerce site with WooCommerce backend
 
 ## Live URL: https://nextjs-woocommerce.now.sh/
 
-1. Install and activate the following plugins, in your WordPress plugin directory:
+1. Install and activate the following required plugins, in your WordPress plugin directory:
 
-- [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for Wordpress.
-- [wp-graphql](https://github.com/wp-graphql/wp-graphql) Exposes graphql for WordPress.
-- [wp-graphiql](https://github.com/wp-graphql/wp-graphiql) Provides GraphiQL IDE (playground) to the WP-Admin.
-- [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds Woocommerce functionality to a WPGraphQL schema.
-- [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
+- [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for WordPress.
+- [wp-graphql](https://github.com/wp-graphql/wp-graphql) Exposes GraphQL for WordPress.
+- [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds WooCommerce functionality to a WPGraphQL schema.
+- [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia. Required for search to work. 
+
+Optional plugins:
+
+- [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
+- [wp-graphiql](https://github.com/wp-graphql/wp-graphiql) Provides GraphiQL IDE (playground) to the WP-Admin. (optional)
+
 
 2. For debugging and testing, install either:
 
@@ -39,7 +44,7 @@
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Support for simple products and variable products
 - Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
-- Algolia search
+- Algolia search (requires [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer))
 - Meets WCAG accessibility standards where possible
 - Placeholder for products without images
 - Apollo Client with GraphQL
@@ -57,7 +62,7 @@
 ## Known limitations
 
 Overall the application is working as intended, but it has not been tested extensively in a production environment. 
-More testing and debugging is required before deploying it in a production nevironment. 
+More testing and debugging is required before deploying it in a production environment. 
 
 With that said, keep the following in mind:
 
@@ -67,6 +72,7 @@ With that said, keep the following in mind:
 ## TODO
 
 - Look into replacing nextConfig.js with https://vercel.com/docs/build-step#environment-variables
+- Copy billing address to shipping address
 - Display product variation name in cart / checkout
 - Hide products not in stock
 - Add better SEO
