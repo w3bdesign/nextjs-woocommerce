@@ -14,12 +14,12 @@ const Hamburger = () => {
     to: [
       {
         opacity: isExpanded ? 1 : 0,
-        marginTop: isExpanded ? '180px' : '-180px',
+        marginTop: isExpanded ? '170px' : '-180px',
       },
     ],
     from: {
       opacity: isExpanded ? 1 : 0,
-      marginTop: isExpanded ? '180px' : '-180px',
+      marginTop: isExpanded ? '170px' : '-180px',
     },
   });
 
