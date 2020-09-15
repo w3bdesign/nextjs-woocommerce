@@ -6,12 +6,16 @@
 
 1. Install and activate the following plugins, in your WordPress plugin directory:
 
-- [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for Wordpress.
-- [wp-graphql](https://github.com/wp-graphql/wp-graphql) Exposes graphql for WordPress.
-- [wp-graphiql](https://github.com/wp-graphql/wp-graphiql) Provides GraphiQL IDE (playground) to the WP-Admin.
-- [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds Woocommerce functionality to a WPGraphQL schema.
-- [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia.
+- [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for WordPress.
+- [wp-graphql](https://github.com/wp-graphql/wp-graphql) Exposes GraphQL for WordPress.
+- [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds WooCommerce functionality to a WPGraphQL schema.
+- [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia. Required for search to work. 
+
+Optional plugins:
+
 - [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
+- [wp-graphiql](https://github.com/wp-graphql/wp-graphiql) Provides GraphiQL IDE (playground) to the WP-Admin. (optional)
+
 
 2. For debugging and testing, install either:
 
