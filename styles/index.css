@@ -11,7 +11,7 @@
 }
 
 #closeXsearch {
-  padding-left: 7px;
+  padding-left: 5px;
 
 }
 
@@ -30,7 +30,7 @@
 }
 
 .ais-SearchBox-submitIcon {
-  margin-left: 80px;
+  margin-left: 75px;
   /* Override default CSS to make the icon a little larger */
   height: 15px !important;
   width:15px !important;
