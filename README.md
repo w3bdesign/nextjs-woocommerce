@@ -62,7 +62,7 @@ Optional plugins:
 ## Known limitations
 
 Overall the application is working as intended, but it has not been tested extensively in a production environment. 
-More testing and debugging is required before deploying it in a production nevironment. 
+More testing and debugging is required before deploying it in a production environment. 
 
 With that said, keep the following in mind:
 
