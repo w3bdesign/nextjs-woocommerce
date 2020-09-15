@@ -47,7 +47,7 @@ const SVGMobileSearchIcon = () => {
           className="right-0 z-50 w-full p-4 text-black bg-white"
           id="mobilesearchdiv"
         >
-          <div id="closeXsearch" className="mt-2 ml-64 cursor-pointer">
+          <div id="closeXsearch" className="mt-2 cursor-pointer">
             <SVGCloseX setisExpanded={setisExpanded} />
           </div>
          

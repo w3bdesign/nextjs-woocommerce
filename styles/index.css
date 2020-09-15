@@ -25,14 +25,8 @@
 
 /* Fix Algolia mobile-searchbox design issues */
 
-#mobilesearchdiv { 
-
-
-    left: 0;
-    position: absolute;
-
- 
-  
+#mobilesearchdiv {     
+    position: absolute;  
 }
 
 .ais-SearchBox-submit {
