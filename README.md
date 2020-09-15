@@ -4,7 +4,7 @@
 
 ## Live URL: https://nextjs-woocommerce.now.sh/
 
-1. Install and activate the following plugins, in your WordPress plugin directory:
+1. Install and activate the following required plugins, in your WordPress plugin directory:
 
 - [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for WordPress.
 - [wp-graphql](https://github.com/wp-graphql/wp-graphql) Exposes GraphQL for WordPress.
