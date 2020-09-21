@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "0.9.95",
+  "version": "0.9.96",
   "description": "Nextjs WooCommerce webshop",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "nprogress": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hook-form": "^6.8.2",
+    "react-hook-form": "^6.8.4",
     "react-instantsearch-dom": "^6.7.0",
     "react-spring": "^8.0.27",
     "styled-components": "^5.2.0",
