@@ -15,12 +15,12 @@ const SVGMobileSearchIcon = () => {
     to: [
       {
         opacity: isExpanded ? 1 : 0,
-        marginTop: isExpanded ? '20px' : '-180px',
+        marginTop: isExpanded ? '100px' : '-180px',
       },
     ],
     from: {
       opacity: isExpanded ? 1 : 0,
-      marginTop: isExpanded ? '20px' : '-180px',
+      marginTop: isExpanded ? '100px' : '-180px',
     },
   });
 
