@@ -2,7 +2,7 @@
 
 # NextJS Ecommerce site with WooCommerce backend
 
-## Live URL: https://nextjs-woocommerce.now.sh/
+## Live URL is not working as the production deployment of Wordpress has been taken offline.
 
 1. Install and activate the following required plugins, in your WordPress plugin directory:
 
