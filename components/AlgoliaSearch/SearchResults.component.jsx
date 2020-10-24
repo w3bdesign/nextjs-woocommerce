@@ -30,7 +30,7 @@ const SearchResults = ({
     <article className="cursor-pointer hit">
       <Link
         href="/produkt/[post]"
-        as={`/produkt/${trimmedProductName}?productId=${objectID}`}
+        as={`/produkt/${trimmedProductName}?id=${objectID}`}
       >
         <div className="flex p-6 bg-white">
           <header className="hit-image-container">
