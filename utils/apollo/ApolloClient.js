@@ -65,7 +65,7 @@ export const afterware = new ApolloLink((operation, forward) => {
 
     const session = headers.get('woocommerce-session');
 
-    if (session) {
+    if (session && process.browser) {
       // Remove session data if session destroyed.
       if ('false' === session) {
         localStorage.removeItem('woo-session');
