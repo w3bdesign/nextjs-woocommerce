@@ -5,7 +5,7 @@
 export const WOO_CONFIG = {
   GRAPHQL_URL: 'https://woo.dfweb.no/graphql',
   ALGOLIA_APP_ID: '7L9M5Y0B1K',
-  ALGOLIA_PUBLIC_API_KEY: '1536a3704dfa8b3e42f82e5f95601d47',
+  ALGOLIA_PUBLIC_API_KEY: '6f03421b21d2320c3d544777235debf1',
   ALGOLIA_INDEX_NAME: 'dfweb',
   PLACEHOLDER_SMALL_IMAGE_URL: 'https://res.cloudinary.com/duelisue0/image/upload/v1600187495/Nextjs-Woocommerce/337_utsb7h.jpg',
   PLACEHOLDER_LARGE_IMAGE_URL: 'https://res.cloudinary.com/duelisue0/image/upload/v1595541416/Nextjs-Woocommerce/placeholder-616-616_beecp5.jpg',
