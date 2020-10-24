@@ -150,7 +150,7 @@ export const GET_PRODUCTS_FROM_CATEGORY = gql`
       products(first: 50) {
         nodes {
           id
-          productId
+          databaseId
           averageRating
           slug
           description
