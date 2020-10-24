@@ -2,7 +2,7 @@
 
 # NextJS Ecommerce site with WooCommerce backend
 
-## Live URL is not working as the production deployment of Wordpress has been taken offline.
+## Live URL: https://nextjs-woocommerce.now.sh
 
 1. Install and activate the following required plugins, in your WordPress plugin directory:
 
@@ -11,11 +11,15 @@
 - [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds WooCommerce functionality to a WPGraphQL schema.
 - [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia. Required for search to work. 
 
-Optional plugins:
+Optional plugin:
 
 - [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
-- [wp-graphiql](https://github.com/wp-graphql/wp-graphiql) Provides GraphiQL IDE (playground) to the WP-Admin. (optional)
 
+The current release has been tested and is confirmed working with the following versions:
+
+- WooCommerce version 4.6.1
+- WP GraphQL version 0.13.3
+- WooGraphQL version 0.6.1
 
 2. For debugging and testing, install either:
 
