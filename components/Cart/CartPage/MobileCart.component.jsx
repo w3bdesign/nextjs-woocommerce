@@ -27,7 +27,7 @@ const MobileCart = ({ cart, handleRemoveProductClick, updateCart }) => {
               {cart.products.length &&
                 cart.products.map((item) => (
                   <MobileCartItem
-                    key={item.productId}
+                    key={item}
                     item={item}
                     products={cart.products}
                     handleRemoveProductClick={handleRemoveProductClick}

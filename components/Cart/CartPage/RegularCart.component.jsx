@@ -1,6 +1,11 @@
 import CartItem from './CartItem.component';
 
-const RegularCart = ({ cart, handleRemoveProductClick, updateCart, updateCartProcessing }) => {
+const RegularCart = ({
+  cart,
+  handleRemoveProductClick,
+  updateCart,
+  updateCartProcessing,
+}) => {
   return (
     <table className="hidden table-auto md:block lg:block xl:block">
       <thead>
@@ -25,10 +30,10 @@ const RegularCart = ({ cart, handleRemoveProductClick, updateCart, updateCartPro
         {cart.products.length &&
           cart.products.map((item) => (
             <CartItem
-              key={item.productId}
+              key={item}
               item={item}
               products={cart.products}
-              handleRemoveProductClick={handleRemoveProductClick}              
+              handleRemoveProductClick={handleRemoveProductClick}
               updateCart={updateCart}
               updateCartProcessing={updateCartProcessing}
             />
