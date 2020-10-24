@@ -7,8 +7,8 @@ import { useQuery, useMutation } from '@apollo/client';
 import { AppContext } from 'utils/context/AppContext';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import { GET_CART } from 'utils/const/GQL_QUERIES';
-import { ADD_TO_CART } from 'utils/const/GQL_MUTATIONS';
+import { GET_CART } from 'utils/gql/GQL_QUERIES';
+import { ADD_TO_CART } from 'utils/gql/GQL_MUTATIONS';
 
 import { getFormattedCart } from 'utils/functions/functions';
 
@@ -23,7 +23,7 @@ const AddToCartButton = ({ product }) => {
   const [showViewCart, setShowViewCart] = useState(false);
   const [showAddToCart, setshowAddToCart] = useState(false);
 
-  const productId = product.productId ? product.productId : product;
+  const productId = product.databaseId ? product.databaseId : product;
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.

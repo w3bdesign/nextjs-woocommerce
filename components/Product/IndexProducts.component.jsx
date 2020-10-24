@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
-import WOO_CONFIG  from 'utils/config/nextConfig';
+import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
  * Displays all of the products as long as length is defined.
@@ -16,7 +16,8 @@ const IndexProducts = ({ products }) => {
           {products ? (
             products.map(
               ({
-                productId,
+                id,
+                databaseId,
                 name,
                 price,
                 regularPrice,
@@ -29,10 +30,7 @@ const IndexProducts = ({ products }) => {
                   key={uuidv4()}
                   className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
                 >
-                  <Link
-                    href="/produkt/[post]"
-                    as={`/produkt/${slug}?productId=${productId}`}
-                  >
+                  <Link href="/produkt/[post]" as={`/produkt/${slug}?id=${id}`}>
                     <a>
                       {image ? (
                         <img
@@ -51,10 +49,7 @@ const IndexProducts = ({ products }) => {
                       )}
                     </a>
                   </Link>
-                  <Link
-                    href="/produkt/[post]"
-                    as={`/produkt/${slug}?productId=${productId}`}
-                  >
+                  <Link href="/produkt/[post]" as={`/produkt/${slug}?id=${id}`}>
                     <a>
                       <div className="flex justify-center pt-3">
                         <p className="font-bold text-center cursor-pointer">

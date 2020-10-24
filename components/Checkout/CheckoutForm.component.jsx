@@ -7,8 +7,8 @@ import MobileOrderDetails from './MobileOrderDetails.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 //import Payment from './Payment.component';
 
-import { GET_CART } from 'utils/const/GQL_QUERIES';
-import { CHECKOUT_MUTATION } from 'utils/const/GQL_MUTATIONS';
+import { GET_CART } from 'utils/gql/GQL_QUERIES';
+import { CHECKOUT_MUTATION } from 'utils/gql/GQL_MUTATIONS';
 
 import { AppContext } from 'utils/context/AppContext';
 

@@ -2,9 +2,9 @@ import { gql } from '@apollo/client';
 
 export const GET_SINGLE_PRODUCT = gql`
   query Product($id: ID!) {
-    product(id: $id, idType: DATABASE_ID) {
-      id
-      productId
+    product(id: $id) {
+      id 
+      databaseId     
       averageRating
       slug
       description
@@ -36,7 +36,7 @@ export const GET_SINGLE_PRODUCT = gql`
         variations {
           nodes {
             id
-            variationId
+            databaseId
             name
             stockStatus
             stockQuantity
@@ -104,7 +104,8 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
   query MyQuery {
     products(first: 24) {
       nodes {
-        productId
+        id
+        databaseId
         name
         onSale
         slug
@@ -199,7 +200,7 @@ export const GET_CART = gql`
           key
           product {
             id
-            productId
+            databaseId
             name
             description
             type
@@ -226,7 +227,7 @@ export const GET_CART = gql`
           }
           variation {
             id
-            variationId
+            databaseId
             name
             description
             type
@@ -258,7 +259,7 @@ export const GET_CART = gql`
       appliedCoupons {
         nodes {
           id
-          couponId
+          databaseId
           discountType
           amount
           dateExpiry

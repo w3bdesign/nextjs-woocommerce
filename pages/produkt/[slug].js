@@ -5,7 +5,7 @@ import Header from 'components/Header/Header.component';
 
 import client from 'utils/apollo/ApolloClient';
 
-import { GET_SINGLE_PRODUCT } from 'utils/const/GQL_QUERIES';
+import { GET_SINGLE_PRODUCT } from 'utils/gql/GQL_QUERIES';
 
 /**
  * Display a single product with dynamic pretty urls
@@ -33,10 +33,10 @@ const Produkt = ({ product }) => {
 
 export default withRouter(Produkt);
 
-export async function getServerSideProps({ query: { productId } }) {
+export async function getServerSideProps({ query: { id } }) {
   const res = await client.query({
     query: GET_SINGLE_PRODUCT,
-    variables: { id: productId },
+    variables: { id: id },
   });
 
   return {

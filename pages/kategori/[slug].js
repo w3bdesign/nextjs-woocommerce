@@ -6,7 +6,7 @@ import PageTitle from 'components/Title/PageTitle.component';
 
 import client from 'utils/apollo/ApolloClient';
 
-import { GET_PRODUCTS_FROM_CATEGORY } from 'utils/const/GQL_QUERIES';
+import { GET_PRODUCTS_FROM_CATEGORY } from 'utils/gql/GQL_QUERIES';
 
 /**
  * Display a single product with dynamic pretty urls

@@ -3,7 +3,7 @@ import IndexProducts from 'components/Product/IndexProducts.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 import PageTitle from 'components/Title/PageTitle.component';
 
-import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
+import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/gql/GQL_QUERIES';
 
 import client from 'utils/apollo/ApolloClient.js';
 

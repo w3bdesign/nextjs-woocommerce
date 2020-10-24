@@ -7,7 +7,7 @@ export const ADD_TO_CART = gql`
         key
         product {
           id
-          productId
+          databaseId
           name
           description
           type
@@ -30,7 +30,7 @@ export const ADD_TO_CART = gql`
         }
         variation {
           id
-          variationId
+          databaseId
           name
           description
           type
@@ -67,7 +67,7 @@ export const CHECKOUT_MUTATION = gql`
       clientMutationId
       order {
         id
-        orderId
+        databaseId
         refunds {
           nodes {
             amount

@@ -5,7 +5,7 @@ import PageTitle from 'components/Title/PageTitle.component';
 
 import client from 'utils/apollo/ApolloClient.js';
 
-import { FETCH_ALL_CATEGORIES_QUERY } from 'utils/const/GQL_QUERIES';
+import { FETCH_ALL_CATEGORIES_QUERY } from 'utils/gql/GQL_QUERIES';
 
 /**
  * Category page displays all of the categories

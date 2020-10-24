@@ -14,8 +14,8 @@ import RegularCart from './RegularCart.component';
 import MobileCart from './MobileCart.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import { GET_CART } from 'utils/const/GQL_QUERIES';
-import { UPDATE_CART } from 'utils/const/GQL_MUTATIONS';
+import { GET_CART } from 'utils/gql/GQL_QUERIES';
+import { UPDATE_CART } from 'utils/gql/GQL_MUTATIONS';
 
 const CartItemsContainer = () => {
   const [cart, setCart] = useContext(AppContext);

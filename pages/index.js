@@ -5,12 +5,12 @@ import PageTitle from 'components/Title/PageTitle.component';
 
 import client from 'utils/apollo/ApolloClient.js';
 
-import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/const/GQL_QUERIES';
+import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/gql/GQL_QUERIES';
 
 /**
  * Main index page
  * @param {Object} products
- * Initial static data is sent as props from getStaticProps and loaded through 'utils/const/INITIAL_PRODUCTS'
+ * Initial static data is sent as props from getStaticProps and loaded through 'utils/gql/INITIAL_PRODUCTS'
  */
 const HomePage = ({ products }) => {
   return (
