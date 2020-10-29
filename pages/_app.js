@@ -7,7 +7,7 @@ import NProgress from 'nprogress';
 import Footer from 'components/Footer/Footer.component';
 
 import "styles/index.css";
-import 'styles/algolia.min.css';
+//import 'styles/algolia.min.css'; // Not needed?
 import 'styles/animate.min.css';
 import 'nprogress/nprogress.css';
 

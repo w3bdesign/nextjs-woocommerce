@@ -1,8 +1,7 @@
-import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 /**
- * Loading spinner, shows while loading products or categories. 
+ * Loading spinner, shows while loading products or categories.
  * Uses Styled-Components
  */
 const LoadingSpinner = () => {

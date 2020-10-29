@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import WOO_CONFIG  from 'utils/config/nextConfig';
+import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
  * Shows a single product with an Add To Cart button.
@@ -44,18 +45,26 @@ const SingleProduct = ({ product }) => {
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
           <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
             {image ? (
-              <img
+              <Image
                 id="product-image"
                 className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
                 alt={name}
                 src={image.sourceUrl}
+                loading="lazy"
+                quality="60"
+                width={600}
+                height={600}
               />
             ) : (
-              <img
+              <Image
                 id="product-image"
                 className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
                 alt={name}
                 src={WOO_CONFIG.PLACEHOLDER_LARGE_IMAGE_URL}
+                loading="lazy"
+                quality="60"
+                width={600}
+                height={600}
               />
             )}
 
