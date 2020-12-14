@@ -9,7 +9,7 @@ import { AppContext } from 'utils/context/AppContext';
  * Displays amount of items in cart.
  */
 const Cart = () => {
-  const [cart, setCart] = useContext(AppContext);
+  const [cart] = useContext(AppContext);
 
   const productsCount =
     null !== cart && Object.keys(cart).length ? cart.totalProductsCount : '';
@@ -18,15 +18,15 @@ const Cart = () => {
     <>
       <Link href="/handlekurv">
         <a
-          className="inline-block pl-3 no-underline hover:text-black"
+          className="inline-block pl-4 mt-4 no-underline"
           aria-label="Handlekurv"
         >
           <svg
-            className="fill-current hover:text-black"
+            className="fill-current"
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            width="50"
+            height="55"
+            viewBox="0 0 30 30"
             aria-label="Handlekurv"
           >
             <path
@@ -40,7 +40,7 @@ const Cart = () => {
       </Link>
       {/*Cart quantity */}
       {productsCount && (
-        <span className="w-6 h-6 pb-2 -mt-6 text-center text-white bg-black rounded-full">
+        <span className="w-6 h-6 pb-2 -mt-5 text-center text-white bg-black rounded-full">
           {productsCount}
         </span>
       )}
