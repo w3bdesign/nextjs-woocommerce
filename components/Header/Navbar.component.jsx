@@ -22,14 +22,14 @@ const Navbar = () => {
             <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
               <li>
                 <Link href="/produkter">
-                  <a className="inline-block py-2 pr-4 no-underline hover:text-black hover:underline">
+                  <a className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
                     Produkter
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href="/kategorier">
-                  <a className="inline-block py-2 pr-4 no-underline hover:text-black hover:underline">
+                  <a className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
                     Kategorier
                   </a>
                 </Link>
