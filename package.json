@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Nextjs WooCommerce webshop",
   "main": "index.js",
   "scripts": {
@@ -12,24 +12,26 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.2.5",
-    "@types/react": "^16.9.55",
-    "algoliasearch": "^4.5.1",
+    "@apollo/client": "^3.3.6",
+    "@types/react": "^17.0.0",
+    "algoliasearch": "^4.8.3",
+    "autoprefixer": "^10.1.0",
     "graphql": "^15.4.0",
-    "next": "^10.0.0",
+    "next": "^10.0.3",
     "node-fetch": "^2.6.1",
     "nprogress": "^0.2.0",
+    "postcss": "^8.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-hook-form": "^6.9.6",
+    "react-hook-form": "^6.13.0",
     "react-instantsearch-dom": "^6.8.2",
     "react-spring": "^8.0.27",
-    "styled-components": "^5.2.0",
-    "uuid": "^8.3.1"
+    "styled-components": "^5.2.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "babel-plugin-styled-components": "^1.11.1",
+    "babel-plugin-styled-components": "^1.12.0",
     "postcss-preset-env": "^6.7.0",
-    "tailwindcss": "^1.9.6"
+    "tailwindcss": "^2.0.2"
   }
 }

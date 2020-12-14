@@ -13,10 +13,7 @@ const Navbar = () => {
   return (
     <header>
       <nav id="header" className="fixed top-0 z-50 w-full py-1 bg-white ">
-        <div
-          id="navbar-div"
-          className="container flex flex-wrap items-center justify-between px-6 py-3 mt-0 "
-        >
+        <div className="container flex flex-wrap items-center justify-between px-6 py-3 mx-auto mt-0">
           <Hamburger />
           <div
             className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1"
@@ -25,14 +22,14 @@ const Navbar = () => {
             <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
               <li>
                 <Link href="/produkter">
-                  <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
+                  <a className="inline-block py-2 pr-4 no-underline hover:text-black hover:underline">
                     Produkter
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href="/kategorier">
-                  <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
+                  <a className="inline-block py-2 pr-4 no-underline hover:text-black hover:underline">
                     Kategorier
                   </a>
                 </Link>
