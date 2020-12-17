@@ -36,7 +36,9 @@ The current release has been tested and is confirmed working with the following 
 
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
-4. Clone or fork the repo and modify `nextConfig.js`
+4. Clone or fork the repo and modify `nextConfig.js`. 
+   Then set the environment variables ALGOLIA_APP_ID and ALGOLIA_PUBLIC_API_KEY in Vercel.
+   See https://vercel.com/docs/environment-variables
 5. Modify the values according to your setup
 6. Start the server with `npm run dev`
 7. Enable COD (Cash On Demand) payment method in WooCommerce

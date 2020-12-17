@@ -1,14 +1,12 @@
 import { v4 } from 'uuid';
 
 import MobileOrderDetailsItem from './MobileOrderDetailsItem.component';
-import CheckoutTitle from 'components/Title/CheckoutTitle.component';
 
 const MobileOrderDetails = ({ cart }) => {
   return (
     <section className="block py-8 bg-white lg:hidden xl:hidden md:hidden">
       <div className="flex items-center justify-center">
         <div className="p-6 mx-auto mt-5">
-          <CheckoutTitle title="Din Ordre" />
           <table className="flex flex-row flex-no-wrap mx-auto my-5 overflow-hidden rounded-lg sm:bg-white sm:shadow-lg">
             <thead className="text-black">
               {cart.products.length &&

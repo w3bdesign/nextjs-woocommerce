@@ -17,8 +17,7 @@ const Categories = ({ categories }) => {
               as={`/kategori/${slug}?id=${id}`}
               href="/kategori/[id]"
             >
-              <div
-                //className="flex flex-col justify-around p-6 cursor-pointer xs:w-1/2 md:w-1/3 xl:w-1/4"
+              <div                
                 className="p-6 cursor-pointer"
               >
                 <div className="flex items-center justify-center w-full h-16 text-center border border-gray-300 rounded-lg shadow hover:shadow-outline">

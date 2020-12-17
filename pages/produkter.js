@@ -14,12 +14,13 @@ import client from 'utils/apollo/ApolloClient.js';
  * Shows an error if the server is down or unreachable.
  */
 const Produkter = ({ products }) => {
+  // TODO Stop hardcoding this value and do actual error checking
   const error = false;
 
   return (
     <>
       <Header title="- Produkter" />
-      <PageTitle title="Produkter" marginleft="50" />
+      <PageTitle title="Produkter" />
 
       {products && <IndexProducts products={products} />}
 
