@@ -2,12 +2,14 @@ import algoliasearch from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
-import WOO_CONFIG  from 'utils/config/nextConfig';
+import WOO_CONFIG from 'utils/config/nextConfig';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
-  WOO_CONFIG.ALGOLIA_APP_ID,
-  WOO_CONFIG.ALGOLIA_PUBLIC_API_KEY
+  // WOO_CONFIG.ALGOLIA_APP_ID,
+  // WOO_CONFIG.ALGOLIA_PUBLIC_API_KEY
+  process.env.ALGOLIA_APP_ID,
+  process.env.ALGOLIA_PUBLIC_API_KEY
 );
 
 // https://www.algolia.com/doc/api-reference/widgets/instantsearch/react/
