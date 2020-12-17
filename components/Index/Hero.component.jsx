@@ -7,7 +7,7 @@ const Hero = () => {
     
     <section
       id="hero"     
-      className="flex w-full pt-12 mx-auto mt-32 bg-right bg-cover md:pt-0 md:items-center"
+      className="flex w-full pt-12 mx-auto mt-40 bg-right bg-cover md:pt-0 md:items-center"
     >
       <div className="container mx-auto">
         <div className="flex flex-col items-start justify-center w-full px-6 tracking-wide lg:w-1/2">
