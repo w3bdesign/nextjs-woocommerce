@@ -7,9 +7,8 @@ import { AppContext } from 'utils/context/AppContext';
 import {
   getFormattedCart,
   getUpdatedItems,
-} from '../../../utils/functions/functions';
+} from 'utils/functions/functions';
 
-import PageTitle from 'components/Title/PageTitle.component';
 import RegularCart from './RegularCart.component';
 import MobileCart from './MobileCart.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
@@ -75,7 +74,7 @@ const CartItemsContainer = () => {
       // Update cart data in React Context.
       setCart(updatedCart);
     },
-    onError: (error) => {     
+    onError: (error) => {
       setRequestError(error);
     },
   });
@@ -85,7 +84,6 @@ const CartItemsContainer = () => {
         <div className="container flex flex-wrap items-center mx-auto">
           {cart ? (
             <div className="p-6 mx-auto mt-5">
-              <PageTitle title="Handlekurv" />
               <RegularCart
                 cart={cart}
                 updateCartProcessing={updateCartProcessing}

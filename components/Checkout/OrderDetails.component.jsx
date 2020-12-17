@@ -1,4 +1,3 @@
-import CheckoutTitle from 'components/Title/CheckoutTitle.component';
 import OrderDetailsCartItem from './OrderDetailsCartItem.component';
 
 const OrderDetails = ({ cart }) => {
@@ -8,7 +7,6 @@ const OrderDetails = ({ cart }) => {
         <div className="container flex flex-wrap items-center mx-auto">
           {cart ? (
             <div className="p-6 mx-auto mt-5">
-              <CheckoutTitle title="Din Ordre" />
               <table className="table-auto">
                 <thead>
                   <tr>
