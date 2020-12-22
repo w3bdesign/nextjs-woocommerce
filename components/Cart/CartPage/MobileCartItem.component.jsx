@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
 import { getUpdatedItems } from 'utils/functions/functions';
@@ -37,7 +37,7 @@ const MobileCartItem = ({
         updateCart({
           variables: {
             input: {
-              clientMutationId: v4(),
+              clientMutationId: uuidv4(),
               items: updatedItems,
             },
           },
@@ -58,7 +58,8 @@ const MobileCartItem = ({
         </td>
         <td className="h-12 p-3">{item.name}</td>
         <td className="h-12 p-3">
-          kr{'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
+          kr
+          {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
         </td>
         <td className="h-12 p-3">
           <input

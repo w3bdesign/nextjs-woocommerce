@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import MobileOrderDetailsItem from './MobileOrderDetailsItem.component';
 
@@ -12,7 +12,7 @@ const MobileOrderDetails = ({ cart }) => {
               {cart.products.length &&
                 cart.products.map(() => (
                   <tr
-                    key={v4()}
+                    key={uuidv4()}
                     className="flex flex-col mb-2 bg-white rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0"
                   >
                     <th className="p-3 text-left">Navn</th>

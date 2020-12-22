@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import WOO_CONFIG from 'utils/config/nextConfig';
 
@@ -239,7 +239,7 @@ export const getFormattedCart = (data) => {
 
 export const createCheckoutData = (order) => {
   const checkoutData = {
-    clientMutationId: v4(),
+    clientMutationId: uuidv4(),
 
     billing: {
       firstName: order.firstName,
