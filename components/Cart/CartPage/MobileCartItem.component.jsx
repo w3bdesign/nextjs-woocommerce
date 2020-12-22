@@ -58,7 +58,8 @@ const MobileCartItem = ({
         </td>
         <td className="h-12 p-3">{item.name}</td>
         <td className="h-12 p-3">
-          kr{'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
+          kr
+          {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
         </td>
         <td className="h-12 p-3">
           <input

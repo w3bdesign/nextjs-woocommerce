@@ -18,9 +18,9 @@ import { getFormattedCart } from 'utils/functions/functions';
  * @param {Object} product
  */
 const AddToCartButton = ({ product }) => {
-  const [cart, setCart] = useContext(AppContext);
-  const [requestError, setRequestError] = useState(null);
-  const [showViewCart, setShowViewCart] = useState(false);
+  const [, setCart] = useContext(AppContext);
+  const [, setRequestError] = useState(null);
+  const [, setShowViewCart] = useState(false);
   const [showAddToCart, setshowAddToCart] = useState(false);
 
   const productId = product.databaseId ? product.databaseId : product;
@@ -31,7 +31,7 @@ const AddToCartButton = ({ product }) => {
   };
 
   // Get Cart Data.
-  const { loading, error, data, refetch } = useQuery(GET_CART, {
+  const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
@@ -44,12 +44,12 @@ const AddToCartButton = ({ product }) => {
 
   const [
     addToCart,
-    { data: addToCartRes, loading: addToCartLoading, error: addToCartError },
+    { loading: addToCartLoading, error: addToCartError },
   ] = useMutation(ADD_TO_CART, {
     variables: {
       input: productQueryInput,
     },
-    onCompleted: (data) => {
+    onCompleted: () => {
       // If error.
       if (addToCartError) {
         setRequestError(addToCartError.graphQLErrors[0].message);
