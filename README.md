@@ -82,7 +82,6 @@ With that said, keep the following in mind:
 
 ## TODO
 
-- Look into replacing nextConfig.js with https://vercel.com/docs/build-step#environment-variables
 - Copy billing address to shipping address
 - Display product variation name in cart / checkout
 - Hide products not in stock
