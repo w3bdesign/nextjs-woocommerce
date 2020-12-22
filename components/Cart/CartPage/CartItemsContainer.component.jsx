@@ -4,10 +4,7 @@ import { useContext, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { AppContext } from 'utils/context/AppContext';
-import {
-  getFormattedCart,
-  getUpdatedItems,
-} from 'utils/functions/functions';
+import { getFormattedCart, getUpdatedItems } from 'utils/functions/functions';
 
 import RegularCart from './RegularCart.component';
 import MobileCart from './MobileCart.component';
@@ -21,23 +18,19 @@ const CartItemsContainer = () => {
   const [requestError, setRequestError] = useState(null);
 
   // Update Cart Mutation.
-  const [
-    updateCart,
+  const [updateCart, { loading: updateCartProcessing }] = useMutation(
+    UPDATE_CART,
     {
-      data: updateCartResponse,
-      loading: updateCartProcessing,
-      error: updateCartError,
-    },
-  ] = useMutation(UPDATE_CART, {
-    onCompleted: () => {
-      refetch();
-    },
-    onError: (error) => {
-      if (error) {
-        setRequestError(error);
-      }
-    },
-  });
+      onCompleted: () => {
+        refetch();
+      },
+      onError: (error) => {
+        if (error) {
+          setRequestError(error);
+        }
+      },
+    }
+  );
 
   /*
    * Handle remove product click.
@@ -65,7 +58,7 @@ const CartItemsContainer = () => {
     }
   };
 
-  const { loading, error, data, refetch } = useQuery(GET_CART, {
+  const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
@@ -82,6 +75,7 @@ const CartItemsContainer = () => {
     <>
       <section className="py-8 bg-white">
         <div className="container flex flex-wrap items-center mx-auto">
+          {requestError && <div className="p-6 mx-auto mt-5">Error ... </div>}
           {cart ? (
             <div className="p-6 mx-auto mt-5">
               <RegularCart
