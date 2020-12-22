@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { useContext, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
@@ -50,7 +50,7 @@ const CartItemsContainer = () => {
       updateCart({
         variables: {
           input: {
-            clientMutationId: v4(),
+            clientMutationId: uuidv4(),
             items: updatedItems,
           },
         },

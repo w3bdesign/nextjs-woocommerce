@@ -1,7 +1,5 @@
 import { useState, useContext } from 'react';
-
 import { v4 as uuidv4 } from 'uuid';
-
 import { useQuery, useMutation } from '@apollo/client';
 
 import { AppContext } from 'utils/context/AppContext';

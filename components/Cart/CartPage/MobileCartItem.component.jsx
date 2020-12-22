@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
 import { getUpdatedItems } from 'utils/functions/functions';
@@ -37,7 +37,7 @@ const MobileCartItem = ({
         updateCart({
           variables: {
             input: {
-              clientMutationId: v4(),
+              clientMutationId: uuidv4(),
               items: updatedItems,
             },
           },

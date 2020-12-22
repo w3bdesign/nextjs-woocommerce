@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import MobileCartItem from './MobileCartItem.component';
 
@@ -12,7 +12,7 @@ const MobileCart = ({ cart, handleRemoveProductClick, updateCart }) => {
               {cart.products.length &&
                 cart.products.map(() => (
                   <tr
-                    key={v4()}
+                    key={uuidv4()}
                     className="flex flex-col mb-2 bg-white border border-gray-300 rounded-l-lg flex-no wrap sm:table-row sm:rounded-none sm:mb-0"
                   >
                     <th className="p-3 text-left">Fjern</th>
@@ -27,7 +27,7 @@ const MobileCart = ({ cart, handleRemoveProductClick, updateCart }) => {
               {cart.products.length &&
                 cart.products.map((item) => (
                   <MobileCartItem
-                    key={item}
+                    key={uuidv4()}
                     item={item}
                     products={cart.products}
                     handleRemoveProductClick={handleRemoveProductClick}
