@@ -30,7 +30,11 @@ const IndexProducts = ({ products }) => {
                   key={uuidv4()}
                   className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
                 >
-                  <Link href="/produkt/[post]" as={`/produkt/${slug}?id=${databaseId}`}>
+                  <Link
+                    href={`/produkt/${encodeURIComponent(
+                      slug
+                    )}?id=${encodeURIComponent(databaseId)}`}
+                  >
                     <a>
                       {image ? (
                         <img
@@ -49,7 +53,12 @@ const IndexProducts = ({ products }) => {
                       )}
                     </a>
                   </Link>
-                  <Link href="/produkt/[post]" as={`/produkt/${slug}?id=${databaseId}`}>
+
+                  <Link
+                    href={`/produkt/${encodeURIComponent(
+                      slug
+                    )}?id=${encodeURIComponent(databaseId)}`}
+                  >
                     <a>
                       <div className="flex justify-center pt-3">
                         <p className="font-bold text-center cursor-pointer">
@@ -58,7 +67,6 @@ const IndexProducts = ({ products }) => {
                       </div>
                     </a>
                   </Link>
-
                   {/* Display sale price when on sale */}
                   {onSale && (
                     <>
