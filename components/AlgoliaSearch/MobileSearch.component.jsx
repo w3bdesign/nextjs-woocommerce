@@ -6,8 +6,8 @@ import WOO_CONFIG from 'utils/config/nextConfig';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
-  WOO_CONFIG.ALGOLIA_APP_ID,
-  WOO_CONFIG.ALGOLIA_PUBLIC_API_KEY
+  process.env.ALGOLIA_APP_ID,
+  process.env.ALGOLIA_PUBLIC_API_KEY
 );
 
 /**
