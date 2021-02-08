@@ -129,7 +129,7 @@ export const getUpdatedProducts = (
  * @return {number | *} Index Returns -1 if product does not exist in the array, index number otherwise
  */
 const isProductInCart = (existingProductsInCart, productId) => {
-  const returnItemThatExits = (item, index) => {
+  const returnItemThatExits = (item) => {
     if (productId === item.productId) {
       return item;
     }
