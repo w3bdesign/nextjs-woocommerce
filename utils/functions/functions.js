@@ -99,7 +99,7 @@ export const getUpdatedProducts = (
   );
 
   // If product exists ( index of that product was found in the array ), update the product quantity and totalPrice
-  if (-1 < productExitsIndex) {
+  if (-1 < productExistsIndex) {
     let updatedProducts = existingProductsInCart;
     let updatedProduct = updatedProducts[productExistsIndex];
 
@@ -158,17 +158,17 @@ export const removeItemFromCart = (productId) => {
   }
 
   // Check if the product already exits in the cart.
-  const productExitsIndex = isProductInCart(existingCart.products, productId);
+  const productExistsIndex = isProductInCart(existingCart.products, productId);
 
   // If product to be removed exits
-  if (-1 < productExitsIndex) {
-    const productTobeRemoved = existingCart.products[productExitsIndex];
+  if (-1 < productExistsIndex) {
+    const productTobeRemoved = existingCart.products[productExistsIndex];
     const qtyToBeRemovedFromTotal = productTobeRemoved.qty;
     const priceToBeDeductedFromTotal = productTobeRemoved.totalPrice;
 
     // Remove that product from the array and update the total price and total quantity of the cart
     let updatedCart = existingCart;
-    updatedCart.products.splice(productExitsIndex, 1);
+    updatedCart.products.splice(productExistsIndex, 1);
     updatedCart.totalProductsCount =
       updatedCart.totalProductsCount - qtyToBeRemovedFromTotal;
     updatedCart.totalProductsPrice =
