@@ -112,14 +112,13 @@ export const getUpdatedProducts = (
     );
 
     return updatedProducts;
-  } else {
-    // If product not found push the new product to the existing product array.
-    let productPrice = getFloatVal(product.price);
-    const newProduct = createNewProduct(product, productPrice, qtyToBeAdded);
-    existingProductsInCart.push(newProduct);
-
-    return existingProductsInCart;
   }
+  // If product not found push the new product to the existing product array.
+  let productPrice = getFloatVal(product.price);
+  const newProduct = createNewProduct(product, productPrice, qtyToBeAdded);
+  existingProductsInCart.push(newProduct);
+
+  return existingProductsInCart;
 };
 
 /**
