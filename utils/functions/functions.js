@@ -67,7 +67,7 @@ export const updateCart = (
   quantityToBeAdded,
   newQuantity = false
 ) => {
-  const updatedProducts = getUpdatedProducts(
+  getUpdatedProducts(
     existingCart.products,
     product,
     quantityToBeAdded,
