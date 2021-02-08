@@ -132,6 +132,7 @@ const isProductInCart = (existingProductsInCart, productId) => {
     if (productId === item.productId) {
       return item;
     }
+    return;
   };
 
   // This new array will only contain the product which is matched.
