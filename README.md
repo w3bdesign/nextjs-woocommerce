@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/w3bdesign/nextjs-woocommerce/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/w3bdesign/nextjs-woocommerce/?branch=master)
+
 ![Screenshot 1](./screenshots/screenshot1.jpg)
 
 # NextJS Ecommerce site with WooCommerce backend
