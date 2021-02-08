@@ -93,7 +93,7 @@ export const getUpdatedProducts = (
   newQty = false
 ) => {
   // Check if the product already exits in the cart.
-  const productExitsIndex = isProductInCart(
+  const productExistsIndex = isProductInCart(
     existingProductsInCart,
     product.productId
   );
@@ -101,7 +101,7 @@ export const getUpdatedProducts = (
   // If product exists ( index of that product was found in the array ), update the product quantity and totalPrice
   if (-1 < productExitsIndex) {
     let updatedProducts = existingProductsInCart;
-    let updatedProduct = updatedProducts[productExitsIndex];
+    let updatedProduct = updatedProducts[productExistsIndex];
 
     // If have new quantity of the product available, set that, else add the qtyToBeAdded
     updatedProduct.qty = newQty
