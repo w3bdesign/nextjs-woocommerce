@@ -176,9 +176,8 @@ export const removeItemFromCart = (productId) => {
 
     localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
     return updatedCart;
-  } else {
-    return existingCart;
   }
+  return existingCart;
 };
 
 /**
