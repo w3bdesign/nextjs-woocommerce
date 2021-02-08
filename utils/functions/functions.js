@@ -110,7 +110,6 @@ export const getUpdatedProducts = (
     updatedProduct.totalPrice = parseFloat(
       (updatedProduct.price * updatedProduct.qty).toFixed(2)
     );
-
     return updatedProducts;
   }
   // If product not found push the new product to the existing product array.
