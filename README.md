@@ -10,7 +10,7 @@
 
 -   [Installation](#Installation)
 -   [Features](#Features)
--   [Known Limitations](#Known Limitations)
+-   [Issues](#Issues)
 -   [Troubleshooting](#Troubleshooting)
 -   [TODO](#TODO)
 
@@ -92,7 +92,7 @@ Check that you are using the 0.6.1 version of the [wp-graphql-woocommerce](https
 
 Check the attributes of the products. Right now the application requires Size and Color.
 
-## Known limitations
+## Issues
 
 Overall the application is working as intended, but it has not been tested extensively in a production environment. 
 More testing and debugging is required before deploying it in a production environment. 
