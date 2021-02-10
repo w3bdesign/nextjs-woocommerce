@@ -6,6 +6,16 @@
 
 ## Live URL: https://nextjs-woocommerce.now.sh
 
+## Table Of Contents (TOC)
+
+-   [Installation](#Installation)
+-   [Features](#Features)
+-   [Known Limitations](#Known Limitations)
+-   [Troubleshooting](#Troubleshooting)
+-   [TODO](#TODO)
+
+## Installation
+
 1. Install and activate the following required plugins, in your WordPress plugin directory:
 
 - [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for WordPress.
@@ -71,6 +81,16 @@ The current release has been tested and is confirmed working with the following 
 - Tailwind CSS for styling
 - JSDoc comments
 - WooCommerce cart session is automatically deleted after 48 hours to prevent GraphQL session expiration errors
+
+## Troubleshooting
+
+### I am getting a cart undefined error or other GraphQL errors
+
+Check that you are using the 0.6.1 version of the [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) plugin
+
+### The products page isn't loading
+
+Check the attributes of the products. Right now the application requires Size and Color.
 
 ## Known limitations
 
