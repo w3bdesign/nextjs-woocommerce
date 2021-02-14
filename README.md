@@ -1,4 +1,5 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/w3bdesign/nextjs-woocommerce/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/w3bdesign/nextjs-woocommerce/?branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=w3bdesign_nuxtjs-woocommerce&metric=alert_status)](https://sonarcloud.io/dashboard?id=w3bdesign_nuxtjs-woocommerce)
 
 ![Screenshot 1](./screenshots/screenshot1.jpg)
 
