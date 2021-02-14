@@ -9,7 +9,6 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
 import { GET_CART } from 'utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from 'utils/gql/GQL_MUTATIONS';
-
 import { AppContext } from 'utils/context/AppContext';
 
 import {
@@ -24,23 +23,23 @@ const CheckoutForm = () => {
   const [orderCompleted, setorderCompleted] = useState(false);
 
   // Checkout GraphQL mutation
-  const [
-    checkout,
-    { data: checkoutResponse, loading: checkoutLoading, error: checkoutError },
-  ] = useMutation(CHECKOUT_MUTATION, {
-    variables: {
-      input: orderData,
-    },
-    onCompleted: () => {
-      setorderCompleted(true);
-      refetch();
-    },
-    onError: (error) => {
-      if (error) {
-        setRequestError(error);
-      }
-    },
-  });
+  const [checkout, { loading: checkoutLoading }] = useMutation(
+    CHECKOUT_MUTATION,
+    {
+      variables: {
+        input: orderData,
+      },
+      onCompleted: () => {
+        setorderCompleted(true);
+        refetch();
+      },
+      onError: (error) => {
+        if (error) {
+          setRequestError(error);
+        }
+      },
+    }
+  );
 
   // Get Cart Data.
   const { loading, error, data, refetch } = useQuery(GET_CART, {
