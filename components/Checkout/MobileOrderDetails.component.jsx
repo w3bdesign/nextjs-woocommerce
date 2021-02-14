@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import MobileOrderDetailsItem from './MobileOrderDetailsItem.component';
+import MobileOrderDetailsCartItem from './MobileOrderDetailsCartItem.component';
 
 const MobileOrderDetails = ({ cart }) => {
   return (
@@ -25,7 +25,7 @@ const MobileOrderDetails = ({ cart }) => {
             <tbody className="flex-1 sm:flex-none">
               {cart.products.length &&
                 cart.products.map((item) => (
-                  <MobileOrderDetailsItem
+                  <MobileOrderDetailsCartItem
                     key={item.productId}
                     item={item}
                     products={cart.products}
