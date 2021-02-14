@@ -4,17 +4,9 @@ import {
   InMemoryCache,
   createHttpLink,
   ApolloLink,
-  //IntrospectionFragmentMatcher,
 } from '@apollo/client';
 
-import introspectionQueryResultData from './fragmentTypes';
-
-import WOO_CONFIG  from 'utils/config/nextConfig';
-
-// Fragment matcher.
-/*const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData,
-});*/
+import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
  * Middleware operation
@@ -37,7 +29,6 @@ export const middleware = new ApolloLink((operation, forward) => {
     localStorage.removeItem('woo-session');
     localStorage.removeItem('woo-session-expiry');
   }
-
   if (session) {
     operation.setContext(({ headers = {} }) => ({
       headers: {
