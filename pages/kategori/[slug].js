@@ -16,7 +16,7 @@ const Produkt = ({ categoryName, products }) => {
 
   return (
     <>
-      <Header title={`- ${categoryName && categoryName}`} />
+      <Header title={`- ${categoryName ? categoryName : ''}`} />
       {products ? (
         <>
           <PageTitle title={categoryName} marginleft="50" />
