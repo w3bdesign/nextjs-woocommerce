@@ -7,7 +7,7 @@ const SVGCloseX = ({ setisExpanded }) => {
       <svg
         width="80px"
         height="80px"
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 234.6 45.47"
         onClick={() => {
           setisExpanded(false);

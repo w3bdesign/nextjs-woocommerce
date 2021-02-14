@@ -33,7 +33,7 @@ const SVGMobileSearchIcon = () => {
             setisExpanded(!isExpanded);
           }}
           fill="#000000"
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="https://www.w3.org/2000/svg"
           viewBox="0 0 50 50"
           width="20px"
           height="20px"
