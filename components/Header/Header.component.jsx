@@ -10,7 +10,7 @@ const Header = ({title}) => {
   return (
     <>
       <Head>
-        <title>Nextjs Ecommerce with Woocommerce {title && title}</title>
+        <title>Nextjs Ecommerce with WooCommerce {title}</title>
         <meta name="description" content="WooCommerce webshop" />
         <meta name="keywords" content="Ecommerce, WooCommerce" />
         <meta
