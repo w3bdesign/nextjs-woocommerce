@@ -1,7 +1,7 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.10",
-  "description": "Nextjs WooCommerce webshop",
+  "version": "1.0.11",
+  "description": "NextJS WooCommerce webshop",
   "main": "index.js",
   "scripts": {
     "dev": "next",
@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.3.9",
+    "@apollo/client": "^3.3.10",
     "@types/react": "^17.0.2",
     "algoliasearch": "^4.8.5",
     "autoprefixer": "^10.2.4",
