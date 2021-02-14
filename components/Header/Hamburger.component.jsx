@@ -62,7 +62,7 @@ const Hamburger = () => {
             setisExpanded(prevExpanded => !prevExpanded);
           }}
           className="text-gray-900 fill-current"
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="https://www.w3.org/2000/svg"
           width="20"
           height="20"
           viewBox="0 0 20 20"
@@ -76,7 +76,7 @@ const Hamburger = () => {
             setisExpanded(prevExpanded => !prevExpanded);
           }}
           style={showXHideHamburgerAnimation}
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="https://www.w3.org/2000/svg"
           width="20"
           height="20"
           viewBox="0 0 20 20"
