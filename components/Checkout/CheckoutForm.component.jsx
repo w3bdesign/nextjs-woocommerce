@@ -34,9 +34,7 @@ const CheckoutForm = () => {
         refetch();
       },
       onError: (error) => {
-        if (error) {
-          setRequestError(error);
-        }
+        setRequestError(error);
       },
     }
   );
