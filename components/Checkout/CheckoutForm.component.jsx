@@ -40,7 +40,7 @@ const CheckoutForm = () => {
   );
 
   // Get Cart Data.
-  const { loading, error, data, refetch } = useQuery(GET_CART, {
+  const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
@@ -58,8 +58,8 @@ const CheckoutForm = () => {
     }
   }, [orderData]);
 
-  const onSubmit = (data) => {
-    const checkOutData = createCheckoutData(data);
+  const onSubmit = (submitData) => {
+    const checkOutData = createCheckoutData(submitData);
     setOrderData(checkOutData);
     setRequestError(null);
   };
