@@ -70,13 +70,15 @@ const AddToCartButton = ({ product }) => {
     addToCart();
   };
 
+  // Separate out conditions here for increased readability
+  const fadeInButton = addToCartLoading && `animate__animated animate__fadeOutUp`;
+  const fadeOutButton = showAddToCart && `animate__animated animate__fadeInDown`;
+
   return (
     <>
       <button
         onClick={handleAddToCartClick}
-        className={`px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400 ${
-          addToCartLoading && `animate__animated animate__fadeOutUp`
-        } ${showAddToCart && `animate__animated animate__fadeInDown`}`}
+        className={`px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400 ${fadeInButton} ${fadeOutButton}`}
       >
         KJØP
       </button>
