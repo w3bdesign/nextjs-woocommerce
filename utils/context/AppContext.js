@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export const AppContext = React.createContext([{}, () => {}]);
+export const AppContext = React.createContext();
 
 /**
  * Provides a global application context for the entire application with the cart contents
