@@ -106,6 +106,7 @@ With that said, keep the following in mind:
 ## TODO
 
 - Add total to cart/checkout page
+- Show stock quantity on individual products
 - Copy billing address to shipping address
 - Display product variation name in cart / checkout
 - Hide products not in stock
