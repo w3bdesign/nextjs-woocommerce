@@ -156,6 +156,7 @@ export const GET_PRODUCTS_FROM_CATEGORY = gql`
         nodes {
           id
           databaseId
+          onSale
           averageRating
           slug
           description
@@ -168,10 +169,16 @@ export const GET_PRODUCTS_FROM_CATEGORY = gql`
           }
           name
           ... on SimpleProduct {
+            salePrice
+            regularPrice
+            onSale
             price
             id
           }
           ... on VariableProduct {
+            salePrice
+            regularPrice
+            onSale
             price
             id
           }
