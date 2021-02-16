@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import WOO_CONFIG  from 'utils/config/nextConfig';
+import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
  * Shows a single product with an Add To Cart button.
@@ -58,7 +58,6 @@ const SingleProduct = ({ product }) => {
                 src={WOO_CONFIG.PLACEHOLDER_LARGE_IMAGE_URL}
               />
             )}
-
             <div className="ml-8">
               <p className="text-3xl font-bold text-left">{name}</p>
               <br />
@@ -110,7 +109,7 @@ const SingleProduct = ({ product }) => {
               )}
               <div className="pt-1 mt-2">
                 {
-                  // Display default AddToCart button if we dont have variations. If we do, send the variationId to AddToCart button
+                  // Display default AddToCart button if we do not have variations. If we do, send the variationId to AddToCart button
                 }
                 {product.variations ? (
                   <AddToCartButton product={selectedVariation} />

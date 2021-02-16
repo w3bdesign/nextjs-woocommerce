@@ -3,11 +3,12 @@ import { gql } from '@apollo/client';
 export const GET_SINGLE_PRODUCT = gql`
   query Product($id: ID!) {
     product(id: $id, idType: DATABASE_ID) {
-      id 
-      databaseId     
+      id
+      databaseId
       averageRating
       slug
       description
+      onSale
       image {
         id
         uri
@@ -17,10 +18,14 @@ export const GET_SINGLE_PRODUCT = gql`
       }
       name
       ... on SimpleProduct {
+        salePrice
+        regularPrice
         price
         id
       }
       ... on VariableProduct {
+        salePrice
+        regularPrice
         price
         id
         paColors {
