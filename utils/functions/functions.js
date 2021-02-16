@@ -236,9 +236,8 @@ export const getFormattedCart = (data) => {
 };
 
 export const createCheckoutData = (order) => {
-  const checkoutData = {
+  return {
     clientMutationId: uuidv4(),
-
     billing: {
       firstName: order.firstName,
       lastName: order.lastName,
@@ -270,8 +269,6 @@ export const createCheckoutData = (order) => {
     isPaid: false,
     transactionId: 'hjkhjkhsdsdiui',
   };
-
-  return checkoutData;
 };
 
 /**
