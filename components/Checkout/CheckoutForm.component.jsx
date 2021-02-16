@@ -5,7 +5,6 @@ import Billing from './Billing.component';
 import OrderDetails from './OrderDetails.component';
 import MobileOrderDetails from './MobileOrderDetails.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
-// TODO Add more payment methods
 
 import { GET_CART } from 'utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from 'utils/gql/GQL_MUTATIONS';

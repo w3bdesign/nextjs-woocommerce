@@ -110,13 +110,13 @@ const SingleProduct = ({ product }) => {
               )}
               <div className="pt-1 mt-2">
                 {
-                  // Display default AddToCart button if we do not have variations. If we do, send the variationId to AddToCart button
+                  // Display default AddToCart button if we do not have variations. 
+                  // If we do, send the variationId to AddToCart button
                 }
-                {product.variations ? (
+                {product.variations && (
                   <AddToCartButton product={selectedVariation} />
-                ) : (
-                  <AddToCartButton product={product} />
                 )}
+                {!product.variations && <AddToCartButton product={product} />}
               </div>
             </div>
           </div>
