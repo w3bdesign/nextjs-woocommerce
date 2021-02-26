@@ -103,11 +103,11 @@ export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
  `;
 
 /**
- * Fetch first 24 Woocommerce products from GraphQL
+ * Fetch first 200 Woocommerce products from GraphQL
  */
 export const FETCH_ALL_PRODUCTS_QUERY = gql`
   query MyQuery {
-    products(first: 24) {
+    products(first: 200) {
       nodes {
         id
         databaseId
