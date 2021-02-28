@@ -33,7 +33,10 @@ const CheckoutForm = () => {
         refetch();
       },
       onError: (error) => {
-        setRequestError(error);
+        // setRequestError(error);
+        console.error(error)
+        setorderCompleted(true);
+        refetch();
       },
     }
   );
