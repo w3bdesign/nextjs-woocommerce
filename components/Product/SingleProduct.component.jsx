@@ -12,10 +12,14 @@ import WOO_CONFIG from 'utils/config/nextConfig';
  */
 const SingleProduct = ({ product }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedVariation, setselectedVariation] = useState(64);
+  const [selectedVariation, setselectedVariation] = useState();
 
   useEffect(() => {
     setIsLoading(false);
+    if (product.variations) {
+      const firstVariant = product.variations.nodes[0].databaseId;
+      setselectedVariation(firstVariant);
+    }
   }, []);
 
   const {
@@ -95,11 +99,11 @@ const SingleProduct = ({ product }) => {
                     }}
                   >
                     {product.variations.nodes.map(
-                      ({ id, name, variationId }) => {
+                      ({ id, name, databaseId }) => {
                         // Remove product name from variation name
                         const filteredName = name.split('- ').pop();
                         return (
-                          <option key={id} value={variationId}>
+                          <option key={id} value={databaseId}>
                             {filteredName}
                           </option>
                         );
@@ -110,7 +114,7 @@ const SingleProduct = ({ product }) => {
               )}
               <div className="pt-1 mt-2">
                 {
-                  // Display default AddToCart button if we do not have variations. 
+                  // Display default AddToCart button if we do not have variations.
                   // If we do, send the variationId to AddToCart button
                 }
                 {product.variations && (

@@ -3,7 +3,7 @@
 // Live details
 
 export const WOO_CONFIG = {
-  GRAPHQL_URL: 'https://woo.dfweb.no/graphql',
+  GRAPHQL_URL: 'https://woo.dfweb.no/graphql',  
   ALGOLIA_INDEX_NAME: 'dfweb',
   PLACEHOLDER_SMALL_IMAGE_URL:
     'https://res.cloudinary.com/duelisue0/image/upload/v1600187495/Nextjs-Woocommerce/337_utsb7h.jpg',
