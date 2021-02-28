@@ -30,7 +30,7 @@ export const middleware = new ApolloLink((operation, forward) => {
     localStorage.removeItem('woo-session-expiry');
   }
   if (session) {
-    operation.setContext(({ headers = {} }) => ({
+    operation.setContext(() => ({
       headers: {
         'woocommerce-session': `Session ${session}`,
       },
@@ -81,8 +81,7 @@ const client = new ApolloClient({
         fetch: fetch,
       })
     )
-  ),
-  //cache: new InMemoryCache({ possibleTypes: introspectionQueryResultData }),
+  ),  
   cache: new InMemoryCache(),
 });
 
