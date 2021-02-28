@@ -71,8 +71,10 @@ const AddToCartButton = ({ product }) => {
   };
 
   // Separate out conditions here for increased readability
-  const fadeInButton = addToCartLoading && `animate__animated animate__fadeOutUp`;
-  const fadeOutButton = showAddToCart && `animate__animated animate__fadeInDown`;
+  const fadeInButton =
+    addToCartLoading && `animate__animated animate__fadeOutUp`;
+  const fadeOutButton =
+    showAddToCart && `animate__animated animate__fadeInDown`;
 
   return (
     <>
