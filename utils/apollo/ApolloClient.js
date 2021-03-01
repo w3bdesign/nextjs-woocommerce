@@ -60,7 +60,6 @@ export const afterware = new ApolloLink((operation, forward) => {
       // Remove session data if session destroyed.
       if ('false' === session) {
         localStorage.removeItem('woo-session');
-
         // Update session new data if changed.
       } else if (localStorage.getItem('woo-session') !== session) {
         localStorage.setItem('woo-session', headers.get('woocommerce-session'));
@@ -81,7 +80,7 @@ const client = new ApolloClient({
         fetch: fetch,
       })
     )
-  ),  
+  ),
   cache: new InMemoryCache(),
 });
 

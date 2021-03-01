@@ -64,17 +64,6 @@ export const ADD_TO_CART = gql`
 export const CHECKOUT_MUTATION = gql`
   mutation CHECKOUT_MUTATION($input: CheckoutInput!) {
     checkout(input: $input) {
-      clientMutationId
-      order {
-        id
-        databaseId
-        refunds {
-          nodes {
-            amount
-          }
-        }
-        status
-      }
       result
       redirect
     }
