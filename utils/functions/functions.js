@@ -41,26 +41,6 @@ export const getFloatVal = (string) => {
 };
 
 /**
- * Update cart when we add a new product to it
- * @param {Object} existingCart
- * @param {Object} product
- * @param {Number} quantityToBeAdded
- */
-export const updateCart = (
-  existingCart,
-  product,
-  quantityToBeAdded,
-  newQuantity = false
-) => {
-  getUpdatedProducts(
-    existingCart.products,
-    product,
-    quantityToBeAdded,
-    newQuantity
-  );
-};
-
-/**
  * Returns cart data in the required format.
  * @param {String} data Cart data
  */
