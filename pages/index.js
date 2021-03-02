@@ -33,8 +33,8 @@ export async function getStaticProps() {
   return {
     props: {
       products: data.products.nodes,
-      loading: loading,
-      networkStatus: networkStatus,
+      loading,
+      networkStatus,
     },
     revalidate: 10,
   };
