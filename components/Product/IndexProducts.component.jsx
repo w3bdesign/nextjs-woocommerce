@@ -11,6 +11,7 @@ import { filteredVariantPrice } from 'utils/functions/functions';
  * @param {Object} products
  */
 const IndexProducts = ({ products }) => {
+  console.log(products);
   return (
     <>
       <section className="container mx-auto bg-white">
@@ -26,6 +27,7 @@ const IndexProducts = ({ products }) => {
                 onSale,
                 slug,
                 image,
+                variations,
               }) => (
                 <div
                   key={uuidv4()}
@@ -72,11 +74,13 @@ const IndexProducts = ({ products }) => {
                   {onSale && (
                     <>
                       <div className="flex justify-center">
-                        <div className="pt-1 text-gray-900 line-through">
-                          {regularPrice}
+                        <div className="pt-1 text-gray-900">
+                          {variations && filteredVariantPrice(price)}
+                          {!variations && salePrice}
                         </div>
-                        <div className="pt-1 ml-2 text-gray-900">
-                          {filteredVariantPrice(salePrice)}
+                        <div className="pt-1 ml-2 text-gray-900 line-through">
+                          {variations && filteredVariantPrice(price, 'right')}
+                          {!variations && regularPrice}
                         </div>
                       </div>
                     </>

@@ -17,12 +17,15 @@ export const trimmedStringToLength = (string, length) => {
 };
 
 /**
- * Filter variant price. Changes from "kr198.00 - kr299.00" to kr299.00
+ * Filter variant price. Changes "kr198.00 - kr299.00" to kr299.00 or kr198 depending on the side variable
+ * @param {String} side Which side of the string to return (which side of the "-" symbol)
  * @param {String} price The inputted price that we need to convert
  */
-export const filteredVariantPrice = (price) => {
-  // Filter price from "kr198.00 - kr299.00" to kr299.00
-  return price.substring(price.length, price.indexOf('-')).replace('-', '');
+export const filteredVariantPrice = (price, side) => {
+  if ('right' === side) {
+    return price.substring(price.length, price.indexOf('-')).replace('-', '');
+  }
+  return price.substring(0, price.indexOf('-')).replace('-', '');
 };
 
 /**
