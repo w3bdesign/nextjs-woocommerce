@@ -17,6 +17,20 @@ const CartItemsContainer = () => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
 
+  const { data, refetch } = useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: () => {
+      // Update cart in the localStorage.
+      const updatedCart = getFormattedCart(data);
+      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+      // Update cart data in React Context.
+      setCart(updatedCart);
+    },
+    onError: (error) => {
+      setRequestError(error);
+    },
+  });
+
   // Update Cart Mutation.
   const [updateCart, { loading: updateCartProcessing }] = useMutation(
     UPDATE_CART,
@@ -58,19 +72,6 @@ const CartItemsContainer = () => {
     }
   };
 
-  const { data, refetch } = useQuery(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data);
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-      // Update cart data in React Context.
-      setCart(updatedCart);
-    },
-    onError: (error) => {
-      setRequestError(error);
-    },
-  });
   return (
     <>
       <section className="py-8 bg-white">
