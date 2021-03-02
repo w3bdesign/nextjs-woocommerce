@@ -16,7 +16,6 @@ const IndexProducts = ({ products }) => {
           {products ? (
             products.map(
               ({
-                id,
                 databaseId,
                 name,
                 price,
