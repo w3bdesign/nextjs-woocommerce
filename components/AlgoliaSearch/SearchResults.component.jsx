@@ -1,5 +1,7 @@
 import Link from 'next/link';
 
+import { trimmedStringToLength } from 'utils/functions/functions';
+
 /**
  * Displays search results from Algolia
  * @param {Object} hit {
@@ -55,7 +57,9 @@ const SearchResults = ({
             )}
             {!on_sale && <span className="text-base">kr {regular_price}</span>}
             <br />
-            <span className="text-base">{short_description}</span>
+            <span className="text-base">
+              {trimmedStringToLength(short_description, 30)}
+            </span>
           </div>
         </div>
       </Link>

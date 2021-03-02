@@ -5,6 +5,8 @@ import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
 import WOO_CONFIG from 'utils/config/nextConfig';
 
+import { filteredVariantPrice } from 'utils/functions/functions';
+
 /**
  * Shows a single product with an Add To Cart button.
  * Uses GraphQL for product data
@@ -70,8 +72,8 @@ const SingleProduct = ({ product }) => {
               {onSale && (
                 <>
                   <div className="flex">
-                    <p className="pt-1 mt-4 text-3xl text-gray-900">
-                      {salePrice}
+                    <p className="pt-1 mt-4 text-3xl text-gray-900">                      
+                      {filteredVariantPrice(salePrice)}
                     </p>
                     <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
                       {regularPrice}

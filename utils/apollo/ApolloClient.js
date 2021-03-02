@@ -70,14 +70,16 @@ export const afterware = new ApolloLink((operation, forward) => {
   });
 });
 
+const clientSide = typeof window === 'undefined';
+
 // Apollo GraphQL client.
 const client = new ApolloClient({
-  ssrMode: typeof window === 'undefined',
+  ssrMode: clientSide,
   link: middleware.concat(
     afterware.concat(
       createHttpLink({
         uri: WOO_CONFIG.GRAPHQL_URL,
-        fetch: fetch,
+        fetch,
       })
     )
   ),

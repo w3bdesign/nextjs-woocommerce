@@ -3,6 +3,29 @@ import { v4 as uuidv4 } from 'uuid';
 import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
+ * Shorten inputted string (usually product description) to a maximum of 20 characters
+ * @param {String} string The string that we input
+ * @param {Integer} length The length that we want to shorten the text to
+ */
+export const trimmedStringToLength = (string, length) => {
+  if (string.length > length) {
+    const subStr = string.substring(0, length);
+    return subStr + '...';
+  } else {
+    return string;
+  }
+};
+
+/**
+ * Filter variant price. Changes from "kr198.00 - kr299.00" to kr299.00
+ * @param {String} price The inputted price that we need to convert
+ */
+export const filteredVariantPrice = (price) => {
+  // Filter price from "kr198.00 - kr299.00" to kr299.00
+  return price.substring(price.length, price.indexOf('-')).replace('-', '');
+};
+
+/**
  * Convert price from string to floating value and convert it to use two decimals
  * @param {String} string
  */
@@ -12,47 +35,6 @@ export const getFloatVal = (string) => {
   return null !== floatValue
     ? parseFloat(parseFloat(floatValue).toFixed(2))
     : '';
-};
-
-/**
- * Add first product to shopping cart
- * @param {Object} product
- */
-export const addFirstProduct = (product) => {
-  const { price } = product.product.products.edges[0].node;
-  const productData = product.product.products.edges[0].node;
-  let productPrice = getFloatVal(price);
-
-  // If no item in cart, push first product to an empty array
-  let newCart = {
-    products: [],
-    totalProductsCount: 1,
-    totalProductsPrice: productPrice,
-  };
-
-  const newProduct = createNewProduct(productData, productPrice, 1);
-  newCart.products.push(newProduct);
-
-  localStorage.setItem('woocommerce-cart', JSON.stringify(newCart));
-  return newCart;
-};
-
-/**
- * Create a new product object
- * @param {Object} product
- * @param {Number} productPrice
- * @param {Number} quantity
- * @return { productId, image, name,  price, quantity,  totalPrice}
- */
-export const createNewProduct = (product, productPrice, quantity) => {
-  return {
-    productId: product.productId,
-    image: product.image.sourceUrl,
-    name: product.name,
-    price: productPrice,
-    quantity: quantity,
-    totalPrice: parseFloat((quantity * productPrice).toFixed(2)),
-  };
 };
 
 /**
@@ -73,111 +55,6 @@ export const updateCart = (
     quantityToBeAdded,
     newQuantity
   );
-};
-
-/**
- * Get updated products array
- * Update the product if it exists else,
- * add the new product to existing cart,
- *
- * @param {Object} existingProductsInCart Existing product in cart
- * @param {Object} product Product
- * @param {Integer} qtyToBeAdded Quantity
- * @param {Integer} newQty New qty of the product (optional)
- * @return {*[]}
- */
-export const getUpdatedProducts = (
-  existingProductsInCart,
-  product,
-  qtyToBeAdded,
-  newQty = false
-) => {
-  // Check if the product already exits in the cart.
-  const productExistsIndex = isProductInCart(
-    existingProductsInCart,
-    product.productId
-  );
-
-  // If product exists ( index of that product was found in the array ), update the product quantity and totalPrice
-  if (-1 < productExistsIndex) {
-    let updatedProducts = existingProductsInCart;
-    let updatedProduct = updatedProducts[productExistsIndex];
-
-    // If have new quantity of the product available, set that, else add the qtyToBeAdded
-    updatedProduct.qty = newQty
-      ? parseInt(newQty)
-      : parseInt(updatedProduct.qty + qtyToBeAdded);
-    updatedProduct.totalPrice = parseFloat(
-      (updatedProduct.price * updatedProduct.qty).toFixed(2)
-    );
-    return updatedProducts;
-  }
-  // If product not found push the new product to the existing product array.
-  let productPrice = getFloatVal(product.price);
-  const newProduct = createNewProduct(product, productPrice, qtyToBeAdded);
-  existingProductsInCart.push(newProduct);
-
-  return existingProductsInCart;
-};
-
-/**
- * Returns index of the product if it exists.
- *
- * @param {Object} existingProductsInCart Existing Products.
- * @param {Integer} productId Product id.
- * @return {number | *} Index Returns -1 if product does not exist in the array, index number otherwise
- */
-const isProductInCart = (existingProductsInCart, productId) => {
-  const returnItemThatExits = (item) => {
-    if (productId === item.productId) {
-      return item;
-    }
-    return -1;
-  };
-
-  // This new array will only contain the product which is matched.
-  const newArray = existingProductsInCart.filter(returnItemThatExits);
-
-  return existingProductsInCart.indexOf(newArray[0]);
-};
-
-/**
- * Remove item from the cart.
- *
- * @param {Integer} productId Product Id.
- * @return {any | string} Updated cart
- */
-export const removeItemFromCart = (productId) => {
-  let existingCart = localStorage.getItem('woo-next-cart');
-  existingCart = JSON.parse(existingCart);
-
-  // If there is only one item in the cart, delete the cart.
-  if (1 === existingCart.products.length) {
-    localStorage.removeItem('woo-next-cart');
-    return null;
-  }
-
-  // Check if the product already exits in the cart.
-  const productExistsIndex = isProductInCart(existingCart.products, productId);
-
-  // If product to be removed exits
-  if (-1 < productExistsIndex) {
-    const productTobeRemoved = existingCart.products[productExistsIndex];
-    const qtyToBeRemovedFromTotal = productTobeRemoved.qty;
-    const priceToBeDeductedFromTotal = productTobeRemoved.totalPrice;
-
-    // Remove that product from the array and update the total price and total quantity of the cart
-    let updatedCart = existingCart;
-    updatedCart.products.splice(productExistsIndex, 1);
-    updatedCart.totalProductsCount =
-      updatedCart.totalProductsCount - qtyToBeRemovedFromTotal;
-    updatedCart.totalProductsPrice =
-      updatedCart.totalProductsPrice - priceToBeDeductedFromTotal;
-
-    localStorage.setItem('woo-next-cart', JSON.stringify(updatedCart));
-    return updatedCart;
-  }
-  return existingCart;
 };
 
 /**
@@ -292,7 +169,7 @@ export const getUpdatedItems = (products, newQty, cartKey) => {
     if (cartItem.cartKey === cartKey) {
       updatedItems.push({
         key: cartItem.cartKey,
-        quantity: parseInt(newQty),
+        quantity: parseInt(newQty, 10),
       });
 
       // Otherwise just push the existing qty without updating.

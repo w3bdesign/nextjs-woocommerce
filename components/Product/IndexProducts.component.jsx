@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import WOO_CONFIG from 'utils/config/nextConfig';
 
+import { filteredVariantPrice } from 'utils/functions/functions';
+
 /**
  * Displays all of the products as long as length is defined.
  * Does a map() over the props array and utilizes uuidv4 for unique key values.
@@ -74,7 +76,7 @@ const IndexProducts = ({ products }) => {
                           {regularPrice}
                         </div>
                         <div className="pt-1 ml-2 text-gray-900">
-                          {salePrice}
+                          {filteredVariantPrice(salePrice)}
                         </div>
                       </div>
                     </>
