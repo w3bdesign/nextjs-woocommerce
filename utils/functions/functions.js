@@ -169,7 +169,7 @@ export const getUpdatedItems = (products, newQty, cartKey) => {
     if (cartItem.cartKey === cartKey) {
       updatedItems.push({
         key: cartItem.cartKey,
-        quantity: parseInt(newQty),
+        quantity: parseInt(newQty, 10),
       });
 
       // Otherwise just push the existing qty without updating.
