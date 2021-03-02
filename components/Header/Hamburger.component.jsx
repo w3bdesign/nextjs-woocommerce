@@ -58,7 +58,7 @@ const Hamburger = () => {
           id="hamburgersvg"
           style={showHamburgerHideXAnimation}
           onClick={() => {
-            setisExpanded(prevExpanded => !prevExpanded);
+            setisExpanded((prevExpanded) => !prevExpanded);
           }}
           className="text-gray-900 fill-current"
           xmlns="https://www.w3.org/2000/svg"
@@ -71,7 +71,7 @@ const Hamburger = () => {
         <animated.svg
           id="xsvg"
           onClick={() => {
-            setisExpanded(prevExpanded => !prevExpanded);
+            setisExpanded((prevExpanded) => !prevExpanded);
           }}
           style={showXHideHamburgerAnimation}
           xmlns="https://www.w3.org/2000/svg"
