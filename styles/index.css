@@ -24,7 +24,6 @@
 }
 
 /* Fix Algolia mobile-searchbox design issues */
-
 #mobilesearchdiv {     
     position: absolute;
     height: 200px;  
