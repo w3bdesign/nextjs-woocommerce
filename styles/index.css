@@ -12,7 +12,6 @@
 
 #closeXsearch {
   padding-left: 5px;
-
 }
 
 #close-cart-p {
@@ -24,17 +23,17 @@
 }
 
 /* Fix Algolia mobile-searchbox design issues */
-#mobilesearchdiv {     
-    position: absolute;
-    height: 200px;  
+#mobilesearchdiv {
+  position: absolute;
+  height: 200px;
 }
 
 .ais-SearchBox-submit {
-	width: 48px;
+  width: 48px;
 }
 
 .ais-SearchBox-submitIcon {
- display: none;
+  display: none;
 }
 
 .ais-SearchBox-reset {
