@@ -3,14 +3,27 @@ import { v4 as uuidv4 } from 'uuid';
 import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
+ * Shorten inputted string (usually product description) to a maximum of 20 characters
+ * @param {String} string The string that we input
+ * @param {Integer} length The length that we want to shorten the text to
+ */
+export const trimmedStringToLength = (string, length) => {
+  if (string.length > length) {
+    const subStr = string.substring(0, length);
+    return subStr + '...';
+  } else {
+    return string;
+  }
+};
+
+/**
  * Filter variant price. Changes from "kr198.00 - kr299.00" to kr299.00
- * @param {Number} price 
+ * @param {String} price The inputted price that we need to convert
  */
 export const filteredVariantPrice = (price) => {
   // Filter price from "kr198.00 - kr299.00" to kr299.00
   return price.substring(price.length, price.indexOf('-')).replace('-', '');
 };
-
 
 /**
  * Convert price from string to floating value and convert it to use two decimals
