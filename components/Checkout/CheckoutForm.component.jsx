@@ -21,6 +21,18 @@ const CheckoutForm = () => {
   const [requestError, setRequestError] = useState(null);
   const [orderCompleted, setorderCompleted] = useState(false);
 
+    // Get Cart Data.
+    const { data, refetch } = useQuery(GET_CART, {
+      notifyOnNetworkStatusChange: true,
+      onCompleted: () => {
+        // Update cart in the localStorage.
+        const updatedCart = getFormattedCart(data);
+        localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+        // Update cart data in React Context.
+        setCart(updatedCart);
+      },
+    });
+
   // Checkout GraphQL mutation
   const [checkout, { loading: checkoutLoading }] = useMutation(
     CHECKOUT_MUTATION,
@@ -39,17 +51,7 @@ const CheckoutForm = () => {
     }
   );
 
-  // Get Cart Data.
-  const { data, refetch } = useQuery(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data);
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-      // Update cart data in React Context.
-      setCart(updatedCart);
-    },
-  });
+
 
   useEffect(() => {
     if (null !== orderData) {
