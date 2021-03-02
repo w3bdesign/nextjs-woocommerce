@@ -25,7 +25,7 @@ const AddToCartButton = ({ product }) => {
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
-    productId: productId,
+    productId,
   };
 
   // Get Cart Data.
