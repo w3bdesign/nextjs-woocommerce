@@ -60,7 +60,7 @@ export const getFormattedCart = (data) => {
 
   let i = 0;
   givenProducts.forEach(() => {
-    const givenProduct = givenProducts[parseInt(i)].product;
+    const givenProduct = givenProducts[parseInt(i,10)].product;
     const product = {};
     // Convert price to a float value
     const convertedCurrency = givenProducts[i].total.replace(/[^0-9.-]+/g, '');
