@@ -126,6 +126,13 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
           price
           regularPrice
           salePrice
+          variations {
+            nodes {
+              price
+              regularPrice
+              salePrice
+            }
+          }
         }
       }
     }

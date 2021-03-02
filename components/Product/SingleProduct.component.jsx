@@ -72,11 +72,14 @@ const SingleProduct = ({ product }) => {
               {onSale && (
                 <>
                   <div className="flex">
-                    <p className="pt-1 mt-4 text-3xl text-gray-900">                      
-                      {filteredVariantPrice(salePrice)}
+                    <p className="pt-1 mt-4 text-3xl text-gray-900">
+                      {product.variations && filteredVariantPrice(price)}
+                      {!product.variations && salePrice}
                     </p>
                     <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
-                      {regularPrice}
+                      {product.variations &&
+                        filteredVariantPrice(price, 'right')}
+                      {!product.variations && regularPrice}
                     </p>
                   </div>
                 </>
