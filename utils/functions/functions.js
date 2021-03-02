@@ -60,31 +60,36 @@ export const getFormattedCart = (data) => {
 
   let i = 0;
   givenProducts.forEach(() => {
-    const givenProduct = givenProducts[parseInt(i,10)].product;
+    const givenProduct = givenProducts[parseInt(i, 10)].product;
     const product = {};
     // Convert price to a float value
-    const convertedCurrency = givenProducts[parseInt(i,10)].total.replace(/[^0-9.-]+/g, '');
+    const convertedCurrency = givenProducts[parseInt(i, 10)].total.replace(
+      /[^0-9.-]+/g,
+      ''
+    );
 
     product.productId = givenProduct.productId;
-    product.cartKey = givenProducts[parseInt(i,10)].key;
+    product.cartKey = givenProducts[parseInt(i, 10)].key;
     product.name = givenProduct.name;
-    product.qty = givenProducts[parseInt(i,10)].quantity;
+    product.qty = givenProducts[parseInt(i, 10)].quantity;
     product.price = convertedCurrency / product.qty;
-    product.totalPrice = givenProducts[parseInt(i,10)].total;
+    product.totalPrice = givenProducts[parseInt(i, 10)].total;
     // Ensure we can add products without images to the cart
-    givenProduct.image
-      ? (product.image = {
-          sourceUrl: givenProduct.image.sourceUrl,
-          srcSet: givenProduct.image.srcSet,
-          title: givenProduct.image.title,
-        })
-      : (product.image = {
-          sourceUrl: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
-          srcSet: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
-          title: givenProduct.name,
-        });
+    if (givenProduct.image) {
+      product.image = {
+        sourceUrl: givenProduct.image.sourceUrl,
+        srcSet: givenProduct.image.srcSet,
+        title: givenProduct.image.title,
+      };
+    } else {
+      product.image = {
+        sourceUrl: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
+        srcSet: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
+        title: givenProduct.name,
+      };
+    }
 
-    totalProductsCount += givenProducts[parseInt(i,10)].quantity;
+    totalProductsCount += givenProducts[parseInt(i, 10)].quantity;
     // Push each item into the products array.
     formattedCart.products.push(product);
     i++;
