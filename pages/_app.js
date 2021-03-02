@@ -1,4 +1,4 @@
-import { ApolloProvider } from '@apollo/client'
+import { ApolloProvider } from '@apollo/client';
 import { AppProvider } from 'utils/context/AppContext';
 
 import Router from 'next/router';
@@ -6,7 +6,7 @@ import NProgress from 'nprogress';
 
 import Footer from 'components/Footer/Footer.component';
 
-import "styles/index.css";
+import 'styles/index.css';
 import 'styles/animate.min.css';
 import 'nprogress/nprogress.css';
 
@@ -20,7 +20,7 @@ const App = ({ Component, pageProps }) => {
   return (
     <>
       <ApolloProvider client={client}>
-        <AppProvider>         
+        <AppProvider>
           <Component {...pageProps} />
           <Footer />
         </AppProvider>
