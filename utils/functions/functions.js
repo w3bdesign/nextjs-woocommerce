@@ -3,6 +3,16 @@ import { v4 as uuidv4 } from 'uuid';
 import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
+ * Filter variant price. Changes from "kr198.00 - kr299.00" to kr299.00
+ * @param {Number} price 
+ */
+export const filteredVariantPrice = (price) => {
+  // Filter price from "kr198.00 - kr299.00" to kr299.00
+  return price.substring(price.length, price.indexOf('-')).replace('-', '');
+};
+
+
+/**
  * Convert price from string to floating value and convert it to use two decimals
  * @param {String} string
  */
