@@ -11,7 +11,6 @@ import { filteredVariantPrice } from 'utils/functions/functions';
  * @param {Object} products
  */
 const IndexProducts = ({ products }) => {
-  console.log(products);
   return (
     <>
       <section className="container mx-auto bg-white">
