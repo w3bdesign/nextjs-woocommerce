@@ -1,3 +1,5 @@
+/*eslint complexity: ["error", 6]*/
+
 import fetch from 'node-fetch';
 import {
   ApolloClient,
