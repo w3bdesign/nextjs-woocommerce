@@ -20,7 +20,7 @@
     "next": "^10.0.7",
     "node-fetch": "^2.6.1",
     "nprogress": "^0.2.0",
-    "postcss": "^8.2.6",
+    "postcss": "^8.2.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.4",
