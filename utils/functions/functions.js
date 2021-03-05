@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import WOO_CONFIG from 'utils/config/nextConfig';
 
 /**
- * Shorten inputted string (usually product description) to a maximum of 20 characters
+ * Shorten inputted string (usually product description) to a maximum of length
  * @param {String} string The string that we input
  * @param {Integer} length The length that we want to shorten the text to
  */
@@ -46,18 +46,14 @@ export const getFloatVal = (string) => {
  */
 export const getFormattedCart = (data) => {
   let formattedCart = null;
-
   if (!data || !data.cart.contents.nodes.length) {
     return formattedCart;
   }
-
   const givenProducts = data.cart.contents.nodes;
-
   // Create an empty object.
   formattedCart = {};
   formattedCart.products = [];
   let totalProductsCount = 0;
-
   let i = 0;
   givenProducts.forEach(() => {
     const givenProduct = givenProducts[parseInt(i, 10)].product;
