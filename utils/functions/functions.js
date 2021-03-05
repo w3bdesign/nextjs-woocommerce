@@ -11,9 +11,8 @@ export const trimmedStringToLength = (string, length) => {
   if (string.length > length) {
     const subStr = string.substring(0, length);
     return subStr + '...';
-  } else {
-    return string;
   }
+  return string;
 };
 
 /**
