@@ -107,6 +107,7 @@ With that said, keep the following in mind:
 
 ## TODO
 
+- Read https://www.react-spring.io/log and update React-spring to version 9
 - Add total to cart/checkout page
 - Show stock quantity on individual products
 - Copy billing address to shipping address
