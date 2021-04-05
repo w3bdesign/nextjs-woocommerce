@@ -26,7 +26,7 @@ const Input = ({
 );
 
 const Billing = ({ onSubmit }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   return (
     <>
