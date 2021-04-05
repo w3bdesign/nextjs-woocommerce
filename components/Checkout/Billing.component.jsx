@@ -1,35 +1,5 @@
 import { useForm } from 'react-hook-form';
 
-const Input = ({
-  name,
-  label,
-  //register,
-  registerRef,
-  placeholder,
-  value,
-  parameters,
-  type = 'text',
-  readOnly = false,
-}) => {
-  const { register } = useForm();
-
-  return (
-    <>
-      <label className="pb-4">{label}</label>
-      <input
-        className="w-full px-4 py-2 mt-2 text-base bg-white border border-gray-400 rounded focus:outline-none focus:border-black"
-        name={name}
-        placeholder={placeholder}
-        type="text"
-        value={value}
-        {...register(registerRef, parameters)}
-        type={type}
-        readOnly={readOnly}
-      />
-    </>
-  );
-};
-
 const Billing = ({ onSubmit }) => {
   const inputClasses =
     'w-full px-4 py-2 mt-2 text-base bg-white border border-gray-400 rounded focus:outline-none focus:border-black';
@@ -94,7 +64,6 @@ const Billing = ({ onSubmit }) => {
                       required: 'Dette feltet er påkrevd',
                     })}
                   />
-
                   {errors.address1 && (
                     <span className="text-red-500">
                       FEIL: {errors.address1.message}
@@ -143,7 +112,6 @@ const Billing = ({ onSubmit }) => {
                       required: 'Dette feltet er påkrevd',
                     })}
                   />
-
                   {errors.city && (
                     <span className="text-red-500">
                       FEIL: {errors.city.message}
@@ -166,7 +134,6 @@ const Billing = ({ onSubmit }) => {
                       },
                     })}
                   />
-
                   {errors.email && (
                     <span className="text-red-500">
                       FEIL: {errors.email.message}
@@ -191,14 +158,12 @@ const Billing = ({ onSubmit }) => {
                         value: 8,
                         message: 'Maksimalt 8 tall i telefonnummeret',
                       },
-
                       pattern: {
                         value: /^[0-9]+$/i,
                         message: 'Ikke gyldig telefonnummer',
                       },
                     })}
                   />
-
                   {errors.phone && (
                     <span className="text-red-500">
                       FEIL: {errors.phone.message}
