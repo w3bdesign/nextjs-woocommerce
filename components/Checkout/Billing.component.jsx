@@ -17,10 +17,11 @@ const Billing = ({ onSubmit }) => {
             <div className="mx-auto lg:w-1/2 md:w-2/3">
               <div className="flex flex-wrap -m-2">
                 <div className="w-1/2 p-2">
-                  <label className="pb-4">Fornavn</label>
+                  <label for="firstName" className="pb-4">Fornavn</label>
                   <input
                     className={inputClasses}
                     name="firstName"
+                    id="firstName"
                     placeholder="Fornavn"
                     label="Fornavn"
                     type="text"
@@ -35,10 +36,11 @@ const Billing = ({ onSubmit }) => {
                   )}
                 </div>
                 <div className="w-1/2 p-2">
-                  <label className="pb-4">Etternavn</label>
+                  <label for="lastName" className="pb-4">Etternavn</label>
                   <input
                     className={inputClasses}
                     name="lastName"
+                    id="lastName"
                     placeholder="Etternavn"
                     label="Etternavn"
                     type="text"
@@ -53,10 +55,11 @@ const Billing = ({ onSubmit }) => {
                   )}
                 </div>
                 <div className="w-1/2 p-2">
-                  <label className="pb-4">Addresse</label>
+                  <label for="address1" className="pb-4">Addresse</label>
                   <input
                     className={inputClasses}
                     name="address1"
+                    id="address1"
                     placeholder="Adresse"
                     label="Adresse"
                     type="text"
@@ -71,10 +74,11 @@ const Billing = ({ onSubmit }) => {
                   )}
                 </div>
                 <div className="w-1/2 p-2">
-                  <label className="pb-4">Addresse</label>
+                  <label for="postcode" className="pb-4">Postnummer</label>
                   <input
                     className={inputClasses}
                     name="postcode"
+                    id="postcode"
                     placeholder="Postnummer"
                     label="Postnummer"
                     type="text"
@@ -101,10 +105,11 @@ const Billing = ({ onSubmit }) => {
                   )}
                 </div>
                 <div className="w-1/2 p-2">
-                  <label className="pb-4">Sted</label>
+                  <label for="city" className="pb-4">Sted</label>
                   <input
                     className={inputClasses}
                     name="city"
+                    id="city"
                     placeholder="Sted"
                     label="Sted"
                     type="text"
@@ -119,10 +124,11 @@ const Billing = ({ onSubmit }) => {
                   )}
                 </div>
                 <div className="w-1/2 p-2">
-                  <label className="pb-4">Epost</label>
+                  <label for="email" className="pb-4">Epost</label>
                   <input
                     className={inputClasses}
                     name="email"
+                    id="email"
                     placeholder="Epost"
                     label="Epost"
                     type="text"
@@ -141,10 +147,11 @@ const Billing = ({ onSubmit }) => {
                   )}
                 </div>
                 <div className="w-1/2 p-2">
-                  <label className="pb-4">Telefon</label>
+                  <label for="phone" className="pb-4">Telefon</label>
                   <input
                     className={inputClasses}
                     name="phone"
+                    id="phone"
                     placeholder="Telefon"
                     label="Telefon"
                     type="text"
