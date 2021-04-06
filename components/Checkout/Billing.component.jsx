@@ -55,7 +55,7 @@ const Billing = ({ onSubmit }) => {
                   )}
                 </div>
                 <div className="w-1/2 p-2">
-                  <label for="address1" className="pb-4">Addresse</label>
+                  <label for="address1" className="pb-4">Adresse</label>
                   <input
                     className={inputClasses}
                     name="address1"
