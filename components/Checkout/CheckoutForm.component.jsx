@@ -59,9 +59,6 @@ const CheckoutForm = () => {
   }, [orderData]);
 
   const onSubmit = (submitData) => {
-    console.log('Submit ...');
-    console.log(submitData);
-
     const checkOutData = createCheckoutData(submitData);
     setOrderData(checkOutData);
     setRequestError(null);
