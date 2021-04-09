@@ -66,7 +66,7 @@ The current release has been tested and is confirmed working with the following 
 
 ## Features
 
-- NextJS version 10.0.8
+- NextJS version 10.1.3
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Support for simple products and variable products
 - Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
