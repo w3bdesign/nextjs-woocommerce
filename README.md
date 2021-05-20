@@ -7,7 +7,7 @@
 
 # NextJS Ecommerce site with WooCommerce backend
 
-## Live URL: https://nextjs-woocommerce.now.sh
+## Live URL: https://nextjs-woocommerce.vercel.app
 
 ## Table Of Contents (TOC)
 
