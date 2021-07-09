@@ -30,7 +30,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "babel-plugin-styled-components": "^1.13.1",
+    "babel-plugin-styled-components": "^1.13.2",
     "postcss-preset-env": "^6.7.0",
     "tailwindcss": "^2.2.4"
   }
