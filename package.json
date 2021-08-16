@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.3.21",
+    "@apollo/client": "^3.4.7",
     "@types/react": "^17.0.15",
     "algoliasearch": "^4.10.2",
     "autoprefixer": "^10.3.1",
