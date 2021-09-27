@@ -15,7 +15,7 @@
     "@apollo/client": "^3.4.8",
     "@types/react": "^17.0.24",
     "algoliasearch": "^4.10.5",
-    "autoprefixer": "^10.3.2",
+    "autoprefixer": "^10.3.6",
     "graphql": "^15.5.1",
     "next": "^11.1.2",
     "node-fetch": "^2.6.1",
