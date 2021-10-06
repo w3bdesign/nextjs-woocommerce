@@ -1,6 +1,7 @@
 /*eslint complexity: ["error", 6]*/
 
-import fetch from 'node-fetch';
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
 import {
   ApolloClient,
   InMemoryCache,
@@ -81,7 +82,7 @@ const client = new ApolloClient({
     afterware.concat(
       createHttpLink({
         uri: WOO_CONFIG.GRAPHQL_URL,
-        fetch,
+        fetcher,
       })
     )
   ),
