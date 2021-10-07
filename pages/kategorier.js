@@ -1,7 +1,5 @@
-import Header from 'components/Header/Header.component';
 import Categories from 'components/Category/Categories.component';
-import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
-import PageTitle from 'components/Title/PageTitle.component';
+import PageTemplate from 'components/PageTemplate/PageTemplate.component';
 
 import client from 'utils/apollo/ApolloClient.js';
 
@@ -11,29 +9,11 @@ import { FETCH_ALL_CATEGORIES_QUERY } from 'utils/gql/GQL_QUERIES';
  * Category page displays all of the categories
  */
 const CategoryPage = ({ categories }) => {
-  const error = false;
-
   return (
     <>
-      <Header title="- Kategorier" />
-      <PageTitle title="Kategorier" />
-
-      {categories && <Categories categories={categories} />}
-
-      {!categories && !error && (
-        <div className="h-64 mt-8 text-2xl text-center">
-          Laster ...
-          <br />
-          <LoadingSpinner />
-        </div>
-      )}
-
-      {/* Display error message if error occured */}
-      {error && (
-        <div className="h-12 mt-20 text-2xl text-center">
-          Feil under lasting av kategorier ...
-        </div>
-      )}
+      <PageTemplate title="Kategorier" input={categories}>
+        {categories && <Categories categories={categories} />}
+      </PageTemplate>
     </>
   );
 };
