@@ -11,30 +11,10 @@ const Billing = ({ onSubmit }) => {
 
   return (
     <>
-      <section className="text-gray-700">
+      <section className="text-gray-700 container p-4 py-2 mx-auto">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="container p-4 py-2 mx-auto">
-            <div className="mx-auto lg:w-1/2 md:w-2/3">
-              <div className="flex flex-wrap -m-2">
-                <div className="w-1/2 p-2">
-                  <label for="firstName" className="pb-4">Fornavn</label>
-                  <input
-                    className={inputClasses}
-                    name="firstName"
-                    id="firstName"
-                    placeholder="Fornavn"
-                    label="Fornavn"
-                    type="text"
-                    {...register('firstName', {
-                      required: 'Dette feltet er påkrevd',
-                    })}
-                  />
-                  {errors.firstName && (
-                    <span className="text-red-500">
-                      FEIL: {errors.firstName.message}
-                    </span>
-                  )}
-                </div>
+            <div className="mx-auto lg:w-1/2 flex flex-wrap">
+            <InputField label='Fornavn' name='firstName' errors={errors} register={register} />
                 <div className="w-1/2 p-2">
                   <label for="lastName" className="pb-4">Etternavn</label>
                   <input
@@ -195,8 +175,6 @@ const Billing = ({ onSubmit }) => {
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
         </form>
       </section>
     </>
@@ -204,3 +182,37 @@ const Billing = ({ onSubmit }) => {
 };
 
 export default Billing;
+
+
+/**
+ * Input field component displays an input in a form, with label.
+ * The various properties of the input field can be determined with the props:
+ *  - label: string, used for the display label
+ *  - name: string, the key of the value in the submitted data. Must be unique
+ *  - type: 'text'|'number'|'hidden', the input type. defaults to text
+ *  - errors: Object, the form errors object provided by react-hook-form
+ *  - register: register function from react-hook-form
+ *  - required: boolean, whether or not this field is required. default true
+ *  - customValidation: Object, the validation rules to apply to the input field
+ */
+const InputField = (props) =>
+<div className="w-1/2 p-2">
+  <label for={props.name} className="pb-4">{props.label}</label>
+  <input
+    className='w-full px-4 py-2 mt-2 text-base bg-white border border-gray-400 rounded focus:outline-none focus:border-black'
+    name={props.name}
+    id={props.name}
+    placeholder={props.label}
+    label={props.label}
+    type={props.type ?? 'text'}
+    {...props.register(props.name, (props.required ?? true) ? {
+      required: 'Dette feltet er påkrevd',
+      ...(props.customValidation ?? {})
+    }:props.customValidation)}
+  />
+  {props.errors[props.name] && (
+    <span className="text-red-500">
+      FEIL: {props.errors[props.name].message}
+    </span>
+  )}
+</div>
