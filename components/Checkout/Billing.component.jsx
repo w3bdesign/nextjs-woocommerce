@@ -72,7 +72,7 @@ const OrderButton = ({register}) => <div className="w-full p-2">
         className="flex px-4 py-2 mx-auto font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
         BESTILL
     </submit>
-</div>
+</div>;
 
 
 /**
@@ -86,7 +86,7 @@ const OrderButton = ({register}) => <div className="w-full p-2">
  * @param {boolean} [required=true] - whether or not this field is required. default true
  * @param {'text'|'number'} [type='text'] - the input type. defaults to text
  */
-const InputField = ({customValidation, errors, label, name, register, required, type}) =>
+const InputField = ({customValidation = {}, errors, label, name, register, required = true, type = 'text'}) =>
     <div className="w-1/2 p-2">
         <label for={name} className="pb-4">{label}</label>
         <input
@@ -96,9 +96,9 @@ const InputField = ({customValidation, errors, label, name, register, required, 
             placeholder={label}
             label={label}
             type={type ?? 'text'}
-            {...register(name, (required ?? true) ? {
+            {...register(name, required ? {
                 required: 'Dette feltet er påkrevd',
-                ...(customValidation ?? {})
+                ...customValidation
             } : customValidation)}
         />
         {errors[name] && (
@@ -106,4 +106,4 @@ const InputField = ({customValidation, errors, label, name, register, required, 
       FEIL: {errors[name].message}
     </span>
         )}
-    </div>
+    </div>;
