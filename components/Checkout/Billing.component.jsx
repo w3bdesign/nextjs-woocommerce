@@ -68,10 +68,10 @@ const OrderButton = ({register}) => <div className="w-full p-2">
         checked
         {...register('paymentMethod')}
     />
-    <submit
+    <button
         className="flex px-4 py-2 mx-auto font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
         BESTILL
-    </submit>
+    </button>
 </div>;
 
 
