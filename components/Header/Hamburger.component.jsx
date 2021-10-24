@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
+import HamburgerSvg from './Icons/HamburgerSvg.component';
+import Xsvg from './Icons/XSvg.component';
 import Menu from './Menu.component';
 /**
  * Shows the mobile menu.
@@ -53,8 +55,8 @@ const Hamburger = () => {
         aria-label="Meny"
         className="block cursor-pointer md:hidden"
       >
-        <SvgIcon mode="hamburgersvg" styledAnimation={showHamburgerHideXAnimation} handleToggle={handleToggle}/>
-        <SvgIcon mode="xsvg" styledAnimation={showXHideHamburgerAnimation} handleToggle={handleToggle}/> 
+        <HamburgerSvg styledAnimation={showHamburgerHideXAnimation} handleToggle={handleToggle}/>
+        <Xsvg styledAnimation={showXHideHamburgerAnimation} handleToggle={handleToggle}/> 
       </label>
       {isExpanded && (
         <animated.div
