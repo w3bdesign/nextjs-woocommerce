@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import Menu from './Menu.component';
-
 /**
  * Shows the mobile menu.
  * Shows a X when mobile menu is expanded.
