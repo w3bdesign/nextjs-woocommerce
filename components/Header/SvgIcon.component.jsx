@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SvgIcon = (mode, styledAnimation, handleToggle) => {
+const SvgIcon = function (mode, styledAnimation, handleToggle) {
     const xMode = mode === 'xsvg';
     return (
       <animated.svg
