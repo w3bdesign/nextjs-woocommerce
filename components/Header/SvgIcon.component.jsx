@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const SvgIcon = (mode, styledAnimation, handleToggle) => {
     const xMode = mode === 'xsvg';
@@ -11,11 +11,11 @@ const SvgIcon = (mode, styledAnimation, handleToggle) => {
           width="20"
           height="20"
           viewBox="0 0 20 20"
-          fill={xMode && none}
-          stroke={xMode && currentColor}
+          fill={xMode && 'none'}
+          stroke={xMode && 'currentColor'}
           strokeWidth={xMode && 2}
-          strokeLinecap={xMode && round}
-          strokeLinejoin={xMode && round}
+          strokeLinecap={xMode && 'round'}
+          strokeLinejoin={xMode && 'round'}
           className={xMode ? 'feather feather-x' : 'text-gray-900 fill-current'}
         >
           {xMode ?
