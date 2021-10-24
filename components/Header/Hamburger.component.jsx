@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
-import Link from 'next/link';
+import Menu from './Menu.component';
 
 /**
  * Shows the mobile menu.
@@ -8,26 +8,25 @@ import Link from 'next/link';
  * Uses React-spring for animations.
  */
 const Hamburger = () => {
-  const [isExpanded, setisExpanded] = useState(false);
+  const slideDownAnimationOptions =  {
+    opacity: isExpanded ? 1 : 0,
+    marginTop: isExpanded ? '170px' : '-180px',
+  };
+  const showHideXAnimationOptions = {
+    opacity: isExpanded ? 0 : 1,
+    display: isExpanded ? 'none' : 'inline',
+  };
+  const [isExpanded, setIsExpanded] = useState(false);
   const hamburgerSlideDownAnimation = useSpring({
     to: [
-      {
-        opacity: isExpanded ? 1 : 0,
-        marginTop: isExpanded ? '170px' : '-180px',
-      },
+      slideDownAnimationOptions
     ],
-    from: {
-      opacity: isExpanded ? 1 : 0,
-      marginTop: isExpanded ? '170px' : '-180px',
-    },
+    from: slideDownAnimationOptions
   });
 
   const showHamburgerHideXAnimation = useSpring({
     to: [
-      {
-        opacity: isExpanded ? 0 : 1,
-        display: isExpanded ? 'none' : 'inline',
-      },
+      showHideXAnimationOptions
     ],
     from: {
       opacity: isExpanded ? 0 : 1,
@@ -41,11 +40,12 @@ const Hamburger = () => {
         display: isExpanded ? 'inline' : 'none',
       },
     ],
-    from: {
-      opacity: isExpanded ? 0 : 1,
-      display: isExpanded ? 'none' : 'inline',
-    },
+    from: showHideXAnimationOptions
   });
+
+  const handleToggle = () => {
+    setIsExpanded((prevExpanded) => !prevExpanded);
+  };
 
   return (
     <>
@@ -57,9 +57,7 @@ const Hamburger = () => {
         <animated.svg
           id="hamburgersvg"
           style={showHamburgerHideXAnimation}
-          onClick={() => {
-            setisExpanded((prevExpanded) => !prevExpanded);
-          }}
+          onClick={handleToggle}
           className="text-gray-900 fill-current"
           xmlns="https://www.w3.org/2000/svg"
           width="20"
@@ -70,9 +68,7 @@ const Hamburger = () => {
         </animated.svg>
         <animated.svg
           id="xsvg"
-          onClick={() => {
-            setisExpanded((prevExpanded) => !prevExpanded);
-          }}
+          onClick={handleToggle}
           style={showXHideHamburgerAnimation}
           xmlns="https://www.w3.org/2000/svg"
           width="20"
@@ -89,48 +85,13 @@ const Hamburger = () => {
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </animated.svg>
       </label>
-
       {isExpanded && (
         <animated.div
           style={hamburgerSlideDownAnimation}
           id="mobile-menu"
           className="absolute right-0 z-10 w-full text-center text-black bg-white "
         >
-          <ul>
-            <li className="w-full p-4 border-t border-gray-400 border-solid rounded">
-              <Link href="/">
-                <a
-                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                  href="#"
-                >
-                  Hjem
-                </a>
-              </Link>
-            </li>
-            <li className="w-full p-4 border-t border-gray-400 border-solid rounded">
-              <Link href="/produkter">
-                <a
-                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                  href="#"
-                >
-                  Produkter
-                </a>
-              </Link>
-            </li>
-            <li
-              id="mobile-li"
-              className="w-full p-4 border-t border-b border-gray-400 border-solid rounded"
-            >
-              <Link href="/kategorier">
-                <a
-                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                  href="#"
-                >
-                  Kategorier
-                </a>
-              </Link>
-            </li>
-          </ul>
+          <Menu/>
         </animated.div>
       )}
     </>
