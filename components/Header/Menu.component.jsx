@@ -5,8 +5,7 @@ import Link from 'next/link';
  ** Implement mobile menu.
  */
 
-const Menu = () => {
-  return (
+const Menu = () => (
     <ul>
         <li className="w-full p-4 border-t border-gray-400 border-solid rounded">
             <Link href="/">
@@ -42,7 +41,6 @@ const Menu = () => {
             </Link>
         </li>
     </ul>
-  );
-}
+);
 
 export default Menu;

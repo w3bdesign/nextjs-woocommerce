@@ -7,6 +7,7 @@ import Menu from './Menu.component';
  * Uses React-spring for animations.
  */
 const Hamburger = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const slideDownAnimationOptions =  {
     opacity: isExpanded ? 1 : 0,
     marginTop: isExpanded ? '170px' : '-180px',
@@ -15,7 +16,6 @@ const Hamburger = () => {
     opacity: isExpanded ? 0 : 1,
     display: isExpanded ? 'none' : 'inline',
   };
-  const [isExpanded, setIsExpanded] = useState(false);
   const hamburgerSlideDownAnimation = useSpring({
     to: [
       slideDownAnimationOptions
