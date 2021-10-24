@@ -53,36 +53,8 @@ const Hamburger = () => {
         aria-label="Meny"
         className="block cursor-pointer md:hidden"
       >
-        <animated.svg
-          id="hamburgersvg"
-          style={showHamburgerHideXAnimation}
-          onClick={handleToggle}
-          className="text-gray-900 fill-current"
-          xmlns="https://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-        >
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-        </animated.svg>
-        <animated.svg
-          id="xsvg"
-          onClick={handleToggle}
-          style={showXHideHamburgerAnimation}
-          xmlns="https://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="feather feather-x"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </animated.svg>
+        <SvgIcon mode="hamburgersvg" styledAnimation={showHamburgerHideXAnimation} handleToggle={handleToggle}/>
+        <SvgIcon mode="xsvg" styledAnimation={showXHideHamburgerAnimation} handleToggle={handleToggle}/> 
       </label>
       {isExpanded && (
         <animated.div
