@@ -1,4 +1,5 @@
 import React from 'react';
+import { animated } from 'react-spring';
 
 const HamburgerSvg = (styledAnimation, handleToggle) => (
   <animated.svg
