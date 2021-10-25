@@ -19,7 +19,7 @@ const SVGX = ({ cartKey, products, handleRemoveProductClick, handleToggle, style
         style={styledAnimation}
         className="cursor-pointer feather feather-x"
         onClick={(event) => {
-          handleRemoveProductClick ? handleRemoveProductClick(event, cartKey, products) : handleToggle;
+          handleRemoveProductClick ? handleRemoveProductClick(event, cartKey, products) : handleToggle();
         }}
       >
         <line x1="18" y1="6" x2="6" y2="18"></line>
