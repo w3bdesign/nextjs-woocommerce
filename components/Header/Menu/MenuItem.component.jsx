@@ -16,6 +16,6 @@ const MenuItem = (label = '', url = '/', id = '') => {
         </Link>
     </li>
   );
-}
+};
 
 export default MenuItem;
