@@ -2,7 +2,7 @@
  * The SVG that we display inside of the cart to remove items
  */
 
-const SVGX = ({ cartKey, products, handleRemoveProductClick }) => {
+const SVGX = ({ cartKey, products, handleRemoveProductClick, handleToggle, styledAnimation }) => {
   return (
     <>
       <svg
@@ -16,9 +16,10 @@ const SVGX = ({ cartKey, products, handleRemoveProductClick }) => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        style={styledAnimation}
         className="cursor-pointer feather feather-x"
         onClick={(event) => {
-          handleRemoveProductClick(event, cartKey, products);
+          handleRemoveProductClick ? handleRemoveProductClick(event, cartKey, products) : handleToggle;
         }}
       >
         <line x1="18" y1="6" x2="6" y2="18"></line>

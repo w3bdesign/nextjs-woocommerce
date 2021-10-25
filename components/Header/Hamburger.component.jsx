@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import HamburgerSvg from './Icons/HamburgerSvg.component';
-import Xsvg from './Icons/XSvg.component';
-import Menu from './Menu.component';
+import Xsvg from '../components/SVG/SVGX.component';
+import Menu from './Menu/Menu.component';
 /**
  * Shows the mobile menu.
  * Shows a X when mobile menu is expanded.
