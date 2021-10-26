@@ -51,7 +51,7 @@ The current release has been tested and is confirmed working with the following 
 
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
-4. Clone or fork the repo and modify `nextConfig.js`. 
+4. Clone or fork the repo and modify `next.config.js`. 
 
    Then set the environment variables ALGOLIA_APP_ID and ALGOLIA_PUBLIC_API_KEY in Vercel or your preferred hosting solution.
    
