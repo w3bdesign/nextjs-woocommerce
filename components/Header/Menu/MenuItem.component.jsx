@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-const MenuItem = (label = '', url = '/', id = '') => {
+const MenuItem = ({label = '', url = '/', id = ''}) => {
   return (
      <li
         id={id}
