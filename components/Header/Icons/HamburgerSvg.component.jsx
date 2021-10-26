@@ -1,8 +1,8 @@
 import React from 'react';
 import { animated } from 'react-spring';
 
-const HamburgerSvg = ({styledAnimation, handleToggle}) => {
-  return <animated.svg
+const HamburgerSvg = ({styledAnimation, handleToggle}) => (
+  <animated.svg
     id="hamburgersvg"
     onClick={handleToggle}
     style={styledAnimation}
@@ -14,6 +14,6 @@ const HamburgerSvg = ({styledAnimation, handleToggle}) => {
   >
     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
   </animated.svg>
-};
+);
 
 export default HamburgerSvg;
