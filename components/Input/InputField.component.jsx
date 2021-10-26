@@ -9,24 +9,38 @@
  * @param {boolean} [required=true] - whether or not this field is required. default true
  * @param {'text'|'number'} [type='text'] - the input type. defaults to text
  */
-export const InputField = ({customValidation = {}, errors, label, name, register, required = true, type = 'text'}) =>
+export const InputField = ({
+                               customValidation = {},
+                               errors,
+                               label,
+                               name,
+                               register,
+                               required = true,
+                               type = "text",
+                           }) => (
     <div className="w-1/2 p-2">
-        <label for={name} className="pb-4">{label}</label>
+        <label for={name} className="pb-4">
+            {label}
+        </label>
         <input
-            className='w-full px-4 py-2 mt-2 text-base bg-white border border-gray-400 rounded focus:outline-none focus:border-black'
+            className="w-full px-4 py-2 mt-2 text-base bg-white border border-gray-400 rounded focus:outline-none focus:border-black"
             name={name}
             id={name}
             placeholder={label}
             label={label}
-            type={type ?? 'text'}
-            {...register(name, required ? {
-                required: 'Dette feltet er påkrevd',
-                ...customValidation
-            } : customValidation)}
+            type={type ?? "text"}
+            {...register(
+                name,
+                required
+                    ? {
+                        required: "Dette feltet er påkrevd",
+                        ...customValidation,
+                    }
+                    : customValidation
+            )}
         />
-        {errors[name] && (
-            <span className="text-red-500">
-      FEIL: {errors[name].message}
-    </span>
+        {errors[`${name}`] && (
+            <span className="text-red-500">FEIL: {errors[`${name}`].message}</span>
         )}
-    </div>;
+    </div>
+);
