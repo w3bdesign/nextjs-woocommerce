@@ -50,7 +50,7 @@ const SVGMobileSearchIcon = () => {
           <div id="closeXsearch" className="mt-2 cursor-pointer">
             <SVGCloseX setisExpanded={setisExpanded} />
           </div>
-         
+
           <MobileSearch />
         </animated.div>
       )}

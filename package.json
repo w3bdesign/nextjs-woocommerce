@@ -7,7 +7,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "npm exec prettier -- -w **/*.{js,jsx} --ignore-path .gitignore"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "babel-plugin-styled-components": "^1.13.3",
     "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.4.1",
     "tailwindcss": "^2.2.17"
   }
 }
