@@ -24,15 +24,8 @@ const SingleProduct = ({ product }) => {
     }
   }, []);
 
-  const {
-    description,
-    image,
-    name,
-    onSale,
-    price,
-    regularPrice,
-    salePrice,
-  } = product;
+  const { description, image, name, onSale, price, regularPrice, salePrice } =
+    product;
 
   // Strip out HTML from description
   const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');

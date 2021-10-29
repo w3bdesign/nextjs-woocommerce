@@ -42,30 +42,28 @@ const AddToCartButton = ({ product }) => {
     },
   });
 
-  const [
-    addToCart,
-    { loading: addToCartLoading, error: addToCartError },
-  ] = useMutation(ADD_TO_CART, {
-    variables: {
-      input: productQueryInput,
-    },
-    onCompleted: () => {
-      // If error.
-      if (addToCartError) {
-        setRequestError(addToCartError.graphQLErrors[0].message);
-      }
-      // Update the cart with new values in React context.
-      refetch();
-      // Show View Cart Button
-      setShowViewCart(true);
-      setshowAddToCart(true);
-    },
-    onError: (error) => {
-      if (error) {
-        setRequestError(error);
-      }
-    },
-  });
+  const [addToCart, { loading: addToCartLoading, error: addToCartError }] =
+    useMutation(ADD_TO_CART, {
+      variables: {
+        input: productQueryInput,
+      },
+      onCompleted: () => {
+        // If error.
+        if (addToCartError) {
+          setRequestError(addToCartError.graphQLErrors[0].message);
+        }
+        // Update the cart with new values in React context.
+        refetch();
+        // Show View Cart Button
+        setShowViewCart(true);
+        setshowAddToCart(true);
+      },
+      onError: (error) => {
+        if (error) {
+          setRequestError(error);
+        }
+      },
+    });
 
   const handleAddToCartClick = () => {
     setRequestError(null);
