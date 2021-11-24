@@ -25,7 +25,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.20.2",
-    "react-instantsearch-dom": "^6.15.0",
+    "react-instantsearch-dom": "^6.16.0",
     "react-spring": "^8.0.27",
     "styled-components": "^5.3.3",
     "uuid": "^8.3.2"
