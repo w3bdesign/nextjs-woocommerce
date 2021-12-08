@@ -1,3 +1,4 @@
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/w3bdesign/nextjs-woocommerce.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/w3bdesign/nextjs-woocommerce/alerts/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/29de6847b01142e6a0183988fc3df46a)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0dee1a2176d2f1455c14/maintainability)](https://codeclimate.com/github/w3bdesign/nextjs-woocommerce/maintainability)
 [![CodeFactor](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce/badge)](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce)
