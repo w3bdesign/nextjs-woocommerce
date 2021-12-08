@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^2.0.2",
-    "postcss-preset-env": "^6.7.0",
+    "postcss-preset-env": "^7.0.1",
     "prettier": "^2.5.1",
     "tailwindcss": "^2.2.19"
   }
