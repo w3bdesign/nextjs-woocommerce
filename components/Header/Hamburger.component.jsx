@@ -5,9 +5,7 @@ import Link from 'next/link';
 import LINKS from '../../utils/constants/LINKS';
 
 /**
- * Shows the mobile menu.
- * Shows a X when mobile menu is expanded.
- * Uses React-spring for animations.
+ * Shows the mobile menu.  
  */
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
@@ -35,7 +33,6 @@ const Hamburger = () => {
       opacity: isExpanded ? 0 : 1,
     },
   });
-
   const showXHideHamburgerAnimation = useSpring({
     to: [
       {
@@ -48,7 +45,6 @@ const Hamburger = () => {
       display: isExpanded ? 'none' : 'inline',
     },
   });
-
   return (
     <>
       <label
