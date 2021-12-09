@@ -5,7 +5,7 @@ import Link from 'next/link';
 import LINKS from '../../utils/constants/LINKS';
 
 /**
- * Shows the mobile menu.  
+ * Shows the mobile menu.
  */
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
@@ -60,9 +60,9 @@ const Hamburger = () => {
           }}
           className="text-gray-900 fill-current"
           xmlns="https://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
+          width="25"
+          height="25"
+          viewBox="0 0 25 25"
         >
           <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
         </animated.svg>
@@ -73,15 +73,9 @@ const Hamburger = () => {
           }}
           style={showXHideHamburgerAnimation}
           xmlns="https://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="feather feather-x"
+          width="25"
+          height="25"
+          viewBox="0 0 25 25"
         >
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
