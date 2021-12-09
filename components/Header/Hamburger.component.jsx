@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import Link from 'next/link';
 
+import LINKS from '../../utils/constants/LINKS';
+
 /**
  * Shows the mobile menu.
  * Shows a X when mobile menu is expanded.
@@ -89,7 +91,6 @@ const Hamburger = () => {
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </animated.svg>
       </label>
-
       {isExpanded && (
         <animated.div
           style={hamburgerSlideDownAnimation}
@@ -97,39 +98,19 @@ const Hamburger = () => {
           className="absolute right-0 z-10 w-full text-center text-black bg-white "
         >
           <ul>
-            <li className="w-full p-4 border-t border-gray-400 border-solid rounded">
-              <Link href="/">
-                <a
-                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                  href="#"
-                >
-                  Hjem
-                </a>
-              </Link>
-            </li>
-            <li className="w-full p-4 border-t border-gray-400 border-solid rounded">
-              <Link href="/produkter">
-                <a
-                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                  href="#"
-                >
-                  Produkter
-                </a>
-              </Link>
-            </li>
-            <li
-              id="mobile-li"
-              className="w-full p-4 border-t border-b border-gray-400 border-solid rounded"
-            >
-              <Link href="/kategorier">
-                <a
-                  className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
-                  href="#"
-                >
-                  Kategorier
-                </a>
-              </Link>
-            </li>
+            {LINKS.map(({ id, title, href }) => (
+              <li
+                key={id}
+                id="mobile-li"
+                className="w-full p-4 border-t border-gray-400 border-solid rounded"
+              >
+                <Link href={href}>
+                  <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
+                    {title}
+                  </a>
+                </Link>
+              </li>
+            ))}
           </ul>
         </animated.div>
       )}
