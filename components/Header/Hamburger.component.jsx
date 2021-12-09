@@ -21,7 +21,6 @@ const Hamburger = () => {
       marginTop: isExpanded ? '170px' : '-180px',
     },
   });
-
   const showHamburgerHideXAnimation = useSpring({
     to: [
       {
