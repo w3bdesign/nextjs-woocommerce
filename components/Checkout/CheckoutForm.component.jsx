@@ -58,6 +58,10 @@ const CheckoutForm = () => {
     }
   }, [orderData]);
 
+  useEffect(() => {
+    refetch();
+  }, []);
+
   const onSubmit = (submitData) => {
     const checkOutData = createCheckoutData(submitData);
     setOrderData(checkOutData);
