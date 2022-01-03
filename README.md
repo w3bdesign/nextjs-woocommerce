@@ -82,7 +82,7 @@ The current release has been tested and is confirmed working with the following 
 - Fully responsive design
 - Category and product listings
 - Pretty URLs with builtin Nextjs functionality
-- Tailwind CSS for styling
+- Tailwind 3 for styling
 - JSDoc comments
 - WooCommerce cart session is automatically deleted after 48 hours to prevent GraphQL session expiration errors
 
