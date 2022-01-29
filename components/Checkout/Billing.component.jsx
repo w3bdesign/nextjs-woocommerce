@@ -45,7 +45,7 @@ const Billing = ({ onSubmit }) => {
                 message: 'Postnummer må være maksimalt 4 tall',
               },
               pattern: {
-                value: /^[0-9]+$/i,
+                value: /^\d+$/i,
                 message: 'Postnummer må bare være tall',
               },
             }}
@@ -83,7 +83,7 @@ const Billing = ({ onSubmit }) => {
                 message: 'Maksimalt 8 tall i telefonnummeret',
               },
               pattern: {
-                value: /^[0-9]+$/i,
+                value: /^\d+$/i,
                 message: 'Ikke gyldig telefonnummer',
               },
             }}
