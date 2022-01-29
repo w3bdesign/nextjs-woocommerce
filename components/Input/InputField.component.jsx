@@ -19,7 +19,7 @@ export const InputField = ({
   type = 'text',
 }) => (
   <div className="w-1/2 p-2">
-    <label for={name} className="pb-4">
+    <label htmlFor={name} className="pb-4">
       {label}
     </label>
     <input
