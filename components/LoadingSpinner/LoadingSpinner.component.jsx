@@ -4,15 +4,11 @@ import styled, { keyframes } from 'styled-components';
  * Loading spinner, shows while loading products or categories.
  * Uses Styled-Components
  */
-const LoadingSpinner = () => {
-  return (
-    <>
-      <Container>
-        <Circle />
-      </Container>
-    </>
-  );
-};
+const LoadingSpinner = () => (
+  <Container>
+    <Circle />
+  </Container>
+);
 
 export default LoadingSpinner;
 

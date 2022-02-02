@@ -56,7 +56,7 @@ const CheckoutForm = () => {
       // Perform checkout mutation when the value for orderData changes.
       checkout();
     }
-  }, [orderData]);
+  }, [checkout, orderData]);
 
   useEffect(() => {
     refetch();

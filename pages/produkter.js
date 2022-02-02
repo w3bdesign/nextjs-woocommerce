@@ -11,15 +11,11 @@ import client from 'utils/apollo/ApolloClient.js';
  * Displays loading spinner while loading.
  * Shows an error if the server is down or unreachable.
  */
-const Produkter = ({ products }) => {
-  return (
-    <>
-      <PageTemplate title="Produkter" input={products}>
-        {products && <IndexProducts products={products} />}
-      </PageTemplate>
-    </>
-  );
-};
+const Produkter = ({ products }) => (
+  <PageTemplate title="Produkter" input={products}>
+    {products && <IndexProducts products={products} />}
+  </PageTemplate>
+);
 
 export default Produkter;
 
