@@ -33,6 +33,7 @@ const SearchResults = ({
       <Link
         href="/produkt/[post]"
         as={`/produkt/${trimmedProductName}?id=${objectID}`}
+        passHref
       >
         <div className="flex p-6 bg-white">
           <header className="hit-image-container">

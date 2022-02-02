@@ -74,59 +74,57 @@ const CartItemsContainer = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   return (
-    <>
-      <section className="py-8 bg-white">
-        <div className="container flex flex-wrap items-center mx-auto">
-          {requestError && <div className="p-6 mx-auto mt-5">Error ... </div>}
-          {cart ? (
-            <div className="p-6 mx-auto mt-5">
-              <RegularCart
-                cart={cart}
-                updateCartProcessing={updateCartProcessing}
-                handleRemoveProductClick={handleRemoveProductClick}
-                updateCart={updateCart}
-              />
-              <MobileCart
-                cart={cart}
-                updateCartProcessing={updateCartProcessing}
-                handleRemoveProductClick={handleRemoveProductClick}
-                updateCart={updateCart}
-              />
-              <div className="mt-4">
-                <Link href="/kasse">
-                  <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
-                    GÅ TIL KASSE
-                  </button>
-                </Link>
-              </div>
-              {updateCartProcessing && (
-                <>
-                  <div className="mt-4 text-xl text-center">
-                    Oppdaterer antall, vennligst vent ...
-                    <br />
-                  </div>
-                  <div>
-                    <LoadingSpinner />
-                  </div>
-                </>
-              )}
+    <section className="py-8 bg-white">
+      <div className="container flex flex-wrap items-center mx-auto">
+        {requestError && <div className="p-6 mx-auto mt-5">Error ... </div>}
+        {cart ? (
+          <div className="p-6 mx-auto mt-5">
+            <RegularCart
+              cart={cart}
+              updateCartProcessing={updateCartProcessing}
+              handleRemoveProductClick={handleRemoveProductClick}
+              updateCart={updateCart}
+            />
+            <MobileCart
+              cart={cart}
+              updateCartProcessing={updateCartProcessing}
+              handleRemoveProductClick={handleRemoveProductClick}
+              updateCart={updateCart}
+            />
+            <div className="mt-4">
+              <Link href="/kasse" passHref>
+                <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
+                  GÅ TIL KASSE
+                </button>
+              </Link>
             </div>
-          ) : (
-            <div className="p-6 mx-auto mt-5">
-              <h2 className="text-lg">Ingen varer i handlekurven</h2>
-              <button className="px-4 py-2 m-4 font-bold uppercase bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
-                <Link href="/produkter">
-                  <a>Legg til varer</a>
-                </Link>
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-    </>
+            {updateCartProcessing && (
+              <>
+                <div className="mt-4 text-xl text-center">
+                  Oppdaterer antall, vennligst vent ...
+                  <br />
+                </div>
+                <div>
+                  <LoadingSpinner />
+                </div>
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="p-6 mx-auto mt-5">
+            <h2 className="text-lg">Ingen varer i handlekurven</h2>
+            <button className="px-4 py-2 m-4 font-bold uppercase bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
+              <Link href="/produkter">
+                <a>Legg til varer</a>
+              </Link>
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 

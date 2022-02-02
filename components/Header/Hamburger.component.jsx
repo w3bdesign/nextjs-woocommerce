@@ -63,7 +63,7 @@ const Hamburger = () => {
           height="25"
           viewBox="0 0 25 25"
         >
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
         </animated.svg>
         <animated.svg
           id="xsvg"
@@ -76,8 +76,8 @@ const Hamburger = () => {
           height="25"
           viewBox="0 0 25 25"
         >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
         </animated.svg>
       </label>
       {isExpanded && (
