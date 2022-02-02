@@ -12,7 +12,7 @@ import { GET_PRODUCTS_FROM_CATEGORY } from 'utils/gql/GQL_QUERIES';
  * Display a single product with dynamic pretty urls
  */
 const Produkt = ({ categoryName, products }) => {
-  let error = false;
+  const error = false;
 
   return (
     <>

@@ -12,16 +12,14 @@ import { FETCH_ALL_PRODUCTS_QUERY } from 'utils/gql/GQL_QUERIES';
  * @param {Object} products
  * Initial static data is sent as props from getStaticProps and loaded through 'utils/gql/INITIAL_PRODUCTS'
  */
-const HomePage = ({ products }) => {
-  return (
-    <>
-      <Header title="- Forside" />
-      <Hero />
-      <PageTitle title="Produkter" />
-      {products && <IndexProducts products={products} />}
-    </>
-  );
-};
+const HomePage = ({ products }) => (
+  <>
+    <Header title="- Forside" />
+    <Hero />
+    <PageTitle title="Produkter" />
+    {products && <IndexProducts products={products} />}
+  </>
+);
 
 export default HomePage;
 

@@ -11,7 +11,7 @@ import { GET_SINGLE_PRODUCT } from 'utils/gql/GQL_QUERIES';
  * Display a single product with dynamic pretty urls
  */
 const Produkt = ({ product }) => {
-  let error = false;
+  const error = false;
 
   return (
     <>

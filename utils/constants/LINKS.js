@@ -1,4 +1,3 @@
-//exports.default = [
 const LINKS = [
   {
     id: 0,
