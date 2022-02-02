@@ -70,66 +70,61 @@ export const getFormattedCart = (data) => {
     product.price = convertedCurrency / product.qty;
     product.totalPrice = givenProducts[parseInt(i, 10)].total;
     // Ensure we can add products without images to the cart
-    if (givenProduct.image) {
-      product.image = {
-        sourceUrl: givenProduct.image.sourceUrl,
-        srcSet: givenProduct.image.srcSet,
-        title: givenProduct.image.title,
-      };
-    } else {
-      product.image = {
-        sourceUrl: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
-        srcSet: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
-        title: givenProduct.name,
-      };
-    }
+    product.image = givenProduct.image
+      ? {
+          sourceUrl: givenProduct.image.sourceUrl,
+          srcSet: givenProduct.image.srcSet,
+          title: givenProduct.image.title,
+        }
+      : {
+          sourceUrl: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
+          srcSet: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
+          title: givenProduct.name,
+        };
 
     totalProductsCount += givenProducts[parseInt(i, 10)].quantity;
     // Push each item into the products array.
     formattedCart.products.push(product);
     i++;
   });
-
   formattedCart.totalProductsCount = totalProductsCount;
   formattedCart.totalProductsPrice = data.cart.total;
   return formattedCart;
 };
 
-export const createCheckoutData = (order) => {
-  return {
-    clientMutationId: uuidv4(),
-    billing: {
-      firstName: order.firstName,
-      lastName: order.lastName,
-      address1: order.address1,
-      address2: order.address2,
-      city: order.city,
-      country: order.country,
-      state: order.state,
-      postcode: order.postcode,
-      email: order.email,
-      phone: order.phone,
-      company: order.company,
-    },
-    shipping: {
-      firstName: order.firstName,
-      lastName: order.lastName,
-      address1: order.address1,
-      address2: order.address2,
-      city: order.city,
-      country: order.country,
-      state: order.state,
-      postcode: order.postcode,
-      email: order.email,
-      phone: order.phone,
-      company: order.company,
-    },
-    shipToDifferentAddress: false,
-    paymentMethod: order.paymentMethod,
-    isPaid: false,
-    transactionId: 'hjkhjkhsdsdiui',
-  };
-};
+export const createCheckoutData = (order) => ({
+  clientMutationId: uuidv4(),
+  billing: {
+    firstName: order.firstName,
+    lastName: order.lastName,
+    address1: order.address1,
+    address2: order.address2,
+    city: order.city,
+    country: order.country,
+    state: order.state,
+    postcode: order.postcode,
+    email: order.email,
+    phone: order.phone,
+    company: order.company,
+  },
+  shipping: {
+    firstName: order.firstName,
+    lastName: order.lastName,
+    address1: order.address1,
+    address2: order.address2,
+    city: order.city,
+    country: order.country,
+    state: order.state,
+    postcode: order.postcode,
+    email: order.email,
+    phone: order.phone,
+    company: order.company,
+  },
+  shipToDifferentAddress: false,
+  paymentMethod: order.paymentMethod,
+  isPaid: false,
+  transactionId: 'hjkhjkhsdsdiui',
+});
 
 /**
  * Get the updated items in the below format required for mutation input.
