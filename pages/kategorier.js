@@ -8,15 +8,11 @@ import { FETCH_ALL_CATEGORIES_QUERY } from 'utils/gql/GQL_QUERIES';
 /**
  * Category page displays all of the categories
  */
-const CategoryPage = ({ categories }) => {
-  return (
-    <>
-      <PageTemplate title="Kategorier" input={categories}>
-        {categories && <Categories categories={categories} />}
-      </PageTemplate>
-    </>
-  );
-};
+const CategoryPage = ({ categories }) => (
+  <PageTemplate title="Kategorier" input={categories}>
+    {categories && <Categories categories={categories} />}
+  </PageTemplate>
+);
 
 export default CategoryPage;
 
