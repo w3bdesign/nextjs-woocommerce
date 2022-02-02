@@ -16,17 +16,13 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-const App = ({ Component, pageProps }) => {
-  return (
-    <>
-      <ApolloProvider client={client}>
-        <AppProvider>
-          <Component {...pageProps} />
-          <Footer />
-        </AppProvider>
-      </ApolloProvider>
-    </>
-  );
-};
+const App = ({ Component, pageProps }) => (
+  <ApolloProvider client={client}>
+    <AppProvider>
+      <Component {...pageProps} />
+      <Footer />
+    </AppProvider>
+  </ApolloProvider>
+);
 
 export default App;
