@@ -1,4 +1,4 @@
-version: "2" # required to adjust maintainability checks
+version: "2"
 checks:
   argument-count:
     config:
@@ -11,13 +11,13 @@ checks:
       threshold: 150
   method-complexity:
     config:
-      threshold: 5
+      threshold: 15
   method-count:
     config:
       threshold: 20
   method-lines:
     config:
-      threshold: 100
+      threshold: 150
   nested-control-flow:
     config:
       threshold: 4
