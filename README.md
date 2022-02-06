@@ -6,7 +6,7 @@
 
 ![Screenshot 1](./screenshots/screenshot1.jpg)
 
-# NextJS Ecommerce site with WooCommerce backend
+# Next.js Ecommerce site with WooCommerce backend
 
 ## Live URL: https://nextjs-woocommerce.dfweb.no
 
