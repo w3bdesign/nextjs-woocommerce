@@ -7,7 +7,7 @@
 
 # Next.js Ecommerce site with WooCommerce backend
 
-## Live URL: https://nextjs-woocommerce.dfweb.no
+## Live URL: https://next-woocommerce.dfweb.no
 
 ## Table Of Contents (TOC)
 
