@@ -55,10 +55,7 @@ const Navbar = () => (
             </a>
           </Link>
         </div>
-        <div
-          className="flex items-center order-2 md:order-3"
-          id="nav-content"
-        >
+        <div className="flex items-center order-2 md:order-3" id="nav-content">
           <Search />
           <SVGMobileSearchIcon />
           <Cart />

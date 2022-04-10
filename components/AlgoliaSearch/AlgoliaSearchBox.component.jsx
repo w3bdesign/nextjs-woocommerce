@@ -50,9 +50,7 @@ const AlgoliaSearchBox = () => {
               setSearch(text.target.value);
             }}
           />
-          {search && (
-            <Hits className="absolute" hitComponent={SearchResults} />
-          )}
+          {search && <Hits className="absolute" hitComponent={SearchResults} />}
         </InstantSearch>
       </div>
     </div>

@@ -69,8 +69,7 @@ const SingleProduct = ({ product }) => {
                     {!product.variations && salePrice}
                   </p>
                   <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
-                    {product.variations &&
-                      filteredVariantPrice(price, 'right')}
+                    {product.variations && filteredVariantPrice(price, 'right')}
                     {!product.variations && regularPrice}
                   </p>
                 </div>
