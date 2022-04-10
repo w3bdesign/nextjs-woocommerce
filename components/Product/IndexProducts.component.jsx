@@ -26,10 +26,7 @@ const IndexProducts = ({ products }) => (
             image,
             variations,
           }) => (
-            <div
-              key={uuidv4()}
-              className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
-            >
+            <div key={uuidv4()} className="flex flex-col p-6 md:w-1/2 xl:w-1/4">
               <Link
                 href={`/produkt/${encodeURIComponent(
                   slug

@@ -45,29 +45,31 @@ export const middleware = new ApolloLink((operation, forward) => {
  *
  * This catches the incoming session token and stores it in localStorage, for future GraphQL requests.
  */
-export const afterware = new ApolloLink((operation, forward) => forward(operation).map((response) => {
-  /**
-   * Check for session header and update session in local storage accordingly.
-   */
-  const context = operation.getContext();
-  const {
-    response: { headers },
-  } = context;
+export const afterware = new ApolloLink((operation, forward) =>
+  forward(operation).map((response) => {
+    /**
+     * Check for session header and update session in local storage accordingly.
+     */
+    const context = operation.getContext();
+    const {
+      response: { headers },
+    } = context;
 
-  const session = headers.get('woocommerce-session');
+    const session = headers.get('woocommerce-session');
 
-  if (session && process.browser) {
-    // Remove session data if session destroyed.
-    if ('false' === session) {
-      localStorage.removeItem('woo-session');
-      // Update session new data if changed.
-    } else if (localStorage.getItem('woo-session') !== session) {
-      localStorage.setItem('woo-session', headers.get('woocommerce-session'));
-      localStorage.setItem('woo-session-expiry', new Date());
+    if (session && process.browser) {
+      // Remove session data if session destroyed.
+      if ('false' === session) {
+        localStorage.removeItem('woo-session');
+        // Update session new data if changed.
+      } else if (localStorage.getItem('woo-session') !== session) {
+        localStorage.setItem('woo-session', headers.get('woocommerce-session'));
+        localStorage.setItem('woo-session-expiry', new Date());
+      }
     }
-  }
-  return response;
-}));
+    return response;
+  })
+);
 
 const clientSide = typeof window === 'undefined';
 
