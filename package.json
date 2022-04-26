@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "NextJS WooCommerce webshop",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.5.10",
+    "@apollo/client": "^3.6.0-rc.1",
     "@types/react": "^18.0.7",
     "algoliasearch": "^4.13.0",
     "autoprefixer": "^10.4.5",
@@ -23,8 +23,8 @@
     "next": "^12.1.5",
     "nprogress": "^0.2.0",
     "postcss": "^8.4.12",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-hook-form": "^7.30.0",
     "react-instantsearch-dom": "^6.23.4",
     "react-spring": "8.0.27",
