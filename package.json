@@ -1,15 +1,15 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.22",
-  "description": "NextJS WooCommerce webshop",
+  "version": "1.0.23",
+  "description": "Next.js WooCommerce webshop",
   "main": "index.js",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "npm exec prettier -- -w **/*.{js,jsx} --ignore-path .gitignore",
-    "refresh": "rm -rf node_modules && rm package-lock.json && npm i"
+    "format": "prettier --write \"**/*.{js,jsx,json}\"",
+    "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
   },
   "keywords": [],
   "author": "",
@@ -23,11 +23,11 @@
     "next": "^12.1.6",
     "nprogress": "^0.2.0",
     "postcss": "^8.4.13",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "react-hook-form": "^7.30.0",
     "react-instantsearch-dom": "^6.24.1",
-    "react-spring": "^8.0.27",
+    "react-spring": "8.0.27",
     "styled-components": "^5.3.5",
     "uuid": "^8.3.2"
   },
