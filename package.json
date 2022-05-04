@@ -8,8 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "npm exec prettier -- -w **/*.{js,jsx} --ignore-path .gitignore",
-    "refresh": "rm -rf node_modules && rm package-lock.json && npm i"
+    "format": "prettier --write \"**/*.{js,jsx,json}\"",
+    "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
   },
   "keywords": [],
   "author": "",
