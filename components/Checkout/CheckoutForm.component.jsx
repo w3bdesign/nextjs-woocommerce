@@ -28,6 +28,10 @@ const CheckoutForm = () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+      console.log(
+        'setItem har blitt kalt med følgende data fra CheckoutForm: ',
+        JSON.stringify(updatedCart)
+      );
       // Update cart data in React Context.
       setCart(updatedCart);
     },
