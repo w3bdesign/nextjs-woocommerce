@@ -45,7 +45,7 @@ export const getFloatVal = (string) => {
  */
 export const getFormattedCart = (data) => {
   let formattedCart = null;
-  if (!data || !data.cart.contents.nodes.length) {
+  if (!data || !data.cart.contents.nodes.length || !data.cart) {
     return formattedCart;
   }
   const givenProducts = data.cart.contents.nodes;

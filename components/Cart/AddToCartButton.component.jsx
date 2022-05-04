@@ -36,7 +36,13 @@ const AddToCartButton = ({ product }) => {
     onCompleted: () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
+
+      if (!updatedCart) {
+        return;
+      }
+
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+
       // Update cart data in React Context.
       setCart(updatedCart);
     },
