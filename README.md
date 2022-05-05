@@ -35,7 +35,7 @@ The current release has been tested and is confirmed working with the following 
 - WordPress version 5.9.3
 - WooCommerce version 6.4.1
 - WP GraphQL version 1.5.0
-- WooGraphQL version 0.6.1
+- WooGraphQL version 0.6.2
 
 2. For debugging and testing, install either:
 
@@ -88,7 +88,7 @@ The current release has been tested and is confirmed working with the following 
 
 ### I am getting a cart undefined error or other GraphQL errors
 
-Check that you are using the 0.6.1 version of the [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) plugin
+Check that you are using the 0.6.2 version of the [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) plugin
 
 ### The products page isn't loading
 
