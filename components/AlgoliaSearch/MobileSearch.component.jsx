@@ -2,7 +2,7 @@ import algoliasearch from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
-import WOO_CONFIG from 'utils/config/nextConfig';
+
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
@@ -19,7 +19,7 @@ const MobileSearch = () => {
   return (
     <div className="inline mt-4">
       <InstantSearch
-        indexName={WOO_CONFIG.ALGOLIA_INDEX_NAME}
+        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
         searchClient={searchClient}
       >
         <SearchBox

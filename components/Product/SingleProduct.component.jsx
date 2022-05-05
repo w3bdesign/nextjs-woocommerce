@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import WOO_CONFIG from 'utils/config/nextConfig';
+
 
 import { filteredVariantPrice } from 'utils/functions/functions';
 
@@ -55,7 +55,7 @@ const SingleProduct = ({ product }) => {
                 id="product-image"
                 className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
                 alt={name}
-                src={WOO_CONFIG.PLACEHOLDER_LARGE_IMAGE_URL}
+                src={process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL}
               />
             )}
             <div className="ml-8">
