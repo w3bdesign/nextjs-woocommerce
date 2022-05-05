@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Cart from '../Cart/Cart.component';
 import Search from '../AlgoliaSearch/AlgoliaSearchBox.component';
 import SVGMobileSearchIcon from '../SVG/SVGMobileSearchIcon.component';
+
 import Hamburger from './Hamburger.component';
 
 /**
@@ -14,6 +15,7 @@ const Navbar = () => (
     <nav id="header" className="fixed top-0 z-50 w-full py-1 bg-white ">
       <div className="container flex flex-wrap items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96">
         <Hamburger />
+
         <div
           className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1"
           id="menu"
