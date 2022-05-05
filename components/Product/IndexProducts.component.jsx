@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
-import WOO_CONFIG from 'utils/config/nextConfig';
-
 import { filteredVariantPrice } from 'utils/functions/functions';
 
 /**
