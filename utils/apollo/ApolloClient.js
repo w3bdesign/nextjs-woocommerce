@@ -7,8 +7,6 @@ import {
   ApolloLink,
 } from '@apollo/client';
 
-
-
 /**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.

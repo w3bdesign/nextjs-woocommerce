@@ -1,7 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-
-
 /**
  * Shorten inputted string (usually product description) to a maximum of length
  * @param {String} string The string that we input

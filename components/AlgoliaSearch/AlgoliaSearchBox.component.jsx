@@ -2,7 +2,6 @@ import algoliasearch from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
-
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
