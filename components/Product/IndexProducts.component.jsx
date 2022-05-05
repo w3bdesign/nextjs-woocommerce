@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
-import WOO_CONFIG from 'utils/config/nextConfig';
-
 import { filteredVariantPrice } from 'utils/functions/functions';
 
 /**
@@ -45,7 +43,7 @@ const IndexProducts = ({ products }) => (
                       id="product-image"
                       className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
                       alt={name}
-                      src={WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL}
+                      src={process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL}
                     />
                   )}
                 </a>

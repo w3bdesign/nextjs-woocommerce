@@ -1,7 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import WOO_CONFIG from 'utils/config/nextConfig';
-
 /**
  * Shorten inputted string (usually product description) to a maximum of length
  * @param {String} string The string that we input
@@ -77,8 +75,8 @@ export const getFormattedCart = (data) => {
           title: givenProduct.image.title,
         }
       : {
-          sourceUrl: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
-          srcSet: WOO_CONFIG.PLACEHOLDER_SMALL_IMAGE_URL,
+          sourceUrl: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
+          srcSet: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
           title: givenProduct.name,
         };
 

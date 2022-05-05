@@ -2,7 +2,6 @@ import algoliasearch from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
-import WOO_CONFIG from 'utils/config/nextConfig';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
@@ -23,7 +22,7 @@ const AlgoliaSearchBox = () => {
     <div className="hidden mt-2 md:inline xl:inline">
       <div className="">
         <InstantSearch
-          indexName={WOO_CONFIG.ALGOLIA_INDEX_NAME}
+          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
           searchClient={searchClient}
         >
           {/*We need to conditionally add a border because the element has position:fixed*/}

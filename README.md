@@ -41,9 +41,8 @@ The current release has been tested and is confirmed working with the following 
 
    https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox)
 
-   https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)   
-
-   Rename .env.example to .env so the Apollo debugger will correctly load. It will not load if the NODE_ENV variable is not correctly set.
+   https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)
+ 
 
 3. Make sure WooCommerce has some products already or import some sample products
 
@@ -51,9 +50,9 @@ The current release has been tested and is confirmed working with the following 
 
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
-4. Clone or fork the repo and modify `nextConfig.js`. 
+4. Clone or fork the repo and modify `.env.example` and rename it to `.env.`
 
-   Then set the environment variables ALGOLIA_APP_ID and ALGOLIA_PUBLIC_API_KEY in Vercel or your preferred hosting solution.
+   Then set the environment variables accordingly in Vercel or your preferred hosting solution.
    
    See https://vercel.com/docs/environment-variables
    

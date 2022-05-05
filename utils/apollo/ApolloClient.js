@@ -7,8 +7,6 @@ import {
   ApolloLink,
 } from '@apollo/client';
 
-import WOO_CONFIG from 'utils/config/nextConfig';
-
 /**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
@@ -79,7 +77,7 @@ const client = new ApolloClient({
   link: middleware.concat(
     afterware.concat(
       createHttpLink({
-        uri: WOO_CONFIG.GRAPHQL_URL,
+        uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
         fetch,
       })
     )
