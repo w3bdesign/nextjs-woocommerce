@@ -5,8 +5,8 @@ import { useState } from 'react';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
-  process.env.ALGOLIA_APP_ID,
-  process.env.ALGOLIA_PUBLIC_API_KEY
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY
 );
 
 /**
@@ -16,7 +16,7 @@ const MobileSearch = () => {
   const [search, setSearch] = useState(null);
   const [hasFocus, sethasFocus] = useState(false);
   return (
-    <div className="inline mt-4">
+    <div className="inline mt-4 md:hidden">
       <InstantSearch
         indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
         searchClient={searchClient}

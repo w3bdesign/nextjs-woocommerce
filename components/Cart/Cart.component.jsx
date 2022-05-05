@@ -18,7 +18,7 @@ const Cart = () => {
     <>
       <Link href="/handlekurv">
         <a
-          className="inline-block pl-4 mt-4 no-underline"
+          className="pl-4 mt-4 no-underline inline-block"
           aria-label="Handlekurv"
         >
           <svg

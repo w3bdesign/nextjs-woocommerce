@@ -5,6 +5,7 @@ import Router from 'next/router';
 import NProgress from 'nprogress';
 
 import Footer from 'components/Footer/Footer.component';
+import Stickynav from 'components/Footer/Stickynav.component';
 
 import 'styles/index.css';
 import 'styles/animate.min.css';
@@ -21,6 +22,7 @@ const App = ({ Component, pageProps }) => (
     <AppProvider>
       <Component {...pageProps} />
       <Footer />
+      <Stickynav />
     </AppProvider>
   </ApolloProvider>
 );
