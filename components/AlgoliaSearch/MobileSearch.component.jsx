@@ -5,8 +5,8 @@ import { useState } from 'react';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
-  process.env.ALGOLIA_APP_ID,
-  process.env.ALGOLIA_PUBLIC_API_KEY
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY
 );
 
 /**
