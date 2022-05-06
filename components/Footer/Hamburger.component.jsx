@@ -20,18 +20,12 @@ const Hamburger = () => {
 
   useEffect(() => {
     if (isExpanded) {
-      //document.addEventListener("mousedown", handleClickOutside);
       setHidden('');
     } else {
       setTimeout(() => {
         setHidden('invisible');
       }, 1000);
-
-      // document.removeEventListener("mousedown", handleClickOutside);
     }
-    /*return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };*/
   }, [isExpanded]);
 
   const handleMobileMenuClick = useCallback(() => {
