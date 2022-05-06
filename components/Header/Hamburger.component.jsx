@@ -97,8 +97,13 @@ const Hamburger = () => {
                   id="mobile-li"
                   className="w-full p-4 border-t border-gray-400 border-solid rounded"
                 >
-                  <Link href={href}>
-                    <a className="inline-block px-4 py-2 no-underline hover:text-black hover:underline">
+                  <Link href={href} passHref>
+                    <a
+                      className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
+                      onClick={() => {
+                        setisExpanded((prevExpanded) => !prevExpanded);
+                      }}
+                    >
                       {title}
                     </a>
                   </Link>
