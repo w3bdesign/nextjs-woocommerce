@@ -4,7 +4,6 @@ import { AppProvider } from 'utils/context/AppContext';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 
-import Footer from 'components/Footer/Footer.component';
 import Stickynav from 'components/Footer/Stickynav.component';
 
 import 'styles/index.css';
@@ -21,7 +20,7 @@ const App = ({ Component, pageProps }) => (
   <ApolloProvider client={client}>
     <AppProvider>
       <Component {...pageProps} />
-      <Footer />
+
       <Stickynav />
     </AppProvider>
   </ApolloProvider>
