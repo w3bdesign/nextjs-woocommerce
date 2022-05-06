@@ -50,7 +50,7 @@ The current release has been tested and is confirmed working with the following 
 
    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
-4. Clone or fork the repo and modify `.env.example` and rename it to `.env.`
+4. Clone or fork the repo and modify `.env.example` and rename it to `.env`
 
    Then set the environment variables accordingly in Vercel or your preferred hosting solution.
    
