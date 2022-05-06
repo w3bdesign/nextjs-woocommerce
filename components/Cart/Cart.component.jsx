@@ -16,6 +16,9 @@ const Cart = ({ stickyNav }) => {
 
   return (
     <>
+    {stickyNav  && 
+    (
+
       <Link href="/handlekurv">
         <a
           className="pl-4 mt-4 no-underline inline-block"
@@ -38,8 +41,12 @@ const Cart = ({ stickyNav }) => {
           </svg>
         </a>
       </Link>
-      {/*Cart quantity */}
-      {productsCount && (
+    )}
+
+
+    
+     
+      {productsCount && stickyNav && (
         <span
           className={`w-6 h-6 pb-2 -mt-5 text-center rounded-full         
           ${stickyNav ? 'text-black bg-white' : 'text-white bg-black'}`}
@@ -47,6 +54,10 @@ const Cart = ({ stickyNav }) => {
           {productsCount}
         </span>
       )}
+
+      
+     
+
     </>
   );
 };
