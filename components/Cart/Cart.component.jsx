@@ -8,7 +8,7 @@ import { AppContext } from 'utils/context/AppContext';
  * Currently only displays a sample cart.
  * Displays amount of items in cart.
  */
-const Cart = () => {
+const Cart = ({ stickyNav }) => {
   const [cart] = useContext(AppContext);
 
   const productsCount =
@@ -22,7 +22,7 @@ const Cart = () => {
           aria-label="Handlekurv"
         >
           <svg
-            className="fill-current"
+            className={`${stickyNav ? 'fill-white' : 'fill-current'}`}
             xmlns="https://www.w3.org/2000/svg"
             width="55"
             height="55"
@@ -40,7 +40,10 @@ const Cart = () => {
       </Link>
       {/*Cart quantity */}
       {productsCount && (
-        <span className="w-6 h-6 pb-2 -mt-5 text-center text-white bg-black rounded-full">
+        <span
+          className={`w-6 h-6 pb-2 -mt-5 text-center rounded-full         
+          ${stickyNav ? 'text-black bg-white' : 'text-white bg-black'}`}
+        >
           {productsCount}
         </span>
       )}

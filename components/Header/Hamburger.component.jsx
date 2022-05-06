@@ -49,7 +49,7 @@ const Hamburger = () => {
   const opacityFull = 'opacity-100 group-hover:opacity-100';
 
   return (
-    <div className="z-50 md:hidden lg:hidden xl:hidden bg-gray-800">
+    <div className="z-50 md:hidden lg:hidden xl:hidden bg-blue-800">
       <button
         className="flex flex-col w-16 rounded justify-center items-center group"
         data-cy="hamburger"
