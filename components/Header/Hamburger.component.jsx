@@ -88,7 +88,7 @@ const Hamburger = () => {
         <div
           id="mobile-menu"
           aria-hidden={!isExpanded}
-          className={`absolute right-0 z-10 w-full text-center text-black bg-white ${hidden}`}
+          className={`absolute left-0 bottom-24 z-10 w-full text-center text-black bg-white ${hidden}`}
         >
           <ul>
             {LINKS.map(({ id, title, href }) => (

@@ -13,7 +13,7 @@ import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
 const Navbar = () => (
   <header>
     <nav id="header" className="top-0 z-50 w-full py-1 bg-white ">
-      <div className="container flex flex-wrap items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96">
+      <div className="container flex md:flex-wrap flex-col md:flex-row items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96">
         <div
           className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1"
           id="menu"
