@@ -74,7 +74,7 @@ The current release has been tested and is confirmed working with the following 
 - Placeholder for products without images
 - Apollo Client with GraphQL
 - React Hook Form with form validation and error display
-- Animations with React-Spring, Framer Motion and Animate.css
+- Animations with Framer Motion and Animate.css
 - Loading spinner created with Styled Components
 - Shows page load progress with Nprogress during navigation
 - Fully responsive design
@@ -106,7 +106,6 @@ With that said, keep the following in mind:
 
 ## TODO
 
-- Read https://www.react-spring.io/log and update React-spring to version 9
 - Add total to cart/checkout page
 - Show stock quantity on individual products
 - Copy billing address to shipping address
