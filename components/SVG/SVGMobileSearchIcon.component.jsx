@@ -29,9 +29,20 @@ const SVGMobileSearchIcon = () => {
       <div className="inline mr-2 md:hidden xl:hidden">
         <svg
           className="cursor-pointer"
+
+
           onClick={() => {
-            setisExpanded(!isExpanded);
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth',
+          });
+
           }}
+
+
+          /*onClick={() => {
+            setisExpanded(!isExpanded);
+          }}*/
           fill="#fff"
           xmlns="https://www.w3.org/2000/svg"
           viewBox="0 0 50 50"
