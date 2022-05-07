@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import { filteredVariantPrice } from 'utils/functions/functions';
+import { filteredVariantPrice, paddedPrice } from 'utils/functions/functions';
 
 /**
  * Shows a single product with an Add To Cart button.
@@ -20,10 +20,21 @@ const SingleProduct = ({ product }) => {
       const firstVariant = product.variations.nodes[0].databaseId;
       setselectedVariation(firstVariant);
     }
-  }, []);
+  }, [product.variations]);
 
-  const { description, image, name, onSale, price, regularPrice, salePrice } =
+  let { description, image, name, onSale, price, regularPrice, salePrice } =
     product;
+
+  // Add padding/empty character after currency symbol here
+  if (price) {
+    price = paddedPrice(price, 'kr');
+  }
+  if (regularPrice) {
+    regularPrice = paddedPrice(regularPrice, 'kr');
+  }
+  if (salePrice) {
+    salePrice = paddedPrice(salePrice, 'kr');
+  }
 
   // Strip out HTML from description
   const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');

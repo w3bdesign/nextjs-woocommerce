@@ -24,73 +24,82 @@ const IndexProducts = ({ products }) => {
               slug,
               image,
               variations,
-            }) => (
-              <div
-                key={uuidv4()}
-                className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
-              >
-                <Link
-                  href={`/produkt/${encodeURIComponent(
-                    slug
-                  )}?id=${encodeURIComponent(databaseId)}`}
-                >
-                  <a>
-                    {image ? (
-                      <img
-                        id="product-image"
-                        className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
-                        alt={name}
-                        src={image.sourceUrl}
-                      />
-                    ) : (
-                      <img
-                        id="product-image"
-                        className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
-                        alt={name}
-                        src={
-                          process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
-                        }
-                      />
-                    )}
-                  </a>
-                </Link>
+            }) => {
+              // Add padding/empty character after currency symbol here
+              if (price) {
+                price = paddedPrice(price, 'kr');
+              }
+              if (regularPrice) {
+                regularPrice = paddedPrice(regularPrice, 'kr');
+              }
+              if (salePrice) {
+                salePrice = paddedPrice(salePrice, 'kr');
+              }
 
-                <Link
-                  href={`/produkt/${encodeURIComponent(
-                    slug
-                  )}?id=${encodeURIComponent(databaseId)}`}
+              return (
+                <div
+                  key={uuidv4()}
+                  className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
                 >
-                  <a>
-                    <div className="flex justify-center pt-3">
-                      <p className="font-bold text-center cursor-pointer">
-                        {name}
-                      </p>
+                  <Link
+                    href={`/produkt/${encodeURIComponent(
+                      slug
+                    )}?id=${encodeURIComponent(databaseId)}`}
+                  >
+                    <a>
+                      {image ? (
+                        <img
+                          id="product-image"
+                          className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                          alt={name}
+                          src={image.sourceUrl}
+                        />
+                      ) : (
+                        <img
+                          id="product-image"
+                          className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                          alt={name}
+                          src={
+                            process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
+                          }
+                        />
+                      )}
+                    </a>
+                  </Link>
+
+                  <Link
+                    href={`/produkt/${encodeURIComponent(
+                      slug
+                    )}?id=${encodeURIComponent(databaseId)}`}
+                  >
+                    <a>
+                      <div className="flex justify-center pt-3">
+                        <p className="font-bold text-center cursor-pointer">
+                          {name}
+                        </p>
+                      </div>
+                    </a>
+                  </Link>
+                  {/* Display sale price when on sale */}
+                  {onSale && (
+                    <div className="flex justify-center">
+                      <div className="pt-1 text-gray-900">
+                        {variations && filteredVariantPrice(price)}
+                        {!variations && salePrice}
+                      </div>
+                      <div className="pt-1 ml-2 text-gray-900 line-through">
+                        {variations && filteredVariantPrice(price, 'right')}
+                        {!variations && regularPrice}
+                      </div>
                     </div>
-                  </a>
-                </Link>
-                {/* Display sale price when on sale */}
-                {onSale && (
-                  <div className="flex justify-center">
-                    <div className="pt-1 text-gray-900">
-                      {variations &&
-                        filteredVariantPrice(paddedPrice(price, 'kr'))}
-                      {!variations && paddedPrice(salePrice, 'kr')}
-                    </div>
-                    <div className="pt-1 ml-2 text-gray-900 line-through">
-                      {variations &&
-                        filteredVariantPrice(paddedPrice(price, 'kr'), 'right')}
-                      {!variations && paddedPrice(regularPrice, 'kr')}
-                    </div>
-                  </div>
-                )}
-                {/* Display regular price when not on sale */}
-                {!onSale && (
-                  <p className="pt-1 text-center text-gray-900">
-                    {paddedPrice(price, 'kr')}
-                  </p>
-                )}
-              </div>
-            )
+                  )}
+                  {/* Display regular price when not on sale */}
+                  {!onSale && (
+                    <p className="pt-1 text-center text-gray-900">{price}</p>
+                  )}
+                </div>
+              );
+            }
           )
         ) : (
           <div className="mx-auto text-xl font-bold text-center text-gray-800 no-underline uppercase">

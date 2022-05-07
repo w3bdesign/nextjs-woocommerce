@@ -68,7 +68,7 @@ const CartItem = ({
       </td>
       <td className="px-4 py-2 border">{item.name}</td>
       <td className="px-4 py-2 border">
-        kr{'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
+        kr {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
       </td>
       <td className="px-4 py-2 border">
         <input
