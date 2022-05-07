@@ -3,9 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Add empty character after currency symbol
  * @param {String} price The price string that we input
+ * @param {String} symbol Currency symbol to add empty character/padding after
  */
 
-export const paddedPrice = (price) => price.split('kr').join('kr ');
+export const paddedPrice = (price, symbol) =>
+  price.split(symbol).join(`${symbol} `);
 
 /**
  * Shorten inputted string (usually product description) to a maximum of length

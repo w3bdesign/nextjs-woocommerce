@@ -72,19 +72,21 @@ const IndexProducts = ({ products }) => {
                 {onSale && (
                   <div className="flex justify-center">
                     <div className="pt-1 text-gray-900">
-                      {variations && filteredVariantPrice(price)}
-                      {!variations && paddedPrice(salePrice)}
+                      {variations &&
+                        filteredVariantPrice(paddedPrice(price, 'kr'))}
+                      {!variations && paddedPrice(salePrice, 'kr')}
                     </div>
                     <div className="pt-1 ml-2 text-gray-900 line-through">
-                      {variations && filteredVariantPrice(price, 'right')}
-                      {!variations && paddedPrice(regularPrice)}
+                      {variations &&
+                        filteredVariantPrice(paddedPrice(price, 'kr'), 'right')}
+                      {!variations && paddedPrice(regularPrice, 'kr')}
                     </div>
                   </div>
                 )}
                 {/* Display regular price when not on sale */}
                 {!onSale && (
                   <p className="pt-1 text-center text-gray-900">
-                    {paddedPrice(price)}
+                    {paddedPrice(price, 'kr')}
                   </p>
                 )}
               </div>
