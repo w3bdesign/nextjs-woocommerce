@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
-import { getUpdatedItems } from 'utils/functions/functions';
+import { getUpdatedItems, paddedPrice } from 'utils/functions/functions';
 
 const CartItem = ({
   item,
@@ -14,6 +14,7 @@ const CartItem = ({
   updateCartProcessing,
 }) => {
   const [productCount, setProductCount] = useState(item.qty);
+  const totalPrice = paddedPrice(item.totalPrice, 'kr');
 
   /*
    * When user changes the quantity, update the cart in localStorage
@@ -68,7 +69,7 @@ const CartItem = ({
       </td>
       <td className="px-4 py-2 border">{item.name}</td>
       <td className="px-4 py-2 border">
-        kr{'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
+        kr {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
       </td>
       <td className="px-4 py-2 border">
         <input
@@ -81,8 +82,8 @@ const CartItem = ({
       </td>
       <td className="px-4 py-2 border">
         {'string' !== typeof item.totalPrice
-          ? item.totalPrice.toFixed(2)
-          : item.totalPrice}
+          ? totalPrice.toFixed(2)
+          : totalPrice}
       </td>
     </tr>
   );

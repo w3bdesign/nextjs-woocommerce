@@ -1,6 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 
 /**
+ * Add empty character after currency symbol
+ * @param {String} price The price string that we input
+ * @param {String} symbol Currency symbol to add empty character/padding after
+ */
+
+export const paddedPrice = (price, symbol) =>
+  price.split(symbol).join(`${symbol} `);
+
+/**
  * Shorten inputted string (usually product description) to a maximum of length
  * @param {String} string The string that we input
  * @param {Integer} length The length that we want to shorten the text to
@@ -22,6 +31,7 @@ export const filteredVariantPrice = (price, side) => {
   if ('right' === side) {
     return price.substring(price.length, price.indexOf('-')).replace('-', '');
   }
+
   return price.substring(0, price.indexOf('-')).replace('-', '');
 };
 

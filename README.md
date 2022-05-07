@@ -74,7 +74,7 @@ The current release has been tested and is confirmed working with the following 
 - Placeholder for products without images
 - Apollo Client with GraphQL
 - React Hook Form with form validation and error display
-- Animations with Framer Motion and Animate.css
+- Animations with Framer motion, Styled components and Animate.css
 - Loading spinner created with Styled Components
 - Shows page load progress with Nprogress during navigation
 - Fully responsive design
