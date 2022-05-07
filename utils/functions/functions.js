@@ -1,6 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 
 /**
+ * Add empty character after currency symbol
+ * @param {String} price The price string that we input
+ */
+
+export const paddedPrice = (price) => price.split('kr').join('kr ');
+
+/**
  * Shorten inputted string (usually product description) to a maximum of length
  * @param {String} string The string that we input
  * @param {Integer} length The length that we want to shorten the text to
@@ -20,9 +27,13 @@ export const trimmedStringToLength = (string, length) => {
  */
 export const filteredVariantPrice = (price, side) => {
   if ('right' === side) {
-    return price.substring(price.length, price.indexOf('-')).replace('-', '');
+    return paddedPrice(price)
+      .substring(paddedPrice(price).length, paddedPrice(price).indexOf('-'))
+      .replace('-', '');
+    //return price.substring(price.length, price.indexOf('-')).replace('-', '');
   }
-  return price.substring(0, price.indexOf('-')).replace('-', '');
+
+  return paddedPrice(price).substring(0, price.indexOf('-')).replace('-', '');
 };
 
 /**
