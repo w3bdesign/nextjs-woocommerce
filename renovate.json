@@ -1,5 +1,36 @@
 {
-  "extends": [
-    "config:base"
+  "extends": ["config:base"],
+  "ignorePresets": [":prHourlyLimit2", ":prConcurrentLimit20"],
+  "packageRules": [
+    {
+      "rangeStrategy": "bump",
+      "matchDepTypes": [
+        "dependencies",
+        "devDependencies",
+        "optionalDependencies",
+        "peerDependencies"
+      ]
+    },
+    {
+      "matchUpdateTypes": ["minor", "pin", "digest"],
+      "automerge": true,
+      "matchDepTypes": [
+        "dependencies",
+        "devDependencies",
+        "optionalDependencies",
+        "peerDependencies"
+      ]
+    },
+    {
+      "matchUpdateTypes": ["patch", "lockFileMaintenance"],
+      "automerge": true,
+      "automergeType": "branch",
+      "matchDepTypes": [
+        "dependencies",
+        "devDependencies",
+        "optionalDependencies",
+        "peerDependencies"
+      ]
+    }
   ]
 }
