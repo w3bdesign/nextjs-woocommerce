@@ -35,7 +35,7 @@ const SearchResults = ({
         as={`/produkt/${trimmedProductName}?id=${objectID}`}
         passHref
       >
-        <div className="flex p-6 bg-white">
+        <a className="flex p-6 bg-white">
           <header className="hit-image-container">
             <img
               src={product_image}
@@ -62,7 +62,7 @@ const SearchResults = ({
               {trimmedStringToLength(short_description, 30)}
             </span>
           </div>
-        </div>
+        </a>
       </Link>
     </article>
   );

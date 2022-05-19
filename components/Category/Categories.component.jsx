@@ -16,11 +16,11 @@ const Categories = ({ categories }) => (
           href="/kategori/[id]"
           passHref
         >
-          <div className="p-6 cursor-pointer">
+          <a className="p-6 cursor-pointer">
             <div className="flex items-center justify-center w-full h-16 text-center border border-gray-300 rounded-lg shadow hover:shadow-outline">
               <p className="text-lg">{name}</p>
             </div>
-          </div>
+          </a>
         </Link>
       ))}
     </div>
