@@ -64,7 +64,7 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   const onSubmit = (submitData) => {
     const checkOutData = createCheckoutData(submitData);
