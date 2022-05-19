@@ -1,6 +1,7 @@
 /*eslint complexity: ["error", 6]*/
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
@@ -60,8 +61,10 @@ const CartItem = ({
         />
       </td>
       <td className="px-4 py-2 border">
-        <img
+        <Image
           width="64"
+          height="64"
+          objectFit="contain"
           src={item.image.sourceUrl}
           srcSet={item.image.srcSet}
           alt={item.image.title}

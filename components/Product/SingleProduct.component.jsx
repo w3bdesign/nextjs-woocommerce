@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 import AddToCartButton from 'components/Cart/AddToCartButton.component';
 import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
@@ -24,6 +25,9 @@ const SingleProduct = ({ product }) => {
 
   let { description, image, name, onSale, price, regularPrice, salePrice } =
     product;
+
+  let sourceUrl =
+    image.sourceUrl || process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL;
 
   // Add padding/empty character after currency symbol here
   if (price) {
@@ -51,22 +55,15 @@ const SingleProduct = ({ product }) => {
       ) : (
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
           <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
-            {image && (
-              <img
+            <div className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105">
+              <Image
                 id="product-image"
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
                 alt={name}
-                src={image.sourceUrl}
+                src={sourceUrl}
+                objectFit="contain"
+                layout="fill"
               />
-            )}
-            {!image && (
-              <img
-                id="product-image"
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
-                alt={name}
-                src={process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL}
-              />
-            )}
+            </div>
             <div className="ml-8">
               <p className="text-3xl font-bold text-left">{name}</p>
               <br />

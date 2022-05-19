@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { trimmedStringToLength } from 'utils/functions/functions';
 
@@ -37,10 +38,13 @@ const SearchResults = ({
       >
         <a className="flex p-6 bg-white">
           <header className="hit-image-container">
-            <img
+            <Image
               src={product_image}
               alt={product_name}
-              className="w-12 hit-image"
+              width="48"
+              height="48"
+              className="hit-image"
+              objectFit="contain"
             />
           </header>
           <div className="pl-4 text-left">

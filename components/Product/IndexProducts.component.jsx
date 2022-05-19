@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 
 import { filteredVariantPrice, paddedPrice } from 'utils/functions/functions';
@@ -36,6 +37,10 @@ const IndexProducts = ({ products }) => {
                 salePrice = paddedPrice(salePrice, 'kr');
               }
 
+              let sourceUrl =
+                image.sourceUrl ||
+                process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL;
+
               return (
                 <div
                   key={uuidv4()}
@@ -47,23 +52,16 @@ const IndexProducts = ({ products }) => {
                     )}?id=${encodeURIComponent(databaseId)}`}
                   >
                     <a>
-                      {image ? (
-                        <img
-                          id="product-image"
-                          className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                      <div className="h-80 relative cursor-pointer">
+                        <Image
+                          id={slug}
                           alt={name}
-                          src={image.sourceUrl}
+                          src={sourceUrl}
+                          objectFit="contain"
+                          layout="fill"
+                          className="transition duration-500 ease-in-out transform hover:grow hover:shadow-lg hover:scale-105"
                         />
-                      ) : (
-                        <img
-                          id="product-image"
-                          className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
-                          alt={name}
-                          src={
-                            process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
-                          }
-                        />
-                      )}
+                      </div>
                     </a>
                   </Link>
 
