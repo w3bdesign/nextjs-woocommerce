@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Next.js WooCommerce webshop",
   "main": "index.js",
   "scripts": {
