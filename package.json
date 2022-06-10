@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.6.6",
+    "@apollo/client": "^3.6.7",
     "@types/react": "^18.0.12",
     "algoliasearch": "^4.13.1",
     "autoprefixer": "^10.4.7",
