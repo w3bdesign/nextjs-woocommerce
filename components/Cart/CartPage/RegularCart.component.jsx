@@ -29,7 +29,7 @@ const RegularCart = ({
       {cart.products.length &&
         cart.products.map((item) => (
           <CartItem
-            key={item}
+            key={item.cartKey}
             item={item}
             products={cart.products}
             handleRemoveProductClick={handleRemoveProductClick}
