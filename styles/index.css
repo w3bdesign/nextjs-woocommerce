@@ -22,7 +22,8 @@
   margin-top: -20px;
 }
 
-/* Fix Algolia mobile-searchbox design issues */
+/* Fix Algolia mobile searchbox design issues */
+
 #mobilesearchdiv {
   position: absolute;
   height: 200px;
@@ -38,6 +39,12 @@
 
 .ais-SearchBox-reset {
   margin-left: 10px;
+}
+
+/* Fix Chrome padding issue */
+
+.ais-SearchBox-input[type='search']::-webkit-search-cancel-button {
+  display: none;
 }
 
 @tailwind utilities;
