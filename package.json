@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Next.js WooCommerce webshop",
   "main": "index.js",
   "scripts": {
@@ -37,6 +37,6 @@
     "eslint-config-next": "^12.2.2",
     "postcss-preset-env": "^7.7.2",
     "prettier": "^2.7.1",
-    "tailwindcss": "^3.1.5"
+    "tailwindcss": "^3.1.6"
   }
 }
