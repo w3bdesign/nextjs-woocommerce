@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.29",
+  "version": "1.0.3",
   "description": "Next.js WooCommerce webshop",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "@apollo/client": "^3.6.9",
     "@types/react": "^18.0.15",
     "algoliasearch": "^4.14.2",
-    "autoprefixer": "^10.4.7",
+    "autoprefixer": "^10.4.8",
     "framer-motion": "^6.5.1",
     "graphql": "^16.5.0",
     "next": "^12.2.3",
