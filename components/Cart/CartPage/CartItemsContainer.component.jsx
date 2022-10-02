@@ -71,6 +71,8 @@ const CartItemsContainer = () => {
         },
       });
     }
+
+    refetch();
   };
 
   useEffect(() => {
