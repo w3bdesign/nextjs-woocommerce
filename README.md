@@ -7,7 +7,7 @@
 
 # Next.js Ecommerce site with WooCommerce backend
 
-## Live URL: https://next-woocommerce.dfweb.no
+## Live URL: <https://next-woocommerce.dfweb.no>
 
 ## Table Of Contents (TOC)
 
@@ -19,70 +19,76 @@
 
 ## Installation
 
-1. Install and activate the following required plugins, in your WordPress plugin directory:
+1.  Install and activate the following required plugins, in your WordPress plugin directory:
 
-- [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for WordPress.
-- [wp-graphql](https://wordpress.org/plugins/wp-graphql) Exposes GraphQL for WordPress.
-- [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds WooCommerce functionality to a WPGraphQL schema.
-- [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia. Required for search to work. 
+-   [woocommerce](https://wordpress.org/plugins/woocommerce) Ecommerce for WordPress.
+-   [wp-graphql](https://wordpress.org/plugins/wp-graphql) Exposes GraphQL for WordPress.
+-   [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds WooCommerce functionality to a WPGraphQL schema.
+-   [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer) Sends WooCommerce products to Algolia. Required for search to work. 
 
 Optional plugin:
 
-- [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
+-   [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
 
 The current release has been tested and is confirmed working with the following versions:
 
-- WordPress version 6.0.1
-- WooCommerce version 6.4.1
-- WP GraphQL version 1.5.0
-- WooGraphQL version 0.6.2
+-   WordPress version 6.0.1
+-   WooCommerce version 6.4.1
+-   WP GraphQL version 1.5.0
+-   WooGraphQL version 0.6.2
 
-2. For debugging and testing, install either:
+2.  For debugging and testing, install either:
 
-   https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/ (Firefox)
+    <https://addons.mozilla.org/en-US/firefox/addon/apollo-developer-tools/> (Firefox)
 
-   https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm (Chrome)
- 
+    <https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm> (Chrome)
 
-3. Make sure WooCommerce has some products already or import some sample products
 
-   The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/)
+3.  Make sure WooCommerce has some products already or import some sample products
 
-   Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
+    The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/)
 
-4. Clone or fork the repo and modify `.env.example` and rename it to `.env`
+    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
-   Then set the environment variables accordingly in Vercel or your preferred hosting solution.
-   
-   See https://vercel.com/docs/environment-variables
-   
-5. Modify the values according to your setup
-6. Start the server with `npm run dev`
-7. Enable COD (Cash On Demand) payment method in WooCommerce
-8. Add a product to the cart
-9. Proceed to checkout (Gå til kasse)
+4.  Clone or fork the repo and modify `.env.example` and rename it to `.env`
+
+    Then set the environment variables accordingly in Vercel or your preferred hosting solution.
+
+    See <https://vercel.com/docs/environment-variables>
+
+5.  Modify the values according to your setup
+
+6.  Start the server with `npm run dev`
+
+7.  Enable COD (Cash On Demand) payment method in WooCommerce
+
+8.  Add a product to the cart
+
+9.  Proceed to checkout (Gå til kasse)
+
 10. Fill in your details and place the order
 
 ## Features
 
-- Next.js version 12.3.1
-- Connect to Woocommerce GraphQL API and list name, price and display image for products
-- Support for simple products and variable products
-- Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
-- Algolia search (requires [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer))
-- Meets WCAG accessibility standards where possible
-- Placeholder for products without images
-- Apollo Client with GraphQL
-- React Hook Form with form validation and error display
-- Animations with Framer motion, Styled components and Animate.css
-- Loading spinner created with Styled Components
-- Shows page load progress with Nprogress during navigation
-- Fully responsive design
-- Category and product listings
-- Pretty URLs with builtin Nextjs functionality
-- Tailwind 3 for styling
-- JSDoc comments
-- WooCommerce cart session is automatically deleted after 48 hours to prevent GraphQL session expiration errors
+-   Next.js version 12.3.1
+-   React 18
+-   Connect to Woocommerce GraphQL API and list name, price and display image for products
+-   Support for simple products and variable products
+-   Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
+-   Algolia search (requires [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer))
+-   Meets WCAG accessibility standards where possible
+-   Placeholder for products without images
+-   Apollo Client with GraphQL
+-   React Hook Form with form validation and error display
+-   Animations with Framer motion, Styled components and Animate.css
+-   Loading spinner created with Styled Components
+-   Shows page load progress with Nprogress during navigation
+-   Fully responsive design
+-   Category and product listings
+-   Pretty URLs with builtin Nextjs functionality
+-   Tailwind 3 for styling
+-   JSDoc comments
+-   WooCommerce cart session is automatically deleted after 48 hours to prevent GraphQL session expiration errors
 
 ## Troubleshooting
 
@@ -101,15 +107,15 @@ More testing and debugging is required before deploying it in a production envir
 
 With that said, keep the following in mind:
 
-- Currently only simple products and variable products work without any issues. Other product types are not known to work.
-- Only Cash On Delivery (COD) is currently supported. More payment methods may be added later.
+-   Currently only simple products and variable products work without any issues. Other product types are not known to work.
+-   Only Cash On Delivery (COD) is currently supported. More payment methods may be added later.
 
 ## TODO
 
-- Add total to cart/checkout page
-- Show stock quantity on individual products
-- Copy billing address to shipping address
-- Display product variation name in cart / checkout
-- Hide products not in stock
-- Add better SEO
-- Re-add Next/image when it is working better
+-   Add total to cart/checkout page
+-   Show stock quantity on individual products
+-   Copy billing address to shipping address
+-   Display product variation name in cart / checkout
+-   Hide products not in stock
+-   Add better SEO
+-   Re-add Next/image when it is working better
