@@ -74,6 +74,8 @@ const AddToCartButton = ({ product }) => {
   const handleAddToCartClick = () => {
     setRequestError(null);
     addToCart();
+    // Update the cart with new values in React context.
+    refetch();
   };
 
   // Separate out conditions here for increased readability
