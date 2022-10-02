@@ -20,6 +20,8 @@ const CartItemsContainer = () => {
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
+      refetch();
+      
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
