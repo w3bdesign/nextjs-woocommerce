@@ -55,14 +55,14 @@ const AddToCartButton = ({ product }) => {
         input: productQueryInput,
       },
       onCompleted: () => {
-        console.log("Completed")
-         // Update the cart with new values in React context.
-         refetch();
+        console.log('Completed');
+        // Update the cart with new values in React context.
+        refetch();
         // If error.
         if (addToCartError) {
           setRequestError(addToCartError.graphQLErrors[0].message);
         }
-       
+
         // Show View Cart Button
         setShowViewCart(true);
         setshowAddToCart(true);

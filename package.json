@@ -1,6 +1,6 @@
 {
   "name": "nextjs-woocommerce",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Next.js WooCommerce webshop",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
   },
   "keywords": [],
-  "author": "",
+  "author": "w3bdesign",
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.7.0",
