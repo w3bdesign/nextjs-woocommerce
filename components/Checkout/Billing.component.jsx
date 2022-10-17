@@ -2,15 +2,6 @@ import { useForm } from 'react-hook-form';
 import { InputField } from '../Input/InputField.component';
 import { getCustomNumberValidation } from '../../functions/functions';
 
-const customPostNumberValidation = getCustomNumberValidation(
-  {
-    minLength: 'Postnummer må være minimum 4 tall',
-    maxLength: 'Postnummer må være maksimalt 4 tall',
-    pattern: 'Postnummer må bare være tall',
-  },
-  4
-);
-
 const inputs = [
   { label: 'Fornavn', name: 'firstName' },
   { label: 'Etternavn', name: 'lastName' },
@@ -18,7 +9,14 @@ const inputs = [
   {
     label: 'Postnummer',
     name: 'postcode',
-    customValidation: customPostNumberValidation,
+    customValidation: getCustomNumberValidation(
+      {
+        minLength: 'Postnummer må være minimum 4 tall',
+        maxLength: 'Postnummer må være maksimalt 4 tall',
+        pattern: 'Postnummer må bare være tall',
+      },
+      4
+    ),
   },
   { label: 'Sted', name: 'city' },
   {
@@ -41,11 +39,6 @@ const inputs = [
       },
       8
     ),
-  },
-  {
-    label: 'Postnummer',
-    name: 'postcode',
-    customValidation: customPostNumberValidation,
   },
 ];
 
