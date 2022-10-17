@@ -1,6 +1,50 @@
 import { useForm } from 'react-hook-form';
 import { InputField } from '../Input/InputField.component';
 
+const getCustomNumberValidation = (
+  value,
+  { minLength, maxLength, pattern }
+) => ({
+  minLength: { value, message: minLength },
+  maxLength: { value, message: maxLength },
+  pattern: { value: /^\d+$/i, message: pattern },
+});
+
+const inputs = [
+  { label: 'Fornavn', name: 'firstName' },
+  { label: 'Etternavn', name: 'lastName' },
+  { label: 'Adresse', name: 'address1' },
+  {
+    label: 'Postnummer',
+    name: 'postcode',
+    customValidation: getCustomNumberValidation(4, {
+      minLength: 'Postnummer må være minimum 4 tall',
+      maxLength: 'Postnummer må være maksimalt 4 tall',
+      pattern: 'Postnummer må bare være tall',
+    }),
+  },
+  { label: 'Sted', name: 'city' },
+  {
+    label: 'Epost',
+    name: 'email',
+    customValidation: {
+      pattern: {
+        value: /[^@]+@[^@]+\.[^@]+/i,
+        message: 'Du må oppgi en gyldig epost',
+      },
+    },
+  },
+  {
+    label: 'Telefon',
+    name: 'phone',
+    customValidation: getCustomNumberValidation(8, {
+      minLength: 'Minimum 8 tall i telefonnummeret',
+      maxLength: 'Maksimalt 8 tall i telefonnummeret',
+      pattern: 'Ikke gyldig telefonnummer',
+    }),
+  },
+];
+
 const Billing = ({ onSubmit }) => {
   const {
     register,
@@ -12,24 +56,16 @@ const Billing = ({ onSubmit }) => {
     <section className="text-gray-700 container p-4 py-2 mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mx-auto lg:w-1/2 flex flex-wrap">
-          <InputField
-            label="Fornavn"
-            name="firstName"
-            errors={errors}
-            register={register}
-          />
-          <InputField
-            label="Etternavn"
-            name="lastName"
-            errors={errors}
-            register={register}
-          />
-          <InputField
-            label="Adresse"
-            name="address1"
-            errors={errors}
-            register={register}
-          />
+          {inputs.map(({ label, name, customValidation }, key) => (
+            <InputField
+              key={key}
+              label={label}
+              name={name}
+              customValidation={customValidation}
+              errors={errors}
+              register={register}
+            />
+          ))}
           <InputField
             label="Postnummer"
             name="postcode"
@@ -47,44 +83,6 @@ const Billing = ({ onSubmit }) => {
               pattern: {
                 value: /^\d+$/i,
                 message: 'Postnummer må bare være tall',
-              },
-            }}
-          />
-          <InputField
-            label="Sted"
-            name="city"
-            errors={errors}
-            register={register}
-          />
-          <InputField
-            label="Epost"
-            name="email"
-            errors={errors}
-            register={register}
-            customValidation={{
-              pattern: {
-                value: /[^@]+@[^@]+\.[^@]+/i,
-                message: 'Du må oppgi en gyldig epost',
-              },
-            }}
-          />
-          <InputField
-            label="Telefon"
-            name="phone"
-            errors={errors}
-            register={register}
-            customValidation={{
-              minLength: {
-                value: 8,
-                message: 'Minimum 8 tall i telefonnummeret',
-              },
-              maxLength: {
-                value: 8,
-                message: 'Maksimalt 8 tall i telefonnummeret',
-              },
-              pattern: {
-                value: /^\d+$/i,
-                message: 'Ikke gyldig telefonnummer',
               },
             }}
           />
