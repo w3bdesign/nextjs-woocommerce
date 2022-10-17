@@ -1,14 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { InputField } from '../Input/InputField.component';
+import { getCustomNumberValidation } from '../../functions/functions';
 
-const getCustomNumberValidation = (
-  value,
-  { minLength, maxLength, pattern }
-) => ({
-  minLength: { value, message: minLength },
-  maxLength: { value, message: maxLength },
-  pattern: { value: /^\d+$/i, message: pattern },
-});
+const customPostNumberValidation = getCustomNumberValidation(
+  {
+    minLength: 'Postnummer må være minimum 4 tall',
+    maxLength: 'Postnummer må være maksimalt 4 tall',
+    pattern: 'Postnummer må bare være tall',
+  },
+  4
+);
 
 const inputs = [
   { label: 'Fornavn', name: 'firstName' },
@@ -17,31 +18,34 @@ const inputs = [
   {
     label: 'Postnummer',
     name: 'postcode',
-    customValidation: getCustomNumberValidation(4, {
-      minLength: 'Postnummer må være minimum 4 tall',
-      maxLength: 'Postnummer må være maksimalt 4 tall',
-      pattern: 'Postnummer må bare være tall',
-    }),
+    customValidation: customPostNumberValidation,
   },
   { label: 'Sted', name: 'city' },
   {
     label: 'Epost',
     name: 'email',
-    customValidation: {
-      pattern: {
-        value: /[^@]+@[^@]+\.[^@]+/i,
-        message: 'Du må oppgi en gyldig epost',
-      },
-    },
+    customValidation: getCustomNumberValidation(
+      { pattern: 'Du må oppgi en gyldig epost' },
+      undefined,
+      /[^@]+@[^@]+\.[^@]+/i
+    ),
   },
   {
     label: 'Telefon',
     name: 'phone',
-    customValidation: getCustomNumberValidation(8, {
-      minLength: 'Minimum 8 tall i telefonnummeret',
-      maxLength: 'Maksimalt 8 tall i telefonnummeret',
-      pattern: 'Ikke gyldig telefonnummer',
-    }),
+    customValidation: getCustomNumberValidation(
+      {
+        minLength: 'Minimum 8 tall i telefonnummeret',
+        maxLength: 'Maksimalt 8 tall i telefonnummeret',
+        pattern: 'Ikke gyldig telefonnummer',
+      },
+      8
+    ),
+  },
+  {
+    label: 'Postnummer',
+    name: 'postcode',
+    customValidation: customPostNumberValidation,
   },
 ];
 
@@ -66,26 +70,6 @@ const Billing = ({ onSubmit }) => {
               register={register}
             />
           ))}
-          <InputField
-            label="Postnummer"
-            name="postcode"
-            errors={errors}
-            register={register}
-            customValidation={{
-              minLength: {
-                value: 4,
-                message: 'Postnummer må være minimum 4 tall',
-              },
-              maxLength: {
-                value: 4,
-                message: 'Postnummer må være maksimalt 4 tall',
-              },
-              pattern: {
-                value: /^\d+$/i,
-                message: 'Postnummer må bare være tall',
-              },
-            }}
-          />
           <OrderButton register={register} />
         </div>
       </form>
