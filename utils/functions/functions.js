@@ -23,7 +23,7 @@ export const trimmedStringToLength = (string, length) => {
 
 /**
  * Creates a validation object with passed custom error messages.
- * If value is not passed than returned object will contain only pattern message.
+ * If `value` is not passed then returned object will contain only pattern message.
  * @param {Object} messages Custom error messages
  * @param {String} messages.minLength Message for min length attribute validation
  * @param {String} messages.maxLength Message for max length attribute vlidation
