@@ -55,7 +55,6 @@ const AddToCartButton = ({ product }) => {
         input: productQueryInput,
       },
       onCompleted: () => {
-        console.log('Completed');
         // Update the cart with new values in React context.
         refetch();
         // If error.
