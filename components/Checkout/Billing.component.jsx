@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { InputField } from '../Input/InputField.component';
-import { getCustomNumberValidation } from '../../functions/functions';
+import { getCustomNumberValidation } from '../../utils/functions/functions';
 
 const inputs = [
   { label: 'Fornavn', name: 'firstName' },
