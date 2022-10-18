@@ -1,5 +1,46 @@
 import { useForm } from 'react-hook-form';
 import { InputField } from '../Input/InputField.component';
+import { getCustomNumberValidation } from '../../utils/functions/functions';
+
+const inputField = [
+  { label: 'Fornavn', name: 'firstName' },
+  { label: 'Etternavn', name: 'lastName' },
+  { label: 'Adresse', name: 'address1' },
+  {
+    label: 'Postnummer',
+    name: 'postcode',
+    customValidation: getCustomNumberValidation(
+      {
+        minLength: 'Postnummer må være minimum 4 tall',
+        maxLength: 'Postnummer må være maksimalt 4 tall',
+        pattern: 'Postnummer må bare være tall',
+      },
+      4
+    ),
+  },
+  { label: 'Sted', name: 'city' },
+  {
+    label: 'Epost',
+    name: 'email',
+    customValidation: getCustomNumberValidation(
+      { pattern: 'Du må oppgi en gyldig epost' },
+      undefined,
+      /^[a-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[a-z0-9.-]+$/gim
+    ),
+  },
+  {
+    label: 'Telefon',
+    name: 'phone',
+    customValidation: getCustomNumberValidation(
+      {
+        minLength: 'Minimum 8 tall i telefonnummeret',
+        maxLength: 'Maksimalt 8 tall i telefonnummeret',
+        pattern: 'Ikke gyldig telefonnummer',
+      },
+      8
+    ),
+  },
+];
 
 const Billing = ({ onSubmit }) => {
   const {
@@ -12,82 +53,16 @@ const Billing = ({ onSubmit }) => {
     <section className="text-gray-700 container p-4 py-2 mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mx-auto lg:w-1/2 flex flex-wrap">
-          <InputField
-            label="Fornavn"
-            name="firstName"
-            errors={errors}
-            register={register}
-          />
-          <InputField
-            label="Etternavn"
-            name="lastName"
-            errors={errors}
-            register={register}
-          />
-          <InputField
-            label="Adresse"
-            name="address1"
-            errors={errors}
-            register={register}
-          />
-          <InputField
-            label="Postnummer"
-            name="postcode"
-            errors={errors}
-            register={register}
-            customValidation={{
-              minLength: {
-                value: 4,
-                message: 'Postnummer må være minimum 4 tall',
-              },
-              maxLength: {
-                value: 4,
-                message: 'Postnummer må være maksimalt 4 tall',
-              },
-              pattern: {
-                value: /^\d+$/i,
-                message: 'Postnummer må bare være tall',
-              },
-            }}
-          />
-          <InputField
-            label="Sted"
-            name="city"
-            errors={errors}
-            register={register}
-          />
-          <InputField
-            label="Epost"
-            name="email"
-            errors={errors}
-            register={register}
-            customValidation={{
-              pattern: {
-                value: /[^@]+@[^@]+\.[^@]+/i,
-                message: 'Du må oppgi en gyldig epost',
-              },
-            }}
-          />
-          <InputField
-            label="Telefon"
-            name="phone"
-            errors={errors}
-            register={register}
-            customValidation={{
-              minLength: {
-                value: 8,
-                message: 'Minimum 8 tall i telefonnummeret',
-              },
-              maxLength: {
-                value: 8,
-                message: 'Maksimalt 8 tall i telefonnummeret',
-              },
-              pattern: {
-                value: /^\d+$/i,
-                message: 'Ikke gyldig telefonnummer',
-              },
-            }}
-          />
+          {inputField.map(({ label, name, customValidation }, key) => (
+            <InputField
+              key={key}
+              label={label}
+              name={name}
+              customValidation={customValidation}
+              errors={errors}
+              register={register}
+            />
+          ))}
           <OrderButton register={register} />
         </div>
       </form>

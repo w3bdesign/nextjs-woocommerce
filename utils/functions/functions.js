@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
  * @param {String} price The price string that we input
  * @param {String} symbol Currency symbol to add empty character/padding after
  */
-
 export const paddedPrice = (price, symbol) =>
   price.split(symbol).join(`${symbol} `);
 
@@ -20,6 +19,35 @@ export const trimmedStringToLength = (string, length) => {
     return `${subStr}...`;
   }
   return string;
+};
+
+/**
+ * Creates a validation object with passed custom error messages.
+ * If `value` is not passed then returned object will contain only pattern message.
+ * @param {Object} messages Custom error messages
+ * @param {String} messages.minLength Message for min length attribute validation
+ * @param {String} messages.maxLength Message for max length attribute vlidation
+ * @param {String} messages.pattern Message for custom pattern vlidation
+ * @param {Integer=} value The number value used as limit for min/max attribute
+ * @param {RegExp} patternValue Regular expression pattern for validation
+ */
+export const getCustomNumberValidation = (
+  { minLength, maxLength, pattern },
+  value,
+  patternValue = /^\d+$/i
+) => {
+  const validationObj = {
+    minLength: { value, message: minLength },
+    maxLength: { value, message: maxLength },
+    pattern: { value: patternValue, message: pattern },
+  };
+
+  return Object.keys(validationObj).reduce((acc, key) => {
+    if (validationObj[key].value) {
+      acc[key] = validationObj[key];
+    }
+    return acc;
+  }, {});
 };
 
 /**
