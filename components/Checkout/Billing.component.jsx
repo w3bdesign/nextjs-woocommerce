@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { InputField } from '../Input/InputField.component';
 import { getCustomNumberValidation } from '../../utils/functions/functions';
 
-const inputs = [
+const inputField = [
   { label: 'Fornavn', name: 'firstName' },
   { label: 'Etternavn', name: 'lastName' },
   { label: 'Adresse', name: 'address1' },
@@ -53,7 +53,7 @@ const Billing = ({ onSubmit }) => {
     <section className="text-gray-700 container p-4 py-2 mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mx-auto lg:w-1/2 flex flex-wrap">
-          {inputs.map(({ label, name, customValidation }, key) => (
+          {inputField.map(({ label, name, customValidation }, key) => (
             <InputField
               key={key}
               label={label}
