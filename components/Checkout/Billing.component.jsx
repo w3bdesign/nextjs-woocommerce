@@ -25,7 +25,7 @@ const inputs = [
     customValidation: getCustomNumberValidation(
       { pattern: 'Du må oppgi en gyldig epost' },
       undefined,
-      /[^@]+@[^@]+\.[^@]+/i
+      /^[a-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[a-z0-9.-]+$/gim
     ),
   },
   {
