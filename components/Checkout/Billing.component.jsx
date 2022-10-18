@@ -1,46 +1,8 @@
 import { useForm } from 'react-hook-form';
-import { InputField } from '../Input/InputField.component';
-import { getCustomNumberValidation } from '../../utils/functions/functions';
 
-const inputField = [
-  { label: 'Fornavn', name: 'firstName' },
-  { label: 'Etternavn', name: 'lastName' },
-  { label: 'Adresse', name: 'address1' },
-  {
-    label: 'Postnummer',
-    name: 'postcode',
-    customValidation: getCustomNumberValidation(
-      {
-        minLength: 'Postnummer må være minimum 4 tall',
-        maxLength: 'Postnummer må være maksimalt 4 tall',
-        pattern: 'Postnummer må bare være tall',
-      },
-      4
-    ),
-  },
-  { label: 'Sted', name: 'city' },
-  {
-    label: 'Epost',
-    name: 'email',
-    customValidation: getCustomNumberValidation(
-      { pattern: 'Du må oppgi en gyldig epost' },
-      undefined,
-      /^[a-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[a-z0-9.-]+$/gim
-    ),
-  },
-  {
-    label: 'Telefon',
-    name: 'phone',
-    customValidation: getCustomNumberValidation(
-      {
-        minLength: 'Minimum 8 tall i telefonnummeret',
-        maxLength: 'Maksimalt 8 tall i telefonnummeret',
-        pattern: 'Ikke gyldig telefonnummer',
-      },
-      8
-    ),
-  },
-];
+import { InputField } from '../Input/InputField.component';
+
+import { INPUT_FIELDS } from '../../utils/constants/INPUT_FIELDS';
 
 const Billing = ({ onSubmit }) => {
   const {
@@ -53,7 +15,7 @@ const Billing = ({ onSubmit }) => {
     <section className="text-gray-700 container p-4 py-2 mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mx-auto lg:w-1/2 flex flex-wrap">
-          {inputField.map(({ label, name, customValidation }, key) => (
+          {INPUT_FIELDS.map(({ label, name, customValidation }, key) => (
             <InputField
               key={key}
               label={label}
