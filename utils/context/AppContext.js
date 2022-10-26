@@ -17,6 +17,7 @@ export const AppProvider = ({ children }) => {
       setCart(cartData);
     }
   }, []);
+  
   return (
     <AppContext.Provider value={[cart, setCart]}>
       {children}
