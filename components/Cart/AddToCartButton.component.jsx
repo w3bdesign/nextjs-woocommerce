@@ -61,7 +61,6 @@ const AddToCartButton = ({ product }) => {
         if (addToCartError) {
           setRequestError(addToCartError.graphQLErrors[0].message);
         }
-
         // Show View Cart Button
         setShowViewCart(true);
         setshowAddToCart(true);
