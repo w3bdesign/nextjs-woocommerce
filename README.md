@@ -71,7 +71,7 @@ The current release has been tested and is confirmed working with the following 
 
 ## Features
 
--   Next.js version 12.3.1
+-   Next.js version 13.0.0
 -   React 18
 -   Connect to Woocommerce GraphQL API and list name, price and display image for products
 -   Support for simple products and variable products
