@@ -13,15 +13,11 @@ const OrderDetailsCartItem = ({ item }) => {
           alt={item.image.title}
         />
       </td>
-
       <td className="px-4 py-2 border">{item.name}</td>
-
       <td className="px-4 py-2 border">
         kr {'string' !== typeof item.price ? item.price.toFixed(2) : item.price}
       </td>
-
       <td className="px-4 py-2 border">{item.qty}</td>
-
       <td className="px-4 py-2 border">
         {'string' !== typeof item.totalPrice
           ? totalPrice.toFixed(2)
