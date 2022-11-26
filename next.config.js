@@ -1,7 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   poweredByHeader: false,
-  /*experimental: {
+  experimental: {
     forceSwcTransforms: true,
-  },*/
+  },
 };
