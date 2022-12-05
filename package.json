@@ -19,7 +19,7 @@
     "@types/react": "^18.0.26",
     "algoliasearch": "^4.14.2",
     "autoprefixer": "^10.4.13",
-    "framer-motion": "7.6.18",
+    "framer-motion": "7.6.19",
     "graphql": "^16.6.0",
     "next": "^13.0.6",
     "nprogress": "^0.2.0",
