@@ -32,7 +32,7 @@ Optional plugin:
 
 The current release has been tested and is confirmed working with the following versions:
 
--   WordPress version 6.1.0
+-   WordPress version 6.1.1
 -   WooCommerce version 7.1.0
 -   WP GraphQL version 1.5.0
 -   WooGraphQL version 0.6.2
