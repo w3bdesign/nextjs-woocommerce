@@ -11,7 +11,12 @@
     "format": "prettier --write \"**/*.{js,jsx,json}\"",
     "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
   },
-  "keywords": [],
+  "keywords": [
+    "next.js",
+    "next",
+    "javascript",
+    "framer"
+  ],
   "author": "w3bdesign",
   "license": "ISC",
   "dependencies": {
