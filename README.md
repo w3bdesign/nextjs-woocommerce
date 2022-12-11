@@ -1,3 +1,4 @@
+![Codiga Code Grade](https://api.codiga.io/project/35238/score/svg)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/w3bdesign/nextjs-woocommerce.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/w3bdesign/nextjs-woocommerce/context:javascript)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/29de6847b01142e6a0183988fc3df46a)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
 [![CodeFactor](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce/badge)](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce)
