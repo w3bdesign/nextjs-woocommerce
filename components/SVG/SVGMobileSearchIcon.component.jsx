@@ -11,7 +11,7 @@ const SVGMobileSearchIcon = () => {
   };
 
   return (
-    <div className="inline mt-2 mr-2 md:hidden xl:hidden">
+    <div className="inline mr-2 md:hidden xl:hidden">
       <svg
         className="cursor-pointer"
         onClick={scrollToTop}
