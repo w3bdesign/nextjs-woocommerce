@@ -17,7 +17,7 @@ const Cart = ({ stickyNav }) => {
   return (
     <>
       <Link href="/handlekurv">
-        <a
+        <span
           className="pl-4 mt-4 no-underline inline-block"
           aria-label="Handlekurv"
         >
@@ -36,7 +36,7 @@ const Cart = ({ stickyNav }) => {
             <circle cx="10.5" cy="18.5" r="1.5" aria-label="Handlekurv" />
             <circle cx="17.5" cy="18.5" r="1.5" aria-label="Handlekurv" />
           </svg>
-        </a>
+        </span>
       </Link>
 
       {productsCount && (
