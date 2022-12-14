@@ -49,8 +49,6 @@ const CartItem = ({
         });
       }
     }
-
-    refetch();
   };
   return (
     <tr className="bg-gray-100">

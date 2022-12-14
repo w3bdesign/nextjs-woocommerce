@@ -46,7 +46,7 @@ const IndexProducts = ({ products }) => {
                       slug
                     )}?id=${encodeURIComponent(databaseId)}`}
                   >
-                    <a>
+                    <span>
                       {image ? (
                         <img
                           id="product-image"
@@ -64,7 +64,7 @@ const IndexProducts = ({ products }) => {
                           }
                         />
                       )}
-                    </a>
+                    </span>
                   </Link>
 
                   <Link
@@ -72,13 +72,13 @@ const IndexProducts = ({ products }) => {
                       slug
                     )}?id=${encodeURIComponent(databaseId)}`}
                   >
-                    <a>
+                    <span>
                       <div className="flex justify-center pt-3">
                         <p className="font-bold text-center cursor-pointer">
                           {name}
                         </p>
                       </div>
-                    </a>
+                    </span>
                   </Link>
                   {/* Display sale price when on sale */}
                   {onSale && (

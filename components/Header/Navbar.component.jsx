@@ -24,23 +24,23 @@ const Navbar = () => {
             <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
               <li>
                 <Link href="/produkter">
-                  <a className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
+                  <span className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
                     Produkter
-                  </a>
+                  </span>
                 </Link>
               </li>
               <li>
                 <Link href="/kategorier">
-                  <a className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
+                  <span className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
                     Kategorier
-                  </a>
+                  </span>
                 </Link>
               </li>
             </ul>
           </div>
           <div className="order-1 md:order-2">
             <Link href="/">
-              <a className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline ">
+              <span className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline ">
                 <svg
                   className="mr-2 text-gray-800 fill-current"
                   xmlns="https://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const Navbar = () => {
                   />
                 </svg>
                 NETTBUTIKK
-              </a>
+              </span>
             </Link>
           </div>
           <div
