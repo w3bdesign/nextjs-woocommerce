@@ -1,14 +1,16 @@
+import { useId } from 'react';
 import Link from 'next/link';
-import { v4 as uuidv4 } from 'uuid';
+
 
 import { filteredVariantPrice, paddedPrice } from 'utils/functions/functions';
 
 /**
  * Displays all of the products as long as length is defined.
- * Does a map() over the props array and utilizes uuidv4 for unique key values.
+ * Does a map() over the props array and utilizes useId for unique key values.
  * @param {Object} products
  */
 const IndexProducts = ({ products }) => {
+  const id = useId();
   return (
     <section className="container mx-auto bg-white">
       <div id="product-container" className="flex flex-wrap items-center">
@@ -38,7 +40,7 @@ const IndexProducts = ({ products }) => {
 
               return (
                 <div
-                  key={uuidv4()}
+                  key={id}
                   className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
                 >
                   <Link

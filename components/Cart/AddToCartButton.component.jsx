@@ -1,7 +1,7 @@
 /*eslint complexity: ["error", 6]*/
 
-import { useState, useContext } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useState, useContext, useId } from 'react';
+
 import { useQuery, useMutation } from '@apollo/client';
 
 import { AppContext } from 'utils/context/AppContext';
@@ -22,11 +22,12 @@ const AddToCartButton = ({ product }) => {
   const [, setRequestError] = useState(null);
   const [, setShowViewCart] = useState(false);
   const [showAddToCart, setshowAddToCart] = useState(false);
+  const id = useId();
 
   const productId = product.databaseId ? product.databaseId : product;
 
   const productQueryInput = {
-    clientMutationId: uuidv4(), // Generate a unique id.
+    clientMutationId: id, // Generate a unique id.
     productId,
   };
 

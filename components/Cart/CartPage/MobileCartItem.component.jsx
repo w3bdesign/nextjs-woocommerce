@@ -1,7 +1,6 @@
 /*eslint complexity: ["error", 6]*/
 
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useState, useId } from 'react';
 
 import SVGX from 'components/SVG/SVGX.component';
 import { getUpdatedItems } from 'utils/functions/functions';
@@ -14,6 +13,7 @@ const MobileCartItem = ({
   updateCartProcessing,
 }) => {
   const [productCount, setProductCount] = useState(item.qty);
+  const id = useId();
 
   /*
    * When user changes the quantity, update the cart in localStorage
@@ -39,7 +39,7 @@ const MobileCartItem = ({
         updateCart({
           variables: {
             input: {
-              clientMutationId: uuidv4(),
+              clientMutationId: id,
               items: updatedItems,
             },
           },

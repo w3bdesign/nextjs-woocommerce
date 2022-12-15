@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { v4 as uuidv4 } from 'uuid';
-import { useContext, useState, useEffect } from 'react';
+
+import { useContext, useState, useEffect, useId } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { AppContext } from 'utils/context/AppContext';
@@ -16,6 +16,7 @@ import { UPDATE_CART } from 'utils/gql/GQL_MUTATIONS';
 const CartItemsContainer = () => {
   const [cart, setCart] = useContext(AppContext);
   const [requestError, setRequestError] = useState(null);
+  const id = useId();
 
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
@@ -67,7 +68,7 @@ const CartItemsContainer = () => {
       updateCart({
         variables: {
           input: {
-            clientMutationId: uuidv4(),
+            clientMutationId: id,
             items: updatedItems,
           },
         },
