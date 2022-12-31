@@ -159,16 +159,11 @@ export const createCheckoutData = (order) => ({
   shipToDifferentAddress: false,
   paymentMethod: order.paymentMethod,
   isPaid: false,
-  transactionId: 'hjkhjkhsdsdiui',
+  transactionId: 'fhggdfjgfi',
 });
 
 /**
  * Get the updated items in the below format required for mutation input.
- *
- * [
- * { "key": "33e75ff09dd601bbe6dd51039152189", "quantity": 1 },
- * { "key": "02e74f10e0327ad868d38f2b4fdd6f0", "quantity": 1 },
- * ]
  *
  * Creates an array in above format with the newQty (updated Qty ).
  *
@@ -202,10 +197,6 @@ export const getUpdatedItems = (products, newQty, cartKey) => {
 /*
  * When user changes the quantity, update the cart in localStorage
  * Also update the cart in the global Context
- *
- * @param {Object} event cartKey
- *
- * @return {void}
  */
 export const handleQuantityChange = (
   event,
