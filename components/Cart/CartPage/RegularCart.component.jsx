@@ -1,3 +1,4 @@
+import React from 'react';
 import CartItem from './CartItem.component';
 
 const RegularCart = ({
@@ -28,14 +29,15 @@ const RegularCart = ({
     <tbody>
       {cart.products.length &&
         cart.products.map((item) => (
-          <CartItem
-            key={item.cartKey}
-            item={item}
-            products={cart.products}
-            handleRemoveProductClick={handleRemoveProductClick}
-            updateCart={updateCart}
-            updateCartProcessing={updateCartProcessing}
-          />
+          <React.Fragment key={item.cartKey}>
+            <CartItem
+              item={item}
+              products={cart.products}
+              handleRemoveProductClick={handleRemoveProductClick}
+              updateCart={updateCart}
+              updateCartProcessing={updateCartProcessing}
+            />
+          </React.Fragment>
         ))}
     </tbody>
   </table>
