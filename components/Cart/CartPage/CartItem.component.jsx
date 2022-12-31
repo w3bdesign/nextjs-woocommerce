@@ -1,10 +1,9 @@
 /*eslint complexity: ["error", 6]*/
 
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import SVGX from 'components/SVG/SVGX.component';
-import { getUpdatedItems, paddedPrice } from 'utils/functions/functions';
+import { paddedPrice, handleQuantityChange } from 'utils/functions/functions';
 
 const CartItem = ({
   item,
@@ -16,40 +15,6 @@ const CartItem = ({
   const [productCount, setProductCount] = useState(item.qty);
   const totalPrice = paddedPrice(item.totalPrice, 'kr');
 
-  /*
-   * When user changes the quantity, update the cart in localStorage
-   * Also update the cart in the global Context
-   *
-   * @param {Object} event cartKey
-   *
-   * @return {void}
-   */
-  const handleQuantityChange = (event, cartKey) => {
-    if (process.browser) {
-      event.stopPropagation();
-      // Return if the previous update cart mutation request is still processing
-      if (updateCartProcessing) {
-        return;
-      }
-      // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
-      const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
-
-      // Set the new quantity in state.
-      setProductCount(newQty);
-      if (products.length) {
-        const updatedItems = getUpdatedItems(products, newQty, cartKey);
-
-        updateCart({
-          variables: {
-            input: {
-              clientMutationId: uuidv4(),
-              items: updatedItems,
-            },
-          },
-        });
-      }
-    }
-  };
   return (
     <tr className="bg-gray-100">
       <td className="px-4 py-2 border">
@@ -77,7 +42,16 @@ const CartItem = ({
           type="number"
           min="1"
           defaultValue={productCount}
-          onChange={(event) => handleQuantityChange(event, item.cartKey)}
+          onChange={(event) =>
+            handleQuantityChange(
+              event,
+              item.cartKey,
+              products,
+              updateCart,
+              updateCartProcessing,
+              setProductCount
+            )
+          }
         />
       </td>
       <td className="px-4 py-2 border">
