@@ -198,3 +198,45 @@ export const getUpdatedItems = (products, newQty, cartKey) => {
   // Return the updatedItems array with new Qtys.
   return updatedItems;
 };
+
+/*
+ * When user changes the quantity, update the cart in localStorage
+ * Also update the cart in the global Context
+ *
+ * @param {Object} event cartKey
+ *
+ * @return {void}
+ */
+export const handleQuantityChange = (
+  event,
+  cartKey,
+  products,
+  updateCart,
+  updateCartProcessing,
+  setProductCount
+) => {
+  if (process.browser) {
+    event.stopPropagation();
+    // Return if the previous update cart mutation request is still processing
+    if (updateCartProcessing) {
+      return;
+    }
+    // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
+    const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
+
+    // Set the new quantity in state.
+    setProductCount(newQty);
+    if (products.length) {
+      const updatedItems = getUpdatedItems(products, newQty, cartKey);
+
+      updateCart({
+        variables: {
+          input: {
+            clientMutationId: uuidv4(),
+            items: updatedItems,
+          },
+        },
+      });
+    }
+  }
+};

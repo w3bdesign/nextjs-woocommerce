@@ -1,3 +1,4 @@
+import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import MobileCartItem from './MobileCartItem.component';
@@ -25,13 +26,14 @@ const MobileCart = ({ cart, handleRemoveProductClick, updateCart }) => (
           <tbody className="flex-1 sm:flex-none">
             {cart.products.length &&
               cart.products.map((item) => (
-                <MobileCartItem
-                  key={uuidv4()}
-                  item={item}
-                  products={cart.products}
-                  handleRemoveProductClick={handleRemoveProductClick}
-                  updateCart={updateCart}
-                />
+                <React.Fragment key={item.cartKey}>
+                  <MobileCartItem
+                    item={item}
+                    products={cart.products}
+                    handleRemoveProductClick={handleRemoveProductClick}
+                    updateCart={updateCart}
+                  />
+                </React.Fragment>
               ))}
           </tbody>
         </table>
