@@ -5,6 +5,10 @@
 
 ![Screenshot 1](./screenshots/screenshot1.jpg)
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=w3bdesign/nextjs-woocommerce&type=Date)](https://star-history.com/#w3bdesign/nextjs-woocommerce&Date)
+
 # Next.js Ecommerce site with WooCommerce backend
 
 ## Live URL: <https://next-woocommerce.dfweb.no>
