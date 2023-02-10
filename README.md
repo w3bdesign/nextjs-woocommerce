@@ -75,7 +75,7 @@ The current release has been tested and is confirmed working with the following 
 
 ## Features
 
--   Next.js version 13.0.3
+-   Next.js version 13.1.6
 -   React 18
 -   Connect to Woocommerce GraphQL API and list name, price and display image for products
 -   Support for simple products and variable products
@@ -90,6 +90,7 @@ The current release has been tested and is confirmed working with the following 
 -   Shows page load progress with Nprogress during navigation
 -   Fully responsive design
 -   Category and product listings
+-   Show stock status
 -   Pretty URLs with builtin Nextjs functionality
 -   Tailwind 3 for styling
 -   JSDoc comments
