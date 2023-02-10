@@ -91,6 +91,14 @@ const SingleProduct = ({ product }) => {
               <p className="pt-1 mt-4 text-2xl text-gray-900">
                 {DESCRIPTION_WITHOUT_HTML}
               </p>
+              {product.stockQuantity && (
+                <p
+                  v-if="data.product.stockQuantity"
+                  class="pt-1 mt-4 mb-4 text-2xl text-gray-900"
+                >
+                  {product.stockQuantity} in stock
+                </p>
+              )}
               {product.variations && (
                 <p className="pt-1 mt-4 text-xl text-gray-900">
                   <span className="py-2">Varianter</span>

@@ -22,6 +22,7 @@ export const GET_SINGLE_PRODUCT = gql`
         regularPrice
         price
         id
+        stockQuantity
       }
       ... on VariableProduct {
         salePrice
