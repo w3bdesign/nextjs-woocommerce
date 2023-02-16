@@ -108,9 +108,8 @@ export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
  */
 export const FETCH_ALL_PRODUCTS_QUERY = gql`
   query MyQuery {
-    products(first: 200) {
+    products(first: 50) {
       nodes {
-        id
         databaseId
         name
         onSale
@@ -119,11 +118,13 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
           sourceUrl
         }
         ... on SimpleProduct {
+          databaseId
           price
           regularPrice
           salePrice
         }
         ... on VariableProduct {
+          databaseId
           price
           regularPrice
           salePrice
@@ -219,54 +220,58 @@ export const GET_CART = gql`
         nodes {
           key
           product {
-            id
-            databaseId
-            name
-            description
-            type
-            onSale
-            slug
-            averageRating
-            reviewCount
-            image {
+            node {
               id
-              sourceUrl
-              srcSet
-              altText
-              title
-            }
-            galleryImages {
-              nodes {
+              databaseId
+              name
+              description
+              type
+              onSale
+              slug
+              averageRating
+              reviewCount
+              image {
                 id
                 sourceUrl
                 srcSet
                 altText
                 title
               }
+              galleryImages {
+                nodes {
+                  id
+                  sourceUrl
+                  srcSet
+                  altText
+                  title
+                }
+              }
             }
           }
           variation {
-            id
-            databaseId
-            name
-            description
-            type
-            onSale
-            price
-            regularPrice
-            salePrice
-            image {
+            node {
               id
-              sourceUrl
-              srcSet
-              altText
-              title
-            }
-            attributes {
-              nodes {
+              databaseId
+              name
+              description
+              type
+              onSale
+              price
+              regularPrice
+              salePrice
+              image {
                 id
-                name
-                value
+                sourceUrl
+                srcSet
+                altText
+                title
+              }
+              attributes {
+                nodes {
+                  id
+                  name
+                  value
+                }
               }
             }
           }
@@ -276,25 +281,7 @@ export const GET_CART = gql`
           subtotalTax
         }
       }
-      appliedCoupons {
-        nodes {
-          id
-          databaseId
-          discountType
-          amount
-          dateExpiry
-          products {
-            nodes {
-              id
-            }
-          }
-          productCategories {
-            nodes {
-              id
-            }
-          }
-        }
-      }
+
       subtotal
       subtotalTax
       shippingTax

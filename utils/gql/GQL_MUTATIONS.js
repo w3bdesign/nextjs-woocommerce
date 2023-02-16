@@ -1,10 +1,12 @@
 import { gql } from '@apollo/client';
 export const ADD_TO_CART = gql`
   mutation ($input: AddToCartInput!) {
+
     addToCart(input: $input) {
-      cartItem {
-        key
-        product {
+    cartItem {
+      key
+      product {
+        node {
           id
           databaseId
           name
@@ -27,7 +29,9 @@ export const ADD_TO_CART = gql`
             }
           }
         }
-        variation {
+      }
+      variation {
+        node {
           id
           databaseId
           name
@@ -51,12 +55,15 @@ export const ADD_TO_CART = gql`
             }
           }
         }
-        quantity
-        total
-        subtotal
-        subtotalTax
       }
+      quantity
+      total
+      subtotal
+      subtotalTax
     }
+  }
+
+
   }
 `;
 export const CHECKOUT_MUTATION = gql`
