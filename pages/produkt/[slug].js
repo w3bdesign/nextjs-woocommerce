@@ -16,6 +16,11 @@ const Produkt = ({ product }) => {
   return (
     <>
       <Header title={`- ${product.name ? product.name : ''}`} />
+
+      Produkt: <pre>{JSON.stringify(product)}</pre>
+
+
+
       {product ? (
         <SingleProduct product={product} />
       ) : (
