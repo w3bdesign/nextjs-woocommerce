@@ -44,8 +44,6 @@ const AddToCartButton = ({ product }) => {
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
-      console.log("Data cart: ", data)
-
       // Update cart data in React Context.
       setCart(updatedCart);
     },
