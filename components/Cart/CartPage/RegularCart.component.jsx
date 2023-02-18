@@ -27,10 +27,6 @@ const RegularCart = ({
       </tr>
     </thead>
     <tbody>
-
-      Products: {JSON.stringify(cart)}
-
-
       {cart.products.length &&
         cart.products.map((item) => (
           <React.Fragment key={item.cartKey}>
