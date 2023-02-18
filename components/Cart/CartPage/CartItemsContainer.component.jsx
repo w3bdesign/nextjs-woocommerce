@@ -85,6 +85,11 @@ const CartItemsContainer = () => {
     <section className="py-8 bg-white">
       <div className="container flex flex-wrap items-center mx-auto">
         {requestError && <div className="p-6 mx-auto mt-5">Error ... </div>}
+
+
+       
+
+
         {cart ? (
           <div className="p-6 mx-auto mt-5">
             <RegularCart

@@ -15,6 +15,7 @@ const Cart = ({ stickyNav }) => {
 
   return (
     <>
+    
       <Link href="/handlekurv">
         <span
           className="pl-4 mt-4 no-underline inline-block"

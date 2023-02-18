@@ -34,7 +34,7 @@ const AddToCartButton = ({ product }) => {
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      //refetch();
+      refetch();
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
 
