@@ -26,7 +26,7 @@ const CartItem = ({
       </td>
       <td className="px-4 py-2 border">
         <img
-          width="64"
+          className="w-full"
           src={item.image.sourceUrl}
           srcSet={item.image.srcSet}
           alt={item.image.title}
