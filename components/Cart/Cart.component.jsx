@@ -10,15 +10,8 @@ import { AppContext } from 'utils/context/AppContext';
 const Cart = ({ stickyNav }) => {
   const [cart] = useContext(AppContext);
 
-  /*const productsCount = cart.contents.nodes.reduce(
-    (total, product) => total + product.quantity,
-    0
-  );*/
-
   const productsCount =
     null !== cart && Object.keys(cart).length ? cart.totalProductsCount : '';
-
-
 
   return (
     <>
