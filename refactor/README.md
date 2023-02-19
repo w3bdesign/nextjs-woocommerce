@@ -48,7 +48,6 @@ The current release has been tested and is confirmed working with the following 
 
     <https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm> (Chrome)
 
-
 3.  Make sure WooCommerce has some products already or import some sample products
 
     The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/)
