@@ -128,7 +128,6 @@ export const UPDATE_CART = gql`
             }
           }
         }
-
         quantity
         total
         subtotal
@@ -142,7 +141,6 @@ export const UPDATE_CART = gql`
             databaseId
           }
         }
-
         variation {
           node {
             id
@@ -150,7 +148,6 @@ export const UPDATE_CART = gql`
           }
         }
       }
-
       updated {
         key
         product {
