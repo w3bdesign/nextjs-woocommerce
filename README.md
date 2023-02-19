@@ -100,7 +100,7 @@ The current release has been tested and is confirmed working with the following 
 
 ### I am getting a cart undefined error or other GraphQL errors
 
-Check that you are using the 0.6.2 version of the [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) plugin
+Check that you are using the 0.12.0 version of the [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) plugin
 
 ### The products page isn't loading
 
@@ -125,4 +125,3 @@ With that said, keep the following in mind:
 -   Hide products not in stock
 -   Add better SEO
 -   Re-add Next/image when it is working better
-
