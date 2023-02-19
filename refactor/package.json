@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "18.14.0",
+    "@types/uuid": "^9.0.0",
     "babel-plugin-styled-components": "^2.0.7",
     "eslint": "8.34.0",
     "eslint-config-next": "^13.1.6",
