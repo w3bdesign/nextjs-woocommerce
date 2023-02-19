@@ -1,69 +1,66 @@
 import { gql } from '@apollo/client';
 export const ADD_TO_CART = gql`
   mutation ($input: AddToCartInput!) {
-
     addToCart(input: $input) {
-    cartItem {
-      key
-      product {
-        node {
-          id
-          databaseId
-          name
-          description
-          type
-          onSale
-          slug
-          averageRating
-          reviewCount
-          image {
+      cartItem {
+        key
+        product {
+          node {
             id
-            sourceUrl
-            altText
-          }
-          galleryImages {
-            nodes {
+            databaseId
+            name
+            description
+            type
+            onSale
+            slug
+            averageRating
+            reviewCount
+            image {
               id
               sourceUrl
               altText
             }
-          }
-        }
-      }
-      variation {
-        node {
-          id
-          databaseId
-          name
-          description
-          type
-          onSale
-          price
-          regularPrice
-          salePrice
-          image {
-            id
-            sourceUrl
-            altText
-          }
-          attributes {
-            nodes {
-              id
-              attributeId
-              name
-              value
+            galleryImages {
+              nodes {
+                id
+                sourceUrl
+                altText
+              }
             }
           }
         }
+        variation {
+          node {
+            id
+            databaseId
+            name
+            description
+            type
+            onSale
+            price
+            regularPrice
+            salePrice
+            image {
+              id
+              sourceUrl
+              altText
+            }
+            attributes {
+              nodes {
+                id
+                attributeId
+                name
+                value
+              }
+            }
+          }
+        }
+        quantity
+        total
+        subtotal
+        subtotalTax
       }
-      quantity
-      total
-      subtotal
-      subtotalTax
     }
-  }
-
-
   }
 `;
 export const CHECKOUT_MUTATION = gql`
