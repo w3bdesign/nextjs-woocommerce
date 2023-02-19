@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { AppContext } from 'utils/context/AppContext';
 
 /**
- * Displays the shopping cart contents.
- * Currently only displays a sample cart.
+ * Displays the shopping cart contents. *
  * Displays amount of items in cart.
  */
 const Cart = ({ stickyNav }) => {

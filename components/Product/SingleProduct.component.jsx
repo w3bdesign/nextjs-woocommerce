@@ -94,7 +94,7 @@ const SingleProduct = ({ product }) => {
               {product.stockQuantity && (
                 <p
                   v-if="data.product.stockQuantity"
-                  class="pt-1 mt-4 mb-4 text-2xl text-gray-900"
+                  className="pt-1 mt-4 mb-4 text-2xl text-gray-900"
                 >
                   {product.stockQuantity} på lager
                 </p>

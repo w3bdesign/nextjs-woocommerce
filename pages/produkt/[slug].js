@@ -16,6 +16,7 @@ const Produkt = ({ product }) => {
   return (
     <>
       <Header title={`- ${product.name ? product.name : ''}`} />
+
       {product ? (
         <SingleProduct product={product} />
       ) : (

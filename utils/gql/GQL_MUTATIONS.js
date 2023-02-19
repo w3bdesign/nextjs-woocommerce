@@ -5,49 +5,53 @@ export const ADD_TO_CART = gql`
       cartItem {
         key
         product {
-          id
-          databaseId
-          name
-          description
-          type
-          onSale
-          slug
-          averageRating
-          reviewCount
-          image {
+          node {
             id
-            sourceUrl
-            altText
-          }
-          galleryImages {
-            nodes {
+            databaseId
+            name
+            description
+            type
+            onSale
+            slug
+            averageRating
+            reviewCount
+            image {
               id
               sourceUrl
               altText
             }
+            galleryImages {
+              nodes {
+                id
+                sourceUrl
+                altText
+              }
+            }
           }
         }
         variation {
-          id
-          databaseId
-          name
-          description
-          type
-          onSale
-          price
-          regularPrice
-          salePrice
-          image {
+          node {
             id
-            sourceUrl
-            altText
-          }
-          attributes {
-            nodes {
+            databaseId
+            name
+            description
+            type
+            onSale
+            price
+            regularPrice
+            salePrice
+            image {
               id
-              attributeId
-              name
-              value
+              sourceUrl
+              altText
+            }
+            attributes {
+              nodes {
+                id
+                attributeId
+                name
+                value
+              }
             }
           }
         }
@@ -73,49 +77,54 @@ export const UPDATE_CART = gql`
       items {
         key
         product {
-          id
-          databaseId
-          name
-          description
-          type
-          onSale
-          slug
-          averageRating
-          reviewCount
-          image {
+          node {
             id
-            sourceUrl
-            altText
-          }
-          galleryImages {
-            nodes {
+            databaseId
+            name
+            description
+            type
+            onSale
+            slug
+            averageRating
+            reviewCount
+            image {
               id
               sourceUrl
               altText
             }
+            galleryImages {
+              nodes {
+                id
+                sourceUrl
+                altText
+              }
+            }
           }
         }
+
         variation {
-          id
-          databaseId
-          name
-          description
-          type
-          onSale
-          price
-          regularPrice
-          salePrice
-          image {
+          node {
             id
-            sourceUrl
-            altText
-          }
-          attributes {
-            nodes {
+            databaseId
+            name
+            description
+            type
+            onSale
+            price
+            regularPrice
+            salePrice
+            image {
               id
-              attributeId
-              name
-              value
+              sourceUrl
+              altText
+            }
+            attributes {
+              nodes {
+                id
+                attributeId
+                name
+                value
+              }
             }
           }
         }
@@ -127,23 +136,32 @@ export const UPDATE_CART = gql`
       removed {
         key
         product {
-          id
-          databaseId
+          node {
+            id
+            databaseId
+          }
         }
         variation {
-          id
-          databaseId
+          node {
+            id
+            databaseId
+          }
         }
       }
       updated {
         key
         product {
-          id
-          databaseId
+          node {
+            id
+            databaseId
+          }
         }
+
         variation {
-          id
-          databaseId
+          node {
+            id
+            databaseId
+          }
         }
       }
     }
