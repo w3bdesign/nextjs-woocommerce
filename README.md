@@ -125,3 +125,4 @@ With that said, keep the following in mind:
 -   Hide products not in stock
 -   Add better SEO
 -   Re-add Next/image when it is working better
+
