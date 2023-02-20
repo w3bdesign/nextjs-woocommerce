@@ -1,7 +1,9 @@
 // Components
-import Hero from '@/components/Index/Hero.component';
 import DisplayProducts from '@/components/Product/DisplayProducts.component';
 import Layout from '@/components/Layout/Layout.component';
+
+// GraphQL
+import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 
 // Utilities
 import client from '@/utils/apollo/ApolloClient.js';
@@ -9,28 +11,24 @@ import client from '@/utils/apollo/ApolloClient.js';
 // Types
 import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
 
-// GraphQL
-import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
-
 /**
- * Main index page
+ * Displays all of the products.
  * @function HomePage
  * @param {InferGetStaticPropsType<typeof getStaticProps>} products
  * @returns {JSX.Element} - Rendered component
  */
 
-const HomePage: NextPage = ({
+const Produkter: NextPage = ({
   products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
   <>
-    <Layout title="Hjem">
-      <Hero />
+    <Layout title="Produkter">
       {products && <DisplayProducts products={products} />}
     </Layout>
   </>
 );
 
-export default HomePage;
+export default Produkter;
 
 export const getStaticProps: GetStaticProps = async () => {
   const { data, loading, networkStatus } = await client.query({
