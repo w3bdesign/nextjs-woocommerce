@@ -3,14 +3,49 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
+interface Image {
+  __typename: string;
+  sourceUrl: string;
+}
+
+interface Node {
+  __typename: string;
+  price: string;
+  regularPrice: string;
+  salePrice?: string;
+}
+
+interface Variations {
+  __typename: string;
+  nodes: Node[];
+}
+
+interface RootObject {
+  __typename: string;
+  databaseId: number;
+  name: string;
+  onSale: boolean;
+  slug: string;
+  image: Image;
+  price: string;
+  regularPrice: string;
+  salePrice?: string;
+  variations: Variations;
+}
+
+interface IDisplayProductsProps {
+  products: RootObject[];
+}
+
 /**
  * Displays all of the products as long as length is defined.
  * Does a map() over the props array and utilizes uuidv4 for unique key values.
  * @function DisplayProducts
- *  @param {object} products Products to render
+ * @param {IDisplayProductsProps} products Products to render
  * @returns {JSX.Element} - Rendered component
  */
-const DisplayProducts = ({ products }: any) => {
+
+const DisplayProducts = ({ products }: IDisplayProductsProps): JSX.Element => {
   return (
     <section className="container mx-auto bg-white">
       <div id="product-container" className="flex flex-wrap items-center">
@@ -26,7 +61,7 @@ const DisplayProducts = ({ products }: any) => {
               slug,
               image,
               variations,
-            }: any) => {
+            }) => {
               // Add padding/empty character after currency symbol here
               if (price) {
                 price = paddedPrice(price, 'kr');

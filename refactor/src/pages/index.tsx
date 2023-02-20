@@ -1,9 +1,15 @@
+// Components
 import Hero from '@/components/Index/Hero.component';
 import DisplayProducts from '@/components/Product/DisplayProducts.component';
 import Layout from '@/components/Layout/Layout.component';
 
+// Utilities
 import client from '@/utils/apollo/ApolloClient.js';
 
+// Types
+import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
+
+// GraphQL
 import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 
 /**
@@ -11,18 +17,21 @@ import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
  * @param {Object} products
  * Initial static data is sent as props from getStaticProps and loaded through 'utils/gql/INITIAL_PRODUCTS'
  */
-const HomePage = ({ products }: any) => (
+const HomePage: NextPage = ({
+  products,
+}: InferGetStaticPropsType<typeof getStaticProps>) => (
   <>
     <Layout title="Hjem">
       <Hero />
       {products && <DisplayProducts products={products} />}
+      <pre>{JSON.stringify(products)}</pre>
     </Layout>
   </>
 );
 
 export default HomePage;
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const { data, loading, networkStatus } = await client.query({
     query: FETCH_ALL_PRODUCTS_QUERY,
   });
@@ -35,4 +44,4 @@ export async function getStaticProps() {
     },
     revalidate: 10,
   };
-}
+};
