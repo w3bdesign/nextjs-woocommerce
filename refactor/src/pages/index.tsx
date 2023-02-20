@@ -24,7 +24,6 @@ const HomePage: NextPage = ({
     <Layout title="Hjem">
       <Hero />
       {products && <DisplayProducts products={products} />}
-      <pre>{JSON.stringify(products)}</pre>
     </Layout>
   </>
 );
