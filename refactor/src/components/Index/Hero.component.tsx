@@ -1,5 +1,7 @@
 /**
- * Initial hero content displayed on the front page, under the navigation bar.
+ * Renders Hero section for Index page
+ * @function PageTitle
+ * @returns {JSX.Element} - Rendered component
  */
 const Hero = () => (
   <section
