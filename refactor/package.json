@@ -36,6 +36,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.30.0",
     "@types/node": "18.14.0",
     "@types/uuid": "^9.0.0",
     "babel-plugin-styled-components": "^2.0.7",

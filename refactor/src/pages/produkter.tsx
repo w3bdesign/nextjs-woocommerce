@@ -41,6 +41,6 @@ export const getStaticProps: GetStaticProps = async () => {
       loading,
       networkStatus,
     },
-    revalidate: 10,
+    revalidate: 60,
   };
 };

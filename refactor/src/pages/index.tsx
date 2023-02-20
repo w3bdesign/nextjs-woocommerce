@@ -14,12 +14,12 @@ import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 
 /**
  * Main index page
- * @function HomePage
+ * @function Index
  * @param {InferGetStaticPropsType<typeof getStaticProps>} products
  * @returns {JSX.Element} - Rendered component
  */
 
-const HomePage: NextPage = ({
+const Index: NextPage = ({
   products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
   <>
@@ -30,7 +30,7 @@ const HomePage: NextPage = ({
   </>
 );
 
-export default HomePage;
+export default Index;
 
 export const getStaticProps: GetStaticProps = async () => {
   const { data, loading, networkStatus } = await client.query({
@@ -43,6 +43,6 @@ export const getStaticProps: GetStaticProps = async () => {
       loading,
       networkStatus,
     },
-    revalidate: 10,
+    revalidate: 60,
   };
 };
