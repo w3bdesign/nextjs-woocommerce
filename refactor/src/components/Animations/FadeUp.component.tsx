@@ -1,6 +1,8 @@
 // CircleCI doesn't like import { motion } from "framer-motion" here, so we use require
 const { motion } = require('framer-motion');
 
+import type { IAnimateWithDelayProps } from './types/Animations.types';
+
 /**
  * Fade up content animation
  * @function FadeUp
@@ -10,7 +12,7 @@ const { motion } = require('framer-motion');
  * @returns {JSX.Element} - Rendered component
  */
 
-const FadeUp = ({ children, cssClass, delay }: any) => {
+const FadeUp = ({ children, cssClass, delay }: IAnimateWithDelayProps) => {
   const fadeUpVariants = {
     initial: { opacity: 0, y: 20 },
     animate: {

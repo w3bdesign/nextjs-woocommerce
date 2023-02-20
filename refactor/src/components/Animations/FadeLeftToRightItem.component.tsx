@@ -1,6 +1,8 @@
 // CircleCI doesn't like import { motion } from "framer-motion" here, so we use require
 const { motion } = require('framer-motion');
 
+import type { IAnimateProps } from './types/Animations.types';
+
 /**
  * Fade content left to right. Needs to be used with FadeLeftToRight as parent container
  * @function FadeLeftToRightItem
@@ -9,7 +11,7 @@ const { motion } = require('framer-motion');
  * @returns {JSX.Element} - Rendered component
  */
 
-const FadeLeftToRightItem = ({ children, cssClass }: any) => {
+const FadeLeftToRightItem = ({ children, cssClass }: IAnimateProps) => {
   const FadeLeftToRightItemVariants = {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: -20 },

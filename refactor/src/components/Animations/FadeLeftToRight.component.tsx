@@ -1,6 +1,8 @@
 // CircleCI doesn't like import { motion } from "framer-motion" here, so we use require
 const { motion } = require('framer-motion');
 
+import type { IAnimateStaggerWithDelayProps } from './types/Animations.types';
+
 /**
  * Fade content left to right. Needs to be used with FadeLeftToRightItem
  * @function FadeLeftToRight
@@ -18,7 +20,7 @@ const FadeLeftToRight = ({
   delay,
   staggerDelay,
   animateNotReverse,
-}: any) => {
+}: IAnimateStaggerWithDelayProps) => {
   const FadeLeftToRightVariants = {
     visible: {
       opacity: 1,
