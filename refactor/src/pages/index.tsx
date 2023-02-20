@@ -1,5 +1,5 @@
 import Hero from '@/components/Index/Hero.component';
-//import IndexProducts from '@/components/Product/IndexProducts.component';
+import DisplayProducts from '@/components/Product/DisplayProducts.component';
 import Layout from '@/components/Layout/Layout.component';
 
 import client from '@/utils/apollo/ApolloClient.js';
@@ -15,6 +15,7 @@ const HomePage = ({ products }: any) => (
   <>
     <Layout title="Hjem">
       <Hero />
+      {products && <DisplayProducts products={products} />}
     </Layout>
   </>
 );
