@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 
-import AddToCartButton from 'components/Cart/AddToCartButton.component';
-import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
+//import AddToCartButton from 'components/Cart/AddToCartButton.component';
+//import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
 
-import { filteredVariantPrice, paddedPrice } from 'utils/functions/functions';
+import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 /**
  * Shows a single product with an Add To Cart button.
  * Uses GraphQL for product data
  * @param {Object} product // Product data
  */
-const SingleProduct = ({ product }) => {
+const SingleProduct = ({ product }: any) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedVariation, setselectedVariation] = useState();
+  const [selectedVariation, setselectedVariation] = useState<any>();
 
   useEffect(() => {
     setIsLoading(false);
@@ -46,7 +46,7 @@ const SingleProduct = ({ product }) => {
         <div className="h-56 mt-20">
           <p className="text-2xl font-bold text-center">Laster produkt ...</p>
           <br />
-          <LoadingSpinner />
+          LoadingSpinner
         </div>
       ) : (
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
@@ -74,7 +74,7 @@ const SingleProduct = ({ product }) => {
               {onSale && (
                 <div className="flex">
                   <p className="pt-1 mt-4 text-3xl text-gray-900">
-                    {product.variations && filteredVariantPrice(price)}
+                    {product.variations && filteredVariantPrice(price, '')}
                     {!product.variations && salePrice}
                   </p>
                   <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
@@ -111,7 +111,7 @@ const SingleProduct = ({ product }) => {
                     }}
                   >
                     {product.variations.nodes.map(
-                      ({ id, name, databaseId, stockQuantity }) => {
+                      ({ id, name, databaseId, stockQuantity }: any) => {
                         // Remove product name from variation name
                         const filteredName = name.split('- ').pop();
                         return (
@@ -125,14 +125,8 @@ const SingleProduct = ({ product }) => {
                 </p>
               )}
               <div className="pt-1 mt-2">
-                {
-                  // Display default AddToCart button if we do not have variations.
-                  // If we do, send the variationId to AddToCart button
-                }
-                {product.variations && (
-                  <AddToCartButton product={selectedVariation} />
-                )}
-                {!product.variations && <AddToCartButton product={product} />}
+
+                
               </div>
             </div>
           </div>
