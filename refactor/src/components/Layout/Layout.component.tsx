@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import Header from '@/components/Header/Header.component';
 import PageTitle from './PageTitle.component';
+import Footer from '@/components/Footer/Footer.component';
 
 interface ILayoutProps {
   children?: ReactNode;
@@ -21,6 +22,7 @@ const Layout = ({ children, title }: ILayoutProps): JSX.Element => (
     <Header title={title} />
     <PageTitle title={title} />
     {children}
+    <Footer />
   </>
 );
 
