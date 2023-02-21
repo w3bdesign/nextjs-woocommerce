@@ -3,11 +3,15 @@ import Link from 'next/link';
 
 import { CartContext } from '@/utils/context/CartProvider';
 
+interface ICartProps {
+  stickyNav: boolean;
+}
+
 /**
  * Displays the shopping cart contents. *
  * Displays amount of items in cart.
  */
-const Cart = ({ stickyNav }: any) => {
+const Cart = ({ stickyNav }: ICartProps) => {
   const { cart } = useContext<any>(CartContext);
 
   const productsCount =
