@@ -29,25 +29,25 @@ interface ICartProviderProps {
 }
 
 interface Image {
-  sourceUrl: string;
+  //sourceUrl: string;
+  sourceUrl: string | null | undefined;
   srcSet: string;
   title: string;
 }
 
-interface Product {
+export interface Product {
   cartKey: string;
   name: string;
   qty: number;
   price: number;
-  //totalPrice: string;
-  totalPrice: number;
+  totalPrice: string;
   image: Image;
 }
 
 export interface RootObject {
   products: Product[];
   totalProductsCount: number;
-  totalProductsPrice: string;
+  totalProductsPrice: number;
 }
 
 type TRootObject = RootObject | string | null | undefined;

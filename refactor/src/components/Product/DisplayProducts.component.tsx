@@ -5,7 +5,8 @@ import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 interface Image {
   __typename: string;
-  sourceUrl: string;
+  //sourceUrl: string;
+  sourceUrl: string | null | undefined;
 }
 
 interface Node {

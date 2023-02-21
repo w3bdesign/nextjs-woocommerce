@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '@/components/UI/Button.component';
 
 // State
-import { CartContext, RootObject } from '@/utils/context/CartProvider';
+import { CartContext, Product, RootObject } from '@/utils/context/CartProvider';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
@@ -16,13 +16,59 @@ import { getFormattedCart } from '@/utils/functions/functions';
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
 
+export interface MyImage {
+  __typename: string;
+  id: string;
+  sourceUrl: string | null | undefined;
+  srcSet: string;
+  altText: string;
+  title: string;
+}
+
+export interface GalleryImages {
+  __typename: string;
+  nodes: any[];
+}
+
+export interface Node {
+  __typename: string;
+  id: string;
+  databaseId: number;
+  name: string;
+  description: string;
+  type: string;
+  onSale: boolean;
+  slug: string;
+  averageRating: number;
+  reviewCount: number;
+  image: MyImage;
+  galleryImages: GalleryImages;
+  productId: number;
+}
+
+export interface MyProduct {
+  __typename: string;
+  node: Node;
+}
+
+export interface testRootObject {
+  __typename: string;
+  key: string;
+  product: MyProduct;
+  variation?: any;
+  quantity: number;
+  total: string;
+  subtotal: string;
+  subtotalTax: string;
+}
+
 const testFormattedCart = (data: {
-  cart: { contents: { nodes: any[] }; total: any };
+  cart: { contents: { nodes: testRootObject[] }; total: number };
 }) => {
   let formattedCart: RootObject = {
     products: [],
     totalProductsCount: 0,
-    totalProductsPrice: '0',
+    totalProductsPrice: 0,
   };
 
   if (!data || !data.cart.contents.nodes.length || !data.cart) {
@@ -39,8 +85,8 @@ const testFormattedCart = (data: {
     name: '',
     qty: 0,
     price: 0,
-    totalPrice: 0,
-    image: { sourceUrl: '', srcSet: '', title: '' },
+    totalPrice: '0',
+    image: { sourceUrl: 'na', srcSet: 'na', title: 'na' },
   };
 
   let totalProductsCount = 0;
@@ -58,13 +104,14 @@ const testFormattedCart = (data: {
 
     product.productId = givenProduct.productId;
     product.cartKey = givenProducts[i].key;
-
     product.name = givenProduct.name;
-
     product.qty = givenProducts[i].quantity;
-    product.price = convertedCurrency / product.qty;
+    product.price = Number(convertedCurrency) / product.qty;
     product.totalPrice = givenProducts[i].total;
+
     // Ensure we can add products without images to the cart
+
+
     product.image = givenProduct.image.sourceUrl
       ? {
           sourceUrl: givenProduct.image.sourceUrl,
