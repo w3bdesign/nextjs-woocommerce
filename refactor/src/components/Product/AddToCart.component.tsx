@@ -39,8 +39,6 @@ const AddToCart = ({ product }: any) => {
         // refetch();
         // If error.
 
-        console.log('Added to cart ...', product);
-
         if (addToCartError) {
           setRequestError(true);
         }
@@ -51,7 +49,6 @@ const AddToCart = ({ product }: any) => {
     });
 
   const handleAddToCart = () => {
-    console.log('Tried to add product ', product);
     setCart(product);
     addToCart();
   };
