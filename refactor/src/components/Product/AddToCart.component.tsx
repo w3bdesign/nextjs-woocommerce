@@ -19,8 +19,8 @@ import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
 export interface MyImage {
   __typename: string;
   id: string;
-  sourceUrl: string | null | undefined;
-  srcSet: string;
+  sourceUrl?: string;
+  srcSet?: string;
   altText: string;
   title: string;
 }
@@ -79,15 +79,7 @@ const testFormattedCart = (data: {
   // Create an empty object.
   formattedCart.products = [];
 
-  let product = {
-    productId: 0,
-    cartKey: '',
-    name: '',
-    qty: 0,
-    price: 0,
-    totalPrice: '0',
-    image: { sourceUrl: 'na', srcSet: 'na', title: 'na' },
-  };
+  let product: Product;
 
   let totalProductsCount = 0;
   let i = 0;
@@ -110,7 +102,6 @@ const testFormattedCart = (data: {
     product.totalPrice = givenProducts[i].total;
 
     // Ensure we can add products without images to the cart
-
 
     product.image = givenProduct.image.sourceUrl
       ? {

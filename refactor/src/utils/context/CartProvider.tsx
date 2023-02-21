@@ -31,7 +31,7 @@ interface ICartProviderProps {
 interface Image {
   //sourceUrl: string;
   sourceUrl: string | null | undefined;
-  srcSet: string;
+  srcSet: string | null | undefined;
   title: string;
 }
 
@@ -42,6 +42,7 @@ export interface Product {
   price: number;
   totalPrice: string;
   image: Image;
+  productId: number;
 }
 
 export interface RootObject {
