@@ -39,7 +39,8 @@ interface Product {
   name: string;
   qty: number;
   price: number;
-  totalPrice: string;
+  //totalPrice: string;
+  totalPrice: number;
   image: Image;
 }
 
