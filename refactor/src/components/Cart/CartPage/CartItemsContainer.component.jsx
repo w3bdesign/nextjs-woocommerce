@@ -3,24 +3,26 @@ import { v4 as uuidv4 } from 'uuid';
 import { useContext, useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
-import { AppContext } from 'utils/context/AppContext';
-import { getFormattedCart, getUpdatedItems } from 'utils/functions/functions';
+// State
+import { CartContext } from '@/utils/context/CartProvider';
+
+import { getFormattedCart, getUpdatedItems } from '@/utils/functions/functions';
 
 import RegularCart from './RegularCart.component';
-import MobileCart from './MobileCart.component';
-import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
+//import MobileCart from './MobileCart.component';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
-import { GET_CART } from 'utils/gql/GQL_QUERIES';
-import { UPDATE_CART } from 'utils/gql/GQL_MUTATIONS';
+import { GET_CART } from '@/utils/gql/GQL_QUERIES';
+import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
 const CartItemsContainer = () => {
-  const [cart, setCart] = useContext(AppContext);
+  const [cart, setCart] = useContext(CartContext);
   const [requestError, setRequestError] = useState(null);
 
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      refetch();
+      //refetch();
 
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
@@ -79,7 +81,7 @@ const CartItemsContainer = () => {
 
   useEffect(() => {
     refetch();
-  }, [refetch]);
+  }, []);
 
   return (
     <section className="py-8 bg-white">
@@ -88,18 +90,17 @@ const CartItemsContainer = () => {
 
         {cart ? (
           <div className="p-6 mx-auto mt-5">
+            Regularcart:
             <RegularCart
               cart={cart}
               updateCartProcessing={updateCartProcessing}
               handleRemoveProductClick={handleRemoveProductClick}
               updateCart={updateCart}
             />
-            <MobileCart
-              cart={cart}
-              updateCartProcessing={updateCartProcessing}
-              handleRemoveProductClick={handleRemoveProductClick}
-              updateCart={updateCart}
-            />
+
+
+            Mobilecart
+           
             <div className="mt-4">
               <Link href="/kasse" passHref>
                 <button className="px-4 py-2 font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">

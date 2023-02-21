@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import SVGX from 'components/SVG/SVGX.component';
-import { paddedPrice, handleQuantityChange } from 'utils/functions/functions';
+//import SVGX from 'components/SVG/SVGX.component';
+import { paddedPrice, handleQuantityChange } from '@/utils/functions/functions';
 
 const CartItem = ({
   item,
@@ -17,13 +17,7 @@ const CartItem = ({
 
   return (
     <tr className="bg-gray-100">
-      <td className="px-4 py-2 border">
-        <SVGX
-          cartKey={item.cartKey}
-          handleRemoveProductClick={handleRemoveProductClick}
-          products={products}
-        />
-      </td>
+      <td className="px-4 py-2 border">SVGX</td>
       <td className="px-4 py-2 border">
         <img
           className="w-[70px]"

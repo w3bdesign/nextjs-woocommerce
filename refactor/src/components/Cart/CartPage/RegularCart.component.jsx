@@ -1,4 +1,5 @@
 import React from 'react';
+
 import CartItem from './CartItem.component';
 
 const RegularCart = ({
@@ -7,7 +8,7 @@ const RegularCart = ({
   updateCart,
   updateCartProcessing,
 }) => (
-  <table className="hidden table-auto md:block lg:block xl:block">
+  <table className="">
     <thead>
       <tr>
         <th className="px-4 py-2" scope="col" />
@@ -27,6 +28,9 @@ const RegularCart = ({
       </tr>
     </thead>
     <tbody>
+     
+
+
       {cart.products.length &&
         cart.products.map((item) => (
           <React.Fragment key={item.cartKey}>

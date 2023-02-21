@@ -33,11 +33,6 @@ const AddToCart = ({ product }: any) => {
     variables: {
       input: productQueryInput,
     },
-    onCompleted: () => {
-      // Update the cart with new values in React context.
-      // refetch();
-      // If error.
-    },
     onError: () => {
       setRequestError(true);
     },
