@@ -16,6 +16,79 @@ import { getFormattedCart } from '@/utils/functions/functions';
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
 
+const testFormattedCart = (data: {
+  cart: { contents: { nodes: any[] }; total: any };
+}) => {
+  let formattedCart: RootObject = {
+    products: [],
+    totalProductsCount: 0,
+    totalProductsPrice: '0',
+  };
+
+  if (!data || !data.cart.contents.nodes.length || !data.cart) {
+    return;
+  }
+  const givenProducts = data.cart.contents.nodes;
+
+  // Create an empty object.
+  formattedCart.products = [];
+
+  let product = {
+    productId: 0,
+    cartKey: '',
+    name: '',
+    qty: 0,
+    price: 0,
+    totalPrice: 0,
+    image: { sourceUrl: '', srcSet: '', title: '' },
+  };
+
+  let totalProductsCount = 0;
+  let i = 0;
+
+  if (!givenProducts.length) {
+    return;
+  }
+
+  givenProducts.forEach(() => {
+    const givenProduct = givenProducts[i].product.node;
+
+    // Convert price to a float value
+    const convertedCurrency = givenProducts[i].total.replace(/[^0-9.-]+/g, '');
+
+    product.productId = givenProduct.productId;
+    product.cartKey = givenProducts[i].key;
+
+    product.name = givenProduct.name;
+
+    product.qty = givenProducts[i].quantity;
+    product.price = convertedCurrency / product.qty;
+    product.totalPrice = givenProducts[i].total;
+    // Ensure we can add products without images to the cart
+    product.image = givenProduct.image.sourceUrl
+      ? {
+          sourceUrl: givenProduct.image.sourceUrl,
+          srcSet: givenProduct.image.srcSet,
+          title: givenProduct.image.title,
+        }
+      : {
+          sourceUrl: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
+          srcSet: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
+          title: givenProduct.name,
+        };
+
+    totalProductsCount += givenProducts[i].quantity;
+
+    // Push each item into the products array.
+    formattedCart.products.push(product);
+    i++;
+  });
+  formattedCart.totalProductsCount = totalProductsCount;
+  formattedCart.totalProductsPrice = data.cart.total;
+
+  return formattedCart;
+};
+
 /**
  * Handles the Add to cart functionality.
  * Uses GraphQL for product data
@@ -37,13 +110,12 @@ const AddToCart = ({ product }: any) => {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data) as RootObject;
+      //const updatedCart = getFormattedCart(data) as RootObject;
+      const updatedCart = testFormattedCart(data);
 
       if (!updatedCart) {
         return;
       }
-
-      console.log("updatedCart", updatedCart)
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
