@@ -10,7 +10,7 @@ import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 //import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
 const CartContents = () => {
-  const [cart, setCart] = useContext(CartContext);
+  const {cart} = useContext(CartContext);
 
   return (
     <>

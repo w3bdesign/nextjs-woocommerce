@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '@/components/UI/Button.component';
 
 // State
-import { CartContext } from '@/utils/context/CartProvider';
+import { CartContext, RootObject } from '@/utils/context/CartProvider';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
@@ -37,11 +37,13 @@ const AddToCart = ({ product }: any) => {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data);
+      const updatedCart = getFormattedCart(data) as RootObject;
 
       if (!updatedCart) {
         return;
       }
+
+      console.log("updatedCart", updatedCart)
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 

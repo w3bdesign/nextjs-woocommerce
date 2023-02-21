@@ -8,26 +8,11 @@ import {
   ReactPortal,
 } from 'react';
 
-interface Image {
-  sourceUrl: string;
-  srcSet: string;
-  title: string;
-}
-
-interface Product {
-  cartKey: string;
-  name: string;
-  qty: number;
-  price: number;
-  totalPrice: string;
-  image: Image;
-}
-
-type TCart = string | Product | undefined | null | Record<string | never>;
-
 interface ICartContext {
-  cart: string | null | undefined | Product;
-  setCart: React.Dispatch<React.SetStateAction<TCart>>;
+  cart: string | null | undefined | TRootObject;
+  setCart: React.Dispatch<
+    React.SetStateAction<string | null | undefined | TRootObject>
+  >;
 }
 [];
 
@@ -43,6 +28,29 @@ interface ICartProviderProps {
     | undefined;
 }
 
+interface Image {
+  sourceUrl: string;
+  srcSet: string;
+  title: string;
+}
+
+interface Product {
+  cartKey: string;
+  name: string;
+  qty: number;
+  price: number;
+  totalPrice: string;
+  image: Image;
+}
+
+export interface RootObject {
+  products: Product[];
+  totalProductsCount: number;
+  totalProductsPrice: string;
+}
+
+type TRootObject = RootObject | string | null | undefined;
+
 const CartState = {
   cart: null,
   setCart: () => {},
@@ -55,7 +63,7 @@ export const CartContext = createContext<ICartContext>(CartState);
 
  */
 export const CartProvider = ({ children }: ICartProviderProps) => {
-  const [cart, setCart] = useState<TCart>();
+  const [cart, setCart] = useState<string | null | undefined | TRootObject>();
 
   useEffect(() => {
     // Check if we are client-side before we access the localStorage

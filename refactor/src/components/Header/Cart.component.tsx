@@ -8,7 +8,7 @@ interface ICartProps {
 }
 
 /**
- * Displays the shopping cart contents. *
+ * Displays the shopping cart contents.
  * Displays amount of items in cart.
  */
 const Cart = ({ stickyNav }: ICartProps) => {
