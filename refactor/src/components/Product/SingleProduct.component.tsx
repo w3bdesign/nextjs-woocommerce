@@ -1,9 +1,12 @@
+// Imports
 import { useState, useEffect } from 'react';
 
-//import AddToCartButton from 'components/Cart/AddToCartButton.component';
-//import LoadingSpinner from 'components/LoadingSpinner/LoadingSpinner.component';
-
+// Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
+
+// Components
+import AddToCart from './AddToCart.component';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 /**
  * Shows a single product with an Add To Cart button.
@@ -11,8 +14,8 @@ import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
  * @param {Object} product // Product data
  */
 const SingleProduct = ({ product }: any) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedVariation, setselectedVariation] = useState<any>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [_, setselectedVariation] = useState<any>();
 
   useEffect(() => {
     setIsLoading(false);
@@ -20,7 +23,7 @@ const SingleProduct = ({ product }: any) => {
       const firstVariant = product.variations.nodes[0].databaseId;
       setselectedVariation(firstVariant);
     }
-  }, [product.variations]);
+  }, []);
 
   let { description, image, name, onSale, price, regularPrice, salePrice } =
     product;
@@ -46,7 +49,7 @@ const SingleProduct = ({ product }: any) => {
         <div className="h-56 mt-20">
           <p className="text-2xl font-bold text-center">Laster produkt ...</p>
           <br />
-          LoadingSpinner
+          <LoadingSpinner />
         </div>
       ) : (
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
@@ -125,8 +128,7 @@ const SingleProduct = ({ product }: any) => {
                 </p>
               )}
               <div className="pt-1 mt-2">
-
-                
+                <AddToCart product={product} />
               </div>
             </div>
           </div>
