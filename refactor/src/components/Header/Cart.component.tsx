@@ -8,14 +8,10 @@ import { CartContext } from '@/utils/context/CartProvider';
  * Displays amount of items in cart.
  */
 const Cart = ({ stickyNav }: any) => {
-  const [cart] = useContext<any>(CartContext);
+  const { cart } = useContext<any>(CartContext);
 
   const productsCount =
-    null !== cart && Object.keys(cart).length ? cart.totalProductsCount : '';
-
-    console.log("Cart: ", cart)
-
-    console.log("productsCount: ", productsCount)
+    cart && Object.keys(cart).length ? cart.totalProductsCount : '';
 
   return (
     <>
