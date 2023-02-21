@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
-/*import Cart from '@/Cart/Cart.component';
+import Cart from './Cart.component';
+/*
 import Search from '@/AlgoliaSearch/AlgoliaSearchBox.component';
 import MobileSearch from '@/AlgoliaSearch/MobileSearch.component';*/
 
@@ -62,9 +63,7 @@ const Navbar = () => {
             className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
-
-
-            
+            <Cart />
           </div>
         </div>
       </nav>

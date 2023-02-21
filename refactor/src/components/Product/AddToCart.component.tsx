@@ -29,24 +29,19 @@ const AddToCart = ({ product }: any) => {
     productId,
   };
 
-  const [addToCart, { loading: addToCartLoading, error: addToCartError }] =
-    useMutation(ADD_TO_CART, {
-      variables: {
-        input: productQueryInput,
-      },
-      onCompleted: () => {
-        // Update the cart with new values in React context.
-        // refetch();
-        // If error.
-
-        if (addToCartError) {
-          setRequestError(true);
-        }
-      },
-      onError: () => {
-        setRequestError(true);
-      },
-    });
+  const [addToCart, { loading: addToCartLoading }] = useMutation(ADD_TO_CART, {
+    variables: {
+      input: productQueryInput,
+    },
+    onCompleted: () => {
+      // Update the cart with new values in React context.
+      // refetch();
+      // If error.
+    },
+    onError: () => {
+      setRequestError(true);
+    },
+  });
 
   const handleAddToCart = () => {
     setCart(product);

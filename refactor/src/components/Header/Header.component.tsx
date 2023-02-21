@@ -16,7 +16,7 @@ interface IHeaderProps {
 const Header = ({ title }: IHeaderProps) => (
   <>
     <Head>
-      <title>Next.js webshop with WooCommerce {title ? title : ''}</title>
+      <title>Next.js webshop with WooCommerce {title}</title>
       <meta name="description" content="WooCommerce webshop" />
       <meta name="keywords" content="Ecommerce, WooCommerce" />
       <meta

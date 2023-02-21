@@ -1,17 +1,21 @@
 import { useContext } from 'react';
 import Link from 'next/link';
 
-import { AppContext } from 'utils/context/AppContext';
+import { CartContext } from '@/utils/context/CartProvider';
 
 /**
  * Displays the shopping cart contents. *
  * Displays amount of items in cart.
  */
-const Cart = ({ stickyNav }) => {
-  const [cart] = useContext(AppContext);
+const Cart = ({ stickyNav }: any) => {
+  const [cart] = useContext<any>(CartContext);
 
   const productsCount =
     null !== cart && Object.keys(cart).length ? cart.totalProductsCount : '';
+
+    console.log("Cart: ", cart)
+
+    console.log("productsCount: ", productsCount)
 
   return (
     <>
