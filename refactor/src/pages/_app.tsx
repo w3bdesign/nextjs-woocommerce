@@ -1,9 +1,11 @@
 // Imports
 import Router from 'next/router';
 import NProgress from 'nprogress';
+import { ApolloProvider } from '@apollo/client';
 
 // State import
 import { CartProvider } from '@/utils/context/CartProvider';
+import client from '@/utils/apollo/ApolloClient';
 
 // Types
 import type { AppProps } from 'next/app';
@@ -20,9 +22,11 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <CartProvider>
-        <Component {...pageProps} />
-      </CartProvider>
+      <ApolloProvider client={client}>
+        <CartProvider>
+          <Component {...pageProps} />
+        </CartProvider>
+      </ApolloProvider>
     </>
   );
 }
