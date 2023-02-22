@@ -11,7 +11,7 @@ import {
 interface ICartContext {
   cart: string | null | undefined | TRootObject;
   setCart: React.Dispatch<
-    React.SetStateAction<string | null | undefined | TRootObject>
+    React.SetStateAction<TRootObject>
   >;
 }
 interface ICartProviderProps {
@@ -62,7 +62,7 @@ export const CartContext = createContext<ICartContext>(CartState);
 
  */
 export const CartProvider = ({ children }: ICartProviderProps) => {
-  const [cart, setCart] = useState<string | null | undefined | TRootObject>();
+  const [cart, setCart] = useState<TRootObject>();
 
   useEffect(() => {
     // Check if we are client-side before we access the localStorage
