@@ -1,19 +1,14 @@
 import Link from 'next/link';
 
 import Cart from './Cart.component';
-/*
-import Search from '@/AlgoliaSearch/AlgoliaSearchBox.component';
-import MobileSearch from '@/AlgoliaSearch/MobileSearch.component';*/
 
-import { useResponsive } from '@/utils/hooks/useResponsive';
+// TODO Algolia search
 
 /**
  * Navigation for the application.
  * Includes mobile menu.
  */
 const Navbar = () => {
-  const responsive = useResponsive();
-
   return (
     <header>
       <nav id="header" className="top-0 z-50 w-full py-1 bg-white ">
@@ -63,7 +58,9 @@ const Navbar = () => {
             className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
-            <Cart />
+            <div className="hidden md:block">
+              <Cart />
+            </div>
           </div>
         </div>
       </nav>

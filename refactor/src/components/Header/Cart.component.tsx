@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { CartContext } from '@/utils/context/CartProvider';
 
 interface ICartProps {
-  stickyNav: boolean;
+  stickyNav?: boolean;
 }
 
 /**
