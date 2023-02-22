@@ -23,7 +23,7 @@ const SingleProduct = ({ product }: any) => {
       const firstVariant = product.variations.nodes[0].databaseId;
       setselectedVariation(firstVariant);
     }
-  }, []);
+  }, [product.variations]);
 
   let { description, image, name, onSale, price, regularPrice, salePrice } =
     product;

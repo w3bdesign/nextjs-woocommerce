@@ -81,7 +81,7 @@ const CartItemsContainer = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   return (
     <section className="py-8 bg-white">
