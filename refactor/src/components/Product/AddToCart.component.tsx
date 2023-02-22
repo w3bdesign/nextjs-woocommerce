@@ -65,7 +65,7 @@ export interface testRootObject {
 const testFormattedCart = (data: {
   cart: { contents: { nodes: testRootObject[] }; total: number };
 }) => {
-  let formattedCart: RootObject = {
+  const formattedCart: RootObject = {
     products: [],
     totalProductsCount: 0,
     totalProductsPrice: 0,
@@ -79,7 +79,7 @@ const testFormattedCart = (data: {
   // Create an empty object.
   formattedCart.products = [];
 
-  let product: Product = {
+  const product: Product = {
     productId: 0,
     cartKey: '',
     name: '',
