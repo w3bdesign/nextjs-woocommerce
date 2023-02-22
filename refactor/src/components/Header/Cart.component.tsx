@@ -12,7 +12,7 @@ interface ICartProps {
  * Displays amount of items in cart.
  */
 const Cart = ({ stickyNav }: ICartProps) => {
-  const { cart } = useContext<any>(CartContext);
+  const { cart } = useContext(CartContext);
 
   const productsCount =
     cart && Object.keys(cart).length ? cart.totalProductsCount : '';
