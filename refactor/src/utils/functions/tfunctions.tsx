@@ -198,8 +198,6 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
   formattedCart.totalProductsCount = totalProductsCount;
   formattedCart.totalProductsPrice = data.cart.total;
 
-  console.log('Returning formattedCart: ', formattedCart);
-
   return formattedCart;
 };
 
