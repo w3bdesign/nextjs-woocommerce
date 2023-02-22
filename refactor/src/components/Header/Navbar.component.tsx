@@ -1,6 +1,9 @@
+
 import Link from 'next/link';
 
 import Cart from './Cart.component';
+
+import useIsMobile from '@/utils/hooks/useIsMobile';
 
 // TODO Algolia search
 
@@ -9,6 +12,7 @@ import Cart from './Cart.component';
  * Includes mobile menu.
  */
 const Navbar = () => {
+  const isMobile = useIsMobile();
   return (
     <header>
       <nav id="header" className="top-0 z-50 w-full py-1 bg-white ">
@@ -58,9 +62,7 @@ const Navbar = () => {
             className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
-            <div className="hidden md:block">
-              <Cart />
-            </div>
+            {!isMobile && <Cart />}
           </div>
         </div>
       </nav>
