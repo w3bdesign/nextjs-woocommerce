@@ -11,7 +11,7 @@ const CartContents = () => {
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
         {cart ? (
-          cart.products.map((item: any) => (
+          cart.products.map((item) => (
             <div
               className="container mx-auto mt-4 flex flex-wrap flex-row justify-around items-center content-center m-w-[1380px] border border-gray-300 rounded-lg shadow
                "
