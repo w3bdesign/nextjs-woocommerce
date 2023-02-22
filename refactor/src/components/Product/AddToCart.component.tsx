@@ -191,14 +191,12 @@ const AddToCart = ({ product }: any) => {
   };
 
   return (
-    <>
-      <Button
-        handleButtonClick={() => handleAddToCart()}
-        buttonDisabled={addToCartLoading || requestError}
-      >
-        KJØP
-      </Button>
-    </>
+    <Button
+      handleButtonClick={() => handleAddToCart()}
+      buttonDisabled={addToCartLoading || requestError}
+    >
+      KJØP
+    </Button>
   );
 };
 
