@@ -15,7 +15,7 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component
  */
 const SingleProduct = ({ product }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [_, setselectedVariation] = useState<any>();
+  const [, setselectedVariation] = useState<any>();
 
   useEffect(() => {
     setIsLoading(false);
