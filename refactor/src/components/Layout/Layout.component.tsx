@@ -35,10 +35,6 @@ interface ILayoutProps {
 const Layout = ({ children, title }: ILayoutProps): JSX.Element => {
   const { setCart } = useContext(CartContext);
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
@@ -52,6 +48,10 @@ const Layout = ({ children, title }: ILayoutProps): JSX.Element => {
       setCart(updatedCart);
     },
   });
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <>
