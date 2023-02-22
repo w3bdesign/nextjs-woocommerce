@@ -8,7 +8,7 @@ import { FETCH_ALL_CATEGORIES_QUERY } from '@/utils/gql/GQL_QUERIES';
 /**
  * Category page displays all of the categories
  */
-const CategoryPage = ({ categories }) => (
+const CategoryPage = ({ categories }: any) => (
   <Layout title="Kategorier">
     {categories && <Categories categories={categories} />}
   </Layout>
