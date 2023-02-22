@@ -78,7 +78,6 @@ export const trimmedStringToLength = ({
  * @param {RegExp} patternValue Regular expression pattern for validation
  */
 
-//export const getCustomNumberValidation = ({ minLength, maxLength, pattern },value,patternValue = /^\d+$/i) => {
 export const getCustomNumberValidation = ({
   minLength,
   maxLength,
