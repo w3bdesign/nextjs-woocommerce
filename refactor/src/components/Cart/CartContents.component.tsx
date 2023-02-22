@@ -55,7 +55,9 @@ const CartContents = () => {
             </div>
           ))
         ) : (
-          <h1>Empty cart</h1>
+          <h1 className="text-2xl font-bold mx-auto">
+            Ingen produkter i handlekurven
+          </h1>
         )}
       </div>
     </section>
