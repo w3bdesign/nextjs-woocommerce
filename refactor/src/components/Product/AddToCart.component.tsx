@@ -10,7 +10,7 @@ import Button from '@/components/UI/Button.component';
 import { CartContext, Product, RootObject } from '@/utils/context/CartProvider';
 
 // Utils
-import { getFormattedCart } from '@/utils/functions/functions';
+// import { getFormattedCart } from '@/utils/functions/functions';
 
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
@@ -62,6 +62,7 @@ export interface testRootObject {
   subtotalTax: string;
 }
 
+// TODO Import this from functions.tsx
 const testFormattedCart = (data: {
   cart: { contents: { nodes: testRootObject[] }; total: number };
 }) => {
