@@ -14,8 +14,6 @@ interface ICartContext {
     React.SetStateAction<string | null | undefined | TRootObject>
   >;
 }
-[];
-
 interface ICartProviderProps {
   children:
     | string
@@ -29,7 +27,6 @@ interface ICartProviderProps {
 }
 
 interface Image {
-  //sourceUrl: string;
   sourceUrl: string | null | undefined;
   srcSet: string | null | undefined;
   title: string;
