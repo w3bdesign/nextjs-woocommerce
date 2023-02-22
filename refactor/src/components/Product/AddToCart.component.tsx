@@ -7,10 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '@/components/UI/Button.component';
 
 // State
-import { CartContext, Product, RootObject } from '@/utils/context/CartProvider';
+import { CartContext } from '@/utils/context/CartProvider';
 
 // Utils
-// import { getFormattedCart } from '@/utils/functions/functions';
+import { getFormattedCart } from '@/utils/functions/tfunctions';
 
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
@@ -62,80 +62,6 @@ export interface testRootObject {
   subtotalTax: string;
 }
 
-// TODO Import this from functions.tsx
-const testFormattedCart = (data: {
-  cart: { contents: { nodes: testRootObject[] }; total: number };
-}) => {
-  const formattedCart: RootObject = {
-    products: [],
-    totalProductsCount: 0,
-    totalProductsPrice: 0,
-  };
-
-  if (!data || !data.cart.contents.nodes.length || !data.cart) {
-    return;
-  }
-  const givenProducts = data.cart.contents.nodes;
-
-  // Create an empty object.
-  formattedCart.products = [];
-
-  const product: Product = {
-    productId: 0,
-    cartKey: '',
-    name: '',
-    qty: 0,
-    price: 0,
-    totalPrice: '0',
-    image: { sourceUrl: '', srcSet: '', title: '' },
-  };
-
-  let totalProductsCount = 0;
-  let i = 0;
-
-  if (!givenProducts.length) {
-    return;
-  }
-
-  givenProducts.forEach(() => {
-    const givenProduct = givenProducts[i].product.node;
-
-    // Convert price to a float value
-    const convertedCurrency = givenProducts[i].total.replace(/[^0-9.-]+/g, '');
-
-    product.productId = givenProduct.productId;
-    product.cartKey = givenProducts[i].key;
-    product.name = givenProduct.name;
-    product.qty = givenProducts[i].quantity;
-    product.price = Number(convertedCurrency) / product.qty;
-    product.totalPrice = givenProducts[i].total;
-
-    // Ensure we can add products without images to the cart
-
-    product.image = givenProduct.image.sourceUrl
-      ? {
-          sourceUrl: givenProduct.image.sourceUrl,
-          srcSet: givenProduct.image.srcSet,
-          title: givenProduct.image.title,
-        }
-      : {
-          sourceUrl: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
-          srcSet: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
-          title: givenProduct.name,
-        };
-
-    totalProductsCount += givenProducts[i].quantity;
-
-    // Push each item into the products array.
-    formattedCart.products.push(product);
-    i++;
-  });
-  formattedCart.totalProductsCount = totalProductsCount;
-  formattedCart.totalProductsPrice = data.cart.total;
-
-  return formattedCart;
-};
-
 /**
  * Handles the Add to cart functionality.
  * Uses GraphQL for product data
@@ -145,7 +71,7 @@ const AddToCart = ({ product }: any) => {
   const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
-  const productId = product.databaseId ? product.databaseId : product;
+  const productId = product.databaseId;
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
@@ -153,11 +79,12 @@ const AddToCart = ({ product }: any) => {
   };
 
   // Get cart data query
+
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
-      const updatedCart = testFormattedCart(data);
+      const updatedCart = getFormattedCart(data);
 
       if (!updatedCart) {
         return;

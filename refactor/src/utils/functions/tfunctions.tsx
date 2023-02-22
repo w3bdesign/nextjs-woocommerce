@@ -23,9 +23,7 @@ interface IGetCustomNumberValidationProps {
 }
 
 interface IFormattedCartProps {
-  data: {
-    cart: { contents: { nodes: testRootObject[] }; total: number };
-  };
+  cart: { contents: { nodes: testRootObject[] }; total: number };
 }
 
 interface ICheckoutDataProps {
@@ -132,14 +130,14 @@ export const getFloatVal = (string) => {
  * @param {String} data Cart data
  */
 
-export const getFormattedCart = ({ data }: IFormattedCartProps) => {
+export const getFormattedCart = (data: IFormattedCartProps) => {
   const formattedCart: RootObject = {
     products: [],
     totalProductsCount: 0,
     totalProductsPrice: 0,
   };
 
-  if (!data || !data.cart.contents.nodes.length || !data.cart) {
+  if (!data) {
     return;
   }
   const givenProducts = data.cart.contents.nodes;
@@ -199,6 +197,8 @@ export const getFormattedCart = ({ data }: IFormattedCartProps) => {
   });
   formattedCart.totalProductsCount = totalProductsCount;
   formattedCart.totalProductsPrice = data.cart.total;
+
+  console.log('Returning formattedCart: ', formattedCart);
 
   return formattedCart;
 };

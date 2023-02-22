@@ -38,10 +38,12 @@ const Layout = ({ children, title }: ILayoutProps): JSX.Element => {
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      //refetch();
-
       // Update cart in the localStorage.
       const updatedCart: any = getFormattedCart(data); // TODO Remove this any later
+
+      if (!updatedCart) {
+        return;
+      }
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
       // Update cart data in React Context.
