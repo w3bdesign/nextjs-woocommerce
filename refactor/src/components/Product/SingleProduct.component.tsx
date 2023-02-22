@@ -1,6 +1,5 @@
 // Imports
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 
 // Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
@@ -42,9 +41,7 @@ const SingleProduct = ({ product }: any) => {
 
   // Strip out HTML from description
   const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
-
-  const placeholderFallBack =
-    'https://res.cloudinary.com/placeholder-616-616_beecp5.jpg';
+  const placeholderFallBack = 'https://via.placeholder.com/600';
 
   return (
     <section className="py-8 bg-white">
@@ -59,15 +56,15 @@ const SingleProduct = ({ product }: any) => {
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
           <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
             {image && (
-              <Image
+              <img
                 id="product-image"
                 src={image.sourceUrl}
                 alt={name}
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:scale-105"
               />
             )}
             {!image && (
-              <Image
+              <img
                 id="product-image"
                 src={
                   process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
