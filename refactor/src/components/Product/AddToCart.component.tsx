@@ -79,7 +79,15 @@ const testFormattedCart = (data: {
   // Create an empty object.
   formattedCart.products = [];
 
-  let product: Product;
+  let product: Product = {
+    productId: 0,
+    cartKey: '',
+    name: '',
+    qty: 0,
+    price: 0,
+    totalPrice: '0',
+    image: { sourceUrl: '', srcSet: '', title: '' },
+  };
 
   let totalProductsCount = 0;
   let i = 0;
@@ -148,7 +156,7 @@ const AddToCart = ({ product }: any) => {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
-      //const updatedCart = getFormattedCart(data) as RootObject;
+
       const updatedCart = testFormattedCart(data);
 
       if (!updatedCart) {
