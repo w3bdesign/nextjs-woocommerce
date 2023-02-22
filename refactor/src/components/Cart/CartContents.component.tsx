@@ -1,21 +1,15 @@
 // Imports
-import { useContext, useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useContext } from 'react';
 
 // State
 import { CartContext } from '@/utils/context/CartProvider';
 
-// GraphQL
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
-//import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
-
 const CartContents = () => {
-  const {cart} = useContext(CartContext);
+  const { cart } = useContext(CartContext);
 
   return (
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
-        
         {cart ? (
           cart.products.map((item: any) => (
             <div

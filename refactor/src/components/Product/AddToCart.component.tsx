@@ -156,7 +156,6 @@ const AddToCart = ({ product }: any) => {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
-
       const updatedCart = testFormattedCart(data);
 
       if (!updatedCart) {

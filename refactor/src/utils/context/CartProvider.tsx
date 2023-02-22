@@ -9,10 +9,8 @@ import {
 } from 'react';
 
 interface ICartContext {
-  cart: TRootObject;
-  setCart: React.Dispatch<
-    React.SetStateAction<TRootObject>
-  >;
+  cart: RootObject | null | undefined;
+  setCart: React.Dispatch<React.SetStateAction<RootObject | null | undefined>>;
 }
 interface ICartProviderProps {
   children:
@@ -27,8 +25,8 @@ interface ICartProviderProps {
 }
 
 interface Image {
-  sourceUrl: string | null | undefined;
-  srcSet: string | null | undefined;
+  sourceUrl?: string;
+  srcSet?: string;
   title: string;
 }
 
@@ -48,7 +46,7 @@ export interface RootObject {
   totalProductsPrice: number;
 }
 
-type TRootObject = RootObject | string | null | undefined;
+export type TRootObject = RootObject | string | null | undefined;
 
 const CartState = {
   cart: null,
@@ -62,17 +60,19 @@ export const CartContext = createContext<ICartContext>(CartState);
 
  */
 export const CartProvider = ({ children }: ICartProviderProps) => {
-  const [cart, setCart] = useState<TRootObject>();
+  const [cart, setCart] = useState<RootObject | null>();
 
   useEffect(() => {
     // Check if we are client-side before we access the localStorage
     if (!process.browser) {
       return;
     }
-    let cartData = localStorage.getItem('woocommerce-cart');
-    cartData = null !== cartData ? JSON.parse(cartData) : '';
+    let localCartData = localStorage.getItem('woocommerce-cart');
 
-    setCart(cartData);
+    if (localCartData) {
+      let cartData: RootObject = JSON.parse(localCartData);
+      setCart(cartData);
+    }
   }, []);
 
   return (
