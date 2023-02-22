@@ -9,7 +9,7 @@ import {
 } from 'react';
 
 interface ICartContext {
-  cart: string | null | undefined | TRootObject;
+  cart: TRootObject;
   setCart: React.Dispatch<
     React.SetStateAction<TRootObject>
   >;
