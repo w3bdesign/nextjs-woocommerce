@@ -1,5 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import { testRootObject } from '@/components/Product/AddToCart.component';
+
+import { RootObject, Product } from '@/utils/context/CartProvider';
+
 interface IPaddedPriceProps {
   price: string;
   symbol: string;
@@ -16,6 +20,27 @@ interface IGetCustomNumberValidationProps {
   pattern: string;
   value: any;
   patternValue: RegExp;
+}
+
+interface IFormattedCartProps {
+  data: {
+    cart: { contents: { nodes: testRootObject[] }; total: number };
+  };
+}
+
+interface ICheckoutDataProps {
+  firstName: string;
+  lastName: string;
+  address1: string;
+  address2: string;
+  city: string;
+  country: string;
+  state: string;
+  postcode: number;
+  email: string;
+  phone: number;
+  company: string;
+  paymentMethod: string;
 }
 
 /**
@@ -60,7 +85,7 @@ export const getCustomNumberValidation = ({
   pattern,
   value,
   patternValue = /^\d+$/i,
-}: IGetCustomNumberValidationProps): any => {
+}: IGetCustomNumberValidationProps) => {
   const validationObj = {
     minLength: { value, message: minLength },
     maxLength: { value, message: maxLength },
@@ -107,37 +132,54 @@ export const getFloatVal = (string) => {
  * Returns cart data in the required format.
  * @param {String} data Cart data
  */
-export const getFormattedCart = (data) => {
-  let formattedCart = null;
+
+export const getFormattedCart = ({ data }: IFormattedCartProps) => {
+  const formattedCart: RootObject = {
+    products: [],
+    totalProductsCount: 0,
+    totalProductsPrice: 0,
+  };
+
   if (!data || !data.cart.contents.nodes.length || !data.cart) {
-    return formattedCart;
+    return;
   }
   const givenProducts = data.cart.contents.nodes;
 
   // Create an empty object.
-  formattedCart = {};
   formattedCart.products = [];
+
+  const product: Product = {
+    productId: 0,
+    cartKey: '',
+    name: '',
+    qty: 0,
+    price: 0,
+    totalPrice: '0',
+    image: { sourceUrl: '', srcSet: '', title: '' },
+  };
+
   let totalProductsCount = 0;
   let i = 0;
-  givenProducts.forEach(() => {
-    const givenProduct = givenProducts[parseInt(i, 10)].product.node;
 
-    const product = {};
+  if (!givenProducts.length) {
+    return;
+  }
+
+  givenProducts.forEach(() => {
+    const givenProduct = givenProducts[i].product.node;
+
     // Convert price to a float value
-    const convertedCurrency = givenProducts[parseInt(i, 10)].total.replace(
-      /[^0-9.-]+/g,
-      ''
-    );
+    const convertedCurrency = givenProducts[i].total.replace(/[^0-9.-]+/g, '');
 
     product.productId = givenProduct.productId;
-    product.cartKey = givenProducts[parseInt(i, 10)].key;
-
+    product.cartKey = givenProducts[i].key;
     product.name = givenProduct.name;
+    product.qty = givenProducts[i].quantity;
+    product.price = Number(convertedCurrency) / product.qty;
+    product.totalPrice = givenProducts[i].total;
 
-    product.qty = givenProducts[parseInt(i, 10)].quantity;
-    product.price = convertedCurrency / product.qty;
-    product.totalPrice = givenProducts[parseInt(i, 10)].total;
     // Ensure we can add products without images to the cart
+
     product.image = givenProduct.image.sourceUrl
       ? {
           sourceUrl: givenProduct.image.sourceUrl,
@@ -150,7 +192,8 @@ export const getFormattedCart = (data) => {
           title: givenProduct.name,
         };
 
-    totalProductsCount += givenProducts[parseInt(i, 10)].quantity;
+    totalProductsCount += givenProducts[i].quantity;
+
     // Push each item into the products array.
     formattedCart.products.push(product);
     i++;
@@ -161,7 +204,7 @@ export const getFormattedCart = (data) => {
   return formattedCart;
 };
 
-export const createCheckoutData = (order) => ({
+export const createCheckoutData = (order: ICheckoutDataProps) => ({
   clientMutationId: uuidv4(),
   billing: {
     firstName: order.firstName,
