@@ -38,7 +38,7 @@ const Layout = ({ children, title }: ILayoutProps): JSX.Element => {
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      refetch();
+      //refetch();
 
       // Update cart in the localStorage.
       const updatedCart: any = getFormattedCart(data); // TODO Remove this any later
