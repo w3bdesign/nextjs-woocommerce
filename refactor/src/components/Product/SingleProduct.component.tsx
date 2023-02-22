@@ -1,5 +1,6 @@
 // Imports
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 // Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
@@ -42,6 +43,9 @@ const SingleProduct = ({ product }: any) => {
   // Strip out HTML from description
   const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
 
+  const placeholderFallBack =
+    'https://res.cloudinary.com/placeholder-616-616_beecp5.jpg';
+
   return (
     <section className="py-8 bg-white">
       {/* Show loading spinner while loading, and hide content while loading */}
@@ -55,19 +59,22 @@ const SingleProduct = ({ product }: any) => {
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
           <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
             {image && (
-              <img
+              <Image
                 id="product-image"
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
-                alt={name}
                 src={image.sourceUrl}
+                alt={name}
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
               />
             )}
             {!image && (
-              <img
+              <Image
                 id="product-image"
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
+                src={
+                  process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
+                  placeholderFallBack
+                }
                 alt={name}
-                src={process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL}
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
               />
             )}
             <div className="ml-8">
