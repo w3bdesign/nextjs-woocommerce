@@ -1,11 +1,51 @@
 // Imports
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 
 // State
 import { CartContext } from '@/utils/context/CartProvider';
 
+// Utils
+import {
+  getFormattedCart,
+  handleQuantityChange,
+} from '@/utils/functions/tfunctions';
+
+// GraphQL
+import { GET_CART } from '@/utils/gql/GQL_QUERIES';
+import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
+
 const CartContents = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
+  const [, setProductCount] = useState(1);
+
+  // Get cart data query
+  const { data, refetch } = useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: () => {
+      // Update cart in the localStorage.
+      const updatedCart = getFormattedCart(data);
+
+      if (!updatedCart) {
+        return;
+      }
+
+      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+
+      // Update cart data in React Context.
+      setCart(updatedCart);
+    },
+  });
+
+  // Update Cart Mutation.
+  const [updateCart, { loading: updateCartProcessing }] = useMutation(
+    UPDATE_CART,
+    {
+      onCompleted: () => {
+        refetch();
+      },
+    }
+  );
 
   return (
     <section className="py-8  mt-10">
@@ -40,7 +80,26 @@ const CartContents = () => {
                   Quantity: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
-                  {item.qty}
+                  <input
+                    className="w-12"
+                    type="number"
+                    min="1"
+                    value={item.qty}
+                    onChange={(event) => {
+                      handleQuantityChange(
+                        event,
+                        item.cartKey,
+                        cart.products,
+                        updateCart,
+                        updateCartProcessing,
+                        setProductCount
+                      );
+
+                      setTimeout(() => {
+                        refetch();
+                      }, 2000);
+                    }}
+                  />
                 </span>
               </div>
 
