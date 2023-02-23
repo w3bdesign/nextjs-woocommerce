@@ -28,6 +28,7 @@ export const middleware = new ApolloLink((operation, forward) => {
     localStorage.removeItem('woo-session');
     localStorage.removeItem('woo-session-expiry');
   }
+
   if (session) {
     operation.setContext(() => ({
       headers: {
@@ -56,15 +57,19 @@ export const afterware = new ApolloLink((operation, forward) =>
     const session = headers.get('woocommerce-session');
 
     if (session && process.browser) {
-      // Remove session data if session destroyed.
       if ('false' === session) {
+        // Remove session data if session destroyed.
         localStorage.removeItem('woo-session');
         // Update session new data if changed.
-      } else if (localStorage.getItem('woo-session') !== session) {
-        localStorage.setItem('woo-session', headers.get('woocommerce-session'));
-        localStorage.setItem('woo-session-expiry', new Date());
+      } else if (!localStorage.getItem('woo-session')) {
+        let currentTime = new Date().getTime();
+        let oneDayFromNow = new Date(currentTime + 24 * 60 * 60 * 1000);
+
+        localStorage.setItem('woo-session', session);
+        localStorage.setItem('woo-session-expiry', oneDayFromNow);
       }
     }
+
     return response;
   })
 );
