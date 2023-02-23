@@ -11,7 +11,7 @@ import Footer from '@/components/Footer/Footer.component';
 import { CartContext } from '@/utils/context/CartProvider';
 
 // Utils
-import { getFormattedCart } from '@/utils/functions/functions';
+import { getFormattedCart } from '@/utils/functions/tfunctions';
 
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
@@ -45,12 +45,14 @@ const Layout = ({ children, title }: ILayoutProps) => {
 
       // Update cart data in React Context.
       setCart(updatedCart);
+
+      
     },
   });
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   return (
     <>
