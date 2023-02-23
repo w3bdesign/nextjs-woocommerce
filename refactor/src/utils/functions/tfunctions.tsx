@@ -333,10 +333,7 @@ export const handleQuantityChange = (
   cartKey: string,
   products: Product[],
   updateCart: any, // Lazy solution, but saves us from a lot of warnings
-  updateCartProcessing: boolean,
-  setProductCount: {
-    (value: SetStateAction<number | string>): void;
-  }
+  updateCartProcessing: boolean
 ) => {
   if (process.browser) {
     event.stopPropagation();
@@ -347,8 +344,6 @@ export const handleQuantityChange = (
     // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
     const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
 
-    // Set the new quantity in state.
-    setProductCount(newQty);
     if (products.length) {
       const updatedItems = getUpdatedItems(products, newQty, cartKey);
 
