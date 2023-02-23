@@ -39,7 +39,7 @@ interface IProduct {
   node: IProductNode;
 }
 
-interface IRootObject {
+interface IProductRootObject {
   __typename: string;
   key: string;
   product: IProduct;
@@ -71,7 +71,7 @@ interface IGetCustomNumberValidationProps {
 }
 
 interface IFormattedCartProps {
-  cart: { contents: { nodes: IRootObject[] }; total: number };
+  cart: { contents: { nodes: IProductRootObject[] }; total: number };
 }
 
 interface ICheckoutDataProps {
