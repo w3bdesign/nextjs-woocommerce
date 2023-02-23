@@ -3,5 +3,10 @@
   "rules": {
     "@next/next/no-img-element": "off"
   },
-  "globals": { "JSX": true }
+  "globals": { "JSX": true },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2022": true
+  }
 }
