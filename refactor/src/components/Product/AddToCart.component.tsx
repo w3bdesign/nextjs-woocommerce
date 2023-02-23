@@ -16,50 +16,29 @@ import { getFormattedCart } from '@/utils/functions/tfunctions';
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
 
-export interface MyImage {
+interface IImage {
   __typename: string;
   id: string;
-  sourceUrl?: string;
-  srcSet?: string;
-  altText: string;
+  uri: string;
   title: string;
+  srcSet: string;
+  sourceUrl: string;
 }
 
-export interface GalleryImages {
-  __typename: string;
-  nodes: any[];
-}
-
-export interface Node {
+export interface IProduct {
   __typename: string;
   id: string;
   databaseId: number;
-  name: string;
-  description: string;
-  type: string;
-  onSale: boolean;
-  slug: string;
   averageRating: number;
-  reviewCount: number;
-  image: MyImage;
-  galleryImages: GalleryImages;
-  productId: number;
-}
-
-export interface MyProduct {
-  __typename: string;
-  node: Node;
-}
-
-export interface testRootObject {
-  __typename: string;
-  key: string;
-  product: MyProduct;
-  variation?: any;
-  quantity: number;
-  total: string;
-  subtotal: string;
-  subtotalTax: string;
+  slug: string;
+  description: string;
+  onSale: boolean;
+  image: IImage;
+  name: string;
+  salePrice?: any;
+  regularPrice: string;
+  price: string;
+  stockQuantity: number;
 }
 
 /**
@@ -67,7 +46,7 @@ export interface testRootObject {
  * Uses GraphQL for product data
  * @param {Object} product // Product data
  */
-const AddToCart = ({ product }: any) => {
+const AddToCart = (product: IProduct) => {
   const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
