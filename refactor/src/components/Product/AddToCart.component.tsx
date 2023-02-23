@@ -35,10 +35,14 @@ export interface IProduct {
   onSale: boolean;
   image: IImage;
   name: string;
-  salePrice?: any;
+  salePrice?: string;
   regularPrice: string;
   price: string;
   stockQuantity: number;
+}
+
+interface IAddToCartProps {
+  product: IProduct;
 }
 
 /**
@@ -46,11 +50,12 @@ export interface IProduct {
  * Uses GraphQL for product data
  * @param {Object} product // Product data
  */
-const AddToCart = (product: IProduct) => {
+
+const AddToCart = (product: IAddToCartProps) => {
   const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
-  const productId = product.databaseId;
+  const productId = product.product.databaseId;
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
