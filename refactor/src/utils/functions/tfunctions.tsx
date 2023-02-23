@@ -1,13 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { RootObject, Product } from '@/utils/context/CartProvider';
-import {
-  MutationFunctionOptions,
-  OperationVariables,
-  DefaultContext,
-  ApolloCache,
-  FetchResult,
-} from '@apollo/client';
+import { FetchResult } from '@apollo/client';
 import { ChangeEvent, SetStateAction } from 'react';
 
 /* Interface for products*/
