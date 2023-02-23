@@ -32,7 +32,7 @@ interface ILayoutProps {
  * @returns {JSX.Element} - Rendered component
  */
 
-const Layout = ({ children, title }: ILayoutProps): JSX.Element => {
+const Layout = ({ children, title }: ILayoutProps) => {
   const { setCart } = useContext(CartContext);
 
   const { data, refetch } = useQuery(GET_CART, {

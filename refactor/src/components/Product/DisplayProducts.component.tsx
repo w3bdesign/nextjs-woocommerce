@@ -45,7 +45,7 @@ interface IDisplayProductsProps {
  * @returns {JSX.Element} - Rendered component
  */
 
-const DisplayProducts = ({ products }: IDisplayProductsProps): JSX.Element => {
+const DisplayProducts = ({ products }: IDisplayProductsProps) => {
   return (
     <section className="container mx-auto bg-white">
       <div id="product-container" className="flex flex-wrap items-center">
