@@ -13,17 +13,28 @@ interface ICartProps {
  */
 const Cart = ({ stickyNav }: ICartProps) => {
   const { cart } = useContext(CartContext);
-  const [productCount, setProductCount] = useState<number | null>();
+  const [productCount, setProductCount] = useState<number | null | undefined>();
 
   useEffect(() => {
+    if (cart) {
+      setProductCount(cart.totalProductsCount);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cart) {
+      setProductCount(cart.totalProductsCount);
+    }
+  }, [cart]);
+
+  /*useEffect(() => {
     const interval = setInterval(() => {
-      const productsCount = cart && cart.totalProductsCount;
-      if (productsCount) {
-        setProductCount(productsCount);
+      if (cart) {
+        setProductCount(cart.totalProductsCount);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [cart]);
+  }, [cart]);*/
 
   return (
     <>
