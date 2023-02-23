@@ -1,13 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { RootObject, Product } from '@/utils/context/CartProvider';
-import {
-  ApolloCache,
-  DefaultContext,
-  FetchResult,
-  MutationFunctionOptions,
-  OperationVariables,
-} from '@apollo/client';
+
 import { ChangeEvent, SetStateAction } from 'react';
 
 /* Interface for products*/
@@ -336,22 +330,7 @@ export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
   products: Product[],
-  updateCart: {
-    (
-      options?:
-        | MutationFunctionOptions<
-            any,
-            OperationVariables,
-            DefaultContext,
-            ApolloCache<any>
-          >
-        | undefined
-    ): Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
-    (arg0: {
-      variables: { input: { clientMutationId: string; items: TUpdatedItems } };
-    }): void;
-  },
-
+  updateCart: any, // Lazy solution, but saves us from a lot of warnings
   updateCartProcessing: boolean,
   setProductCount: {
     (value: SetStateAction<number | string>): void;
