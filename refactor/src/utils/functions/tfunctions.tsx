@@ -307,7 +307,7 @@ export const getUpdatedItems = (
   const updatedItems: TUpdatedItems = [];
 
   // Loop through the product array.
-  products.map((cartItem) => {
+  products.forEach((cartItem) => {
     // If you find the cart key of the product user is trying to update, push the key and new qty.
     if (cartItem.cartKey === cartKey) {
       updatedItems.push({
