@@ -144,6 +144,8 @@ export const getCustomNumberValidation = ({
 
   console.log('validationObj: ', Object.keys(validationObj));
 
+  // TODO Fix this error
+
   return Object.keys(validationObj).reduce((acc, key) => {
     if (validationObj[key].value) {
       acc[key] = validationObj[key];
@@ -278,75 +280,3 @@ export const createCheckoutData = (order: ICheckoutDataProps) => ({
   isPaid: false,
   transactionId: 'fhggdfjgfi',
 });
-
-/**
- * Get the updated items in the below format required for mutation input.
- *
- * Creates an array in above format with the newQty (updated Qty ).
- *
- */
-export const getUpdatedItems = (products, newQty, cartKey) => {
-  // Create an empty array.
-  const updatedItems = [];
-
-  // Loop through the product array.
-  products.map((cartItem) => {
-    // If you find the cart key of the product user is trying to update, push the key and new qty.
-    if (cartItem.cartKey === cartKey) {
-      updatedItems.push({
-        key: cartItem.cartKey,
-        quantity: parseInt(newQty, 10),
-      });
-
-      // Otherwise just push the existing qty without updating.
-    } else {
-      updatedItems.push({
-        key: cartItem.cartKey,
-        quantity: cartItem.qty,
-      });
-    }
-  });
-
-  // Return the updatedItems array with new Qtys.
-  return updatedItems;
-};
-
-/*
- * When user changes the quantity, update the cart in localStorage
- * Also update the cart in the global Context
- */
-export const handleQuantityChange = (
-  event,
-  cartKey,
-  products,
-  updateCart,
-  updateCartProcessing,
-  setProductCount
-) => {
-  if (!process.browser) {
-    return;
-  }
-
-  event.stopPropagation();
-  // Return if the previous update cart mutation request is still processing
-  if (updateCartProcessing) {
-    return;
-  }
-  // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
-  const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
-
-  // Set the new quantity in state.
-  setProductCount(newQty);
-  if (products.length) {
-    const updatedItems = getUpdatedItems(products, newQty, cartKey);
-
-    updateCart({
-      variables: {
-        input: {
-          clientMutationId: uuidv4(),
-          items: updatedItems,
-        },
-      },
-    });
-  }
-};
