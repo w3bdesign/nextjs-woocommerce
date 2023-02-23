@@ -1,12 +1,12 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "complexity": ["warn", { "max": 20 }]
   },
   "globals": { "JSX": true },
   "env": {
     "browser": true,
-    "node": true,
-    "es2022": true
+    "es6": true
   }
 }
