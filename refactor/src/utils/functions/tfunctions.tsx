@@ -1,8 +1,56 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { testRootObject } from '@/components/Product/AddToCart.component';
-
 import { RootObject, Product } from '@/utils/context/CartProvider';
+
+/* Interface for products*/
+
+export interface IImage {
+  __typename: string;
+  id: string;
+  sourceUrl?: string;
+  srcSet?: string;
+  altText: string;
+  title: string;
+}
+
+export interface IGalleryImages {
+  __typename: string;
+  nodes: any[];
+}
+
+interface IProductNode {
+  __typename: string;
+  id: string;
+  databaseId: number;
+  name: string;
+  description: string;
+  type: string;
+  onSale: boolean;
+  slug: string;
+  averageRating: number;
+  reviewCount: number;
+  image: IImage;
+  galleryImages: IGalleryImages;
+  productId: number;
+}
+
+interface IProduct {
+  __typename: string;
+  node: IProductNode;
+}
+
+interface IRootObject {
+  __typename: string;
+  key: string;
+  product: IProduct;
+  variation?: any;
+  quantity: number;
+  total: string;
+  subtotal: string;
+  subtotalTax: string;
+}
+
+/* Interface for props */
 
 interface IPaddedPriceProps {
   price: string;
@@ -23,7 +71,7 @@ interface IGetCustomNumberValidationProps {
 }
 
 interface IFormattedCartProps {
-  cart: { contents: { nodes: testRootObject[] }; total: number };
+  cart: { contents: { nodes: IRootObject[] }; total: number };
 }
 
 interface ICheckoutDataProps {
@@ -39,6 +87,11 @@ interface ICheckoutDataProps {
   phone: number;
   company: string;
   paymentMethod: string;
+}
+
+interface IFilteredVariantPriceProps {
+  price: string;
+  side: string;
 }
 
 /**
@@ -105,7 +158,10 @@ export const getCustomNumberValidation = ({
  * @param {String} side Which side of the string to return (which side of the "-" symbol)
  * @param {String} price The inputted price that we need to convert
  */
-export const filteredVariantPrice = (price, side) => {
+export const filteredVariantPrice = ({
+  price,
+  side,
+}: IFilteredVariantPriceProps) => {
   if ('right' === side) {
     return price.substring(price.length, price.indexOf('-')).replace('-', '');
   }
