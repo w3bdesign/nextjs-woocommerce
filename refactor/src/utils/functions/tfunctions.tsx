@@ -1,3 +1,5 @@
+/*eslint complexity: ["error", 20]*/
+
 import { v4 as uuidv4 } from 'uuid';
 
 import { RootObject, Product } from '@/utils/context/CartProvider';
