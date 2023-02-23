@@ -18,6 +18,11 @@ const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
   const [hidden, setHidden] = useState('invisible');
 
+  const hamburgerLine =
+    'h-1 w-10 my-1 rounded-full bg-white transition ease transform duration-300 not-sr-only';
+
+  const opacityFull = 'opacity-100 group-hover:opacity-100';
+
   useEffect(() => {
     if (isExpanded) {
       setHidden('');
@@ -36,11 +41,6 @@ const Hamburger = () => {
      */
     setisExpanded((prevExpanded) => !prevExpanded);
   }, [setisExpanded]);
-
-  const hamburgerLine =
-    'h-1 w-10 my-1 rounded-full bg-white transition ease transform duration-300 not-sr-only';
-
-  const opacityFull = 'opacity-100 group-hover:opacity-100';
 
   return (
     <div className="z-50 md:hidden lg:hidden xl:hidden bg-blue-800">
