@@ -63,7 +63,6 @@ const AddToCart = (product: IAddToCartProps) => {
   };
 
   // Get cart data query
-
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
