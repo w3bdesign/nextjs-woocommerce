@@ -1,6 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { RootObject, Product } from '@/utils/context/CartProvider';
+import {
+  MutationFunctionOptions,
+  OperationVariables,
+  DefaultContext,
+  ApolloCache,
+  FetchResult,
+} from '@apollo/client';
+import { ChangeEvent, SetStateAction } from 'react';
 
 /* Interface for products*/
 
@@ -49,6 +57,8 @@ interface IProductRootObject {
   subtotal: string;
   subtotalTax: string;
 }
+
+type TUpdatedItems = { key: string; quantity: number }[];
 
 /* Interface for props */
 
@@ -280,3 +290,86 @@ export const createCheckoutData = (order: ICheckoutDataProps) => ({
   isPaid: false,
   transactionId: 'fhggdfjgfi',
 });
+
+/**
+ * Get the updated items in the below format required for mutation input.
+ *
+ * Creates an array in above format with the newQty (updated Qty ).
+ *
+ */
+export const getUpdatedItems = (
+  products: Product[],
+  newQty: number,
+  cartKey: string
+) => {
+  // Create an empty array.
+  //const updatedItems: { key: any; quantity: any; }[] = [];
+  const updatedItems: TUpdatedItems = [];
+
+  // Loop through the product array.
+  products.map((cartItem) => {
+    // If you find the cart key of the product user is trying to update, push the key and new qty.
+    if (cartItem.cartKey === cartKey) {
+      updatedItems.push({
+        key: cartItem.cartKey,
+        quantity: newQty,
+      });
+
+      // Otherwise just push the existing qty without updating.
+    } else {
+      updatedItems.push({
+        key: cartItem.cartKey,
+        quantity: cartItem.qty,
+      });
+    }
+  });
+
+  // Return the updatedItems array with new Qtys.
+  return updatedItems;
+};
+
+/*
+ * When user changes the quantity, update the cart in localStorage
+ * Also update the cart in the global Context
+ */
+export const handleQuantityChange = (
+  event: ChangeEvent<HTMLInputElement>,
+  cartKey: string,
+  products: Product[],
+  updateCart: {
+    (): Promise<FetchResult<any, Record<string, any>, Record<string, any>>>;
+    (arg0: {
+      variables: { input: { clientMutationId: string; items: TUpdatedItems } };
+    }): void;
+  },
+  updateCartProcessing: boolean,
+  setProductCount: {
+    (value: SetStateAction<number | string>): void;
+    (arg0: number): void;
+  }
+) => {
+  if (process.browser) {
+    event.stopPropagation();
+    // Return if the previous update cart mutation request is still processing
+    if (updateCartProcessing) {
+      return;
+    }
+    // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
+    const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
+
+    // Set the new quantity in state.
+    setProductCount(newQty);
+    if (products.length) {
+      const updatedItems = getUpdatedItems(products, newQty, cartKey);
+
+      updateCart({
+        variables: {
+          input: {
+            clientMutationId: uuidv4(),
+            items: updatedItems,
+          },
+        },
+      });
+    }
+  }
+};

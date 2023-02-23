@@ -22,7 +22,7 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
  */
 const CartContents = () => {
   const { cart, setCart } = useContext(CartContext);
-  const [, setProductCount] = useState(1);
+  const [, setProductCount] = useState<string | number>(1);
 
   // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
@@ -102,7 +102,7 @@ const CartContents = () => {
 
                       setTimeout(() => {
                         refetch();
-                      }, 2000);
+                      }, 3000);
                     }}
                   />
                 </span>
