@@ -114,18 +114,6 @@ export const filteredVariantPrice = (price, side) => {
 };
 
 /**
- * Convert price from string to floating value and convert it to use two decimals
- * @param {String} string
- */
-export const getFloatVal = (string) => {
-  const stringWithoutKr = string.substring(2);
-  const floatValue = parseFloat(stringWithoutKr);
-  return null !== floatValue
-    ? parseFloat(parseFloat(floatValue).toFixed(2))
-    : '';
-};
-
-/**
  * Returns cart data in the required format.
  * @param {String} data Cart data
  */
