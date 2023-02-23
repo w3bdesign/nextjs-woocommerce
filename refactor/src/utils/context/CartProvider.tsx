@@ -8,10 +8,6 @@ import React, {
   ReactPortal,
 } from 'react';
 
-interface ICartContext {
-  cart: RootObject | null | undefined;
-  setCart: React.Dispatch<React.SetStateAction<RootObject | null | undefined>>;
-}
 interface ICartProviderProps {
   children:
     | string
@@ -44,6 +40,11 @@ export interface RootObject {
   products: Product[];
   totalProductsCount: number;
   totalProductsPrice: number;
+}
+
+interface ICartContext {
+  cart: RootObject | null | undefined;
+  setCart: React.Dispatch<React.SetStateAction<RootObject | null | undefined>>;
 }
 
 export type TRootObject = RootObject | string | null | undefined;
