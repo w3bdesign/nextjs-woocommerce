@@ -1,14 +1,11 @@
 // Imports
-import { ReactNode } from 'react';
+import { ReactNode, useContext, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 
 // Components
 import Header from '@/components/Header/Header.component';
 import PageTitle from './PageTitle.component';
 import Footer from '@/components/Footer/Footer.component';
-
-// Imports
-import { useContext, useEffect } from 'react';
 
 // State
 import { CartContext } from '@/utils/context/CartProvider';
