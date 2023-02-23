@@ -19,22 +19,7 @@ const Cart = ({ stickyNav }: ICartProps) => {
     if (cart) {
       setProductCount(cart.totalProductsCount);
     }
-  }, []);
-
-  useEffect(() => {
-    if (cart) {
-      setProductCount(cart.totalProductsCount);
-    }
   }, [cart]);
-
-  /*useEffect(() => {
-    const interval = setInterval(() => {
-      if (cart) {
-        setProductCount(cart.totalProductsCount);
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [cart]);*/
 
   return (
     <>
