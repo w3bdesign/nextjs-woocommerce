@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import { CartContext } from '@/utils/context/CartProvider';
@@ -13,9 +13,17 @@ interface ICartProps {
  */
 const Cart = ({ stickyNav }: ICartProps) => {
   const { cart } = useContext(CartContext);
+  const [productCount, setProductCount] = useState<number | null>();
 
-  const productsCount =
-    cart && Object.keys(cart).length ? cart.totalProductsCount : '';
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const productsCount = cart && cart.totalProductsCount;
+      if (productsCount) {
+        setProductCount(productsCount);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [cart]);
 
   return (
     <>
@@ -42,12 +50,12 @@ const Cart = ({ stickyNav }: ICartProps) => {
         </span>
       </Link>
 
-      {productsCount && (
+      {productCount && (
         <span
           className={`w-6 h-6 pb-2 -mt-5 text-center rounded-full         
           ${stickyNav ? 'text-black bg-white' : 'text-white bg-black'}`}
         >
-          {productsCount}
+          {productCount}
         </span>
       )}
     </>
