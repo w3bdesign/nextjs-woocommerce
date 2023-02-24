@@ -22,7 +22,6 @@ const App = ({ Component, pageProps }) => (
     <AppProvider>
       <Component {...pageProps} />
       <Footer />
-
       <Stickynav />
     </AppProvider>
   </ApolloProvider>
