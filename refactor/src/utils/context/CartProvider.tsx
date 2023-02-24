@@ -45,15 +45,17 @@ export interface RootObject {
 
 interface ICartContext {
   cart: RootObject | null | undefined;
-  setCart: React.Dispatch<React.SetStateAction<RootObject | null | undefined>>;
+  setCart: React.Dispatch<React.SetStateAction<TRootObjectNull>>;
 }
 
 export interface ICart {
   cart: RootObject | null | undefined;
-  setCart: React.Dispatch<React.SetStateAction<RootObject | null | undefined>>;
+  setCart: React.Dispatch<React.SetStateAction<TRootObjectNull>>;
 }
 
 export type TRootObject = RootObject | string | null | undefined;
+
+export type TRootObjectNull = RootObject | null | undefined;
 
 const CartState = {
   cart: null,
