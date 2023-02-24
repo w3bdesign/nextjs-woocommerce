@@ -1,6 +1,7 @@
 import React, {
   useState,
   useEffect,
+  useMemo,
   createContext,
   ReactElement,
   JSXElementConstructor,
@@ -43,6 +44,15 @@ export interface RootObject {
 }
 
 interface ICartContext {
+  cartData: {
+    cart: RootObject | null | undefined;
+    setCart: React.Dispatch<
+      React.SetStateAction<RootObject | null | undefined>
+    >;
+  };
+}
+
+export interface ICart {
   cart: RootObject | null | undefined;
   setCart: React.Dispatch<React.SetStateAction<RootObject | null | undefined>>;
 }
@@ -50,8 +60,7 @@ interface ICartContext {
 export type TRootObject = RootObject | string | null | undefined;
 
 const CartState = {
-  cart: null,
-  setCart: () => {},
+  cartData: { cart: null, setCart: () => {} },
 };
 
 export const CartContext = createContext<ICartContext>(CartState);
@@ -62,6 +71,14 @@ export const CartContext = createContext<ICartContext>(CartState);
  */
 export const CartProvider = ({ children }: ICartProviderProps) => {
   const [cart, setCart] = useState<RootObject | null>();
+
+  const cartData = useMemo(
+    () => ({
+      cart,
+      setCart,
+    }),
+    [cart]
+  );
 
   useEffect(() => {
     // Check if we are client-side before we access the localStorage
@@ -77,8 +94,6 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
   }, []);
 
   return (
-    <CartContext.Provider value={{ cart, setCart }}>
-      {children}
-    </CartContext.Provider>
+    <CartContext.Provider value={{ cartData }}>{children}</CartContext.Provider>
   );
 };

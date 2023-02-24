@@ -16,10 +16,11 @@ import { CartContext } from '@/utils/context/CartProvider';
 import {
   getFormattedCart,
   createCheckoutData,
+  ICheckoutDataProps,
 } from '@/utils/functions/tfunctions';
 
 const CheckoutForm = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cartData } = useContext(CartContext);
   const [orderData, setOrderData] = useState<any>(null);
   const [requestError, setRequestError] = useState<any>(null);
   const [orderCompleted, setorderCompleted] = useState(false);
@@ -38,7 +39,7 @@ const CheckoutForm = () => {
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
       // Update cart data in React Context.
-      setCart(updatedCart);
+      cartData.setCart(updatedCart);
     },
   });
 
@@ -74,7 +75,7 @@ const CheckoutForm = () => {
     refetch();
   }, []);
 
-  const onSubmit = (submitData: any) => {
+  const onSubmit = (submitData: ICheckoutDataProps) => {
     const checkOutData = createCheckoutData(submitData);
     setOrderData(checkOutData);
     setRequestError(null);
@@ -82,7 +83,7 @@ const CheckoutForm = () => {
 
   return (
     <>
-      {cart && !orderCompleted ? (
+      {cartData.cart && !orderCompleted ? (
         <div className="container mx-auto">
           {/*	Order*/}
           <CartContents />

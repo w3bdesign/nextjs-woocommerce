@@ -27,7 +27,8 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
  */
 const CartContents = () => {
   const router = useRouter();
-  const { cart, setCart } = useContext(CartContext);
+
+  const { cartData } = useContext(CartContext);
 
   const isCheckoutPage = router.pathname === '/kasse';
 
@@ -45,7 +46,7 @@ const CartContents = () => {
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
       // Update cart data in React Context.
-      setCart(updatedCart);
+      cartData.setCart(updatedCart);
     },
   });
 
@@ -62,8 +63,9 @@ const CartContents = () => {
   return (
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
-        {cart ? (
-          cart.products.map((item) => (
+        Value: {JSON.stringify(cartData.cart)}
+        {cartData.cart ? (
+          cartData.cart.products.map((item: any) => (
             <div
               className="container mx-auto mt-4 flex flex-wrap flex-row justify-around items-center content-center m-w-[1380px] border border-gray-300 rounded-lg shadow
                "
@@ -92,7 +94,9 @@ const CartContents = () => {
                   Quantity: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
-                  <input
+
+
+                <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     type="number"
                     min="1"
@@ -100,8 +104,8 @@ const CartContents = () => {
                     onChange={(event) => {
                       handleQuantityChange(
                         event,
-                        item.cartKey,
-                        cart.products,
+                        item.cartKey,                       
+                        cartData,
                         updateCart,
                         updateCartProcessing
                       );
@@ -111,6 +115,12 @@ const CartContents = () => {
                       }, 3000);
                     }}
                   />
+
+
+
+                
+                 
+                  
                 </span>
               </div>
 
@@ -129,7 +139,6 @@ const CartContents = () => {
             Ingen produkter i handlekurven
           </h1>
         )}
-
         {!isCheckoutPage && (
           <div className="mt-4 mx-auto">
             <Link href="/kasse" passHref>

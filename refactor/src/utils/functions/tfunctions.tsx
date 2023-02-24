@@ -2,7 +2,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { RootObject, Product } from '@/utils/context/CartProvider';
+import { RootObject, Product, ICart } from '@/utils/context/CartProvider';
 
 import { ChangeEvent } from 'react';
 
@@ -75,7 +75,7 @@ interface IFormattedCartProps {
   cart: { contents: { nodes: IProductRootObject[] }; total: number };
 }
 
-interface ICheckoutDataProps {
+export interface ICheckoutDataProps {
   firstName: string;
   lastName: string;
   address1: string;
@@ -88,11 +88,6 @@ interface ICheckoutDataProps {
   phone: number;
   company: string;
   paymentMethod: string;
-}
-
-interface IFilteredVariantPriceProps {
-  price: string;
-  side: string;
 }
 
 /**
@@ -162,10 +157,7 @@ export const getCustomNumberValidation = ({
  * @param {String} side Which side of the string to return (which side of the "-" symbol)
  * @param {String} price The inputted price that we need to convert
  */
-export const filteredVariantPrice = ({
-  price,
-  side,
-}: IFilteredVariantPriceProps) => {
+export const filteredVariantPrice = (price: string, side: string) => {
   if ('right' === side) {
     return price.substring(price.length, price.indexOf('-')).replace('-', '');
   }
@@ -327,21 +319,26 @@ export const getUpdatedItems = (
 export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
-  products: Product[],
+  cartProducts: ICart,
   updateCart: any, // Lazy solution, but saves us from a lot of warnings
   updateCartProcessing: boolean
 ) => {
   if (process.browser) {
     event.stopPropagation();
     // Return if the previous update cart mutation request is still processing
-    if (updateCartProcessing) {
+    if (updateCartProcessing || !cartProducts.cart) {
       return;
     }
+
     // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
     const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
 
-    if (products.length) {
-      const updatedItems = getUpdatedItems(products, newQty, cartKey);
+    if (cartProducts.cart.products.length) {
+      const updatedItems = getUpdatedItems(
+        cartProducts.cart.products,
+        newQty,
+        cartKey
+      );
 
       updateCart({
         variables: {
