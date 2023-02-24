@@ -18,9 +18,9 @@ const Billing = ({ onSubmit }: any) => {
     <section className="text-gray-700 container p-4 py-2 mx-auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mx-auto lg:w-1/2 flex flex-wrap">
-          {INPUT_FIELDS.map(({ label, name, customValidation }, key) => (
+          {INPUT_FIELDS.map(({ id, label, name, customValidation }) => (
             <InputField
-              key={key}
+              key={id}
               label={label}
               name={name}
               customValidation={customValidation}
