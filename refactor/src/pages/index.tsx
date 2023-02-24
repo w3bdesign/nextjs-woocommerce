@@ -4,7 +4,7 @@ import DisplayProducts from '@/components/Product/DisplayProducts.component';
 import Layout from '@/components/Layout/Layout.component';
 
 // Utilities
-import client from '@/utils/apollo/ApolloClient.js';
+import client from '@/utils/apollo/ApolloClient';
 
 // Types
 import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';

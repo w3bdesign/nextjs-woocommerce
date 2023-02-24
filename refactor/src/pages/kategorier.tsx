@@ -3,7 +3,7 @@ import { NextPage, InferGetStaticPropsType, GetStaticProps } from 'next';
 import Categories from '@/components/Category/Categories.component';
 import Layout from '@/components/Layout/Layout.component';
 
-import client from '@/utils/apollo/ApolloClient.js';
+import client from '@/utils/apollo/ApolloClient';
 
 import { FETCH_ALL_CATEGORIES_QUERY } from '@/utils/gql/GQL_QUERIES';
 

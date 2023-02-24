@@ -6,7 +6,7 @@ import Layout from '@/components/Layout/Layout.component';
 import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 
 // Utilities
-import client from '@/utils/apollo/ApolloClient.js';
+import client from '@/utils/apollo/ApolloClient';
 
 // Types
 import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
