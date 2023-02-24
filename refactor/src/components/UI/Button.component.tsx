@@ -18,16 +18,14 @@ const Button = ({
   handleButtonClick,
   buttonDisabled,
   children,
-}: IButtonProps) => {
-  return (
-    <button
-      onClick={handleButtonClick}
-      disabled={buttonDisabled}
-      className="px-4 py-2 font-bold bg-blue-500 border border-gray-400 border-solid rounded hover:bg-blue-600 text-white ease-in-out transition-all duration-300 disabled:opacity-50"
-    >
-      {children}
-    </button>
-  );
-};
+}: IButtonProps) => (
+  <button
+    onClick={handleButtonClick}
+    disabled={buttonDisabled}
+    className="px-4 py-2 font-bold bg-blue-500 border border-gray-400 border-solid rounded hover:bg-blue-600 text-white ease-in-out transition-all duration-300 disabled:opacity-50"
+  >
+    {children}
+  </button>
+);
 
 export default Button;
