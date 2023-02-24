@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Cart from '@/components/Cart/Cart.component';
+import Cart from '@/components/Header/Cart.component';
 import Search from '@/components/AlgoliaSearch/AlgoliaSearchBox.component';
 import SVGMobileSearchIcon from '@/components/SVG/SVGMobileSearchIcon.component';
 
@@ -39,10 +39,17 @@ const Stickynav = () => (
         </ul>
       </div>
       <div className="flex items-center order-2 md:order-3" id="nav-content">
+
+
         <Search />
         <SVGMobileSearchIcon />
         <Cart stickyNav />
+     
+     
       </div>
+
+
+
     </div>
   </nav>
 );

@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import Header from '@/components/Header/Header.component';
 import PageTitle from './PageTitle.component';
 import Footer from '@/components/Footer/Footer.component';
+import Stickynav from '@/components/Footer/Stickynav.component';
 
 // State
 import { CartContext } from '@/utils/context/CartProvider';
@@ -45,8 +46,6 @@ const Layout = ({ children, title }: ILayoutProps) => {
 
       // Update cart data in React Context.
       setCart(updatedCart);
-
-      
     },
   });
 
@@ -60,6 +59,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
       <PageTitle title={title} />
       {children}
       <Footer />
+      <Stickynav />
     </>
   );
 };
