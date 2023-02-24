@@ -2,7 +2,7 @@
   "extends": ["next/core-web-vitals", "eslint:recommended"],
   "rules": {
     "@next/next/no-img-element": "off",
-    "complexity": ["warn", { "max": 20 }]
+    "no-useless-escape": "off"
   },
   "globals": { "JSX": true },
   "env": {

@@ -1,7 +1,6 @@
 import React, {
   useState,
   useEffect,
-  useMemo,
   createContext,
   ReactElement,
   JSXElementConstructor,
