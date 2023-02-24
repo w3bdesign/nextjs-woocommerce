@@ -19,21 +19,19 @@ const Produkt = ({
   const error = false;
 
   return (
-    <>
-      <Layout title={`${categoryName ? categoryName : ''}`}>
-        {products ? (
-          <DisplayProducts products={products} />
-        ) : (
-          <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
-        )}
-        {/* Display error message if error occured */}
-        {error && (
-          <div className="mt-8 text-2xl text-center">
-            Feil under lasting av produkt ...
-          </div>
-        )}
-      </Layout>
-    </>
+    <Layout title={`${categoryName ? categoryName : ''}`}>
+      {products ? (
+        <DisplayProducts products={products} />
+      ) : (
+        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
+      )}
+      {/* Display error message if error occured */}
+      {error && (
+        <div className="mt-8 text-2xl text-center">
+          Feil under lasting av produkt ...
+        </div>
+      )}
+    </Layout>
   );
 };
 
