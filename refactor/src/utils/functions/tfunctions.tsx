@@ -58,11 +58,6 @@ type TUpdatedItems = { key: string; quantity: number }[];
 
 /* Interface for props */
 
-interface IPaddedPriceProps {
-  price: string;
-  symbol: string;
-}
-
 interface ITrimmedStringToLengthProps {
   string: string;
   length: number;
@@ -105,7 +100,8 @@ interface IFilteredVariantPriceProps {
  * @param {string} price The price string that we input
  * @param {string} symbol Currency symbol to add empty character/padding after
  */
-export const paddedPrice = ({ price, symbol }: IPaddedPriceProps) =>
+
+export const paddedPrice = (price: string, symbol: string) =>
   price.split(symbol).join(`${symbol} `);
 
 /**

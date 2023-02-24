@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 // Utils
-import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
+import { filteredVariantPrice, paddedPrice } from '@/utils/functions/tfunctions';
 
 // Components
 import AddToCart from './AddToCart.component';

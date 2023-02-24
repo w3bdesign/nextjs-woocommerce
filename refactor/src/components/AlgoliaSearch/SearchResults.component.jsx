@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { trimmedStringToLength } from '@/utils/functions/functions';
+import { trimmedStringToLength } from '@/utils/functions/tfunctions';
 
 /**
  * Displays search results from Algolia
