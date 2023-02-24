@@ -6,6 +6,11 @@ import FadeLeftToRightItem from '@/components/Animations/FadeLeftToRightItem.com
 
 import LINKS from '@/utils/constants/LINKS';
 
+const hamburgerLine =
+  'h-1 w-10 my-1 rounded-full bg-white transition ease transform duration-300 not-sr-only';
+
+const opacityFull = 'opacity-100 group-hover:opacity-100';
+
 /**
  * Hamburger component used in mobile menu. Animates to a X when clicked
  * @function Hamburger
@@ -17,11 +22,6 @@ import LINKS from '@/utils/constants/LINKS';
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
   const [hidden, setHidden] = useState('invisible');
-
-  const hamburgerLine =
-    'h-1 w-10 my-1 rounded-full bg-white transition ease transform duration-300 not-sr-only';
-
-  const opacityFull = 'opacity-100 group-hover:opacity-100';
 
   useEffect(() => {
     if (isExpanded) {

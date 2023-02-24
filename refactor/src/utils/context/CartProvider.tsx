@@ -68,7 +68,7 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
     if (!process.browser) {
       return;
     }
-    let localCartData = localStorage.getItem('woocommerce-cart');
+    const localCartData = localStorage.getItem('woocommerce-cart');
 
     if (localCartData) {
       const cartData: RootObject = JSON.parse(localCartData);
