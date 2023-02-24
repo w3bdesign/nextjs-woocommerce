@@ -66,8 +66,7 @@ interface ITrimmedStringToLengthProps {
 interface IGetCustomNumberValidationProps {
   minLength: string;
   maxLength: string;
-  pattern: string;
-  //value: any;
+  pattern: string; 
   value: string;
   patternValue: RegExp;
 }
@@ -126,7 +125,6 @@ export const trimmedStringToLength = ({
  * @param {number} value The number value used as limit for min/max attribute
  * @param {RegExp} patternValue Regular expression pattern for validation
  */
-
 export const getCustomNumberValidation = ({
   minLength,
   maxLength,
