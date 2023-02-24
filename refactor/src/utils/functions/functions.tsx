@@ -138,8 +138,7 @@ export const getCustomNumberValidation = ({
     pattern: { value: patternValue, message: pattern },
   };
 
-  // TODO Fix this error
-
+  // TODO Fix this Typescript error
   return Object.keys(validationObj).reduce((acc, key) => {
     if (validationObj[key].value) {
       acc[key] = validationObj[key];
