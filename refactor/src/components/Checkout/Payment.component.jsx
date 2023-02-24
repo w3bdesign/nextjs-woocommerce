@@ -1,4 +1,4 @@
-const Payment = ({ input, handleOnChange }) => (
+const Payment = ({ handleOnChange }) => (
   <div className="mt-3">
     <label className="form-check-label">
       <input
