@@ -58,11 +58,6 @@ type TUpdatedItems = { key: string; quantity: number }[];
 
 /* Interface for props */
 
-interface ITrimmedStringToLengthProps {
-  string: string;
-  length: number;
-}
-
 interface IGetCustomNumberValidationProps {
   minLength: string;
   maxLength: string;
@@ -101,18 +96,15 @@ export const paddedPrice = (price: string, symbol: string) =>
 
 /**
  * Shorten inputted string (usually product description) to a maximum of length
- * @param {string} string The string that we input
+ * @param {string} input The string that we input
  * @param {number} length The length that we want to shorten the text to
  */
-export const trimmedStringToLength = ({
-  string,
-  length,
-}: ITrimmedStringToLengthProps) => {
-  if (string.length > length) {
-    const subStr = string.substring(0, length);
+export const trimmedStringToLength = (input: string, length: number) => {
+  if (input.length > length) {
+    const subStr = input.substring(0, length);
     return `${subStr}...`;
   }
-  return string;
+  return input;
 };
 
 /**
