@@ -19,11 +19,10 @@ export const INPUT_FIELDS = [
     id: 5,
     label: 'Epost',
     name: 'email',
-    customValidation: getCustomNumberValidation(
-      { pattern: 'Du må oppgi en gyldig epost' },
-      undefined,
-      /^[a-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[a-z0-9.-]+$/gim
-    ),
+    customValidation: getCustomNumberValidation({
+      pattern: 'Du må oppgi en gyldig epost',
+      patternValue: /^[a-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[a-z0-9.-]+$/gim,
+    }),
   },
   {
     id: 6,

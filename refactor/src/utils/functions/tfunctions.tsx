@@ -67,7 +67,8 @@ interface IGetCustomNumberValidationProps {
   minLength: string;
   maxLength: string;
   pattern: string;
-  value: any;
+  //value: any;
+  value: string;
   patternValue: RegExp;
 }
 
@@ -138,8 +139,6 @@ export const getCustomNumberValidation = ({
     maxLength: { value, message: maxLength },
     pattern: { value: patternValue, message: pattern },
   };
-
- 
 
   // TODO Fix this error
 
