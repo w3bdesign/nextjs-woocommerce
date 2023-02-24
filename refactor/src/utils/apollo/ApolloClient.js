@@ -62,8 +62,8 @@ export const afterware = new ApolloLink((operation, forward) =>
         localStorage.removeItem('woo-session');
         // Update session new data if changed.
       } else if (!localStorage.getItem('woo-session')) {
-        let currentTime = new Date().getTime();
-        let oneDayFromNow = new Date(currentTime + 24 * 60 * 60 * 1000);
+        const currentTime = new Date().getTime();
+        const oneDayFromNow = new Date(currentTime + 24 * 60 * 60 * 1000);
 
         localStorage.setItem('woo-session', session);
         localStorage.setItem('woo-session-expiry', oneDayFromNow);
