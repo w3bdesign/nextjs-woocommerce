@@ -63,7 +63,6 @@ const CartContents = () => {
   return (
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
-        Value: {JSON.stringify(cartData.cart)}
         {cartData.cart ? (
           cartData.cart.products.map((item: any) => (
             <div
@@ -94,9 +93,7 @@ const CartContents = () => {
                   Quantity: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
-
-
-                <input
+                  <input
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     type="number"
                     min="1"
@@ -104,7 +101,7 @@ const CartContents = () => {
                     onChange={(event) => {
                       handleQuantityChange(
                         event,
-                        item.cartKey,                       
+                        item.cartKey,
                         cartData,
                         updateCart,
                         updateCartProcessing
@@ -115,12 +112,6 @@ const CartContents = () => {
                       }, 3000);
                     }}
                   />
-
-
-
-                
-                 
-                  
                 </span>
               </div>
 

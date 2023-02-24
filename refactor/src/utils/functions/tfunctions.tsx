@@ -139,7 +139,7 @@ export const getCustomNumberValidation = ({
     pattern: { value: patternValue, message: pattern },
   };
 
-  console.log('validationObj: ', Object.keys(validationObj));
+ 
 
   // TODO Fix this error
 
