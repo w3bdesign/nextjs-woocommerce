@@ -1,8 +1,11 @@
 
+// Imports
 import Link from 'next/link';
 
+// Components
 import Cart from './Cart.component';
 
+// Utils
 import useIsMobile from '@/utils/hooks/useIsMobile';
 
 // TODO Algolia search
