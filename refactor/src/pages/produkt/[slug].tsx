@@ -30,20 +30,18 @@ const Produkt: NextPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const hasError = networkStatus === '8';
   return (
-    <>
-      <Layout title={`${product.name ? product.name : ''}`}>
-        {product ? (
-          <SingleProduct product={product} />
-        ) : (
-          <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
-        )}
-        {hasError && (
-          <div className="mt-8 text-2xl text-center">
-            Feil under lasting av produkt ...
-          </div>
-        )}
-      </Layout>
-    </>
+    <Layout title={`${product.name ? product.name : ''}`}>
+      {product ? (
+        <SingleProduct product={product} />
+      ) : (
+        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
+      )}
+      {hasError && (
+        <div className="mt-8 text-2xl text-center">
+          Feil under lasting av produkt ...
+        </div>
+      )}
+    </Layout>
   );
 };
 
