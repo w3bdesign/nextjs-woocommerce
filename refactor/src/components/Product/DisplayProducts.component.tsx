@@ -2,7 +2,10 @@
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
-import { filteredVariantPrice, paddedPrice } from '@/utils/functions/tfunctions';
+import {
+  filteredVariantPrice,
+  paddedPrice,
+} from '@/utils/functions/tfunctions';
 
 interface Image {
   __typename: string;

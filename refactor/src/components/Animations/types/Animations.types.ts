@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export interface IAnimateProps {
   children: ReactNode;
@@ -8,7 +8,7 @@ export interface IAnimateProps {
 export interface IAnimateBounceProps {
   children: ReactNode;
   cssClass?: string;
-  viewAmount?: "some" | "all" | number;
+  viewAmount?: 'some' | 'all' | number;
 }
 
 export interface IAnimateWithDelayProps {

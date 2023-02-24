@@ -66,7 +66,7 @@ interface ITrimmedStringToLengthProps {
 interface IGetCustomNumberValidationProps {
   minLength: string;
   maxLength: string;
-  pattern: string; 
+  pattern: string;
   value: string;
   patternValue: RegExp;
 }
@@ -331,11 +331,7 @@ export const handleQuantityChange = (
     const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
 
     if (cart.products.length) {
-      const updatedItems = getUpdatedItems(
-        cart.products,
-        newQty,
-        cartKey
-      );
+      const updatedItems = getUpdatedItems(cart.products, newQty, cartKey);
 
       updateCart({
         variables: {
