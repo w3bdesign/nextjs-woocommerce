@@ -28,7 +28,7 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 const CartContents = () => {
   const router = useRouter();
 
-  const { cartData } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
 
   const isCheckoutPage = router.pathname === '/kasse';
 
@@ -46,7 +46,7 @@ const CartContents = () => {
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
       // Update cart data in React Context.
-      cartData.setCart(updatedCart);
+      setCart(updatedCart);
     },
   });
 
@@ -63,8 +63,8 @@ const CartContents = () => {
   return (
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
-        {cartData.cart ? (
-          cartData.cart.products.map((item) => (
+        {cart ? (
+          cart.products.map((item) => (
             <div
               className="container mx-auto mt-4 flex flex-wrap flex-row justify-around items-center content-center m-w-[1380px] border border-gray-300 rounded-lg shadow
                "
@@ -102,7 +102,7 @@ const CartContents = () => {
                       handleQuantityChange(
                         event,
                         item.cartKey,
-                        cartData,
+                        cart,
                         updateCart,
                         updateCartProcessing
                       );

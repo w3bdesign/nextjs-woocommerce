@@ -316,23 +316,23 @@ export const getUpdatedItems = (
 export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
-  cartProducts: ICart,
+  cart: RootObject,
   updateCart: any, // Lazy solution, but saves us from a lot of warnings
   updateCartProcessing: boolean
 ) => {
   if (process.browser) {
     event.stopPropagation();
     // Return if the previous update cart mutation request is still processing
-    if (updateCartProcessing || !cartProducts.cart) {
+    if (updateCartProcessing || !cart) {
       return;
     }
 
     // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
     const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
 
-    if (cartProducts.cart.products.length) {
+    if (cart.products.length) {
       const updatedItems = getUpdatedItems(
-        cartProducts.cart.products,
+        cart.products,
         newQty,
         cartKey
       );

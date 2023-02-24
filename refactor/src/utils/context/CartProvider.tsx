@@ -44,12 +44,8 @@ export interface RootObject {
 }
 
 interface ICartContext {
-  cartData: {
-    cart: RootObject | null | undefined;
-    setCart: React.Dispatch<
-      React.SetStateAction<RootObject | null | undefined>
-    >;
-  };
+  cart: RootObject | null | undefined;
+  setCart: React.Dispatch<React.SetStateAction<RootObject | null | undefined>>;
 }
 
 export interface ICart {
@@ -60,7 +56,8 @@ export interface ICart {
 export type TRootObject = RootObject | string | null | undefined;
 
 const CartState = {
-  cartData: { cart: null, setCart: () => {} },
+  cart: null,
+  setCart: () => {},
 };
 
 export const CartContext = createContext<ICartContext>(CartState);
@@ -71,14 +68,6 @@ export const CartContext = createContext<ICartContext>(CartState);
  */
 export const CartProvider = ({ children }: ICartProviderProps) => {
   const [cart, setCart] = useState<RootObject | null>();
-
-  const cartData = useMemo(
-    () => ({
-      cart,
-      setCart,
-    }),
-    [cart]
-  );
 
   useEffect(() => {
     // Check if we are client-side before we access the localStorage
@@ -94,6 +83,8 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
   }, []);
 
   return (
-    <CartContext.Provider value={{ cartData }}>{children}</CartContext.Provider>
+    <CartContext.Provider value={{ cart, setCart }}>
+      {children}
+    </CartContext.Provider>
   );
 };

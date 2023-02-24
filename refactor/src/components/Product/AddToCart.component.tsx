@@ -52,7 +52,7 @@ interface IAddToCartProps {
  */
 
 const AddToCart = (product: IAddToCartProps) => {
-  const { cartData } = useContext(CartContext);
+  const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productId = product.product.databaseId;
@@ -76,7 +76,7 @@ const AddToCart = (product: IAddToCartProps) => {
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
       // Update cart data in React Context.
-      cartData.setCart(updatedCart);
+      setCart(updatedCart);
     },
   });
 
