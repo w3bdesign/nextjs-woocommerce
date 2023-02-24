@@ -1,7 +1,10 @@
+// Imports
 import { useForm } from 'react-hook-form';
 
+// Components
 import { InputField } from '@/components/Input/InputField.component';
 
+// Constants
 import { INPUT_FIELDS } from '@/utils/constants/INPUT_FIELDS';
 
 const Billing = ({ onSubmit }: any) => {
