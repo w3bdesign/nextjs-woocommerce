@@ -21,13 +21,11 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <ApolloProvider client={client}>
-        <CartProvider>
-          <Component {...pageProps} />
-        </CartProvider>
-      </ApolloProvider>
-    </>
+    <ApolloProvider client={client}>
+      <CartProvider>
+        <Component {...pageProps} />
+      </CartProvider>
+    </ApolloProvider>
   );
 }
 

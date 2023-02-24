@@ -22,12 +22,10 @@ import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 const Index: NextPage = ({
   products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
-  <>
-    <Layout title="Hjem">
-      <Hero />
-      {products && <DisplayProducts products={products} />}
-    </Layout>
-  </>
+  <Layout title="Hjem">
+    <Hero />
+    {products && <DisplayProducts products={products} />}
+  </Layout>
 );
 
 export default Index;
