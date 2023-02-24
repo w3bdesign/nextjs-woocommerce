@@ -17,7 +17,7 @@ export const InputField = ({
   register,
   required = true,
   type = 'text',
-}) => (
+}: any) => (
   <div className="w-1/2 p-2">
     <label htmlFor={name} className="pb-4">
       {label}

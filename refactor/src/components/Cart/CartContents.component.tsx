@@ -2,9 +2,13 @@
 import { useContext } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // State
 import { CartContext } from '@/utils/context/CartProvider';
+
+// Components
+import Button from '@/components/UI/Button.component';
 
 // Utils
 import {
@@ -15,7 +19,6 @@ import {
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
-import Button from '../UI/Button.component';
 
 /**
  * Renders cart contents.
@@ -23,7 +26,10 @@ import Button from '../UI/Button.component';
  * @returns {JSX.Element} - Rendered component
  */
 const CartContents = () => {
+  const router = useRouter();
   const { cart, setCart } = useContext(CartContext);
+
+  const isCheckoutPage = router.pathname === '/kasse';
 
   // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
@@ -124,13 +130,13 @@ const CartContents = () => {
           </h1>
         )}
 
-        <div className="mt-4 mx-auto">
-          <Link href="/kasse" passHref>
-            <Button>GÅ TIL KASSE</Button>
-          </Link>
-        </div>
-
-        
+        {!isCheckoutPage && (
+          <div className="mt-4 mx-auto">
+            <Link href="/kasse" passHref>
+              <Button>GÅ TIL KASSE</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

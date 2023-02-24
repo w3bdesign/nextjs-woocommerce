@@ -4,7 +4,7 @@ import { InputField } from '@/components/Input/InputField.component';
 
 import { INPUT_FIELDS } from '@/utils/constants/INPUT_FIELDS';
 
-const Billing = ({ onSubmit }) => {
+const Billing = ({ onSubmit }: any) => {
   const {
     register,
     handleSubmit,
@@ -34,7 +34,7 @@ const Billing = ({ onSubmit }) => {
 
 export default Billing;
 
-const OrderButton = ({ register }) => (
+const OrderButton = ({ register }: any) => (
   <div className="w-full p-2">
     <input
       name="paymentMethod"

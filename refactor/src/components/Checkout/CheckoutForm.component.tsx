@@ -1,33 +1,42 @@
+// Imports
 import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 
+// Components
 import Billing from './Billing.component';
-import OrderDetails from './OrderDetails.component';
-import MobileOrderDetails from './MobileOrderDetails.component';
+import CartContents from '../Cart/CartContents.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
+// GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
 import { CartContext } from '@/utils/context/CartProvider';
 
+// Utils
 import {
   getFormattedCart,
   createCheckoutData,
-} from '@/utils/functions/functions';
+} from '@/utils/functions/tfunctions';
 
 const CheckoutForm = () => {
   const { cart, setCart } = useContext(CartContext);
-  const [orderData, setOrderData] = useState(null);
-  const [requestError, setRequestError] = useState(null);
+  const [orderData, setOrderData] = useState<any>(null);
+  const [requestError, setRequestError] = useState<any>(null);
   const [orderCompleted, setorderCompleted] = useState(false);
 
-  // Get Cart Data.
+  // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
+
+      if (!updatedCart) {
+        return;
+      }
+
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+
       // Update cart data in React Context.
       setCart(updatedCart);
     },
@@ -65,7 +74,7 @@ const CheckoutForm = () => {
     refetch();
   }, []);
 
-  const onSubmit = (submitData) => {
+  const onSubmit = (submitData: any) => {
     const checkOutData = createCheckoutData(submitData);
     setOrderData(checkOutData);
     setRequestError(null);
@@ -76,22 +85,19 @@ const CheckoutForm = () => {
       {cart && !orderCompleted ? (
         <div className="container mx-auto">
           {/*	Order*/}
-          <OrderDetails cart={cart} />
-          <MobileOrderDetails cart={cart} />
+          <CartContents />
           {/*Payment Details*/}
           <Billing onSubmit={onSubmit} />
           {/*Error display*/}
           {requestError && (
             <div className="h-32 text-xl text-center text-red-600">
-              En feil har oppstått. Feilmeldingen er: <br />$
-              {requestError.toString()}
+              En feil har oppstått.
             </div>
           )}
           {/* Checkout Loading*/}
           {checkoutLoading && (
             <div className="text-xl text-center">
               Behandler ordre, vennligst vent ...
-              <br />
               <LoadingSpinner />
             </div>
           )}
