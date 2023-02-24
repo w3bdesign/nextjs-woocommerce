@@ -15,14 +15,14 @@ const searchClient = algoliasearch(
  * Displays Algolia search for larger resolutions that do not show the mobile menu
  */
 const AlgoliaSearchBox = () => {
-  const [search, setSearch] = useState(null);
-  const [hasFocus, sethasFocus] = useState(false);
+  const [search, setSearch] = useState<string | null>(null);
+  const [hasFocus, sethasFocus] = useState<boolean>(false);
 
   return (
     <div className="hidden mt-2 md:inline xl:inline">
       <div className="">
         <InstantSearch
-          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? "changeme"}
+          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
           searchClient={searchClient}
         >
           {/*We need to conditionally add a border because the element has position:fixed*/}
@@ -36,26 +36,25 @@ const AlgoliaSearchBox = () => {
             className={`px-4 py-2 text-base bg-white border outline-none rounded ${
               hasFocus ? 'border-black' : 'border-gray-400'
             }`}
-            /*onFocus={() => {
+            onChange={(event) => {
+              const target = event.target as HTMLInputElement;
               sethasFocus(true);
-            }}*/
-           /* onBlur={() => {
-              sethasFocus(false);
-            }}*/
+              setSearch(target.value);
+            }}
+            onKeyDown={(event) => {
+              const target = event.target as HTMLInputElement;
+              sethasFocus(true);
+              setSearch(target.value);
+            }}
             onReset={() => {
               setSearch(null);
             }}
-            /* onChange={(text) => {
-              setSearch(text.target.value);
-            }}*/
           />
-          {search && <Hits hitComponent={SearchResults} />}
-
-
-          <Hits hitComponent={SearchResults} />
-
-
-
+          {search && (
+            <div className="absolute">
+              <Hits hitComponent={SearchResults} />
+            </div>
+          )}
         </InstantSearch>
       </div>
     </div>
