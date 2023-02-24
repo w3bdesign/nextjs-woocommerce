@@ -21,11 +21,9 @@ import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
 const Produkter: NextPage = ({
   products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
-  <>
-    <Layout title="Produkter">
-      {products && <DisplayProducts products={products} />}
-    </Layout>
-  </>
+  <Layout title="Produkter">
+    {products && <DisplayProducts products={products} />}
+  </Layout>
 );
 
 export default Produkter;
