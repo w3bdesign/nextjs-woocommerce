@@ -1,5 +1,5 @@
 // Imports
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 
 // State
@@ -22,7 +22,6 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
  */
 const CartContents = () => {
   const { cart, setCart } = useContext(CartContext);
- 
 
   // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
@@ -97,7 +96,6 @@ const CartContents = () => {
                         cart.products,
                         updateCart,
                         updateCartProcessing
-                       
                       );
 
                       setTimeout(() => {
