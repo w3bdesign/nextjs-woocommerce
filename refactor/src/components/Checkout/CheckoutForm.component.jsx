@@ -16,7 +16,7 @@ import {
 } from '@/utils/functions/functions';
 
 const CheckoutForm = () => {
-  const {cart, setCart} = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
   const [orderData, setOrderData] = useState(null);
   const [requestError, setRequestError] = useState(null);
   const [orderCompleted, setorderCompleted] = useState(false);
@@ -41,6 +41,9 @@ const CheckoutForm = () => {
         input: orderData,
       },
       onCompleted: () => {
+        localStorage.removeItem('woo-session');
+        localStorage.removeItem('woo-session-expiry');
+        localStorage.removeItem('wooocommerce-cart');
         setorderCompleted(true);
         refetch();
       },
