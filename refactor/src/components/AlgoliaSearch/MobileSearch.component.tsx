@@ -5,8 +5,8 @@ import { useState } from 'react';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? 'changethis',
+  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY ?? 'changethis'
 );
 
 /**
@@ -14,11 +14,11 @@ const searchClient = algoliasearch(
  */
 const MobileSearch = () => {
   const [search, setSearch] = useState(null);
-  const [hasFocus, sethasFocus] = useState(false);
+  //const [hasFocus, sethasFocus] = useState(false);
   return (
     <div className="inline mt-4 md:hidden">
       <InstantSearch
-        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
+        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
         searchClient={searchClient}
       >
         <SearchBox
@@ -27,23 +27,15 @@ const MobileSearch = () => {
             resetTitle: 'Slett søketekst',
             placeholder: 'Søk etter produkter',
           }}
-          className={`px-4 py-2 text-base bg-white border outline-none rounded ${
-            hasFocus ? 'border-black' : 'border-gray-400'
-          }`}
-          onFocus={() => {
-            sethasFocus(true);
-          }}
-          onBlur={() => {
-            sethasFocus(false);
-          }}
+          className={`px-4 py-2 text-base bg-white border outline-none rounded `}
           onReset={() => {
             setSearch(null);
           }}
-          onChange={(text) => {
+          /*onChange={(text) => {
             setSearch(text.target.value);
-          }}
+          }}*/
         />
-        {search && <Hits className="absolute" hitComponent={SearchResults} />}
+        {search && <Hits hitComponent={SearchResults} />}
       </InstantSearch>
     </div>
   );

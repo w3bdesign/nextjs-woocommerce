@@ -5,8 +5,8 @@ import { useState } from 'react';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? 'changeme',
+  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY ?? 'changeme'
 );
 
 // https://www.algolia.com/doc/api-reference/widgets/instantsearch/react/
@@ -22,7 +22,7 @@ const AlgoliaSearchBox = () => {
     <div className="hidden mt-2 md:inline xl:inline">
       <div className="">
         <InstantSearch
-          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
+          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? "changeme"}
           searchClient={searchClient}
         >
           {/*We need to conditionally add a border because the element has position:fixed*/}
@@ -36,20 +36,26 @@ const AlgoliaSearchBox = () => {
             className={`px-4 py-2 text-base bg-white border outline-none rounded ${
               hasFocus ? 'border-black' : 'border-gray-400'
             }`}
-            onFocus={() => {
+            /*onFocus={() => {
               sethasFocus(true);
-            }}
-            onBlur={() => {
+            }}*/
+           /* onBlur={() => {
               sethasFocus(false);
-            }}
+            }}*/
             onReset={() => {
               setSearch(null);
             }}
-            onChange={(text) => {
+            /* onChange={(text) => {
               setSearch(text.target.value);
-            }}
+            }}*/
           />
-          {search && <Hits className="absolute" hitComponent={SearchResults} />}
+          {search && <Hits hitComponent={SearchResults} />}
+
+
+          <Hits hitComponent={SearchResults} />
+
+
+
         </InstantSearch>
       </div>
     </div>

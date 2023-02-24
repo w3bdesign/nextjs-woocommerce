@@ -24,7 +24,7 @@ const SearchResults = ({
     short_description,
     objectID,
   },
-}) => {
+}: any) => {
   // Replace empty spaces with dash (-)
   const trimmedProductName = product_name.replace(/ /g, '-');
 

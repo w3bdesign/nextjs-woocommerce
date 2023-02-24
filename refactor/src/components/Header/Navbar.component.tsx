@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 // Components
 import Cart from './Cart.component';
+import AlgoliaSearchBox from '../AlgoliaSearch/AlgoliaSearchBox.component';
 
 // Utils
 import useIsMobile from '@/utils/hooks/useIsMobile';
@@ -64,6 +65,7 @@ const Navbar = () => {
             className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
+            <AlgoliaSearchBox />
             {!isMobile && <Cart />}
           </div>
         </div>
