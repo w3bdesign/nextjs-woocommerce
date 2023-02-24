@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import {
   filteredVariantPrice,
   paddedPrice,
-} from '@/utils/functions/tfunctions';
+} from '@/utils/functions/functions';
 
 // Components
 import AddToCart from './AddToCart.component';

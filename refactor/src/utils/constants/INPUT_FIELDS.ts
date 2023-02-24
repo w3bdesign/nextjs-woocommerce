@@ -1,4 +1,4 @@
-import { getCustomNumberValidation } from '@/utils/functions/tfunctions';
+import { getCustomNumberValidation } from '@/utils/functions/functions';
 
 export const INPUT_FIELDS = [
   { id: 0, label: 'Fornavn', name: 'firstName' },

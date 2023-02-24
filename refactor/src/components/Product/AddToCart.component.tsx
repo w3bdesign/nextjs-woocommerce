@@ -10,7 +10,7 @@ import Button from '@/components/UI/Button.component';
 import { CartContext } from '@/utils/context/CartProvider';
 
 // Utils
-import { getFormattedCart } from '@/utils/functions/tfunctions';
+import { getFormattedCart } from '@/utils/functions/functions';
 
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';

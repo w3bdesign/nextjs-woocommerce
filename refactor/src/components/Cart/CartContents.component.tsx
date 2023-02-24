@@ -14,7 +14,7 @@ import Button from '@/components/UI/Button.component';
 import {
   getFormattedCart,
   handleQuantityChange,
-} from '@/utils/functions/tfunctions';
+} from '@/utils/functions/functions';
 
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';

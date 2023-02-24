@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   filteredVariantPrice,
   paddedPrice,
-} from '@/utils/functions/tfunctions';
+} from '@/utils/functions/functions';
 
 interface Image {
   __typename: string;

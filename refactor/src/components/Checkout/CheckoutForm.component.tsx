@@ -17,7 +17,7 @@ import {
   getFormattedCart,
   createCheckoutData,
   ICheckoutDataProps,
-} from '@/utils/functions/tfunctions';
+} from '@/utils/functions/functions';
 
 const CheckoutForm = () => {
   const { cart, setCart } = useContext(CartContext);
