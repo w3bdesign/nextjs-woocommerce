@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { RootObject, Product } from '@/utils/context/CartProvider';
 
-import { ChangeEvent, SetStateAction } from 'react';
+import { ChangeEvent } from 'react';
 
 /* Interface for products*/
 
