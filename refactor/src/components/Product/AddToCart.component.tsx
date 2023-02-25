@@ -48,7 +48,7 @@ interface IAddToCartProps {
 /**
  * Handles the Add to cart functionality.
  * Uses GraphQL for product data
- * @param {Object} product // Product data
+ * @param {IAddToCartProps} product // Product data
  */
 
 const AddToCart = (product: IAddToCartProps) => {

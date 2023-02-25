@@ -18,6 +18,8 @@ const Cart = ({ stickyNav }: ICartProps) => {
   useEffect(() => {
     if (cart) {
       setProductCount(cart.totalProductsCount);
+    } else {
+      setProductCount(null);
     }
   }, [cart]);
 

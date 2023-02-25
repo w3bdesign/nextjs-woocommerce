@@ -31,7 +31,7 @@ interface ILayoutProps {
  */
 
 const Layout = ({ children, title }: ILayoutProps) => {
-  const { setCart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext);
 
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
@@ -42,14 +42,13 @@ const Layout = ({ children, title }: ILayoutProps) => {
       if (!updatedCart) {
         localStorage.removeItem('woocommerce-cart');
         setCart(null);
+
         return;
       }
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
       // Update cart data in React Context.
       setCart(updatedCart);
-
-      refetch();
     },
   });
 
