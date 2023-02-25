@@ -42,7 +42,6 @@ const Layout = ({ children, title }: ILayoutProps) => {
       if (!updatedCart) {
         localStorage.removeItem('woocommerce-cart');
         setCart(null);
-
         return;
       }
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
