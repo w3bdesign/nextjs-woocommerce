@@ -39,17 +39,10 @@ const Stickynav = () => (
         </ul>
       </div>
       <div className="flex items-center order-2 md:order-3" id="nav-content">
-
-
         <Search />
         <SVGMobileSearchIcon />
         <Cart stickyNav />
-     
-     
       </div>
-
-
-
     </div>
   </nav>
 );
