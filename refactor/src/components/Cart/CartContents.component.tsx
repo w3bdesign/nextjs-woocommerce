@@ -42,6 +42,7 @@ const CartContents = () => {
       const updatedCart = getFormattedCart(data);
 
       if (!updatedCart) {
+        // Clear the localStorage if we have no remote cart
         localStorage.removeItem('woo-session');
         localStorage.removeItem('woo-session-expiry');
         localStorage.removeItem('woocommerce-cart');
@@ -110,6 +111,7 @@ const CartContents = () => {
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
                   <Button
                     color="red"
+                    buttonDisabled={updateCartProcessing}
                     handleButtonClick={() =>
                       handleRemoveProductClick(item.cartKey, cart.products)
                     }
