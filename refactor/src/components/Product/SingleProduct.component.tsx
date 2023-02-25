@@ -3,10 +3,7 @@
 import { useState, useEffect } from 'react';
 
 // Utils
-import {
-  filteredVariantPrice,
-  paddedPrice,
-} from '@/utils/functions/functions';
+import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 // Components
 import AddToCart from './AddToCart.component';
@@ -19,13 +16,13 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component
  */
 const SingleProduct = ({ product }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [, setselectedVariation] = useState<any>();
+  const [selectedVariation, setSelectedVariation] = useState<any>();
 
   useEffect(() => {
     setIsLoading(false);
     if (product.variations) {
       const firstVariant = product.variations.nodes[0].databaseId;
-      setselectedVariation(firstVariant);
+      setSelectedVariation(firstVariant);
     }
   }, [product.variations]);
 
@@ -118,7 +115,7 @@ const SingleProduct = ({ product }: any) => {
                     name="variant"
                     className="block w-80 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
                     onChange={(e) => {
-                      setselectedVariation(e.target.value);
+                      setSelectedVariation(e.target.value);
                     }}
                   >
                     {product.variations.nodes.map(
@@ -136,7 +133,14 @@ const SingleProduct = ({ product }: any) => {
                 </p>
               )}
               <div className="pt-1 mt-2">
-                <AddToCart product={product} />
+                {
+                  // Display default AddToCart button if we do not have variations.
+                  // If we do, send the variationId to AddToCart button
+                }
+                {product.variations && (
+                  <AddToCart product={selectedVariation} />
+                )}
+                {!product.variations && <AddToCart product={product} />}
               </div>
             </div>
           </div>
