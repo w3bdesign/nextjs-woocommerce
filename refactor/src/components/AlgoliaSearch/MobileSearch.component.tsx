@@ -13,8 +13,8 @@ const searchClient = algoliasearch(
  * Algolia search for mobile menu.
  */
 const MobileSearch = () => {
-  const [search, setSearch] = useState(null);
-  //const [hasFocus, sethasFocus] = useState(false);
+  const [search, setSearch] = useState<string | null>(null);
+  const [hasFocus, sethasFocus] = useState<boolean>(false);
   return (
     <div className="inline mt-4 md:hidden">
       <InstantSearch
@@ -27,13 +27,22 @@ const MobileSearch = () => {
             resetTitle: 'Slett søketekst',
             placeholder: 'Søk etter produkter',
           }}
-          className={`px-4 py-2 text-base bg-white border outline-none rounded `}
+          className={`px-4 py-2 text-base bg-white border outline-none rounded ${
+            hasFocus ? 'border-black' : 'border-gray-400'
+          }`}
           onReset={() => {
             setSearch(null);
           }}
-          /*onChange={(text) => {
-            setSearch(text.target.value);
-          }}*/
+          onChange={(event) => {
+            const target = event.target as HTMLInputElement;
+            sethasFocus(true);
+            setSearch(target.value);
+          }}
+          onKeyDown={(event) => {
+            const target = event.target as HTMLInputElement;
+            sethasFocus(true);
+            setSearch(target.value);
+          }}
         />
         {search && <Hits hitComponent={SearchResults} />}
       </InstantSearch>
