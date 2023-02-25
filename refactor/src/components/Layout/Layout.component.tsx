@@ -37,15 +37,19 @@ const Layout = ({ children, title }: ILayoutProps) => {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       // Update cart in the localStorage.
-      const updatedCart: any = getFormattedCart(data); // TODO Remove this any later
+      const updatedCart = getFormattedCart(data);
 
       if (!updatedCart) {
+        localStorage.removeItem('woocommerce-cart');
+        setCart(null);
         return;
       }
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
       // Update cart data in React Context.
       setCart(updatedCart);
+
+      refetch();
     },
   });
 

@@ -1,11 +1,12 @@
 // Imports
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { v4 as uuidv4 } from 'uuid';
 
 // State
-import { CartContext } from '@/utils/context/CartProvider';
+import { CartContext, Product } from '@/utils/context/CartProvider';
 
 // Components
 import Button from '@/components/UI/Button.component';
@@ -13,6 +14,7 @@ import Button from '@/components/UI/Button.component';
 // Utils
 import {
   getFormattedCart,
+  getUpdatedItems,
   handleQuantityChange,
 } from '@/utils/functions/functions';
 
@@ -40,6 +42,10 @@ const CartContents = () => {
       const updatedCart = getFormattedCart(data);
 
       if (!updatedCart) {
+        localStorage.removeItem('woo-session');
+        localStorage.removeItem('woo-session-expiry');
+        localStorage.removeItem('woocommerce-cart');
+        setCart(null);
         return;
       }
 
@@ -60,6 +66,33 @@ const CartContents = () => {
     }
   );
 
+  const handleRemoveProductClick = (cartKey: string, products: Product[]) => {
+    if (products.length) {
+      // By passing the newQty to 0 in updateCart Mutation, it will remove the item.
+      const newQty = 0;
+      const updatedItems = getUpdatedItems(products, newQty, cartKey);
+
+      updateCart({
+        variables: {
+          input: {
+            clientMutationId: uuidv4(),
+            items: updatedItems,
+          },
+        },
+      });
+    }
+
+    refetch();
+
+    setTimeout(() => {
+      refetch();
+    }, 3000);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
@@ -75,10 +108,16 @@ const CartContents = () => {
                   Remove: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
-                  REMOVE
+                  <Button
+                    color="red"
+                    handleButtonClick={() =>
+                      handleRemoveProductClick(item.cartKey, cart.products)
+                    }
+                  >
+                    Remove
+                  </Button>
                 </span>
               </div>
-
               <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
                 <span className="block mt-2 font-extrabold">
                   Name: <br />
@@ -87,7 +126,6 @@ const CartContents = () => {
                   {item.name}
                 </span>
               </div>
-
               <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
                 <span className="block mt-2 font-extrabold">
                   Quantity: <br />
@@ -109,12 +147,11 @@ const CartContents = () => {
 
                       setTimeout(() => {
                         refetch();
-                      }, 3000);
+                      }, 2000);
                     }}
                   />
                 </span>
               </div>
-
               <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
                 <span className="block mt-2 font-extrabold">
                   Subtotal: <br />
@@ -130,7 +167,7 @@ const CartContents = () => {
             Ingen produkter i handlekurven
           </h1>
         )}
-        {!isCheckoutPage && (
+        {!isCheckoutPage && cart && (
           <div className="mt-4 mx-auto">
             <Link href="/kasse" passHref>
               <Button>GÅ TIL KASSE</Button>
