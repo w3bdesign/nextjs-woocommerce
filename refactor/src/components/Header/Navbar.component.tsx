@@ -9,8 +9,6 @@ import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
 // Utils
 import useIsMobile from '@/utils/hooks/useIsMobile';
 
-// TODO Algolia search
-
 /**
  * Navigation for the application.
  * Includes mobile menu.
