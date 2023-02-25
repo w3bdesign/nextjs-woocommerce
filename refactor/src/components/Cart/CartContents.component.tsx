@@ -43,10 +43,10 @@ const CartContents = () => {
 
       if (!updatedCart) {
         // Clear the localStorage if we have no remote cart
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('woo-session-expiry');
+        localStorage.removeItem('woo-session');        
         localStorage.removeItem('woocommerce-cart');
         setCart(null);
+       
         return;
       }
 

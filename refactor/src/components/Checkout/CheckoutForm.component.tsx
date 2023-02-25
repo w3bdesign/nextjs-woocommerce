@@ -52,9 +52,9 @@ const CheckoutForm = () => {
       },
       onCompleted: () => {
         localStorage.removeItem('woo-session');
-        localStorage.removeItem('woo-session-expiry');
         localStorage.removeItem('wooocommerce-cart');
         setorderCompleted(true);
+
         refetch();
       },
       onError: (error) => {

@@ -17,17 +17,6 @@ export const middleware = new ApolloLink((operation, forward) => {
    * Here we also delete the session if it is older than 24 hours
    */
   const session = process.browser ? localStorage.getItem('woo-session') : null;
-  const sessionAge = process.browser
-    ? localStorage.getItem('woo-session-expiry')
-    : null;
-  const todaysDate = new Date();
-  const oneDay = 60 * 60 * 24 * 1000;
-  const olderThan24h = new Date(todaysDate) - new Date(sessionAge) > oneDay;
-
-  if (olderThan24h && process.browser) {
-    localStorage.removeItem('woo-session');
-    localStorage.removeItem('woo-session-expiry');
-  }
 
   if (session) {
     operation.setContext(() => ({
@@ -62,11 +51,7 @@ export const afterware = new ApolloLink((operation, forward) =>
         localStorage.removeItem('woo-session');
         // Update session new data if changed.
       } else if (!localStorage.getItem('woo-session')) {
-        const currentTime = new Date().getTime();
-        const oneDayFromNow = new Date(currentTime + 24 * 60 * 60 * 1000);
-
         localStorage.setItem('woo-session', session);
-        localStorage.setItem('woo-session-expiry', oneDayFromNow);
       }
     }
 
