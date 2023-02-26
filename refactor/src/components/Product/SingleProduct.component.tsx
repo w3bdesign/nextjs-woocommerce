@@ -16,7 +16,7 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component
  */
 const SingleProduct = ({ product }: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedVariation, setSelectedVariation] = useState<any>();
+  const [selectedVariation, setSelectedVariation] = useState<string>();
 
   useEffect(() => {
     setIsLoading(false);
@@ -41,7 +41,11 @@ const SingleProduct = ({ product }: any) => {
   }
 
   // Strip out HTML from description
-  const DESCRIPTION_WITHOUT_HTML = description.replace(/(<([^>]+)>)/gi, '');
+  const DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
+    description,
+    'text/html'
+  ).body.textContent;
+
   const placeholderFallBack = 'https://via.placeholder.com/600';
 
   return (
