@@ -1,3 +1,4 @@
+/*eslint complexity: ["error", 20]*/
 // Imports
 import { useState, useContext, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
