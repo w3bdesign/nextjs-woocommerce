@@ -143,7 +143,7 @@ const CheckoutForm = () => {
         </div>
       ) : (
         <>
-          {!data?.cart?.contents?.nodes.length && !orderCompleted && (
+          {!cart && !orderCompleted && (
             <h1 className="text-2xl m-12 mt-32 font-bold text-center">
               Ingen produkter i handlekurven
             </h1>
