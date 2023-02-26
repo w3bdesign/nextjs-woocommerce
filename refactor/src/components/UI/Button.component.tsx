@@ -20,7 +20,7 @@ interface IButtonProps {
 const Button = ({
   handleButtonClick,
   buttonDisabled,
-  color = "blue",
+  color = 'blue',
   children,
 }: IButtonProps) => (
   <button
