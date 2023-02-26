@@ -114,7 +114,7 @@ const CartContents = () => {
             >
               <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
                 <span className="block mt-2 font-extrabold">
-                  Remove: <br />
+                  Slett: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
                   <Button
@@ -127,13 +127,13 @@ const CartContents = () => {
                       )
                     }
                   >
-                    Remove
+                    Slett
                   </Button>
                 </span>
               </div>
               <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
                 <span className="block mt-2 font-extrabold">
-                  Name: <br />
+                  Navn: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
                   {item.product.node.name}
@@ -141,7 +141,7 @@ const CartContents = () => {
               </div>
               <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
                 <span className="block mt-2 font-extrabold">
-                  Quantity: <br />
+                  Antall: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
                   <input
@@ -163,7 +163,7 @@ const CartContents = () => {
               </div>
               <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
                 <span className="block mt-2 font-extrabold">
-                  Subtotal: <br />
+                  Total: <br />
                 </span>
                 <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
                   {item.subtotal}
