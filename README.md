@@ -84,7 +84,8 @@ The current release has been tested and is confirmed working with the following 
 -   Meets WCAG accessibility standards where possible
 -   Placeholder for products without images
 -   Apollo Client with GraphQL
--   React Hook Form with form validation and error display
+-   React Hook Form 
+-   Native HTML5 form validation
 -   Animations with Framer motion, Styled components and Animate.css
 -   Loading spinner created with Styled Components
 -   Shows page load progress with Nprogress during navigation
