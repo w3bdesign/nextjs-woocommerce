@@ -74,9 +74,9 @@ const CheckoutForm = () => {
       checkout();
       setTimeout(() => {
         refetch();
-      }, 3000);
+      }, 2000);
     }
-  }, [checkout, orderData]);
+  }, [checkout, orderData, refetch]);
 
   useEffect(() => {
     refetch();

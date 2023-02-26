@@ -33,7 +33,7 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 const CartContents = () => {
   const router = useRouter();
 
-  const { cart, setCart } = useContext(CartContext);
+  const { setCart } = useContext(CartContext);
 
   const isCheckoutPage = router.pathname === '/kasse';
 
