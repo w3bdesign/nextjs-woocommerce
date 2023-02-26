@@ -39,11 +39,6 @@ const Layout = ({ children, title }: ILayoutProps) => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
 
-      /*if (!updatedCart) {
-        return;
-      }*/
-
-      
       if (!updatedCart && !data?.cart?.contents?.nodes.length) {
         // Clear the localStorage if we have no remote cart
 
@@ -51,7 +46,6 @@ const Layout = ({ children, title }: ILayoutProps) => {
         setCart(null);
         return;
       }
-
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
