@@ -8,6 +8,10 @@ import React, {
   ReactPortal,
 } from 'react';
 
+export type TRootObject = RootObject | string | null | undefined;
+
+export type TRootObjectNull = RootObject | null | undefined;
+
 interface ICartProviderProps {
   children:
     | string
@@ -51,10 +55,6 @@ export interface ICart {
   cart: RootObject | null | undefined;
   setCart: React.Dispatch<React.SetStateAction<TRootObjectNull>>;
 }
-
-export type TRootObject = RootObject | string | null | undefined;
-
-export type TRootObjectNull = RootObject | null | undefined;
 
 const CartState = {
   cart: null,
