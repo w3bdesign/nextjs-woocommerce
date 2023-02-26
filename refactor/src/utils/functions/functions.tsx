@@ -43,7 +43,7 @@ interface IProduct {
   node: IProductNode;
 }
 
-interface IProductRootObject {
+export interface IProductRootObject {
   __typename: string;
   key: string;
   product: IProduct;

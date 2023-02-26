@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
 // State
-import { CartContext, Product } from '@/utils/context/CartProvider';
+import { CartContext } from '@/utils/context/CartProvider';
 
 // Components
 import Button from '@/components/UI/Button.component';
@@ -18,6 +18,7 @@ import {
   getFormattedCart,
   getUpdatedItems,
   handleQuantityChange,
+  IProductRootObject,
 } from '@/utils/functions/functions';
 
 // GraphQL
@@ -45,10 +46,8 @@ const CartContents = () => {
 
       if (!updatedCart) {
         // Clear the localStorage if we have no remote cart
-        localStorage.removeItem('woo-session');
         localStorage.removeItem('woocommerce-cart');
         setCart(null);
-
         return;
       }
 
@@ -72,7 +71,10 @@ const CartContents = () => {
     }
   );
 
-  const handleRemoveProductClick = (cartKey: string, products: Product[]) => {
+  const handleRemoveProductClick = (
+    cartKey: string,
+    products: IProductRootObject[]
+  ) => {
     if (products.length) {
       // By passing the newQty to 0 in updateCart Mutation, it will remove the item.
       const newQty = 0;
@@ -103,7 +105,7 @@ const CartContents = () => {
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
         {cart && data ? (
-          data.cart.contents.nodes.map((item: any) => (
+          data.cart.contents.nodes.map((item: IProductRootObject) => (
             <div
               className="container mx-auto mt-4 flex flex-wrap flex-row justify-around items-center content-center m-w-[1380px] border border-gray-300 rounded-lg shadow
                "
@@ -118,7 +120,10 @@ const CartContents = () => {
                     color="red"
                     buttonDisabled={updateCartProcessing}
                     handleButtonClick={() =>
-                      handleRemoveProductClick(item.key, cart.products)
+                      handleRemoveProductClick(
+                        item.key,
+                        data.cart.contents.nodes
+                      )
                     }
                   >
                     Remove
