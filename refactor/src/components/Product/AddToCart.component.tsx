@@ -55,7 +55,9 @@ const AddToCart = (product: IAddToCartProps) => {
   const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
-  const productId = product.product.databaseId;
+  const productId = product.product.databaseId
+    ? product.product.databaseId
+    : product.product;
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
@@ -105,12 +107,14 @@ const AddToCart = (product: IAddToCartProps) => {
   };
 
   return (
-    <Button
-      handleButtonClick={() => handleAddToCart()}
-      buttonDisabled={addToCartLoading || requestError}
-    >
-      KJØP
-    </Button>
+    <>
+      <Button
+        handleButtonClick={() => handleAddToCart()}
+        buttonDisabled={addToCartLoading || requestError}
+      >
+        KJØP
+      </Button>
+    </>
   );
 };
 
