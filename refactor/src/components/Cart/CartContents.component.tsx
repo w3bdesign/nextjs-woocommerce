@@ -45,20 +45,14 @@ const CartContents = () => {
 
       if (!updatedCart) {
         // Clear the localStorage if we have no remote cart
-        //localStorage.removeItem('woo-session');
-        //localStorage.removeItem('woocommerce-cart');
-        //setCart(null);
-
-        console.log(
-          'We tried to remove woo session in CartContents, and set cart to null'
-        );
+        localStorage.removeItem('woo-session');
+        localStorage.removeItem('woocommerce-cart');
+        setCart(null);
 
         return;
       }
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      
 
       // Update cart data in React Context.
       setCart(updatedCart);
