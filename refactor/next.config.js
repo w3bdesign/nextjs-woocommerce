@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['70.34.205.68', 'res.cloudinary.com', 'via.placeholder.com'],
+    domains: ['swewoocommerce.dfweb.no', 'res.cloudinary.com', 'via.placeholder.com'],
   },
 };
 
