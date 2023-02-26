@@ -1,7 +1,7 @@
 /*eslint complexity: ["error", 20]*/
 // Imports
 import { useState, useContext, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, ApolloError } from '@apollo/client';
 
 // Components
 import Billing from './Billing.component';
@@ -20,11 +20,41 @@ import {
   ICheckoutDataProps,
 } from '@/utils/functions/functions';
 
+export interface IBilling {
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  postcode: string;
+  email: string;
+  phone: string;
+}
+
+export interface IShipping {
+  firstName: string;
+  lastName: string;
+  address1: string;
+  city: string;
+  postcode: string;
+  email: string;
+  phone: string;
+}
+
+export interface ICheckoutData {
+  clientMutationId: string;
+  billing: IBilling;
+  shipping: IShipping;
+  shipToDifferentAddress: boolean;
+  paymentMethod: string;
+  isPaid: boolean;
+  transactionId: string;
+}
+
 const CheckoutForm = () => {
   const { cart, setCart } = useContext(CartContext);
-  const [orderData, setOrderData] = useState<any>(null);
-  const [requestError, setRequestError] = useState<any>(null);
-  const [orderCompleted, setorderCompleted] = useState(false);
+  const [orderData, setOrderData] = useState<ICheckoutData | null>(null);
+  const [requestError, setRequestError] = useState<ApolloError | null>(null);
+  const [orderCompleted, setorderCompleted] = useState<boolean>(false);
 
   // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
@@ -84,6 +114,7 @@ const CheckoutForm = () => {
 
   const onSubmit = (submitData: ICheckoutDataProps) => {
     const checkOutData = createCheckoutData(submitData);
+
     setOrderData(checkOutData);
     setRequestError(null);
   };
@@ -112,6 +143,11 @@ const CheckoutForm = () => {
         </div>
       ) : (
         <>
+          {!data?.cart?.contents?.nodes.length && !orderCompleted && (
+            <h1 className="text-2xl m-12 mt-32 font-bold text-center">
+              Ingen produkter i handlekurven
+            </h1>
+          )}
           {orderCompleted && (
             <div className="container h-24 m-12 mx-auto mt-32 text-xl text-center">
               Takk for din ordre!

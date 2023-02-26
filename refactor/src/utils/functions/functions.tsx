@@ -70,9 +70,9 @@ export interface ICheckoutDataProps {
   city: string;
   country: string;
   state: string;
-  postcode: number;
+  postcode: string;
   email: string;
-  phone: number;
+  phone: string;
   company: string;
   paymentMethod: string;
 }
