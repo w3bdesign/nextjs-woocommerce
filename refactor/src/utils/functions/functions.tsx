@@ -150,17 +150,17 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
   }
 
   givenProducts.forEach(() => {
-    const givenProduct = givenProducts[i].product.node;
+    const givenProduct = givenProducts[Number(i)].product.node;
 
     // Convert price to a float value
-    const convertedCurrency = givenProducts[i].total.replace(/[^0-9.-]+/g, '');
+    const convertedCurrency = givenProducts[Number(i)].total.replace(/[^0-9.-]+/g, '');
 
     product.productId = givenProduct.productId;
-    product.cartKey = givenProducts[i].key;
+    product.cartKey = givenProducts[Number(i)].key;
     product.name = givenProduct.name;
-    product.qty = givenProducts[i].quantity;
+    product.qty = givenProducts[Number(i)].quantity;
     product.price = Number(convertedCurrency) / product.qty;
-    product.totalPrice = givenProducts[i].total;
+    product.totalPrice = givenProducts[Number(i)].total;
 
     // Ensure we can add products without images to the cart
 
@@ -176,7 +176,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
           title: givenProduct.name,
         };
 
-    totalProductsCount += givenProducts[i].quantity;
+    totalProductsCount += givenProducts[Number(i)].quantity;
 
     // Push each item into the products array.
     formattedCart.products.push(product);
