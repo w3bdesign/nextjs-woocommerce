@@ -29,14 +29,9 @@ export const InputField = ({
       placeholder={label}
       label={label}
       type={type ?? 'text'}
+      {...customValidation}
       {...register(
-        name,
-        required
-          ? {
-              required: 'Dette feltet er påkrevd',
-              ...customValidation,
-            }
-          : customValidation
+        name
       )}
     />
     {errors[`${name}`] && (

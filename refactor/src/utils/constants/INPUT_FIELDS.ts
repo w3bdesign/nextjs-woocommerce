@@ -1,37 +1,44 @@
-import { getCustomNumberValidation } from '@/utils/functions/functions';
-
 export const INPUT_FIELDS = [
-  { id: 0, label: 'Fornavn', name: 'firstName' },
-  { id: 1, label: 'Etternavn', name: 'lastName' },
-  { id: 2, label: 'Adresse', name: 'address1' },
+  {
+    id: 0,
+    label: 'Fornavn',
+    name: 'firstName',
+    customValidation: { required: true, minlength: 4 },
+  },
+  {
+    id: 1,
+    label: 'Etternavn',
+    name: 'lastName',
+    customValidation: { required: true, minlength: 4 },
+  },
+  {
+    id: 2,
+    label: 'Adresse',
+    name: 'address1',
+    customValidation: { required: true, minlength: 4 },
+  },
   {
     id: 3,
     label: 'Postnummer',
     name: 'postcode',
-    customValidation: getCustomNumberValidation({
-      minLength: 'Postnummer må være minimum 4 tall',
-      maxLength: 'Postnummer må være maksimalt 4 tall',
-      pattern: 'Postnummer må bare være tall',
-    }),
+    customValidation: { required: true, minlength: 4, pattern: '[+0-9]{4,6}' },
   },
-  { id: 4, label: 'Sted', name: 'city' },
+  {
+    id: 4,
+    label: 'Sted',
+    name: 'city',
+    customValidation: { required: true, minlength: 2 },
+  },
   {
     id: 5,
     label: 'Epost',
     name: 'email',
-    customValidation: getCustomNumberValidation({
-      pattern: 'Du må oppgi en gyldig epost',
-      patternValue: /^[a-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[a-z0-9.-]+$/gim,
-    }),
+    customValidation: { required: true, type: 'email' },
   },
   {
     id: 6,
     label: 'Telefon',
     name: 'phone',
-    customValidation: getCustomNumberValidation({
-      minLength: 'Minimum 8 tall i telefonnummeret',
-      maxLength: 'Maksimalt 8 tall i telefonnummeret',
-      pattern: 'Ikke gyldig telefonnummer',
-    }),
+    customValidation: { required: true, minlength: 8, pattern: '[+0-9]{8,12}' },
   },
 ];
