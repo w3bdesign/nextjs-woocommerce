@@ -11,7 +11,6 @@
  */
 export const InputField = ({
   customValidation = {},
-  errors,
   label,
   name,
   register,
