@@ -7,6 +7,22 @@ import { InputField } from '@/components/Input/InputField.component';
 // Constants
 import { INPUT_FIELDS } from '@/utils/constants/INPUT_FIELDS';
 
+const OrderButton = ({ register }: any) => (
+  <div className="w-full p-2">
+    <input
+      name="paymentMethod"
+      placeholder="paymentMethod"
+      type="hidden"
+      value="cod"
+      checked
+      {...register('paymentMethod')}
+    />
+    <button className="flex px-4 py-2 mx-auto font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
+      BESTILL
+    </button>
+  </div>
+);
+
 const Billing = ({ onSubmit }: any) => {
   const {
     register,
@@ -36,19 +52,3 @@ const Billing = ({ onSubmit }: any) => {
 };
 
 export default Billing;
-
-const OrderButton = ({ register }: any) => (
-  <div className="w-full p-2">
-    <input
-      name="paymentMethod"
-      placeholder="paymentMethod"
-      type="hidden"
-      value="cod"
-      checked
-      {...register('paymentMethod')}
-    />
-    <button className="flex px-4 py-2 mx-auto font-bold bg-white border border-gray-400 border-solid rounded hover:bg-gray-400">
-      BESTILL
-    </button>
-  </div>
-);
