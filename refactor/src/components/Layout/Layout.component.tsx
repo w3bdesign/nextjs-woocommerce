@@ -40,8 +40,9 @@ const Layout = ({ children, title }: ILayoutProps) => {
       const updatedCart = getFormattedCart(data);
 
       if (!updatedCart) {
-        localStorage.removeItem('woocommerce-cart');
+       
         setCart(null);
+       
         return;
       }
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
