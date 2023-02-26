@@ -44,8 +44,9 @@ const CartContents = () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
 
-      if (!updatedCart) {
+      if (!updatedCart && !data.cart.contents.nodes.length) {
         // Clear the localStorage if we have no remote cart
+
         localStorage.removeItem('woocommerce-cart');
         setCart(null);
         return;
@@ -104,7 +105,7 @@ const CartContents = () => {
   return (
     <section className="py-8  mt-10">
       <div className="container flex flex-wrap items-center mx-auto">
-        {cart && data ? (
+        {data?.cart?.contents?.nodes.length ? (
           data.cart.contents.nodes.map((item: IProductRootObject) => (
             <div
               className="container mx-auto mt-4 flex flex-wrap flex-row justify-around items-center content-center m-w-[1380px] border border-gray-300 rounded-lg shadow
@@ -176,22 +177,20 @@ const CartContents = () => {
           </h1>
         )}
         {updateCartProcessing && (
-          <>
-            <div className="mt-4 w-full">
-              <div className="text-xl mx-auto text-center">
-                Oppdaterer antall, vennligst vent ...
-                <LoadingSpinner />
-              </div>
+          <div className="mt-4 w-full">
+            <div className="text-xl mx-auto text-center">
+              Oppdaterer antall, vennligst vent ...
+              <LoadingSpinner />
             </div>
-          </>
+          </div>
         )}
-        {!isCheckoutPage && cart && (
+        {!isCheckoutPage && data?.cart?.contents?.nodes.length ? (
           <div className="mt-4 mx-auto">
             <Link href="/kasse" passHref>
               <Button>GÅ TIL KASSE</Button>
             </Link>
           </div>
-        )}
+        ) : null}
       </div>
     </section>
   );
