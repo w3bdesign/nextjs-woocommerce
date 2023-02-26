@@ -15,7 +15,6 @@ export const InputField = ({
   label,
   name,
   register,
-  required = true,
   type = 'text',
 }: any) => (
   <div className="w-1/2 p-2">
@@ -30,12 +29,7 @@ export const InputField = ({
       label={label}
       type={type ?? 'text'}
       {...customValidation}
-      {...register(
-        name
-      )}
+      {...register(name)}
     />
-    {errors[`${name}`] && (
-      <span className="text-red-500">FEIL: {errors[`${name}`].message}</span>
-    )}
   </div>
 );
