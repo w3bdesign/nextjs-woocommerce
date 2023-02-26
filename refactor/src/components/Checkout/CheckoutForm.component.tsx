@@ -33,7 +33,10 @@ const CheckoutForm = () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
 
-      if (!updatedCart) {
+      if (!updatedCart && !data.cart.contents.nodes.length) {
+        localStorage.removeItem('woo-session');
+        localStorage.removeItem('wooocommerce-cart');
+        setCart(null);
         return;
       }
 
@@ -55,7 +58,7 @@ const CheckoutForm = () => {
         localStorage.removeItem('woo-session');
         localStorage.removeItem('wooocommerce-cart');
         setorderCompleted(true);
-
+        setCart(null);
         refetch();
       },
       onError: (error) => {
@@ -69,6 +72,9 @@ const CheckoutForm = () => {
     if (null !== orderData) {
       // Perform checkout mutation when the value for orderData changes.
       checkout();
+      setTimeout(() => {
+        refetch();
+      }, 3000);
     }
   }, [checkout, orderData]);
 
