@@ -11,6 +11,7 @@ import { CartContext, Product } from '@/utils/context/CartProvider';
 
 // Components
 import Button from '@/components/UI/Button.component';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
 // Utils
 import {
@@ -44,14 +45,20 @@ const CartContents = () => {
 
       if (!updatedCart) {
         // Clear the localStorage if we have no remote cart
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('woocommerce-cart');
-        setCart(null);
+        //localStorage.removeItem('woo-session');
+        //localStorage.removeItem('woocommerce-cart');
+        //setCart(null);
+
+        console.log(
+          'We tried to remove woo session in CartContents, and set cart to null'
+        );
 
         return;
       }
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+
+      
 
       // Update cart data in React Context.
       setCart(updatedCart);
@@ -64,6 +71,9 @@ const CartContents = () => {
     {
       onCompleted: () => {
         refetch();
+        setTimeout(() => {
+          refetch();
+        }, 3000);
       },
     }
   );
@@ -143,14 +153,10 @@ const CartContents = () => {
                       handleQuantityChange(
                         event,
                         item.key,
-                        cart,
+                        data.cart.contents.nodes,
                         updateCart,
                         updateCartProcessing
                       );
-
-                      setTimeout(() => {
-                        refetch();
-                      }, 2000);
                     }}
                   />
                 </span>
@@ -169,6 +175,16 @@ const CartContents = () => {
           <h1 className="text-2xl font-bold mx-auto">
             Ingen produkter i handlekurven
           </h1>
+        )}
+        {updateCartProcessing && (
+          <>
+            <div className="mt-4 w-full">
+              <div className="text-xl mx-auto text-center">
+                Oppdaterer antall, vennligst vent ...
+                <LoadingSpinner />
+              </div>
+            </div>
+          </>
         )}
         {!isCheckoutPage && cart && (
           <div className="mt-4 mx-auto">

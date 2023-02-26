@@ -270,28 +270,28 @@ export const createCheckoutData = (order: ICheckoutDataProps) => ({
  *
  */
 export const getUpdatedItems = (
-  products: Product[],
+  products: IProductRootObject[],
   newQty: number,
   cartKey: string
 ) => {
   // Create an empty array.
-  //const updatedItems: { key: any; quantity: any; }[] = [];
+
   const updatedItems: TUpdatedItems = [];
 
   // Loop through the product array.
   products.forEach((cartItem) => {
     // If you find the cart key of the product user is trying to update, push the key and new qty.
-    if (cartItem.cartKey === cartKey) {
+    if (cartItem.key === cartKey) {
       updatedItems.push({
-        key: cartItem.cartKey,
+        key: cartItem.key,
         quantity: newQty,
       });
 
       // Otherwise just push the existing qty without updating.
     } else {
       updatedItems.push({
-        key: cartItem.cartKey,
-        quantity: cartItem.qty,
+        key: cartItem.key,
+        quantity: cartItem.quantity,
       });
     }
   });
@@ -307,12 +307,13 @@ export const getUpdatedItems = (
 export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
-  cart: RootObject,
+  cart: IProductRootObject[],
   updateCart: any, // Lazy solution, but saves us from a lot of warnings
   updateCartProcessing: boolean
 ) => {
   if (process.browser) {
     event.stopPropagation();
+
     // Return if the previous update cart mutation request is still processing
     if (updateCartProcessing || !cart) {
       return;
@@ -321,8 +322,8 @@ export const handleQuantityChange = (
     // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
     const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
 
-    if (cart.products.length) {
-      const updatedItems = getUpdatedItems(cart.products, newQty, cartKey);
+    if (cart.length) {
+      const updatedItems = getUpdatedItems(cart, newQty, cartKey);
 
       updateCart({
         variables: {
