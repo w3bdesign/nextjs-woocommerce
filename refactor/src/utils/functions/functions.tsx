@@ -58,14 +58,6 @@ type TUpdatedItems = { key: string; quantity: number }[];
 
 /* Interface for props */
 
-interface IGetCustomNumberValidationProps {
-  minLength: string;
-  maxLength: string;
-  pattern: string;
-  value: string;
-  patternValue: RegExp;
-}
-
 interface IFormattedCartProps {
   cart: { contents: { nodes: IProductRootObject[] }; total: number };
 }
@@ -105,32 +97,6 @@ export const trimmedStringToLength = (input: string, length: number) => {
     return `${subStr}...`;
   }
   return input;
-};
-
-/**
- * Creates a validation object with passed custom error messages.
- * If `value` is not passed then returned object will contain only pattern message.
- * @param {object} messages Custom error messages
- * @param {string} messages.minLength Message for min length attribute validation
- * @param {string} messages.maxLength Message for max length attribute vlidation
- * @param {string} messages.pattern Message for custom pattern vlidation
- * @param {number} value The number value used as limit for min/max attribute
- * @param {RegExp} patternValue Regular expression pattern for validation
- */
-export const getCustomNumberValidation = ({
-  minLength,
-  maxLength,
-  pattern,
-  value,
-  patternValue = /^\d+$/i,
-}: IGetCustomNumberValidationProps) => {
-  const validationObj = {
-    minLength: { value, message: minLength },
-    maxLength: { value, message: maxLength },
-    pattern: { value: patternValue, message: pattern },
-  };
-
-  return validationObj;
 };
 
 /**
