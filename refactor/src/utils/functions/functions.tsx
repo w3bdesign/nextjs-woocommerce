@@ -306,15 +306,6 @@ export const handleQuantityChange = (
     if (cart.length) {
       const updatedItems = getUpdatedItems(cart, newQty, cartKey);
 
-      const test = {
-        variables: {
-          input: {
-            clientMutationId: uuidv4(),
-            items: updatedItems,
-          },
-        },
-      };
-
       updateCart({
         variables: {
           input: {
