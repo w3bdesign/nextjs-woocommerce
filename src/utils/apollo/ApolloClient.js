@@ -67,8 +67,7 @@ const client = new ApolloClient({
   link: middleware.concat(
     afterware.concat(
       createHttpLink({
-        //uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-        uri: "https://swewoocommerce.dfweb.no/graphql",
+        uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
         fetch,
       })
     )
