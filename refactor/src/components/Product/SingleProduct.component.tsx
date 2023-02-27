@@ -101,7 +101,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               <p className="pt-1 mt-4 text-2xl text-gray-900">
                 {DESCRIPTION_WITHOUT_HTML}
               </p>
-              {product.stockQuantity && (
+              {Boolean(product.stockQuantity) && (
                 <p
                   v-if="data.product.stockQuantity"
                   className="pt-1 mt-4 mb-4 text-2xl text-gray-900"
