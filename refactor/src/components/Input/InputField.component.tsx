@@ -1,4 +1,4 @@
-import { FieldValues, UseFormRegister } from 'react-hook-form';
+import { FieldValues, useFormContext, UseFormRegister } from 'react-hook-form';
 
 interface ICustomValidation {
   required?: boolean;
@@ -11,8 +11,8 @@ export interface IInputRootObject {
   inputLabel: string;
   inputName: string;
   customValidation: ICustomValidation;
-  errors: IErrors;
-  register: UseFormRegister<FieldValues>;
+  errors?: IErrors;
+  register?: UseFormRegister<FieldValues>;
   type?: string;
 }
 
@@ -31,20 +31,24 @@ export const InputField = ({
   customValidation,
   inputLabel,
   inputName,
-  register,
   type,
-}: IInputRootObject) => (
-  <div className="w-1/2 p-2">
-    <label htmlFor={inputName} className="pb-4">
-      {inputLabel}
-    </label>
-    <input
-      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      id={inputName}
-      placeholder={inputLabel}
-      type={type ?? 'text'}
-      {...customValidation}
-      {...register(inputName)}
-    />
-  </div>
-);
+}: IInputRootObject) => {
+  
+  const { register } = useFormContext();
+
+  return (
+    <div className="w-1/2 p-2">
+      <label htmlFor={inputName} className="pb-4">
+        {inputLabel}
+      </label>
+      <input
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        id={inputName}
+        placeholder={inputLabel}
+        type={type ?? 'text'}
+        {...customValidation}
+        {...register(inputName)}
+      />
+    </div>
+  );
+};

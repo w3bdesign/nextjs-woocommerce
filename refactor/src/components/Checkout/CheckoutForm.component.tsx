@@ -112,7 +112,7 @@ const CheckoutForm = () => {
     refetch();
   }, [refetch]);
 
-  const onSubmit = (submitData: ICheckoutDataProps) => {
+  const handleFormSubmit = (submitData: ICheckoutDataProps) => {
     const checkOutData = createCheckoutData(submitData);
 
     setOrderData(checkOutData);
@@ -126,7 +126,7 @@ const CheckoutForm = () => {
           {/*	Order*/}
           <CartContents />
           {/*Payment Details*/}
-          <Billing onSubmit={onSubmit} />
+          <Billing handleFormSubmit={handleFormSubmit} />
           {/*Error display*/}
           {requestError && (
             <div className="h-32 text-xl text-center text-red-600">
