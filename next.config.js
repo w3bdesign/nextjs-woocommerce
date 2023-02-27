@@ -1,7 +1,13 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
-  poweredByHeader: false,
-  experimental: {
-    forceSwcTransforms: true,
+  images: {
+    domains: [
+      'swewoocommerce.dfweb.no',
+      'res.cloudinary.com',
+      'via.placeholder.com',
+    ],
   },
 };
+
+module.exports = nextConfig;

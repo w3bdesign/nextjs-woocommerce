@@ -48,7 +48,6 @@ The current release has been tested and is confirmed working with the following 
 
     <https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm> (Chrome)
 
-
 3.  Make sure WooCommerce has some products already or import some sample products
 
     The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/)
@@ -84,8 +83,7 @@ The current release has been tested and is confirmed working with the following 
 -   Meets WCAG accessibility standards where possible
 -   Placeholder for products without images
 -   Apollo Client with GraphQL
--   React Hook Form 
--   Native HTML5 form validation
+-   React Hook Form with form validation and error display
 -   Animations with Framer motion, Styled components and Animate.css
 -   Loading spinner created with Styled Components
 -   Shows page load progress with Nprogress during navigation
