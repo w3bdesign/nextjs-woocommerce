@@ -2,7 +2,8 @@
   "extends": ["next/core-web-vitals", "eslint:recommended"],
   "rules": {
     "@next/next/no-img-element": "off",
-    "no-useless-escape": "off"
+    "no-useless-escape": "off",
+    "@typescript-eslint/no-unused-vars": 1
   },
   "globals": { "JSX": true },
   "env": {
