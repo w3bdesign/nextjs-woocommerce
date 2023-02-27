@@ -6,15 +6,10 @@ import { useState, useEffect } from 'react';
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 // Components
-import AddToCart from './AddToCart.component';
+import AddToCart, { IProduct } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
-/**
- * Shows a single product with an Add To Cart button.
- * Uses GraphQL for product data
- * @param {Object} product // Product data
- */
-const SingleProduct = ({ product }: any) => {
+const SingleProduct = (product: IProduct) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
   let DESCRIPTION_WITHOUT_HTML;
@@ -122,11 +117,11 @@ const SingleProduct = ({ product }: any) => {
                     name="variant"
                     className="block w-80 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
                     onChange={(e) => {
-                      setSelectedVariation(e.target.value);
+                      setSelectedVariation(Number(e.target.value));
                     }}
                   >
                     {product.variations.nodes.map(
-                      ({ id, name, databaseId, stockQuantity }: any) => {
+                      ({ id, name, databaseId, stockQuantity }) => {
                         // Remove product name from variation name
                         const filteredName = name.split('- ').pop();
                         return (
@@ -145,7 +140,7 @@ const SingleProduct = ({ product }: any) => {
                   // If we do, send the variationId to AddToCart button
                 }
                 {product.variations && (
-                  <AddToCart product={selectedVariation} />
+                  <AddToCart variationId={selectedVariation} />
                 )}
                 {!product.variations && <AddToCart product={product} />}
               </div>

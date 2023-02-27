@@ -16,8 +16,70 @@ import { getFormattedCart } from '@/utils/functions/functions';
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
 
-interface IAddToCartProps {
-  product: { databaseId: number };
+interface IImage {
+  __typename: string;
+  id: string;
+  uri: string;
+  title: string;
+  srcSet: string;
+  sourceUrl: string;
+}
+
+interface IVariationNode {
+  __typename: string;
+  name: string;
+}
+
+interface IAllPaColors {
+  __typename: string;
+  nodes: IVariationNode[];
+}
+
+interface IAllPaSizes {
+  __typename: string;
+  nodes: IVariationNode[];
+}
+
+interface IVariationNodes {
+  __typename: string;
+  id: string;
+  databaseId: number;
+  name: string;
+  stockStatus: string;
+  stockQuantity: number;
+  purchasable: boolean;
+  onSale: boolean;
+  salePrice?: any;
+  regularPrice: string;
+}
+
+interface IVariations {
+  __typename: string;
+  nodes: IVariationNodes[];
+}
+
+export interface IProduct {
+  __typename: string;
+  id: string;
+  databaseId: number;
+  averageRating: number;
+  slug: string;
+  description: string;
+  onSale: boolean;
+  image: IImage;
+  name: string;
+  salePrice?: string;
+  regularPrice: string;
+  price: string;
+  stockQuantity: number;
+  allPaColors?: IAllPaColors;
+  allPaSizes?: IAllPaSizes;
+  variations?: IVariations;
+}
+
+export interface IProductRootObject {
+  product?: IProduct;
+  variationId?: number;
 }
 
 /**
@@ -26,13 +88,11 @@ interface IAddToCartProps {
  * @param {IAddToCartProps} product // Product data
  */
 
-const AddToCart = (product: IAddToCartProps) => {
+const AddToCart = ({ product, variationId }: IProductRootObject) => {
   const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
-  const productId = product.product.databaseId
-    ? product.product.databaseId
-    : product.product;
+  const productId = product?.databaseId ? product?.databaseId : variationId;
 
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
