@@ -49,7 +49,7 @@ interface IVariationNodes {
   stockQuantity: number;
   purchasable: boolean;
   onSale: boolean;
-  salePrice?: any;
+  salePrice?: string;
   regularPrice: string;
 }
 
