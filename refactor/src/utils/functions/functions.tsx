@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { RootObject, Product } from '@/utils/context/CartProvider';
 
 import { ChangeEvent } from 'react';
+import { IVariationNodes } from '@/components/Product/AddToCart.component';
 
 /* Interface for products*/
 
@@ -19,7 +20,7 @@ export interface IImage {
 
 export interface IGalleryImages {
   __typename: string;
-  nodes: any[];
+  nodes: IImage[];
 }
 
 interface IProductNode {
@@ -47,7 +48,7 @@ export interface IProductRootObject {
   __typename: string;
   key: string;
   product: IProduct;
-  variation?: any;
+  variation?: IVariationNodes;
   quantity: number;
   total: string;
   subtotal: string;
