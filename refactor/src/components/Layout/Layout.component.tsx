@@ -40,10 +40,8 @@ const Layout = ({ children, title }: ILayoutProps) => {
       const updatedCart = getFormattedCart(data);
 
       if (!updatedCart && !data?.cart?.contents?.nodes.length) {
-        // Clear the localStorage if we have no remote cart
+        // Should we clear the localStorage if we have no remote cart?
 
-        localStorage.removeItem('woocommerce-cart');
-        setCart(null);
         return;
       }
 
