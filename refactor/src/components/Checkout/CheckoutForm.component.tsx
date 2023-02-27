@@ -144,12 +144,12 @@ const CheckoutForm = () => {
       ) : (
         <>
           {!cart && !orderCompleted && (
-            <h1 className="text-2xl m-12 mt-32 font-bold text-center">
+            <h1 className="text-2xl m-12 mt-24 font-bold text-center">
               Ingen produkter i handlekurven
             </h1>
           )}
           {orderCompleted && (
-            <div className="container h-24 m-12 mx-auto mt-32 text-xl text-center">
+            <div className="container h-24 m-12 mx-auto mt-24 text-xl text-center">
               Takk for din ordre!
             </div>
           )}
