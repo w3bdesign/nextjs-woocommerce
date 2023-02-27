@@ -33,7 +33,6 @@ export const InputField = ({
   inputName,
   type,
 }: IInputRootObject) => {
-  
   const { register } = useFormContext();
 
   return (

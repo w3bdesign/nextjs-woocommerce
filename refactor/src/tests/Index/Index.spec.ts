@@ -6,7 +6,7 @@ test.describe('Forside', () => {
   });
 
   test('Har h1 innhold på forsiden', async ({ page }) => {
-    await page.screenshot({ path: "screenshot.png" });
+    await page.screenshot({ path: 'screenshot.png' });
     const h1 = await page.locator('h1');
     const count = await h1.count();
     await expect(count).toBeGreaterThan(0);
