@@ -1,5 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "eslint:recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "rules": {
     "@next/next/no-img-element": "off",
     "no-useless-escape": "off",
