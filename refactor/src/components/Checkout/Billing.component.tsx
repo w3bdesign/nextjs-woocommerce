@@ -37,8 +37,8 @@ const Billing = ({ onSubmit }: any) => {
           {INPUT_FIELDS.map(({ id, label, name, customValidation }) => (
             <InputField
               key={id}
-              label={label}
-              name={name}
+              inputLabel={label}
+              inputName={name}
               customValidation={customValidation}
               errors={errors}
               register={register}
