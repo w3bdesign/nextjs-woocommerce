@@ -48,12 +48,8 @@ The current release has been tested and is confirmed working with the following 
 
     <https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm> (Chrome)
 
+3.  Make sure WooCommerce has some products already
 
-3.  Make sure WooCommerce has some products already or import some sample products
-
-    The WooCommerce sample products CSV file is available at `wp-content/plugins/woocommerce/sample-data/sample_products.csv` or [Sample products](sample_products/)
-
-    Import the products at `WP Dashboard > Tools > Import > WooCommerce products(CSV)`
 
 4.  Clone or fork the repo and modify `.env.example` and rename it to `.env`
 
@@ -77,6 +73,7 @@ The current release has been tested and is confirmed working with the following 
 
 -   Next.js version 13.1.6
 -   React 18
+-   Typescript
 -   Connect to Woocommerce GraphQL API and list name, price and display image for products
 -   Support for simple products and variable products
 -   Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
@@ -84,7 +81,8 @@ The current release has been tested and is confirmed working with the following 
 -   Meets WCAG accessibility standards where possible
 -   Placeholder for products without images
 -   Apollo Client with GraphQL
--   React Hook Form with form validation and error display
+-   React Hook Form
+-   Native HTML5 form validation
 -   Animations with Framer motion, Styled components and Animate.css
 -   Loading spinner created with Styled Components
 -   Shows page load progress with Nprogress during navigation
@@ -94,7 +92,6 @@ The current release has been tested and is confirmed working with the following 
 -   Pretty URLs with builtin Nextjs functionality
 -   Tailwind 3 for styling
 -   JSDoc comments
--   WooCommerce cart session is automatically deleted after 48 hours to prevent GraphQL session expiration errors
 
 ## Troubleshooting
 
@@ -119,7 +116,6 @@ With that said, keep the following in mind:
 ## TODO
 
 -   Add total to cart/checkout page
--   Show stock quantity on individual products
 -   Copy billing address to shipping address
 -   Display product variation name in cart / checkout
 -   Hide products not in stock
