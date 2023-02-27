@@ -20,10 +20,7 @@ test.describe('Produkter', () => {
 
     await page.getByRole('button', { name: 'KJØP' }).click();
 
-   
-
-
-    await page.screenshot({ path: "handlekurv.png" });
+    await page.screenshot({ path: 'handlekurv.png' });
 
     // Expects that we can see the cart count change
 
