@@ -154,7 +154,10 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
     const givenProduct = givenProducts[Number(i)].product.node;
 
     // Convert price to a float value
-    const convertedCurrency = givenProducts[Number(i)].total.replace(/[^0-9.-]+/g, '');
+    const convertedCurrency = givenProducts[Number(i)].total.replace(
+      /[^0-9.-]+/g,
+      ''
+    );
 
     product.productId = givenProduct.productId;
     product.cartKey = givenProducts[Number(i)].key;
