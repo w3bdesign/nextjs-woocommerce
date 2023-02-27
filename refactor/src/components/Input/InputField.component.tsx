@@ -1,8 +1,8 @@
 import { FieldValues, UseFormRegister } from 'react-hook-form';
 
 interface ICustomValidation {
-  required: boolean;
-  minlength: number;
+  required?: boolean;
+  minlength?: number;
 }
 
 interface Errors {}

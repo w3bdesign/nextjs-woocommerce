@@ -1,5 +1,10 @@
 // Imports
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  FieldValues,
+  SubmitHandler,
+  useForm,
+  UseFormRegister,
+} from 'react-hook-form';
 
 // Components
 import { InputField } from '@/components/Input/InputField.component';
@@ -12,10 +17,13 @@ interface IBillingProps {
   onSubmit: SubmitHandler<FieldValues>;
 }
 
-const OrderButton = ({ register }: any) => (
+interface IOrderButtonProps {
+  register: UseFormRegister<FieldValues>;
+}
+
+const OrderButton = ({ register }: IOrderButtonProps) => (
   <div className="w-full p-2">
     <input
-      name="paymentMethod"
       placeholder="paymentMethod"
       type="hidden"
       value="cod"
