@@ -13,7 +13,8 @@ interface IButtonProps {
  * Renders a clickable button
  * @function PageTitle
  * @param {void} handleButtonClick - Handle button click
- * @param {boolean?} buttonDisabled - Is button disabled? *
+ * @param {boolean?} buttonDisabled - Is button disabled?
+ * @param {color?} TButtonColors - Color for button, either red or blue
  * @param {ReactNode} children - Children for button
  * @returns {JSX.Element} - Rendered component
  */
