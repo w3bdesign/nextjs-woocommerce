@@ -1,17 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 
-/**
- * Loading spinner, shows while loading products or categories.
- * Uses Styled-Components
- */
-const LoadingSpinner = () => (
-  <Container>
-    <Circle />
-  </Container>
-);
-
-export default LoadingSpinner;
-
 const rotateAnimation = keyframes`
  0% { transform: rotate(0deg);  } 
  50% { transform: rotate(180deg);  }
@@ -39,3 +27,15 @@ const Container = styled.div`
   flex-direction: column;
   height: 110px;
 `;
+
+/**
+ * Loading spinner, shows while loading products or categories.
+ * Uses Styled-Components
+ */
+const LoadingSpinner = () => (
+  <Container>
+    <Circle />
+  </Container>
+);
+
+export default LoadingSpinner;
