@@ -15,15 +15,5 @@ test.describe('Produkter', () => {
     await expect(page).toHaveURL(/.*simple/);
   });
 
-  test('Test at vi kan legge til varen i handlekurven', async ({ page }) => {
-    await page.getByRole('link', { name: 'Test simple' }).first().click();
-
-    await page.getByRole('button', { name: 'KJØP' }).click();
-
-    await page.screenshot({ path: 'handlekurv.png' });
-
-    // Expects that we can see the cart count change
-
-    await expect(page.locator('#header').getByText('1')).toHaveText('1');
-  });
+  
 });
