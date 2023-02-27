@@ -40,7 +40,7 @@ interface IAllPaSizes {
   nodes: IVariationNode[];
 }
 
-interface IVariationNodes {
+export interface IVariationNodes {
   __typename: string;
   id: string;
   databaseId: number;
