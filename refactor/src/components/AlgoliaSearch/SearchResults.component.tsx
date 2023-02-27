@@ -2,16 +2,28 @@ import Link from 'next/link';
 
 import { trimmedStringToLength } from '@/utils/functions/functions';
 
+interface ISearchResultProps {
+  hit: {
+    product_image: string;
+    product_name: string;
+    regular_price: string;
+    sale_price: string;
+    on_sale: boolean;
+    short_description: string;
+    objectID: number;
+  };
+}
+
 /**
  * Displays search results from Algolia
- * @param {Object} hit {
- * @param {String} product_image Product image from WooCommerce
- * @param {String} product_name Name of product
- * @param {Float} regular_price Price without discount
- * @param {Float} sale_price Price when on sale
- * @param {Boolean} on_sale Is the product on sale? True or false
- * @param {String} short_description Short description of product
- * @param {Integer} objectID ID of product
+ * @param {object} hit {
+ * @param {string} product_image Product image from WooCommerce
+ * @param {string} product_name Name of product
+ * @param {string} regular_price Price without discount
+ * @param {string} sale_price Price when on sale
+ * @param {boolean} on_sale Is the product on sale? True or false
+ * @param {string} short_description Short description of product
+ * @param {number} objectID ID of product
  }
  */
 const SearchResults = ({
@@ -24,7 +36,7 @@ const SearchResults = ({
     short_description,
     objectID,
   },
-}: any) => {
+}: ISearchResultProps) => {
   // Replace empty spaces with dash (-)
   const trimmedProductName = product_name.replace(/ /g, '-');
 
