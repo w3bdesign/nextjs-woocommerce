@@ -5,13 +5,13 @@ interface ICustomValidation {
   minlength?: number;
 }
 
-interface Errors {}
+interface IErrors {}
 
 export interface IInputRootObject {
   inputLabel: string;
   inputName: string;
   customValidation: ICustomValidation;
-  errors: Errors;
+  errors: IErrors;
   register: UseFormRegister<FieldValues>;
   type?: string;
 }
@@ -19,13 +19,13 @@ export interface IInputRootObject {
 /**
  * Input field component displays a text input in a form, with label.
  * The various properties of the input field can be determined with the props:
- * @param {Object} [customValidation] - the validation rules to apply to the input field
- * @param {Object} errors - the form errors object provided by react-hook-form
+ * @param {ICustomValidation} [customValidation] - the validation rules to apply to the input field
+ * @param {IErrors} errors - the form errors object provided by react-hook-form
  * @param {string} inputLabel - used for the display label
  * @param {string} inputName - the key of the value in the submitted data. Must be unique
  * @param {UseFormRegister<FieldValues>} register - register function from react-hook-form
  * @param {boolean} [required=true] - whether or not this field is required. default true
- * @param {'text'|'number'} [type='text'] - the input type. defaults to text
+ * @param {string} [type='text'] - the input type. defaults to text
  */
 export const InputField = ({
   customValidation,
