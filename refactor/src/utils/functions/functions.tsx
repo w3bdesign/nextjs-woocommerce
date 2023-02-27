@@ -57,6 +57,24 @@ export interface IProductRootObject {
 
 type TUpdatedItems = { key: string; quantity: number }[];
 
+export interface IUpdateCartItem {
+  key: string;
+  quantity: number;
+}
+
+export interface IUpdateCartInput {
+  clientMutationId: string;
+  items: IUpdateCartItem[];
+}
+
+export interface IUpdateCartVariables {
+  input: IUpdateCartInput;
+}
+
+export interface IUpdateCartRootObject {
+  variables: IUpdateCartVariables;
+}
+
 /* Interface for props */
 
 interface IFormattedCartProps {
@@ -271,7 +289,7 @@ export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
   cart: IProductRootObject[],
-  updateCart: any, // Lazy solution, but saves us from a lot of warnings
+  updateCart: (variables: IUpdateCartRootObject) => void,
   updateCartProcessing: boolean
 ) => {
   if (process.browser) {
@@ -287,6 +305,15 @@ export const handleQuantityChange = (
 
     if (cart.length) {
       const updatedItems = getUpdatedItems(cart, newQty, cartKey);
+
+      const test = {
+        variables: {
+          input: {
+            clientMutationId: uuidv4(),
+            items: updatedItems,
+          },
+        },
+      };
 
       updateCart({
         variables: {
