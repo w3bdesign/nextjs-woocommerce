@@ -78,7 +78,7 @@ export interface IProduct {
 }
 
 export interface IProductRootObject {
-  product?: IProduct;
+  product: IProduct;
   variationId?: number;
 }
 
