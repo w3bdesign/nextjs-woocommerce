@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "playwright": "npx playwright test",
-    "playwright:codegen": "playwright codegen",   
+    "playwright:codegen": "playwright codegen",
     "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
   },
   "keywords": [
@@ -44,6 +44,7 @@
     "@types/node": "18.14.1",
     "@types/nprogress": "^0.2.0",
     "@types/react-instantsearch-dom": "^6.12.3",
+    "@types/styled-components": "^5.1.26",
     "@types/uuid": "^9.0.1",
     "babel-plugin-styled-components": "^2.0.7",
     "eslint": "8.34.0",
