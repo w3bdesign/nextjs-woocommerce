@@ -74,6 +74,7 @@ The current release has been tested and is confirmed working with the following 
 -   Next.js version 13.1.6
 -   React 18
 -   Typescript
+-   Tests with Playwright
 -   Connect to Woocommerce GraphQL API and list name, price and display image for products
 -   Support for simple products and variable products
 -   Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
