@@ -27,14 +27,13 @@ test.describe('Produkter', () => {
     await page.getByRole('link', { name: 'Test simple' }).first().click();
 
     // Expects the URL to contain test-simple
-    await page.waitForURL(/.*test-simple/);
+    await page.waitForURL(/.*test-simple/);   
 
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);    
 
     await page.getByRole('button', { name: 'KJØP' }).click();
 
-    await page.waitForTimeout(2000);
-    
+    await page.waitForTimeout(3000);
 
     await expect(page.locator('#header').getByText('1')).toBeVisible({
       timeout: 5000,
