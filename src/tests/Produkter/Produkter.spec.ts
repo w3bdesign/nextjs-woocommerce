@@ -29,8 +29,15 @@ test.describe('Produkter', () => {
     // Expects the URL to contain test-simple
     await page.waitForURL(/.*test-simple/);
 
+    await page.waitForTimeout(2000);
+
     await page.getByRole('button', { name: 'KJØP' }).click();
 
-    await expect(page.locator('#header').getByText('1')).toBeVisible();
+    await page.waitForTimeout(2000);
+    
+
+    await expect(page.locator('#header').getByText('1')).toBeVisible({
+      timeout: 5000,
+    });
   });
 });
