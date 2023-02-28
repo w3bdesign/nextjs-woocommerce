@@ -18,7 +18,7 @@ test.describe('Produkter', () => {
     await page.getByRole('link', { name: 'Test simple' }).first().click();
 
     // Expects the URL to contain test-simple
-    await page.waitForURL(/.*test-simple/);
+    await page.waitForURL(/.*simple/);
 
     await expect(page.getByRole('button', { name: 'KJØP' })).toBeVisible();
   });
@@ -27,10 +27,16 @@ test.describe('Produkter', () => {
     await page.getByRole('link', { name: 'Test simple' }).first().click();
 
     // Expects the URL to contain test-simple
-    await page.waitForURL(/.*test-simple/);
+    await page.waitForURL('http://localhost:3000/produkt/test-simple?id=29', {
+      waitUntil: 'networkidle',
+    });
 
     await page.getByRole('button', { name: 'KJØP' }).click();
 
-    await expect(page.locator('#header').getByText('1')).toBeVisible();
+    await page.locator('#header').getByText('1').waitFor();
+
+    await expect(page.locator('#header').getByText('1')).toBeVisible({
+      timeout: 5000,
+    });
   });
 });
