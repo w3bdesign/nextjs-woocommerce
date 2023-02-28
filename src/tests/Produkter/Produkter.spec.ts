@@ -31,7 +31,7 @@ test.describe('Produkter', () => {
 
     // Check that that Handlekurv is visible
     await expect(
-      page.locator('section').filter({ hasText: 'Ikkesynlig' })
+      page.locator('section').filter({ hasText: 'Handlekurv' })
     ).toBeVisible();
   });
 });
