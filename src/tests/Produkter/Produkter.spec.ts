@@ -33,5 +33,17 @@ test.describe('Produkter', () => {
     await expect(
       page.locator('section').filter({ hasText: 'Handlekurv' })
     ).toBeVisible();
+
+    // Check that we can go to Kasse
+
+    await page.getByRole('button', { name: 'GÅ TIL KASSE' }).click();
+
+    await page.waitForURL('http://localhost:3000/kasse', {
+      waitUntil: 'networkidle',
+    });
+
+    await expect(
+      page.locator('section').filter({ hasText: 'Kasse' })
+    ).toBeVisible();
   });
 });
