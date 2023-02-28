@@ -24,5 +24,14 @@ test.describe('Produkter', () => {
     await expect(page.locator('#header').getByText('1')).toBeVisible({
       timeout: 5000,
     });
+
+    await page.getByRole('link', { name: 'Handlekurv' }).click();
+
+    await page.locator('section').filter({ hasText: 'Handlekurv' }).waitFor();
+
+    // Check that that Handlekurv is visible
+    await expect(
+      page.locator('section').filter({ hasText: 'Handlekurv' })
+    ).toBeVisible();
   });
 });
