@@ -17,9 +17,20 @@ test.describe('Produkter', () => {
   test('Test at kjøp knappen er synlig', async ({ page }) => {
     await page.getByRole('link', { name: 'Test simple' }).first().click();
 
-     // Expects the URL to contain test-simple
+    // Expects the URL to contain test-simple
     await page.waitForURL(/.*test-simple/);
 
     await expect(page.getByRole('button', { name: 'KJØP' })).toBeVisible();
+  });
+
+  test('Test at vi kan kjøpe produktet', async ({ page }) => {
+    await page.getByRole('link', { name: 'Test simple' }).first().click();
+
+    // Expects the URL to contain test-simple
+    await page.waitForURL(/.*test-simple/);
+
+    await page.getByRole('button', { name: 'KJØP' }).click();
+
+    await expect(page.locator('#header').getByText('1')).toBeVisible();
   });
 });
