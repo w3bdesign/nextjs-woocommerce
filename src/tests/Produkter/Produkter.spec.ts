@@ -27,13 +27,13 @@ test.describe('Produkter', () => {
     await page.getByRole('link', { name: 'Test simple' }).first().click();
 
     // Expects the URL to contain test-simple
-    await page.waitForURL(/.*simple/);   
-
-    await page.waitForTimeout(3000);    
+    await page.waitForURL('http://localhost:3000/produkt/test-simple?id=29', {
+      waitUntil: 'networkidle',
+    });
 
     await page.getByRole('button', { name: 'KJØP' }).click();
 
-    await page.waitForTimeout(3000);
+    await page.locator('#header').getByText('1').waitFor();
 
     await expect(page.locator('#header').getByText('1')).toBeVisible({
       timeout: 5000,
