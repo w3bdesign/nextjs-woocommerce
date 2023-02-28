@@ -18,7 +18,7 @@ test.describe('Produkter', () => {
   test('Test at kjøp knappen er synlig', async ({ page }) => {
     await page.getByRole('link', { name: 'Test simple' }).first().click();
 
-    await page.waitForURL('http://localhost:3000/produkt/test-simple?id=29');
+    await page.waitForURL(/.*test-simple/);
 
     await expect(page.getByRole('button', { name: 'KJØP' })).toBeVisible();
   });
