@@ -11,7 +11,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
-import { CartContext } from '@/utils/context/CartProvider';
+import { CartContext } from '@/stores/CartProvider';
 
 // Utils
 import {
