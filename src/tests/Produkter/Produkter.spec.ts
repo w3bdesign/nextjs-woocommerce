@@ -50,8 +50,8 @@ test.describe('Produkter', () => {
 
     await page.getByPlaceholder('Etternavn').waitFor();
 
-    await expect(page.getByPlaceholder('Etternavn')).toContainText(
-      'testetternavn'
-    );
+    await expect(page.getByPlaceholder('Etternavn')).toHaveValue("testetternavn")
+
+   
   });
 });
