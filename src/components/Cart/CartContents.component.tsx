@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
 // State
-import { CartContext } from '@/state/CartProvider';
+import { CartContext } from '@/stores/CartProvider';
 
 // Components
 import Button from '@/components/UI/Button.component';
