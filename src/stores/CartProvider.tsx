@@ -51,11 +51,6 @@ interface ICartContext {
   setCart: React.Dispatch<React.SetStateAction<TRootObjectNull>>;
 }
 
-export interface ICart {
-  cart: RootObject | null | undefined;
-  setCart: React.Dispatch<React.SetStateAction<TRootObjectNull>>;
-}
-
 const CartState = {
   cart: null,
   setCart: () => {},
