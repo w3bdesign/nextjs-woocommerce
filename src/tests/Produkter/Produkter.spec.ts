@@ -49,7 +49,7 @@ test.describe('Produkter', () => {
     await page.getByPlaceholder('Etternavn').fill('testetternavn');
 
     await expect(page.getByPlaceholder('Etternavn')).toContainText(
-      'denne skal feile'
+      'testetternavn'
     );
   });
 });
