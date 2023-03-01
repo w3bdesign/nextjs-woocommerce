@@ -118,7 +118,7 @@ With that said, keep the following in mind:
 
 -   Add total to cart/checkout page
 -   Copy billing address to shipping address
--   Display product variation name in cart / checkout
+-   Add order dashboard and require login
 -   Hide products not in stock
 -   Add better SEO
 -   Re-add Next/image when it is working better
