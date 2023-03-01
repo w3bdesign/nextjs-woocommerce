@@ -45,5 +45,15 @@ test.describe('Produkter', () => {
     await expect(
       page.locator('section').filter({ hasText: 'Kasse' })
     ).toBeVisible();
+
+    // Check that we can type something in Billing fields
+
+    await page.getByPlaceholder('Etternavn').fill('testetternavn');
+
+    await page.getByPlaceholder('Etternavn').waitFor();
+
+    await expect(page.getByPlaceholder('Etternavn')).toHaveValue(
+      'testetternavn'
+    );
   });
 });
