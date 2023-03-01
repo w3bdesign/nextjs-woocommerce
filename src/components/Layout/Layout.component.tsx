@@ -9,7 +9,7 @@ import Footer from '@/components/Footer/Footer.component';
 import Stickynav from '@/components/Footer/Stickynav.component';
 
 // State
-import { CartContext } from '@/utils/context/CartProvider';
+import { CartContext } from '@/state/CartProvider';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';

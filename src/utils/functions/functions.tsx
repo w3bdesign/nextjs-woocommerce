@@ -2,7 +2,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { RootObject, Product } from '@/utils/context/CartProvider';
+import { RootObject, Product } from '@/state/CartProvider';
 
 import { ChangeEvent } from 'react';
 import { IVariationNodes } from '@/components/Product/AddToCart.component';

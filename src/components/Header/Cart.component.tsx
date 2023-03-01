@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 
-import { CartContext } from '@/utils/context/CartProvider';
+import { CartContext } from '@/state/CartProvider';
 
 interface ICartProps {
   stickyNav?: boolean;

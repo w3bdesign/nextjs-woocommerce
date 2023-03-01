@@ -4,7 +4,7 @@ import NProgress from 'nprogress';
 import { ApolloProvider } from '@apollo/client';
 
 // State import
-import { CartProvider } from '@/utils/context/CartProvider';
+import { CartProvider } from '@/state/CartProvider';
 import client from '@/utils/apollo/ApolloClient';
 
 // Types

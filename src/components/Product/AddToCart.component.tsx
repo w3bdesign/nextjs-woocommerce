@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '@/components/UI/Button.component';
 
 // State
-import { CartContext } from '@/utils/context/CartProvider';
+import { CartContext } from '@/state/CartProvider';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
