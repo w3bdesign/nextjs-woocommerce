@@ -45,5 +45,11 @@ test.describe('Produkter', () => {
     await expect(
       page.locator('section').filter({ hasText: 'Kasse' })
     ).toBeVisible();
+
+    await page.getByPlaceholder('Etternavn').fill('testetternavn');
+
+    await expect(page.getByPlaceholder('Etternavn')).toContainText(
+      'denne skal feile'
+    );
   });
 });
