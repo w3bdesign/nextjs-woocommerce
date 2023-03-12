@@ -30,12 +30,12 @@ interface IVariationNode {
   name: string;
 }
 
-interface IAllPaColors {
+interface IAllPaColor {
   __typename: string;
   nodes: IVariationNode[];
 }
 
-interface IAllPaSizes {
+interface IAllPaSize {
   __typename: string;
   nodes: IVariationNode[];
 }
