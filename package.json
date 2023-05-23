@@ -26,7 +26,7 @@
     "@types/react": "^18.2.6",
     "algoliasearch": "^4.17.0",
     "autoprefixer": "^10.4.14",
-    "framer-motion": "10.12.12",
+    "framer-motion": "10.12.14",
     "graphql": "^16.6.0",
     "lodash": "^4.17.21",
     "next": "^13.4.3",
