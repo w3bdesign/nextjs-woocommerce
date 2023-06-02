@@ -23,7 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.7.15",
-    "@types/react": "^18.2.7",
+    "@types/react": "^18.2.8",
     "algoliasearch": "^4.17.1",
     "autoprefixer": "^10.4.14",
     "framer-motion": "10.12.16",
@@ -34,7 +34,7 @@
     "postcss": "^8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.44.2",
+    "react-hook-form": "^7.44.3",
     "react-instantsearch-dom": "^6.40.0",
     "uuid": "^9.0.0"
   },
