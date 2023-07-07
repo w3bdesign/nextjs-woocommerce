@@ -56,7 +56,7 @@ export const afterware = new ApolloLink((operation, forward) =>
     }
 
     return response;
-  })
+  }),
 );
 
 const clientSide = typeof window === 'undefined';
@@ -69,8 +69,8 @@ const client = new ApolloClient({
       createHttpLink({
         uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
         fetch,
-      })
-    )
+      }),
+    ),
   ),
   cache: new InMemoryCache(),
 });

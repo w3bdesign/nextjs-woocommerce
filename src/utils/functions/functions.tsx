@@ -174,7 +174,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
     // Convert price to a float value
     const convertedCurrency = givenProducts[Number(i)].total.replace(
       /[^0-9.-]+/g,
-      ''
+      '',
     );
 
     product.productId = givenProduct.productId;
@@ -253,7 +253,7 @@ export const createCheckoutData = (order: ICheckoutDataProps) => ({
 export const getUpdatedItems = (
   products: IProductRootObject[],
   newQty: number,
-  cartKey: string
+  cartKey: string,
 ) => {
   // Create an empty array.
 
@@ -290,7 +290,7 @@ export const handleQuantityChange = (
   cartKey: string,
   cart: IProductRootObject[],
   updateCart: (variables: IUpdateCartRootObject) => void,
-  updateCartProcessing: boolean
+  updateCartProcessing: boolean,
 ) => {
   if (process.browser) {
     event.stopPropagation();

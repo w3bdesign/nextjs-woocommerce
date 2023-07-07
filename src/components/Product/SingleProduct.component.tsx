@@ -40,7 +40,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   if (process.browser) {
     DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
       description,
-      'text/html'
+      'text/html',
     ).body.textContent;
   }
 
@@ -129,7 +129,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                             {filteredName} - ({stockQuantity} på lager)
                           </option>
                         );
-                      }
+                      },
                     )}
                   </select>
                 </p>

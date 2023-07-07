@@ -69,12 +69,12 @@ const CartContents = () => {
           refetch();
         }, 3000);
       },
-    }
+    },
   );
 
   const handleRemoveProductClick = (
     cartKey: string,
-    products: IProductRootObject[]
+    products: IProductRootObject[],
   ) => {
     if (products.length) {
       // By passing the newQty to 0 in updateCart Mutation, it will remove the item.
@@ -123,7 +123,7 @@ const CartContents = () => {
                     handleButtonClick={() =>
                       handleRemoveProductClick(
                         item.key,
-                        data.cart.contents.nodes
+                        data.cart.contents.nodes,
                       )
                     }
                   >
@@ -155,7 +155,7 @@ const CartContents = () => {
                         item.key,
                         data.cart.contents.nodes,
                         updateCart,
-                        updateCartProcessing
+                        updateCartProcessing,
                       );
                     }}
                   />

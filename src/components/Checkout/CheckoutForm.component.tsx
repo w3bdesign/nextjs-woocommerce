@@ -95,7 +95,7 @@ const CheckoutForm = () => {
         setRequestError(error);
         refetch();
       },
-    }
+    },
   );
 
   useEffect(() => {
