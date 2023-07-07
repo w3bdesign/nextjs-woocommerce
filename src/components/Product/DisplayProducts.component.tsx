@@ -80,7 +80,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
               >
                 <Link
                   href={`/produkt/${encodeURIComponent(
-                    slug
+                    slug,
                   )}?id=${encodeURIComponent(databaseId)}`}
                 >
                   <span>
@@ -106,7 +106,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
 
                 <Link
                   href={`/produkt/${encodeURIComponent(
-                    slug
+                    slug,
                   )}?id=${encodeURIComponent(databaseId)}`}
                 >
                   <span>
@@ -136,7 +136,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 )}
               </div>
             );
-          }
+          },
         )
       ) : (
         <div className="mx-auto text-xl font-bold text-center text-gray-800 no-underline uppercase">

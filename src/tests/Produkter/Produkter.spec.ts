@@ -31,7 +31,7 @@ test.describe('Produkter', () => {
 
     // Check that that Handlekurv is visible
     await expect(
-      page.locator('section').filter({ hasText: 'Handlekurv' })
+      page.locator('section').filter({ hasText: 'Handlekurv' }),
     ).toBeVisible();
 
     // Check that we can go to Kasse
@@ -43,7 +43,7 @@ test.describe('Produkter', () => {
     });
 
     await expect(
-      page.locator('section').filter({ hasText: 'Kasse' })
+      page.locator('section').filter({ hasText: 'Kasse' }),
     ).toBeVisible();
 
     // Check that we can type something in Billing fields
@@ -53,7 +53,7 @@ test.describe('Produkter', () => {
     await page.getByPlaceholder('Etternavn').waitFor();
 
     await expect(page.getByPlaceholder('Etternavn')).toHaveValue(
-      'testetternavn'
+      'testetternavn',
     );
   });
 });
