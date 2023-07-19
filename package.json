@@ -35,7 +35,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.2",
-    "react-instantsearch-dom": "^6.40.2",
+    "react-instantsearch-dom": "^6.40.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
