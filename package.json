@@ -48,7 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "babel-plugin-styled-components": "^2.1.4",
-    "eslint": "^8.45.0",
+    "eslint": "^8.46.0",
     "eslint-config-next": "^13.4.12",
     "postcss-preset-env": "^9.1.0",
     "prettier": "^3.0.0",
