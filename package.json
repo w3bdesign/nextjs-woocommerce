@@ -27,7 +27,7 @@
     "algoliasearch": "^4.19.1",
     "autoprefixer": "^10.4.15",
     "framer-motion": "10.15.2",
-    "graphql": "^16.7.1",
+    "graphql": "^16.8.0",
     "lodash": "^4.17.21",
     "next": "^13.4.15",
     "nprogress": "^0.2.0",
