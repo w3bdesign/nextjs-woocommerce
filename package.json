@@ -36,7 +36,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.46.1",
     "react-instantsearch-dom": "^6.40.4",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.37.1",
