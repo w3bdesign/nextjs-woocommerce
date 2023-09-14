@@ -12,6 +12,9 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component
 const SingleProduct = ({ product }: IProductRootObject) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
+  
+  const placeholderFallBack = 'https://via.placeholder.com/600';
+  
   let DESCRIPTION_WITHOUT_HTML;
 
   useEffect(() => {
@@ -44,10 +47,10 @@ const SingleProduct = ({ product }: IProductRootObject) => {
     ).body.textContent;
   }
 
-  const placeholderFallBack = 'https://via.placeholder.com/600';
+  
 
   return (
-    <section className="py-8 bg-white">
+    <section className="py-8 bg-white mb-12 sm:mb-2">
       {/* Show loading spinner while loading, and hide content while loading */}
       {isLoading ? (
         <div className="h-56 mt-20">
