@@ -39,7 +39,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.37.1",
+    "@playwright/test": "^1.38.0",
     "@types/lodash": "^4.14.198",
     "@types/node": "20.6.0",
     "@types/nprogress": "^0.2.0",
