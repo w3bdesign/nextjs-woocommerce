@@ -42,7 +42,7 @@
     "@playwright/test": "^1.39.0",
     "@types/lodash": "^4.14.200",
     "@types/node": "20.8.7",
-    "@types/nprogress": "^0.2.1",
+    "@types/nprogress": "^0.2.2",
     "@types/react-instantsearch-dom": "^6.12.4",
     "@types/uuid": "^9.0.5",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
