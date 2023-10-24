@@ -12,9 +12,9 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component
 const SingleProduct = ({ product }: IProductRootObject) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
-  
+
   const placeholderFallBack = 'https://via.placeholder.com/600';
-  
+
   let DESCRIPTION_WITHOUT_HTML;
 
   useEffect(() => {
@@ -46,8 +46,6 @@ const SingleProduct = ({ product }: IProductRootObject) => {
       'text/html',
     ).body.textContent;
   }
-
-  
 
   return (
     <section className="py-8 bg-white mb-12 sm:mb-2">
