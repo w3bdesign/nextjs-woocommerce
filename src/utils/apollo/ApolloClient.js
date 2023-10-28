@@ -7,6 +7,8 @@ import {
   ApolloLink,
 } from '@apollo/client';
 
+const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+
 /**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
@@ -14,17 +16,30 @@ import {
 export const middleware = new ApolloLink((operation, forward) => {
   /**
    * If session data exist in local storage, set value as session header.
-   * Here we also delete the session if it is older than 24 hours
+   * Here we also delete the session if it is older than 7 days
    */
-  const session = process.browser ? localStorage.getItem('woo-session') : null;
+  const sessionData = process.browser
+    ? JSON.parse(localStorage.getItem('woo-session'))
+    : null;
 
-  if (session) {
-    operation.setContext(() => ({
-      headers: {
-        'woocommerce-session': `Session ${session}`,
-      },
-    }));
+  if (sessionData) {
+    const { token, createdTime } = sessionData;
+
+    // Check if the token is older than 7 days
+    if (Date.now() - createdTime > SEVEN_DAYS) {
+      // If it is, delete it
+      localStorage.removeItem('woo-session');
+      localStorage.setItem('woocommerce-cart', JSON.stringify({}));
+    } else {
+      // If it's not, use the token
+      operation.setContext(() => ({
+        headers: {
+          'woocommerce-session': `Session ${token}`,
+        },
+      }));
+    }
   }
+
   return forward(operation);
 });
 
@@ -51,7 +66,10 @@ export const afterware = new ApolloLink((operation, forward) =>
         localStorage.removeItem('woo-session');
         // Update session new data if changed.
       } else if (!localStorage.getItem('woo-session')) {
-        localStorage.setItem('woo-session', session);
+        localStorage.setItem(
+          'woo-session',
+          JSON.stringify({ token: session, createdTime: Date.now() }),
+        );
       }
     }
 
