@@ -97,6 +97,14 @@ const Hamburger = () => {
                       onClick={() => {
                         setisExpanded((prevExpanded) => !prevExpanded);
                       }}
+                      onKeyDown={(event) => {
+                        // 'Enter' key or 'Space' key
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          setisExpanded((prevExpanded) => !prevExpanded);
+                        }
+                      }}
+                      tabIndex={0} // Make the span focusable
+                      role="button" // Indicate the span acts as a button
                     >
                       {title}
                     </span>
