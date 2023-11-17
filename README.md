@@ -36,7 +36,7 @@ Optional plugin:
 
 The current release has been tested and is confirmed working with the following versions:
 
--   WordPress version 6.1.1
+-   WordPress version 6.3.2
 -   WooCommerce version 7.4.0
 -   WP GraphQL version 1.13.8
 -   WooGraphQL version 0.12.0
@@ -71,7 +71,7 @@ The current release has been tested and is confirmed working with the following 
 
 ## Features
 
--   Next.js version 13.4.7
+-   Next.js version 13.5.3
 -   React 18
 -   Typescript
 -   Tests with Playwright
