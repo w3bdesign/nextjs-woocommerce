@@ -10,34 +10,6 @@ import {
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
 /**
- * Clears the storage and cookies if there is a browser error.
- *
- * @param {type} None - No parameters needed.
- * @return {undefined} No return value.
- */
-function clearStorageAndCookies() {
-  if (process.browser) {
-    // Clear localStorage
-    localStorage.clear();
-
-    // Clear cookies
-    document.cookie.split(';').forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, '')
-        .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-    });
-  }
-}
-
-if (process.browser) {
-  window.addEventListener('error', () => {
-    console.error('Application crashed. Clearing localStorage and cookies.');
-    clearStorageAndCookies();
-    window.location.reload(); // Refresh the browser
-  });
-}
-
-/**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
  */
