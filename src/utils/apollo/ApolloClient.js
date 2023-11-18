@@ -9,57 +9,6 @@ import {
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
-
-
-function clearStorageAndCookies() {
-  if (process.browser) {
-    // Clear localStorage
-    localStorage.clear();
-
-    // Clear cookies
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-  }
-}
-
-if (process.browser) {
-  window.addEventListener("error", (event) => {
-    console.error("Application crashed. Clearing localStorage and cookies.");
-    clearStorageAndCookies();
-  });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
@@ -73,7 +22,7 @@ export const middleware = new ApolloLink((operation, forward) => {
     ? JSON.parse(localStorage.getItem('woo-session'))
     : null;
 
-  if (sessionData) {
+  if (sessionData && sessionData.token && sessionData.createdTime) {
     const { token, createdTime } = sessionData;
 
     // Check if the token is older than 7 days
