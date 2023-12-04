@@ -43,7 +43,7 @@
     "@types/lodash": "^4.14.202",
     "@types/node": "20.10.3",
     "@types/nprogress": "^0.2.3",
-    "@types/react-instantsearch-dom": "^6.12.6",
+    "@types/react-instantsearch-dom": "^6.12.7",
     "@types/uuid": "^9.0.7",
     "@typescript-eslint/eslint-plugin": "^6.13.1",
     "@typescript-eslint/parser": "^6.13.1",
