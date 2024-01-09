@@ -24,7 +24,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.8",
     "@types/react": "^18.2.47",
-    "algoliasearch": "^4.22.0",
+    "algoliasearch": "^4.22.1",
     "autoprefixer": "^10.4.16",
     "framer-motion": "10.17.9",
     "graphql": "^16.8.1",
