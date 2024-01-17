@@ -25,7 +25,7 @@
     "@apollo/client": "^3.8.9",
     "@types/react": "^18.2.48",
     "algoliasearch": "^4.22.1",
-    "autoprefixer": "^10.4.16",
+    "autoprefixer": "^10.4.17",
     "framer-motion": "10.18.0",
     "graphql": "^16.8.1",
     "lodash": "^4.17.21",
