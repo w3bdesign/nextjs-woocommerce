@@ -41,7 +41,7 @@
   "devDependencies": {
     "@playwright/test": "^1.41.1",
     "@types/lodash": "^4.14.202",
-    "@types/node": "20.11.5",
+    "@types/node": "20.11.6",
     "@types/nprogress": "^0.2.3",
     "@types/react-instantsearch-dom": "^6.12.7",
     "@types/uuid": "^9.0.7",
