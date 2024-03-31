@@ -50,7 +50,7 @@
     "babel-plugin-styled-components": "^2.1.4",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.4",
-    "postcss-preset-env": "^9.5.2",
+    "postcss-preset-env": "^9.5.3",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.4.3"
