@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
-    "@types/lodash": "^4.17.1",
+    "@types/lodash": "^4.17.4",
     "@types/node": "20.12.12",
     "@types/nprogress": "^0.2.3",
     "@types/react-instantsearch-dom": "^6.12.7",
