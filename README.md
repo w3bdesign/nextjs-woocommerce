@@ -114,6 +114,8 @@ With that said, keep the following in mind:
 -   Currently only simple products and variable products work without any issues. Other product types are not known to work.
 -   Only Cash On Delivery (COD) is currently supported. More payment methods may be added later.
 
+This project is tested with BrowserStack.
+
 ## TODO
 
 -   Add total to cart/checkout page
