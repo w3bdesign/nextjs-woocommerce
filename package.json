@@ -22,7 +22,7 @@
   "author": "w3bdesign",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.11.1",
+    "@apollo/client": "^3.11.2",
     "@types/react": "^18.3.3",
     "algoliasearch": "^4.24.0",
     "autoprefixer": "^10.4.19",
