@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
@@ -45,28 +45,11 @@ interface IVariations {
   nodes: IVariationNodes[];
 }
 
-interface IProduct {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  averageRating: number;
-  slug: string;
-  description: string;
-  onSale: boolean;
-  image: IImage;
-  name: string;
-  salePrice?: string;
-  regularPrice: string;
-  price: string;
-  stockQuantity: number;
-  allPaColors?: IAllPaColors;
-  allPaSizes?: IAllPaSizes;
-  variations?: IVariations;
-}
-
 const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedVariation, setSelectedVariation] = useState<number | undefined>();
+  const [selectedVariation, setSelectedVariation] = useState<
+    number | undefined
+  >();
 
   const placeholderFallBack = 'https://via.placeholder.com/600';
 
@@ -80,14 +63,18 @@ const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
     }
   }, [product.variations]);
 
-  let { description, image, name, onSale, price, regularPrice, salePrice } = product;
+  let { description, image, name, onSale, price, regularPrice, salePrice } =
+    product;
 
   if (price) price = paddedPrice(price, 'kr');
   if (regularPrice) regularPrice = paddedPrice(regularPrice, 'kr');
   if (salePrice) salePrice = paddedPrice(salePrice, 'kr');
 
-  if (process.browser) {
-    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(description, 'text/html').body.textContent;
+  if (typeof window !== 'undefined') {
+    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
+      description,
+      'text/html',
+    ).body.textContent;
   }
 
   return (
@@ -112,29 +99,40 @@ const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
               ) : (
                 <img
                   id="product-image"
-                  src={process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ?? placeholderFallBack}
+                  src={
+                    process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
+                    placeholderFallBack
+                  }
                   alt={name}
                   className="w-full h-auto object-cover rounded-lg shadow-md"
                 />
               )}
             </div>
             <div className="flex flex-col space-y-4">
-              <h1 className="text-3xl font-bold text-center md:text-left">{name}</h1>
+              <h1 className="text-3xl font-bold text-center md:text-left">
+                {name}
+              </h1>
               <div className="text-center md:text-left">
                 {onSale ? (
                   <div className="flex flex-col md:flex-row items-center md:items-start space-y-2 md:space-y-0 md:space-x-4">
                     <p className="text-3xl font-bold text-red-600">
-                      {product.variations ? filteredVariantPrice(price, '') : salePrice}
+                      {product.variations
+                        ? filteredVariantPrice(price, '')
+                        : salePrice}
                     </p>
                     <p className="text-xl text-gray-500 line-through">
-                      {product.variations ? filteredVariantPrice(price, 'right') : regularPrice}
+                      {product.variations
+                        ? filteredVariantPrice(price, 'right')
+                        : regularPrice}
                     </p>
                   </div>
                 ) : (
                   <p className="text-2xl font-bold">{price}</p>
                 )}
               </div>
-              <p className="text-gray-600 text-center md:text-left">{DESCRIPTION_WITHOUT_HTML}</p>
+              <p className="text-gray-600 text-center md:text-left">
+                {DESCRIPTION_WITHOUT_HTML}
+              </p>
               {Boolean(product.stockQuantity) && (
                 <p className="text-sm font-semibold text-center md:text-left">
                   {product.stockQuantity} på lager
@@ -142,29 +140,39 @@ const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
               )}
               {product.variations && (
                 <div className="w-full">
-                  <label htmlFor="variant" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="variant"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Varianter
                   </label>
                   <select
                     id="variant"
                     name="variant"
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    onChange={(e) => setSelectedVariation(Number(e.target.value))}
+                    onChange={(e) =>
+                      setSelectedVariation(Number(e.target.value))
+                    }
                   >
-                    {product.variations.nodes.map(({ id, name, databaseId, stockQuantity }) => {
-                      const filteredName = name.split('- ').pop();
-                      return (
-                        <option key={id} value={databaseId}>
-                          {filteredName} - ({stockQuantity} på lager)
-                        </option>
-                      );
-                    })}
+                    {product.variations.nodes.map(
+                      ({ id, name, databaseId, stockQuantity }) => {
+                        const filteredName = name.split('- ').pop();
+                        return (
+                          <option key={id} value={databaseId}>
+                            {filteredName} - ({stockQuantity} på lager)
+                          </option>
+                        );
+                      },
+                    )}
                   </select>
                 </div>
               )}
               <div className="flex justify-center md:justify-start">
                 {product.variations ? (
-                  <AddToCart product={product} variationId={selectedVariation} />
+                  <AddToCart
+                    product={product}
+                    variationId={selectedVariation}
+                  />
                 ) : (
                   <AddToCart product={product} />
                 )}
