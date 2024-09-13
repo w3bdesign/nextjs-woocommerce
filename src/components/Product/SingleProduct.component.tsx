@@ -139,9 +139,10 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                   <AddToCart
                     product={product}
                     variationId={selectedVariation}
+                    fullWidth={true}
                   />
                 )}
-                {!product.variations && <AddToCart product={product} />}
+                {!product.variations && <AddToCart product={product} fullWidth={true} />}
               </div>
             </div>
           </div>
