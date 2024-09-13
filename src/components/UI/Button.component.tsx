@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-type TButtonColors = 'red' | 'blue';
+type TButtonColors = 'red' | 'blue' | 'yellow';
 
 interface IButtonProps {
   handleButtonClick?: () => void;
@@ -14,7 +14,7 @@ interface IButtonProps {
  * @function PageTitle
  * @param {void} handleButtonClick - Handle button click
  * @param {boolean?} buttonDisabled - Is button disabled?
- * @param {color?} TButtonColors - Color for button, either red or blue
+ * @param {color?} TButtonColors - Color for button, either red, blue, or yellow
  * @param {ReactNode} children - Children for button
  * @returns {JSX.Element} - Rendered component
  */
@@ -27,11 +27,15 @@ const Button = ({
   <button
     onClick={handleButtonClick}
     disabled={buttonDisabled}
-    className={`px-2 lg:px-4 py-2 font-bold bg-blue-500 border border-gray-400 border-solid rounded text-white ease-in-out transition-all duration-300 disabled:opacity-50
+    className={`px-4 py-3 font-bold border border-gray-400 border-solid rounded ease-in-out transition-all duration-300 disabled:opacity-50
       ${
         color === 'blue'
-          ? 'bg-blue-500 hover:bg-blue-600'
-          : 'bg-red-500 hover:bg-red-600'
+          ? 'bg-blue-500 hover:bg-blue-600 text-white'
+          : color === 'red'
+          ? 'bg-red-500 hover:bg-red-600 text-white'
+          : color === 'yellow'
+          ? 'bg-yellow-400 hover:bg-yellow-500 text-black'
+          : 'bg-blue-500 hover:bg-blue-600 text-white'
       }
     `}
   >

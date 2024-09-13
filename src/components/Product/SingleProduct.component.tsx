@@ -48,7 +48,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   }
 
   return (
-    <section className="py-8 bg-white mb-12 sm:mb-2">
+    <section className="bg-white mb-12 sm:mb-2">
       {/* Show loading spinner while loading, and hide content while loading */}
       {isLoading ? (
         <div className="h-56 mt-20">
@@ -57,38 +57,41 @@ const SingleProduct = ({ product }: IProductRootObject) => {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
-          <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-8">
             {image && (
-              <img
-                id="product-image"
-                src={image.sourceUrl}
-                alt={name}
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 md:hover:grow md:hover:scale-105"
-              />
+              <div className="flex justify-center items-center">
+                <img
+                  id="product-image"
+                  src={image.sourceUrl}
+                  alt={name}
+                  className="max-w-full h-auto transition duration-500 ease-in-out transform hover:scale-105"
+                />
+              </div>
             )}
             {!image && (
-              <img
-                id="product-image"
-                src={
-                  process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
-                  placeholderFallBack
-                }
-                alt={name}
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 md:hover:grow md:hover:shadow-lg md:hover:scale-105"
-              />
+              <div className="flex justify-center items-center">
+                <img
+                  id="product-image"
+                  src={
+                    process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
+                    placeholderFallBack
+                  }
+                  alt={name}
+                  className="max-w-full h-auto transition duration-500 ease-in-out transform hover:scale-105"
+                />
+              </div>
             )}
-            <div className="ml-8">
-              <p className="text-3xl font-bold text-left">{name}</p>
-              <br />
+            <div className="flex flex-col justify-center text-center md:text-left">
+              <h1 className="text-3xl font-bold mb-4">{name}</h1>
               {/* Display sale price when on sale */}
               {onSale && (
-                <div className="flex">
-                  <p className="pt-1 mt-4 text-3xl text-gray-900">
+                <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start mb-4">
+                  <p className="text-3xl font-bold text-red-600 mr-4">
                     {product.variations && filteredVariantPrice(price, '')}
                     {!product.variations && salePrice}
                   </p>
-                  <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
+                  <p className="text-2xl text-gray-500 line-through">
                     {product.variations && filteredVariantPrice(price, 'right')}
                     {!product.variations && regularPrice}
                   </p>
@@ -96,27 +99,21 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               )}
               {/* Display regular price when not on sale */}
               {!onSale && (
-                <p className="pt-1 mt-4 text-2xl text-gray-900"> {price}</p>
+                <p className="text-3xl font-bold mb-4">{price}</p>
               )}
-              <br />
-              <p className="pt-1 mt-4 text-2xl text-gray-900">
-                {DESCRIPTION_WITHOUT_HTML}
-              </p>
+              <p className="text-lg mb-4">{DESCRIPTION_WITHOUT_HTML}</p>
               {Boolean(product.stockQuantity) && (
-                <p
-                  v-if="data.product.stockQuantity"
-                  className="pt-1 mt-4 mb-4 text-2xl text-gray-900"
-                >
+                <p className="text-lg mb-4">
                   {product.stockQuantity} på lager
                 </p>
               )}
               {product.variations && (
-                <p className="pt-1 mt-4 text-xl text-gray-900">
-                  <span className="py-2">Varianter</span>
+                <div className="mb-4">
+                  <label htmlFor="variant" className="block text-lg mb-2">Varianter</label>
                   <select
                     id="variant"
                     name="variant"
-                    className="block w-80 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={(e) => {
                       setSelectedVariation(Number(e.target.value));
                     }}
@@ -133,13 +130,9 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                       },
                     )}
                   </select>
-                </p>
+                </div>
               )}
-              <div className="pt-1 mt-2">
-                {
-                  // Display default AddToCart button if we do not have variations.
-                  // If we do, send the variationId to AddToCart button
-                }
+              <div className="flex justify-center md:justify-start">
                 {product.variations && (
                   <AddToCart
                     product={product}
