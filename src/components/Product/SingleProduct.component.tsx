@@ -3,48 +3,6 @@ import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
-interface IImage {
-  __typename: string;
-  id: string;
-  uri: string;
-  title: string;
-  srcSet: string;
-  sourceUrl: string;
-}
-
-interface IVariationNode {
-  __typename: string;
-  name: string;
-}
-
-interface IAllPaColors {
-  __typename: string;
-  nodes: IVariationNode[];
-}
-
-interface IAllPaSizes {
-  __typename: string;
-  nodes: IVariationNode[];
-}
-
-interface IVariationNodes {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  name: string;
-  stockStatus: string;
-  stockQuantity: number;
-  purchasable: boolean;
-  onSale: boolean;
-  salePrice?: string;
-  regularPrice: string;
-}
-
-interface IVariations {
-  __typename: string;
-  nodes: IVariationNodes[];
-}
-
 const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<
