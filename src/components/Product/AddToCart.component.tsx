@@ -80,15 +80,18 @@ export interface IProduct {
 export interface IProductRootObject {
   product: IProduct;
   variationId?: number;
+  fullWidth?: boolean;
 }
 
 /**
  * Handles the Add to cart functionality.
  * Uses GraphQL for product data
  * @param {IAddToCartProps} product // Product data
+ * @param {number} variationId // Variation ID
+ * @param {boolean} fullWidth // Whether the button should be full-width
  */
 
-const AddToCart = ({ product, variationId }: IProductRootObject) => {
+const AddToCart = ({ product, variationId, fullWidth = false }: IProductRootObject) => {
   const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
@@ -146,6 +149,7 @@ const AddToCart = ({ product, variationId }: IProductRootObject) => {
       <Button
         handleButtonClick={() => handleAddToCart()}
         buttonDisabled={addToCartLoading || requestError}
+        fullWidth={fullWidth}
       >
         KJØP
       </Button>
