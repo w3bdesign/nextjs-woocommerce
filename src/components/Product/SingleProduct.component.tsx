@@ -11,7 +11,7 @@ const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
 
   const placeholderFallBack = 'https://via.placeholder.com/600';
 
-  let DESCRIPTION_WITHOUT_HTML: string | undefined;
+  let DESCRIPTION_WITHOUT_HTML: string | null = null;
 
   useEffect(() => {
     setIsLoading(false);
@@ -28,11 +28,10 @@ const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
   if (regularPrice) regularPrice = paddedPrice(regularPrice, 'kr');
   if (salePrice) salePrice = paddedPrice(salePrice, 'kr');
 
-  if (typeof window !== 'undefined') {
-    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
-      description,
-      'text/html',
-    ).body.textContent;
+  if (typeof window !== 'undefined' && description) {
+    DESCRIPTION_WITHOUT_HTML =
+      new DOMParser().parseFromString(description, 'text/html').body
+        .textContent || '';
   }
 
   return (
