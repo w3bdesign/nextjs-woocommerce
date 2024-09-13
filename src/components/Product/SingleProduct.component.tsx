@@ -48,7 +48,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   }
 
   return (
-    <section className="py-8 bg-white mb-12 sm:mb-2">
+    <section className="bg-white mb-12 sm:mb-2">
       {/* Show loading spinner while loading, and hide content while loading */}
       {isLoading ? (
         <div className="h-56 mt-20">
