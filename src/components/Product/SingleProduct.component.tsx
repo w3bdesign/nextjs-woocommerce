@@ -79,7 +79,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               />
             )}
             <div className="ml-8">
-              <p className="text-3xl font-bold text-left">{name}</p>
+              <p className="text-3xl font-bold text-center md:text-left">{name}</p>
               <br />
               {/* Display sale price when on sale */}
               {onSale && (
