@@ -7,15 +7,17 @@ interface IButtonProps {
   buttonDisabled?: boolean;
   color?: TButtonColors;
   children: ReactNode;
+  fullWidth?: boolean;
 }
 
 /**
  * Renders a clickable button
- * @function PageTitle
+ * @function Button
  * @param {void} handleButtonClick - Handle button click
  * @param {boolean?} buttonDisabled - Is button disabled?
- * @param {color?} TButtonColors - Color for button, either red or blue
+ * @param {TButtonColors?} color - Color for button, either red or blue
  * @param {ReactNode} children - Children for button
+ * @param {boolean?} fullWidth - Whether the button should be full-width on mobile
  * @returns {JSX.Element} - Rendered component
  */
 const Button = ({
@@ -23,6 +25,7 @@ const Button = ({
   buttonDisabled,
   color = 'blue',
   children,
+  fullWidth = false,
 }: IButtonProps) => (
   <button
     onClick={handleButtonClick}
@@ -33,6 +36,7 @@ const Button = ({
           ? 'bg-blue-500 hover:bg-blue-600'
           : 'bg-red-500 hover:bg-red-600'
       }
+      ${fullWidth ? 'w-full md:w-auto' : ''}
     `}
   >
     {children}
