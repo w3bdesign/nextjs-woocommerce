@@ -58,7 +58,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
         </div>
       ) : (
         <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
-          <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
             {image && (
               <img
                 id="product-image"
