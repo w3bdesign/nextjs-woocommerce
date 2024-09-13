@@ -1,44 +1,55 @@
-import React, { useState, useEffect } from 'react';
+/*eslint complexity: ["error", 20]*/
+// Imports
+import { useState, useEffect } from 'react';
+
+// Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
+
+// Components
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
-const SingleProduct: React.FC<IProductRootObject> = ({
-  product,
-  variationId: initialVariationId,
-}) => {
+const SingleProduct = ({ product }: IProductRootObject) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedVariation, setSelectedVariation] = useState<
-    number | undefined
-  >(initialVariationId);
+  const [selectedVariation, setSelectedVariation] = useState<number>();
 
   const placeholderFallBack = 'https://via.placeholder.com/600';
 
-  let DESCRIPTION_WITHOUT_HTML: string | null = null;
+  let DESCRIPTION_WITHOUT_HTML;
 
   useEffect(() => {
     setIsLoading(false);
-    if (product.variations && !selectedVariation) {
+    if (product.variations) {
       const firstVariant = product.variations.nodes[0].databaseId;
       setSelectedVariation(firstVariant);
     }
-  }, [product.variations, selectedVariation]);
+  }, [product.variations]);
 
   let { description, image, name, onSale, price, regularPrice, salePrice } =
     product;
 
-  if (price) price = paddedPrice(price, 'kr');
-  if (regularPrice) regularPrice = paddedPrice(regularPrice, 'kr');
-  if (salePrice) salePrice = paddedPrice(salePrice, 'kr');
+  // Add padding/empty character after currency symbol here
+  if (price) {
+    price = paddedPrice(price, 'kr');
+  }
+  if (regularPrice) {
+    regularPrice = paddedPrice(regularPrice, 'kr');
+  }
+  if (salePrice) {
+    salePrice = paddedPrice(salePrice, 'kr');
+  }
 
-  if (typeof window !== 'undefined' && description) {
-    DESCRIPTION_WITHOUT_HTML =
-      new DOMParser().parseFromString(description, 'text/html').body
-        .textContent || '';
+  // Strip out HTML from description
+  if (process.browser) {
+    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
+      description,
+      'text/html',
+    ).body.textContent;
   }
 
   return (
-    <section className="bg-white mb-16 sm:mb-24">
+    <section className="bg-white mb-[10rem] md:mb-12">
+      {/* Show loading spinner while loading, and hide content while loading */}
       {isLoading ? (
         <div className="h-56 mt-20">
           <p className="text-2xl font-bold text-center">Laster produkt ...</p>
@@ -46,97 +57,97 @@ const SingleProduct: React.FC<IProductRootObject> = ({
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <div className="flex flex-col space-y-8">
-            {/* First row: Product info, price, and purchase options */}
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="w-full md:w-1/2">
-                {image ? (
-                  <img
-                    id="product-image"
-                    src={image.sourceUrl}
-                    alt={name}
-                    className="w-full h-auto object-cover rounded-lg shadow-md"
-                  />
-                ) : (
-                  <img
-                    id="product-image"
-                    src={
-                      process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
-                      placeholderFallBack
-                    }
-                    alt={name}
-                    className="w-full h-auto object-cover rounded-lg shadow-md"
-                  />
-                )}
-              </div>
-              <div className="w-full md:w-1/2 flex flex-col space-y-6">
-                <h1 className="text-3xl font-bold">{name}</h1>
-                <div className="flex flex-col space-y-2">
-                  {onSale && <p className="text-sm">Før {regularPrice}</p>}
-                  <p className="text-4xl font-bold">
-                    {product.variations
-                      ? filteredVariantPrice(price, '')
-                      : onSale
-                        ? salePrice
-                        : price}
+        <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
+          <div className="grid grid-cols-1 gap-4 mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
+            {image && (
+              <img
+                id="product-image"
+                src={image.sourceUrl}
+                alt={name}
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 md:hover:grow md:hover:scale-105"
+              />
+            )}
+            {!image && (
+              <img
+                id="product-image"
+                src={
+                  process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
+                  placeholderFallBack
+                }
+                alt={name}
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 md:hover:grow md:hover:shadow-lg md:hover:scale-105"
+              />
+            )}
+            <div className="ml-8">
+              <p className="text-3xl font-bold text-left">{name}</p>
+              <br />
+              {/* Display sale price when on sale */}
+              {onSale && (
+                <div className="flex">
+                  <p className="pt-1 mt-4 text-3xl text-gray-900">
+                    {product.variations && filteredVariantPrice(price, '')}
+                    {!product.variations && salePrice}
                   </p>
-                  <p className="text-sm">
-                    Tilbudet gjelder til 19/09 eller så lenge lageret rekker.
+                  <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
+                    {product.variations && filteredVariantPrice(price, 'right')}
+                    {!product.variations && regularPrice}
                   </p>
                 </div>
-                <div className="space-y-4">
+              )}
+              {/* Display regular price when not on sale */}
+              {!onSale && (
+                <p className="pt-1 mt-4 text-2xl text-gray-900"> {price}</p>
+              )}
+              <br />
+              <p className="pt-1 mt-4 text-2xl text-gray-900">
+                {DESCRIPTION_WITHOUT_HTML}
+              </p>
+              {Boolean(product.stockQuantity) && (
+                <p
+                  v-if="data.product.stockQuantity"
+                  className="pt-1 mt-4 mb-4 text-2xl text-gray-900"
+                >
+                  {product.stockQuantity} på lager
+                </p>
+              )}
+              {product.variations && (
+                <p className="pt-1 mt-4 text-xl text-gray-900">
+                  <span className="py-2">Varianter</span>
+                  <select
+                    id="variant"
+                    name="variant"
+                    className="block w-80 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+                    onChange={(e) => {
+                      setSelectedVariation(Number(e.target.value));
+                    }}
+                  >
+                    {product.variations.nodes.map(
+                      ({ id, name, databaseId, stockQuantity }) => {
+                        // Remove product name from variation name
+                        const filteredName = name.split('- ').pop();
+                        return (
+                          <option key={id} value={databaseId}>
+                            {filteredName} - ({stockQuantity} på lager)
+                          </option>
+                        );
+                      },
+                    )}
+                  </select>
+                </p>
+              )}
+              <div className="pt-1 mt-2">
+                {
+                  // Display default AddToCart button if we do not have variations.
+                  // If we do, send the variationId to AddToCart button
+                }
+                {product.variations && (
                   <AddToCart
                     product={product}
                     variationId={selectedVariation}
                   />
-
-                  {product.variations && (
-                    <div className="w-full">
-                      <label
-                        htmlFor="variant"
-                        className="block text-sm font-medium mb-2"
-                      >
-                        Varianter
-                      </label>
-                      <select
-                        id="variant"
-                        name="variant"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        onChange={(e) =>
-                          setSelectedVariation(Number(e.target.value))
-                        }
-                        value={selectedVariation}
-                      >
-                        {product.variations.nodes.map(
-                          ({ id, name, databaseId, stockQuantity }) => {
-                            const filteredName = name.split('- ').pop();
-                            return (
-                              <option key={id} value={databaseId}>
-                                {filteredName} - ({stockQuantity} på lager)
-                              </option>
-                            );
-                          },
-                        )}
-                      </select>
-                    </div>
-                  )}
-                </div>
-                {Boolean(product.stockQuantity) && (
-                  <p className="text-sm font-semibold">
-                    <span className="inline-block w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-                    {product.stockQuantity}+ stk. på lager
-                  </p>
                 )}
+                {!product.variations && <AddToCart product={product} />}
               </div>
-            </div>
-
-            {/* Second row: Product description */}
-            <div className="mt-8">
-              <h2 className="text-2xl font-semibold mb-4">
-                Produktbeskrivelse
-              </h2>
-              <p className="text-gray-600">{DESCRIPTION_WITHOUT_HTML}</p>
             </div>
           </div>
         </div>
