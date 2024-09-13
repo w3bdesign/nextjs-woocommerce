@@ -79,7 +79,9 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               />
             )}
             <div className="ml-8">
-              <p className="text-3xl font-bold text-center md:text-left">{name}</p>
+              <p className="text-3xl font-bold text-center md:text-left">
+                {name}
+              </p>
               <br />
               {/* Display sale price when on sale */}
               {onSale && (
@@ -136,10 +138,6 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                 </p>
               )}
               <div className="pt-1 mt-2">
-                {
-                  // Display default AddToCart button if we do not have variations.
-                  // If we do, send the variationId to AddToCart button
-                }
                 {product.variations && (
                   <AddToCart
                     product={product}
