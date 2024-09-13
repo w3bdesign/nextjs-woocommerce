@@ -1,21 +1,76 @@
-/*eslint complexity: ["error", 20]*/
-// Imports
 import { useState, useEffect } from 'react';
-
-// Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
-
-// Components
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
-const SingleProduct = ({ product }: IProductRootObject) => {
+interface IImage {
+  __typename: string;
+  id: string;
+  uri: string;
+  title: string;
+  srcSet: string;
+  sourceUrl: string;
+}
+
+interface IVariationNode {
+  __typename: string;
+  name: string;
+}
+
+interface IAllPaColors {
+  __typename: string;
+  nodes: IVariationNode[];
+}
+
+interface IAllPaSizes {
+  __typename: string;
+  nodes: IVariationNode[];
+}
+
+interface IVariationNodes {
+  __typename: string;
+  id: string;
+  databaseId: number;
+  name: string;
+  stockStatus: string;
+  stockQuantity: number;
+  purchasable: boolean;
+  onSale: boolean;
+  salePrice?: string;
+  regularPrice: string;
+}
+
+interface IVariations {
+  __typename: string;
+  nodes: IVariationNodes[];
+}
+
+interface IProduct {
+  __typename: string;
+  id: string;
+  databaseId: number;
+  averageRating: number;
+  slug: string;
+  description: string;
+  onSale: boolean;
+  image: IImage;
+  name: string;
+  salePrice?: string;
+  regularPrice: string;
+  price: string;
+  stockQuantity: number;
+  allPaColors?: IAllPaColors;
+  allPaSizes?: IAllPaSizes;
+  variations?: IVariations;
+}
+
+const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedVariation, setSelectedVariation] = useState<number>();
+  const [selectedVariation, setSelectedVariation] = useState<number | undefined>();
 
   const placeholderFallBack = 'https://via.placeholder.com/600';
 
-  let DESCRIPTION_WITHOUT_HTML;
+  let DESCRIPTION_WITHOUT_HTML: string | undefined;
 
   useEffect(() => {
     setIsLoading(false);
@@ -25,31 +80,18 @@ const SingleProduct = ({ product }: IProductRootObject) => {
     }
   }, [product.variations]);
 
-  let { description, image, name, onSale, price, regularPrice, salePrice } =
-    product;
+  let { description, image, name, onSale, price, regularPrice, salePrice } = product;
 
-  // Add padding/empty character after currency symbol here
-  if (price) {
-    price = paddedPrice(price, 'kr');
-  }
-  if (regularPrice) {
-    regularPrice = paddedPrice(regularPrice, 'kr');
-  }
-  if (salePrice) {
-    salePrice = paddedPrice(salePrice, 'kr');
-  }
+  if (price) price = paddedPrice(price, 'kr');
+  if (regularPrice) regularPrice = paddedPrice(regularPrice, 'kr');
+  if (salePrice) salePrice = paddedPrice(salePrice, 'kr');
 
-  // Strip out HTML from description
   if (process.browser) {
-    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
-      description,
-      'text/html',
-    ).body.textContent;
+    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(description, 'text/html').body.textContent;
   }
 
   return (
-    <section className="bg-white mb-12 sm:mb-2">
-      {/* Show loading spinner while loading, and hide content while loading */}
+    <section className="bg-white">
       {isLoading ? (
         <div className="h-56 mt-20">
           <p className="text-2xl font-bold text-center">Laster produkt ...</p>
@@ -57,89 +99,75 @@ const SingleProduct = ({ product }: IProductRootObject) => {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-8">
-            {image && (
-              <div className="flex justify-center items-center">
+        <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div className="w-full">
+              {image ? (
                 <img
                   id="product-image"
                   src={image.sourceUrl}
                   alt={name}
-                  className="max-w-full h-auto transition duration-500 ease-in-out transform hover:scale-105"
+                  className="w-full h-auto object-cover rounded-lg shadow-md"
                 />
-              </div>
-            )}
-            {!image && (
-              <div className="flex justify-center items-center">
+              ) : (
                 <img
                   id="product-image"
-                  src={
-                    process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ??
-                    placeholderFallBack
-                  }
+                  src={process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ?? placeholderFallBack}
                   alt={name}
-                  className="max-w-full h-auto transition duration-500 ease-in-out transform hover:scale-105"
+                  className="w-full h-auto object-cover rounded-lg shadow-md"
                 />
+              )}
+            </div>
+            <div className="flex flex-col space-y-4">
+              <h1 className="text-3xl font-bold text-center md:text-left">{name}</h1>
+              <div className="text-center md:text-left">
+                {onSale ? (
+                  <div className="flex flex-col md:flex-row items-center md:items-start space-y-2 md:space-y-0 md:space-x-4">
+                    <p className="text-3xl font-bold text-red-600">
+                      {product.variations ? filteredVariantPrice(price, '') : salePrice}
+                    </p>
+                    <p className="text-xl text-gray-500 line-through">
+                      {product.variations ? filteredVariantPrice(price, 'right') : regularPrice}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-2xl font-bold">{price}</p>
+                )}
               </div>
-            )}
-            <div className="flex flex-col justify-center text-center md:text-left">
-              <h1 className="text-3xl font-bold mb-4">{name}</h1>
-              {/* Display sale price when on sale */}
-              {onSale && (
-                <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start mb-4">
-                  <p className="text-3xl font-bold text-red-600 mr-4">
-                    {product.variations && filteredVariantPrice(price, '')}
-                    {!product.variations && salePrice}
-                  </p>
-                  <p className="text-2xl text-gray-500 line-through">
-                    {product.variations && filteredVariantPrice(price, 'right')}
-                    {!product.variations && regularPrice}
-                  </p>
-                </div>
-              )}
-              {/* Display regular price when not on sale */}
-              {!onSale && (
-                <p className="text-3xl font-bold mb-4">{price}</p>
-              )}
-              <p className="text-lg mb-4">{DESCRIPTION_WITHOUT_HTML}</p>
+              <p className="text-gray-600 text-center md:text-left">{DESCRIPTION_WITHOUT_HTML}</p>
               {Boolean(product.stockQuantity) && (
-                <p className="text-lg mb-4">
+                <p className="text-sm font-semibold text-center md:text-left">
                   {product.stockQuantity} på lager
                 </p>
               )}
               {product.variations && (
-                <div className="mb-4">
-                  <label htmlFor="variant" className="block text-lg mb-2">Varianter</label>
+                <div className="w-full">
+                  <label htmlFor="variant" className="block text-sm font-medium text-gray-700 mb-2">
+                    Varianter
+                  </label>
                   <select
                     id="variant"
                     name="variant"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onChange={(e) => {
-                      setSelectedVariation(Number(e.target.value));
-                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    onChange={(e) => setSelectedVariation(Number(e.target.value))}
                   >
-                    {product.variations.nodes.map(
-                      ({ id, name, databaseId, stockQuantity }) => {
-                        // Remove product name from variation name
-                        const filteredName = name.split('- ').pop();
-                        return (
-                          <option key={id} value={databaseId}>
-                            {filteredName} - ({stockQuantity} på lager)
-                          </option>
-                        );
-                      },
-                    )}
+                    {product.variations.nodes.map(({ id, name, databaseId, stockQuantity }) => {
+                      const filteredName = name.split('- ').pop();
+                      return (
+                        <option key={id} value={databaseId}>
+                          {filteredName} - ({stockQuantity} på lager)
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
               )}
               <div className="flex justify-center md:justify-start">
-                {product.variations && (
-                  <AddToCart
-                    product={product}
-                    variationId={selectedVariation}
-                  />
+                {product.variations ? (
+                  <AddToCart product={product} variationId={selectedVariation} />
+                ) : (
+                  <AddToCart product={product} />
                 )}
-                {!product.variations && <AddToCart product={product} />}
               </div>
             </div>
           </div>
