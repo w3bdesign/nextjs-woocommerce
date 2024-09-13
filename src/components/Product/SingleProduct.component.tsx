@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
-import AddToCart, { IProduct, IProductRootObject } from './AddToCart.component';
+import AddToCart, { IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 import Button from '@/components/UI/Button.component';
 
-interface SingleProductProps {
-  product: IProduct;
-}
-
-const SingleProduct: React.FC<SingleProductProps> = ({ product }) => {
+const SingleProduct: React.FC<IProductRootObject> = ({
+  product,
+  variationId: initialVariationId,
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<
     number | undefined
-  >();
+  >(initialVariationId);
 
   const placeholderFallBack = 'https://via.placeholder.com/600';
 
@@ -20,11 +19,11 @@ const SingleProduct: React.FC<SingleProductProps> = ({ product }) => {
 
   useEffect(() => {
     setIsLoading(false);
-    if (product.variations) {
+    if (product.variations && !selectedVariation) {
       const firstVariant = product.variations.nodes[0].databaseId;
       setSelectedVariation(firstVariant);
     }
-  }, [product.variations]);
+  }, [product.variations, selectedVariation]);
 
   let { description, image, name, onSale, price, regularPrice, salePrice } =
     product;
@@ -40,8 +39,7 @@ const SingleProduct: React.FC<SingleProductProps> = ({ product }) => {
   }
 
   const handleBuy = () => {
-    // Implement buy functionality here
-    console.log('Buy button clicked');
+    console.log('Buy now clicked');
   };
 
   return (
@@ -75,79 +73,68 @@ const SingleProduct: React.FC<SingleProductProps> = ({ product }) => {
                 />
               )}
             </div>
-            <div className="flex flex-col space-y-4">
-              <h1 className="text-3xl font-bold text-center md:text-left">
-                {name}
-              </h1>
-              <div className="text-center md:text-left">
-                {onSale ? (
-                  <div className="flex flex-col md:flex-row items-center md:items-start space-y-2 md:space-y-0 md:space-x-4">
-                    <p className="text-3xl font-bold text-red-600">
-                      {product.variations
-                        ? filteredVariantPrice(price, '')
-                        : salePrice}
-                    </p>
-                    <p className="text-xl text-gray-500 line-through">
-                      {product.variations
-                        ? filteredVariantPrice(price, 'right')
-                        : regularPrice}
-                    </p>
-                  </div>
-                ) : (
-                  <p className="text-2xl font-bold">{price}</p>
-                )}
-              </div>
-              <p className="text-gray-600 text-center md:text-left">
-                {DESCRIPTION_WITHOUT_HTML}
-              </p>
-              {Boolean(product.stockQuantity) && (
-                <p className="text-sm font-semibold text-center md:text-left">
-                  {product.stockQuantity} på lager
+            <div className="flex flex-col space-y-6">
+              <h1 className="text-3xl font-bold">{name}</h1>
+              <div className="flex flex-col space-y-2">
+                {onSale && <p className="text-sm">Før {regularPrice}</p>}
+                <p className="text-4xl font-bold">
+                  {product.variations
+                    ? filteredVariantPrice(price, '')
+                    : onSale
+                      ? salePrice
+                      : price}
                 </p>
-              )}
-              {product.variations && (
-                <div className="w-full">
-                  <label
-                    htmlFor="variant"
-                    className="block text-sm font-medium text-gray-700 mb-2"
-                  >
-                    Varianter
-                  </label>
-                  <select
-                    id="variant"
-                    name="variant"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    onChange={(e) =>
-                      setSelectedVariation(Number(e.target.value))
-                    }
-                  >
-                    {product.variations.nodes.map(
-                      ({ id, name, databaseId, stockQuantity }) => {
-                        const filteredName = name.split('- ').pop();
-                        return (
-                          <option key={id} value={databaseId}>
-                            {filteredName} - ({stockQuantity} på lager)
-                          </option>
-                        );
-                      },
-                    )}
-                  </select>
-                </div>
-              )}
-              <div className="flex flex-col space-y-4 items-center md:items-start">
+                <p className="text-sm">
+                  Tilbudet gjelder til 19/09 eller så lenge lageret rekker.
+                </p>
+              </div>
+              <div className="space-y-4">
+                <AddToCart product={product} variationId={selectedVariation} />
                 <Button handleButtonClick={handleBuy} color="blue">
                   Kjøp nå
                 </Button>
-                <div className="w-full md:w-auto">
-                  {product.variations ? (
-                    <AddToCart
-                      product={product}
-                      variationId={selectedVariation}
-                    />
-                  ) : (
-                    <AddToCart product={product} />
-                  )}
-                </div>
+                {product.variations && (
+                  <div className="w-full">
+                    <label
+                      htmlFor="variant"
+                      className="block text-sm font-medium mb-2"
+                    >
+                      Varianter
+                    </label>
+                    <select
+                      id="variant"
+                      name="variant"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      onChange={(e) =>
+                        setSelectedVariation(Number(e.target.value))
+                      }
+                      value={selectedVariation}
+                    >
+                      {product.variations.nodes.map(
+                        ({ id, name, databaseId, stockQuantity }) => {
+                          const filteredName = name.split('- ').pop();
+                          return (
+                            <option key={id} value={databaseId}>
+                              {filteredName} - ({stockQuantity} på lager)
+                            </option>
+                          );
+                        },
+                      )}
+                    </select>
+                  </div>
+                )}
+              </div>
+              {Boolean(product.stockQuantity) && (
+                <p className="text-sm font-semibold">
+                  <span className="inline-block w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                  {product.stockQuantity}+ stk. på lager
+                </p>
+              )}
+              <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-2">
+                  Produktbeskrivelse
+                </h2>
+                <p className="text-gray-600">{DESCRIPTION_WITHOUT_HTML}</p>
               </div>
             </div>
           </div>
