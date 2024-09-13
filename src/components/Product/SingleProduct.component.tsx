@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
-import AddToCart, { IProductRootObject } from './AddToCart.component';
+import AddToCart, { IProduct, IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
+import Button from '@/components/UI/Button.component';
 
-const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
+interface SingleProductProps {
+  product: IProduct;
+}
+
+const SingleProduct: React.FC<SingleProductProps> = ({ product }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<
     number | undefined
@@ -34,8 +39,13 @@ const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
         .textContent || '';
   }
 
+  const handleBuy = () => {
+    // Implement buy functionality here
+    console.log('Buy button clicked');
+  };
+
   return (
-    <section className="bg-white">
+    <section className="bg-white mb-16 sm:mb-24">
       {isLoading ? (
         <div className="h-56 mt-20">
           <p className="text-2xl font-bold text-center">Laster produkt ...</p>
@@ -124,15 +134,20 @@ const SingleProduct: React.FC<IProductRootObject> = ({ product }) => {
                   </select>
                 </div>
               )}
-              <div className="flex justify-center md:justify-start">
-                {product.variations ? (
-                  <AddToCart
-                    product={product}
-                    variationId={selectedVariation}
-                  />
-                ) : (
-                  <AddToCart product={product} />
-                )}
+              <div className="flex flex-col space-y-4 items-center md:items-start">
+                <Button handleButtonClick={handleBuy} color="blue">
+                  Kjøp nå
+                </Button>
+                <div className="w-full md:w-auto">
+                  {product.variations ? (
+                    <AddToCart
+                      product={product}
+                      variationId={selectedVariation}
+                    />
+                  ) : (
+                    <AddToCart product={product} />
+                  )}
+                </div>
               </div>
             </div>
           </div>
