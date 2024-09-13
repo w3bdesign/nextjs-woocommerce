@@ -37,9 +37,7 @@ const SingleProduct: React.FC<IProductRootObject> = ({
         .textContent || '';
   }
 
-  const handleBuy = () => {
-    console.log('Buy now clicked');
-  };
+
 
   return (
     <section className="bg-white mb-16 sm:mb-24">
