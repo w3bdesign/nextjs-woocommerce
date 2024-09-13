@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
-import Button from '@/components/UI/Button.component';
 
 const SingleProduct: React.FC<IProductRootObject> = ({
   product,
