@@ -37,8 +37,6 @@ const SingleProduct: React.FC<IProductRootObject> = ({
         .textContent || '';
   }
 
-
-
   return (
     <section className="bg-white mb-16 sm:mb-24">
       {isLoading ? (
@@ -51,8 +49,8 @@ const SingleProduct: React.FC<IProductRootObject> = ({
         <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex flex-col space-y-8">
             {/* First row: Product info, price, and purchase options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-              <div className="w-full">
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="w-full md:w-1/2">
                 {image ? (
                   <img
                     id="product-image"
@@ -72,7 +70,7 @@ const SingleProduct: React.FC<IProductRootObject> = ({
                   />
                 )}
               </div>
-              <div className="flex flex-col space-y-6">
+              <div className="w-full md:w-1/2 flex flex-col space-y-6">
                 <h1 className="text-3xl font-bold">{name}</h1>
                 <div className="flex flex-col space-y-2">
                   {onSale && <p className="text-sm">Før {regularPrice}</p>}
