@@ -64,7 +64,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                 id="product-image"
                 src={image.sourceUrl}
                 alt={name}
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:scale-105"
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 md:hover:grow md:hover:scale-105"
               />
             )}
             {!image && (
@@ -75,7 +75,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                   placeholderFallBack
                 }
                 alt={name}
-                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 hover:grow hover:shadow-lg hover:scale-105"
+                className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 md:hover:grow md:hover:shadow-lg md:hover:scale-105"
               />
             )}
             <div className="ml-8">
