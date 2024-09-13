@@ -90,9 +90,7 @@ const SingleProduct: React.FC<IProductRootObject> = ({
               </div>
               <div className="space-y-4">
                 <AddToCart product={product} variationId={selectedVariation} />
-                <Button handleButtonClick={handleBuy} color="blue">
-                  Kjøp nå
-                </Button>
+
                 {product.variations && (
                   <div className="w-full">
                     <label
