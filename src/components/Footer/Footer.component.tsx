@@ -8,9 +8,6 @@ import React from 'react';
 const Footer = () => (
   <footer className="bg-white border-t border-gray-200">
     <div className="container max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-      <div className="flex items-center">
-        <span className="text-xl font-bold tracking-wide text-gray-800">NETTBUTIKK</span>
-      </div>
       <div className="text-gray-600">
         &copy; {new Date().getFullYear()} Daniel / w3bdesign
       </div>
