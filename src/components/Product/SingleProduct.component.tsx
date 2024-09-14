@@ -79,13 +79,13 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               />
             )}
             <div className="px-4 md:ml-8">
-              <h1 className="text-3xl font-bold text-center md:text-left mb-4">
+              <h1 className="text-2xl font-bold text-center md:text-left mb-4">
                 {name}
               </h1>
               {/* Display sale price when on sale */}
               {onSale && (
                 <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-2xl font-bold text-gray-900">
                     {product.variations && filteredVariantPrice(price, '')}
                     {!product.variations && salePrice}
                   </p>
@@ -97,7 +97,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               )}
               {/* Display regular price when not on sale */}
               {!onSale && (
-                <p className="text-2xl font-bold mb-4">{price}</p>
+               <p className="text-2xl font-bold mb-4">{price}</p>
               )}
               <p className="text-lg mb-4 text-center md:text-left">{DESCRIPTION_WITHOUT_HTML}</p>
               {Boolean(product.stockQuantity) && (
