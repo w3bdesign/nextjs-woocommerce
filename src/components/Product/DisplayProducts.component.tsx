@@ -124,7 +124,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                       {variations && filteredVariantPrice(price, '')}
                       {!variations && salePrice}
                     </div>
-                    <div className="pt-1 ml-2 text-gray-900 line-through text-lg">
+                    <div className="pt-1 ml-2 text-gray-500 line-through text-lg">
                       {variations && filteredVariantPrice(price, 'right')}
                       {!variations && regularPrice}
                     </div>
