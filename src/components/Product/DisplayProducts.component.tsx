@@ -111,7 +111,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 >
                   <span>
                     <div className="flex justify-center pt-3">
-                      <p className="font-bold text-center cursor-pointer">
+                      <p className="font-bold text-center cursor-pointer text-2xl">
                         {name}
                       </p>
                     </div>
@@ -120,11 +120,11 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 {/* Display sale price when on sale */}
                 {onSale && (
                   <div className="flex justify-center">
-                    <div className="pt-1 text-gray-900">
+                    <div className="pt-1 text-gray-900 text-xl">
                       {variations && filteredVariantPrice(price, '')}
                       {!variations && salePrice}
                     </div>
-                    <div className="pt-1 ml-2 text-gray-900 line-through">
+                    <div className="pt-1 ml-2 text-gray-900 line-through text-lg">
                       {variations && filteredVariantPrice(price, 'right')}
                       {!variations && regularPrice}
                     </div>
@@ -132,7 +132,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 )}
                 {/* Display regular price when not on sale */}
                 {!onSale && (
-                  <p className="pt-1 text-center text-gray-900">{price}</p>
+                  <p className="pt-1 text-center text-gray-900 text-xl">{price}</p>
                 )}
               </div>
             );
