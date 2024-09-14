@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Renders Footer of the application.
  * @function Footer
