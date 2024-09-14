@@ -71,7 +71,7 @@ The current release has been tested and is confirmed working with the following 
 
 ## Features
 
--   Next.js version 13.5.3
+-   Next.js version 14.2.5
 -   React 18
 -   Typescript
 -   Tests with Playwright
@@ -113,6 +113,8 @@ With that said, keep the following in mind:
 
 -   Currently only simple products and variable products work without any issues. Other product types are not known to work.
 -   Only Cash On Delivery (COD) is currently supported. More payment methods may be added later.
+
+This project is tested with BrowserStack.
 
 ## TODO
 

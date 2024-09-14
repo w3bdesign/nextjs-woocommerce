@@ -22,7 +22,7 @@ export const middleware = new ApolloLink((operation, forward) => {
     ? JSON.parse(localStorage.getItem('woo-session'))
     : null;
 
-  if (sessionData) {
+  if (sessionData && sessionData.token && sessionData.createdTime) {
     const { token, createdTime } = sessionData;
 
     // Check if the token is older than 7 days
