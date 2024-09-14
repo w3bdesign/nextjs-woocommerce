@@ -57,7 +57,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto ">
+        <div className="container flex flex-wrap items-center pt-4 pb-12 mx-auto">
           <div className="grid grid-cols-1 gap-4 md:mt-16 lg:grid-cols-2 xl:grid-cols-2 md:grid-cols-2 sm:grid-cols-2">
             {image && (
               <img
@@ -78,17 +78,18 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                 className="h-auto p-8 transition duration-500 ease-in-out transform xl:p-2 md:p-2 lg:p-2 md:hover:grow md:hover:shadow-lg md:hover:scale-105"
               />
             )}
-            <div className="ml-8">
-              <p className="text-3xl font-bold text-center md:text-left">{name}</p>
-              <br />
+            <div className="px-4 md:ml-8">
+              <h1 className="text-3xl font-bold text-center md:text-left mb-4">
+                {name}
+              </h1>
               {/* Display sale price when on sale */}
               {onSale && (
-                <div className="flex">
-                  <p className="pt-1 mt-4 text-3xl text-gray-900">
+                <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
+                  <p className="text-3xl font-bold text-red-600">
                     {product.variations && filteredVariantPrice(price, '')}
                     {!product.variations && salePrice}
                   </p>
-                  <p className="pt-1 pl-8 mt-4 text-2xl text-gray-900 line-through">
+                  <p className="text-xl text-gray-500 line-through md:ml-4">
                     {product.variations && filteredVariantPrice(price, 'right')}
                     {!product.variations && regularPrice}
                   </p>
@@ -96,27 +97,25 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               )}
               {/* Display regular price when not on sale */}
               {!onSale && (
-                <p className="pt-1 mt-4 text-2xl text-gray-900"> {price}</p>
+                <p className="text-2xl font-bold mb-4">{price}</p>
               )}
-              <br />
-              <p className="pt-1 mt-4 text-2xl text-gray-900">
-                {DESCRIPTION_WITHOUT_HTML}
-              </p>
+              <p className="text-lg mb-4 text-center md:text-left">{DESCRIPTION_WITHOUT_HTML}</p>
               {Boolean(product.stockQuantity) && (
-                <p
-                  v-if="data.product.stockQuantity"
-                  className="pt-1 mt-4 mb-4 text-2xl text-gray-900"
-                >
-                  {product.stockQuantity} på lager
-                </p>
+                <div className="mb-4 p-2 bg-green-100 border border-green-400 rounded-lg mx-auto md:mx-0 max-w-[14.375rem]">
+                  <p className="text-lg text-green-700 font-semibold text-center md:text-left">
+                    {product.stockQuantity} på lager
+                  </p>
+                </div>
               )}
               {product.variations && (
-                <p className="pt-1 mt-4 text-xl text-gray-900">
-                  <span className="py-2">Varianter</span>
+                <div className="mb-4">
+                  <label htmlFor="variant" className="block text-lg font-medium mb-2">
+                    Varianter
+                  </label>
                   <select
                     id="variant"
                     name="variant"
-                    className="block w-80 px-6 py-2 bg-white border border-gray-500 rounded-lg focus:outline-none focus:shadow-outline"
+                    className="block w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={(e) => {
                       setSelectedVariation(Number(e.target.value));
                     }}
@@ -133,20 +132,17 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                       },
                     )}
                   </select>
-                </p>
+                </div>
               )}
-              <div className="pt-1 mt-2">
-                {
-                  // Display default AddToCart button if we do not have variations.
-                  // If we do, send the variationId to AddToCart button
-                }
+              <div className="w-full p-4 md:p-0">
                 {product.variations && (
                   <AddToCart
                     product={product}
                     variationId={selectedVariation}
+                    fullWidth={true}
                   />
                 )}
-                {!product.variations && <AddToCart product={product} />}
+                {!product.variations && <AddToCart product={product} fullWidth={true} />}
               </div>
             </div>
           </div>
