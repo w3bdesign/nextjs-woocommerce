@@ -6,9 +6,9 @@ import React from 'react';
  * @returns {JSX.Element} - Rendered component
  */
 const Footer = () => (
-  <footer className="bg-white border-t border-gray-200">
-    <div className="container max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-      <div className="text-gray-600">
+  <footer className="bg-white">
+    <div className="container flex md:flex-wrap flex-col md:flex-row items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96 border border-gray-200">
+      <div className="text-gray-600 text-center">
         &copy; {new Date().getFullYear()} Daniel / w3bdesign
       </div>
     </div>
