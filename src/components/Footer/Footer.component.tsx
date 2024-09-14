@@ -8,7 +8,7 @@ import React from 'react';
 const Footer = () => (
   <footer className="bg-white">
     <div className="container flex md:flex-wrap flex-col md:flex-row items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96 border border-gray-200">
-      <div className="text-gray-600 text-center">
+      <div className="text-gray-600 mx-auto">
         &copy; {new Date().getFullYear()} Daniel / w3bdesign
       </div>
     </div>
