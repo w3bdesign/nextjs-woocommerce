@@ -85,7 +85,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               {/* Display sale price when on sale */}
               {onSale && (
                 <div className="flex flex-col md:flex-row items-center md:items-start mb-4">
-                  <p className="text-3xl font-bold text-red-600">
+                  <p className="text-3xl font-bold text-gray-900">
                     {product.variations && filteredVariantPrice(price, '')}
                     {!product.variations && salePrice}
                   </p>
