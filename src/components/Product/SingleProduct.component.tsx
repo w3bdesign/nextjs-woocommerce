@@ -134,7 +134,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                   </select>
                 </div>
               )}
-              <div className="w-full">
+              <div className="w-full p-4">
                 {product.variations && (
                   <AddToCart
                     product={product}
