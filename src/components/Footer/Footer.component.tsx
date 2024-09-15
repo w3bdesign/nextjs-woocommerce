@@ -1,14 +1,12 @@
-import React from 'react';
-
 /**
  * Renders Footer of the application.
  * @function Footer
  * @returns {JSX.Element} - Rendered component
  */
-const Footer: React.FC = () => (
-  <footer className="bg-white py-4 mt-auto hidden md:block">
-    <div className="container mx-auto px-6">
-      <div className="text-gray-600 text-center">
+const Footer = () => (
+  <footer className="bg-white mb-4 hidden md:block">
+    <div className="container flex md:flex-wrap flex-col md:flex-row items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96 border border-gray-200 rounded">
+      <div className="text-gray-600 mx-auto">
         &copy; {new Date().getFullYear()} Daniel / w3bdesign
       </div>
     </div>
