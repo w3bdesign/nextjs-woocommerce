@@ -56,7 +56,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
   }, [refetch]);
 
   return (
-    <div className="flex flex-col min-h-screen min-w-[550px]">
+    <div className="flex flex-col min-h-screen container">
       <Header title={title} />
       <PageTitle title={title} />
       <main className="flex-grow">
