@@ -150,7 +150,7 @@ const CartContents = () => {
           </div>
           <div className="bg-white rounded-lg shadow-md p-6 w-[500px] md:w-full">
             <div className="flex justify-end mb-4">
-              <span className="font-semibold pr-6">Subtotal:</span>
+              <span className="font-semibold pr-4">Subtotal:</span>
               <span>{cartTotal}</span>
             </div>
             {!isCheckoutPage && (
