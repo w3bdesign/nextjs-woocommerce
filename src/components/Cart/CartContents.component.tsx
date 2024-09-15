@@ -154,9 +154,11 @@ const CartContents = () => {
               <span>{cartTotal}</span>
             </div>
             {!isCheckoutPage && (
-              <Link href="/kasse" passHref>
-                <Button fullWidth>GÅ TIL KASSE</Button>
-              </Link>
+              <div className="flex justify-center mb-4">
+                <Link href="/kasse" passHref>
+                  <Button fullWidth>GÅ TIL KASSE</Button>
+                </Link>
+              </div>
             )}
           </div>
         </>
