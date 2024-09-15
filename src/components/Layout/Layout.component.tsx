@@ -41,7 +41,6 @@ const Layout = ({ children, title }: ILayoutProps) => {
 
       if (!updatedCart && !data?.cart?.contents?.nodes.length) {
         // Should we clear the localStorage if we have no remote cart?
-
         return;
       }
 
@@ -57,13 +56,15 @@ const Layout = ({ children, title }: ILayoutProps) => {
   }, [refetch]);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header title={title} />
       <PageTitle title={title} />
-      {children}
+      <main className="flex-grow">
+        {children}
+      </main>
       <Footer />
       <Stickynav />
-    </>
+    </div>
   );
 };
 
