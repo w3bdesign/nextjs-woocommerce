@@ -115,7 +115,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                   <select
                     id="variant"
                     name="variant"
-                    className="block w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="max-w-[14.375rem] block w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onChange={(e) => {
                       setSelectedVariation(Number(e.target.value));
                     }}
