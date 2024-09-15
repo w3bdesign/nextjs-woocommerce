@@ -90,7 +90,14 @@ const CartContents = () => {
                 </div>
                 <div className="flex-grow ml-4">
                   <h2 className="text-lg font-semibold">{item.product.node.name}</h2>
-                  <p className="text-gray-600">{item.product.node.price}</p>
+                  {/* Display the price if available, otherwise show a placeholder */}
+                  <p className="text-gray-600">
+                    {item.product.node.priceHtml ? (
+                      <span dangerouslySetInnerHTML={{ __html: item.product.node.priceHtml }} />
+                    ) : (
+                      'Price not available'
+                    )}
+                  </p>
                 </div>
                 <div className="flex items-center">
                   <input
