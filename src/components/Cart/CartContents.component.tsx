@@ -110,7 +110,7 @@ const CartContents = () => {
                     {item.product.node.name}
                   </h2>
                   <p className="text-gray-600">
-                    Enhetspris: kr {getUnitPrice(item.subtotal, item.quantity)}
+                    kr {getUnitPrice(item.subtotal, item.quantity)}
                   </p>
                 </div>
                 <div className="flex items-center">
@@ -148,7 +148,7 @@ const CartContents = () => {
               </div>
             ))}
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-6 w-[500px] md:w-full">
             <div className="flex justify-end mb-4">
               <span className="font-semibold pr-6">Subtotal:</span>
               <span>{cartTotal}</span>
