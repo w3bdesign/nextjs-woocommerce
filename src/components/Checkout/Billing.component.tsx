@@ -41,7 +41,7 @@ const Billing = ({ handleFormSubmit }: IBillingProps) => {
   const methods = useForm<ICheckoutDataProps>();
 
   return (
-    <section className="text-gray-700 container p-4 py-2 mx-auto mb-[5rem] md:mb-0">
+    <section className="text-gray-700 container p-4 py-2 mx-auto mb-[8rem] md:mb-0">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
           <div className="mx-auto lg:w-1/2 flex flex-wrap">
