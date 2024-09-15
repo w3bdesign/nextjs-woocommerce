@@ -94,17 +94,6 @@ const CartContents = () => {
                 key={item.key}
                 className="flex items-center border-b border-gray-200 py-4"
               >
-                <div className="flex-shrink-0 w-24 h-24 relative">
-                  <Image
-                    src={
-                      item.product.node.image?.sourceUrl || '/placeholder.png'
-                    }
-                    alt={item.product.node.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded"
-                  />
-                </div>
                 <div className="flex-grow ml-4">
                   <h2 className="text-lg font-semibold">
                     {item.product.node.name}
