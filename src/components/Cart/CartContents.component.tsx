@@ -48,7 +48,7 @@ const CartContents = () => {
   });
 
   const handleRemoveProductClick = (cartKey: string, products: IProductRootObject[]) => {
-    if (products.length) {
+    if (products?.length) {
       const updatedItems = getUpdatedItems(products, 0, cartKey);
       updateCart({
         variables: {
@@ -71,10 +71,15 @@ const CartContents = () => {
 
   const cartTotal = data?.cart?.total || '0';
 
+  const getUnitPrice = (subtotal: string, quantity: number) => {
+    const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g,""));
+    return isNaN(numericSubtotal) ? 'N/A' : (numericSubtotal / quantity).toFixed(2);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Handlekurv</h1>
-      {data?.cart?.contents?.nodes.length ? (
+      {data?.cart?.contents?.nodes?.length ? (
         <>
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             {data.cart.contents.nodes.map((item: IProductRootObject) => (
@@ -90,13 +95,8 @@ const CartContents = () => {
                 </div>
                 <div className="flex-grow ml-4">
                   <h2 className="text-lg font-semibold">{item.product.node.name}</h2>
-                  {/* Display the price if available, otherwise show a placeholder */}
                   <p className="text-gray-600">
-                    {item.product.node.priceHtml ? (
-                      <span dangerouslySetInnerHTML={{ __html: item.product.node.priceHtml }} />
-                    ) : (
-                      'Price not available'
-                    )}
+                    Enhetspris: kr {getUnitPrice(item.subtotal, item.quantity)}
                   </p>
                 </div>
                 <div className="flex items-center">
