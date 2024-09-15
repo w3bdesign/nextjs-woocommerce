@@ -108,13 +108,13 @@ const CartContents = () => {
                     }}
                     className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
                   />
-                  <button
-                    onClick={() => handleRemoveProductClick(item.key, data.cart.contents.nodes)}
-                    className="text-red-500 hover:text-red-700"
-                    disabled={updateCartProcessing}
+                  <Button
+                    handleButtonClick={() => handleRemoveProductClick(item.key, data.cart.contents.nodes)}
+                    color="red"
+                    buttonDisabled={updateCartProcessing}
                   >
                     Fjern
-                  </button>
+                  </Button>
                 </div>
                 <div className="ml-4">
                   <p className="text-lg font-semibold">{item.subtotal}</p>
@@ -129,7 +129,7 @@ const CartContents = () => {
             </div>
             {!isCheckoutPage && (
               <Link href="/kasse" passHref>
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <Button fullWidth>
                   GÅ TIL KASSE
                 </Button>
               </Link>
@@ -140,7 +140,7 @@ const CartContents = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Ingen produkter i handlekurven</h2>
           <Link href="/produkter" passHref>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <Button>
               Fortsett å handle
             </Button>
           </Link>
