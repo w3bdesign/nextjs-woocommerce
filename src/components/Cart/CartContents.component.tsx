@@ -1,19 +1,14 @@
-/*eslint complexity: ["error", 20]*/
-// Imports
 import { useContext, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
-// State
 import { CartContext } from '@/stores/CartProvider';
-
-// Components
 import Button from '@/components/UI/Button.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
-// Utils
 import {
   getFormattedCart,
   getUpdatedItems,
@@ -21,66 +16,40 @@ import {
   IProductRootObject,
 } from '@/utils/functions/functions';
 
-// GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
-/**
- * Renders cart contents.
- * @function CartContents
- * @returns {JSX.Element} - Rendered component
- */
 const CartContents = () => {
   const router = useRouter();
-
   const { setCart } = useContext(CartContext);
-
   const isCheckoutPage = router.pathname === '/kasse';
 
-  // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-
       if (!updatedCart && !data.cart.contents.nodes.length) {
-        // Clear the localStorage if we have no remote cart
-
         localStorage.removeItem('woocommerce-cart');
         setCart(null);
         return;
       }
-
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      // Update cart data in React Context.
       setCart(updatedCart);
     },
   });
 
-  // Update Cart Mutation.
-  const [updateCart, { loading: updateCartProcessing }] = useMutation(
-    UPDATE_CART,
-    {
-      onCompleted: () => {
+  const [updateCart, { loading: updateCartProcessing }] = useMutation(UPDATE_CART, {
+    onCompleted: () => {
+      refetch();
+      setTimeout(() => {
         refetch();
-        setTimeout(() => {
-          refetch();
-        }, 3000);
-      },
+      }, 3000);
     },
-  );
+  });
 
-  const handleRemoveProductClick = (
-    cartKey: string,
-    products: IProductRootObject[],
-  ) => {
+  const handleRemoveProductClick = (cartKey: string, products: IProductRootObject[]) => {
     if (products.length) {
-      // By passing the newQty to 0 in updateCart Mutation, it will remove the item.
-      const newQty = 0;
-      const updatedItems = getUpdatedItems(products, newQty, cartKey);
-
+      const updatedItems = getUpdatedItems(products, 0, cartKey);
       updateCart({
         variables: {
           input: {
@@ -90,9 +59,7 @@ const CartContents = () => {
         },
       });
     }
-
     refetch();
-
     setTimeout(() => {
       refetch();
     }, 3000);
@@ -102,50 +69,31 @@ const CartContents = () => {
     refetch();
   }, [refetch]);
 
+  const cartTotal = data?.cart?.total || '0';
+
   return (
-    <section className="py-8  mt-10">
-      <div className="container flex flex-wrap items-center mx-auto">
-        {data?.cart?.contents?.nodes.length ? (
-          data.cart.contents.nodes.map((item: IProductRootObject) => (
-            <div
-              className="container mx-auto mt-4 flex flex-wrap flex-row justify-around items-center content-center m-w-[1380px] border border-gray-300 rounded-lg shadow
-               "
-              key={item.key}
-            >
-              <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
-                <span className="block mt-2 font-extrabold">
-                  Slett: <br />
-                </span>
-                <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
-                  <Button
-                    color="red"
-                    buttonDisabled={updateCartProcessing}
-                    handleButtonClick={() =>
-                      handleRemoveProductClick(
-                        item.key,
-                        data.cart.contents.nodes,
-                      )
-                    }
-                  >
-                    Slett
-                  </Button>
-                </span>
-              </div>
-              <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
-                <span className="block mt-2 font-extrabold">
-                  Navn: <br />
-                </span>
-                <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
-                  {item.product.node.name}
-                </span>
-              </div>
-              <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
-                <span className="block mt-2 font-extrabold">
-                  Antall: <br />
-                </span>
-                <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Handlekurv</h1>
+      {data?.cart?.contents?.nodes.length ? (
+        <>
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            {data.cart.contents.nodes.map((item: IProductRootObject) => (
+              <div key={item.key} className="flex items-center border-b border-gray-200 py-4">
+                <div className="flex-shrink-0 w-24 h-24 relative">
+                  <Image
+                    src={item.product.node.image?.sourceUrl || '/placeholder.png'}
+                    alt={item.product.node.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded"
+                  />
+                </div>
+                <div className="flex-grow ml-4">
+                  <h2 className="text-lg font-semibold">{item.product.node.name}</h2>
+                  <p className="text-gray-600">{item.product.node.price}</p>
+                </div>
+                <div className="flex items-center">
                   <input
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     type="number"
                     min="1"
                     value={item.quantity}
@@ -158,41 +106,55 @@ const CartContents = () => {
                         updateCartProcessing,
                       );
                     }}
+                    className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
                   />
-                </span>
+                  <button
+                    onClick={() => handleRemoveProductClick(item.key, data.cart.contents.nodes)}
+                    className="text-red-500 hover:text-red-700"
+                    disabled={updateCartProcessing}
+                  >
+                    Fjern
+                  </button>
+                </div>
+                <div className="ml-4">
+                  <p className="text-lg font-semibold">{item.subtotal}</p>
+                </div>
               </div>
-              <div className="lg:m-2 xl:m-4 xl:w-1/6 lg:w-1/6 sm:m-2 w-auto">
-                <span className="block mt-2 font-extrabold">
-                  Total: <br />
-                </span>
-                <span className="inline-block mt-4 w-20 h-12 md:w-full lg:w-full xl:w-full">
-                  {item.subtotal}
-                </span>
-              </div>
-            </div>
-          ))
-        ) : (
-          <h1 className="text-2xl font-bold mx-auto">
-            Ingen produkter i handlekurven
-          </h1>
-        )}
-        {updateCartProcessing && (
-          <div className="mt-4 w-full">
-            <div className="text-xl mx-auto text-center">
-              Oppdaterer antall, vennligst vent ...
-              <LoadingSpinner />
-            </div>
+            ))}
           </div>
-        )}
-        {!isCheckoutPage && data?.cart?.contents?.nodes.length ? (
-          <div className="mt-4 mx-auto">
-            <Link href="/kasse" passHref>
-              <Button>GÅ TIL KASSE</Button>
-            </Link>
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="flex justify-between mb-4">
+              <span className="font-semibold">Subtotal:</span>
+              <span>{cartTotal}</span>
+            </div>
+            {!isCheckoutPage && (
+              <Link href="/kasse" passHref>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  GÅ TIL KASSE
+                </Button>
+              </Link>
+            )}
           </div>
-        ) : null}
-      </div>
-    </section>
+        </>
+      ) : (
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Ingen produkter i handlekurven</h2>
+          <Link href="/produkter" passHref>
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Fortsett å handle
+            </Button>
+          </Link>
+        </div>
+      )}
+      {updateCartProcessing && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded-lg">
+            <p className="text-lg mb-2">Oppdaterer handlekurv...</p>
+            <LoadingSpinner />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
