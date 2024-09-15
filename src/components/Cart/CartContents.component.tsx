@@ -149,7 +149,7 @@ const CartContents = () => {
             ))}
           </div>
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-end mb-4">
               <span className="font-semibold">Subtotal:</span>
               <span>{cartTotal}</span>
             </div>
