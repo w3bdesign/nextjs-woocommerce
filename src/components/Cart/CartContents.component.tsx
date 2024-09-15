@@ -38,16 +38,22 @@ const CartContents = () => {
     },
   });
 
-  const [updateCart, { loading: updateCartProcessing }] = useMutation(UPDATE_CART, {
-    onCompleted: () => {
-      refetch();
-      setTimeout(() => {
+  const [updateCart, { loading: updateCartProcessing }] = useMutation(
+    UPDATE_CART,
+    {
+      onCompleted: () => {
         refetch();
-      }, 3000);
+        setTimeout(() => {
+          refetch();
+        }, 3000);
+      },
     },
-  });
+  );
 
-  const handleRemoveProductClick = (cartKey: string, products: IProductRootObject[]) => {
+  const handleRemoveProductClick = (
+    cartKey: string,
+    products: IProductRootObject[],
+  ) => {
     if (products?.length) {
       const updatedItems = getUpdatedItems(products, 0, cartKey);
       updateCart({
@@ -72,21 +78,27 @@ const CartContents = () => {
   const cartTotal = data?.cart?.total || '0';
 
   const getUnitPrice = (subtotal: string, quantity: number) => {
-    const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g,""));
-    return isNaN(numericSubtotal) ? 'N/A' : (numericSubtotal / quantity).toFixed(2);
+    const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g, ''));
+    return isNaN(numericSubtotal)
+      ? 'N/A'
+      : (numericSubtotal / quantity).toFixed(2);
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Handlekurv</h1>
       {data?.cart?.contents?.nodes?.length ? (
         <>
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
             {data.cart.contents.nodes.map((item: IProductRootObject) => (
-              <div key={item.key} className="flex items-center border-b border-gray-200 py-4">
+              <div
+                key={item.key}
+                className="flex items-center border-b border-gray-200 py-4"
+              >
                 <div className="flex-shrink-0 w-24 h-24 relative">
                   <Image
-                    src={item.product.node.image?.sourceUrl || '/placeholder.png'}
+                    src={
+                      item.product.node.image?.sourceUrl || '/placeholder.png'
+                    }
                     alt={item.product.node.name}
                     layout="fill"
                     objectFit="cover"
@@ -94,7 +106,9 @@ const CartContents = () => {
                   />
                 </div>
                 <div className="flex-grow ml-4">
-                  <h2 className="text-lg font-semibold">{item.product.node.name}</h2>
+                  <h2 className="text-lg font-semibold">
+                    {item.product.node.name}
+                  </h2>
                   <p className="text-gray-600">
                     Enhetspris: kr {getUnitPrice(item.subtotal, item.quantity)}
                   </p>
@@ -116,7 +130,12 @@ const CartContents = () => {
                     className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
                   />
                   <Button
-                    handleButtonClick={() => handleRemoveProductClick(item.key, data.cart.contents.nodes)}
+                    handleButtonClick={() =>
+                      handleRemoveProductClick(
+                        item.key,
+                        data.cart.contents.nodes,
+                      )
+                    }
                     color="red"
                     buttonDisabled={updateCartProcessing}
                   >
@@ -136,20 +155,18 @@ const CartContents = () => {
             </div>
             {!isCheckoutPage && (
               <Link href="/kasse" passHref>
-                <Button fullWidth>
-                  GÅ TIL KASSE
-                </Button>
+                <Button fullWidth>GÅ TIL KASSE</Button>
               </Link>
             )}
           </div>
         </>
       ) : (
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Ingen produkter i handlekurven</h2>
+          <h2 className="text-2xl font-bold mb-4">
+            Ingen produkter i handlekurven
+          </h2>
           <Link href="/produkter" passHref>
-            <Button>
-              Fortsett å handle
-            </Button>
+            <Button>Fortsett å handle</Button>
           </Link>
         </div>
       )}
