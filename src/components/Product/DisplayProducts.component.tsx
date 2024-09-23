@@ -50,7 +50,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
   <section className="container mx-auto bg-white">
     <div
       id="product-container"
-      className="flex flex-wrap items-center mb-[120px] md:mb-0"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-[120px] md:mb-0 px-4 lg:px-6"
     >
       {products ? (
         products.map(
@@ -79,7 +79,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
             return (
               <div
                 key={uuidv4()}
-                className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
+                className="flex flex-col"
               >
                 <Link
                   href={`/produkt/${encodeURIComponent(
@@ -90,14 +90,14 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                     {image ? (
                       <img
                         id="product-image"
-                        className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                        className="w-full h-auto object-cover aspect-square transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
                         alt={name}
                         src={image.sourceUrl}
                       />
                     ) : (
                       <img
                         id="product-image"
-                        className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                        className="w-full h-auto object-cover aspect-square transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
                         alt={name}
                         src={
                           process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
@@ -113,7 +113,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 >
                   <span>
                     <div className="flex justify-center pt-3">
-                      <p className="font-bold text-center cursor-pointer text-2xl">
+                      <p className="font-bold text-center cursor-pointer text-lg md:text-xl">
                         {name}
                       </p>
                     </div>
@@ -122,11 +122,11 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 {/* Display sale price when on sale */}
                 {onSale && (
                   <div className="flex justify-center">
-                    <div className="pt-1 text-gray-900 text-xl">
+                    <div className="pt-1 text-gray-900 text-lg md:text-xl">
                       {variations && filteredVariantPrice(price, '')}
                       {!variations && salePrice}
                     </div>
-                    <div className="pt-1 ml-2 text-gray-500 line-through text-lg">
+                    <div className="pt-1 ml-2 text-gray-500 line-through text-md md:text-lg">
                       {variations && filteredVariantPrice(price, 'right')}
                       {!variations && regularPrice}
                     </div>
@@ -134,7 +134,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 )}
                 {/* Display regular price when not on sale */}
                 {!onSale && (
-                  <p className="pt-1 text-center text-gray-900 text-xl">
+                  <p className="pt-1 text-center text-gray-900 text-lg md:text-xl">
                     {price}
                   </p>
                 )}
@@ -143,7 +143,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
           },
         )
       ) : (
-        <div className="mx-auto text-xl font-bold text-center text-gray-800 no-underline uppercase">
+        <div className="col-span-full mx-auto text-xl font-bold text-center text-gray-800 no-underline uppercase">
           Ingen produkter funnet
         </div>
       )}
