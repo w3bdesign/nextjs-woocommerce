@@ -48,7 +48,10 @@ interface IDisplayProductsProps {
 
 const DisplayProducts = ({ products }: IDisplayProductsProps) => (
   <section className="container mx-auto bg-white">
-    <div id="product-container" className="flex flex-wrap items-center mb-[120px] md:mb-0">
+    <div
+      id="product-container"
+      className="flex flex-wrap items-center mb-[120px] md:mb-0"
+    >
       {products ? (
         products.map(
           ({
@@ -103,7 +106,6 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                     )}
                   </span>
                 </Link>
-
                 <Link
                   href={`/produkt/${encodeURIComponent(
                     slug,
@@ -132,7 +134,9 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 )}
                 {/* Display regular price when not on sale */}
                 {!onSale && (
-                  <p className="pt-1 text-center text-gray-900 text-xl">{price}</p>
+                  <p className="pt-1 text-center text-gray-900 text-xl">
+                    {price}
+                  </p>
                 )}
               </div>
             );
