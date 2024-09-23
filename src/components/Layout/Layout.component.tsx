@@ -56,14 +56,16 @@ const Layout = ({ children, title }: ILayoutProps) => {
   }, [refetch]);
 
   return (
-    <div className="flex flex-col min-h-screen container min-w-[140vw] md:min-w-[700px] md:px-[2.5rem] md:py-[1rem]">
-      <Header title={title} />
-      <PageTitle title={title} />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <Footer />
-      <Stickynav />
+    <div className="flex flex-col min-h-screen w-full mx-auto">
+      <div className="container min-w-[140vw] md:min-w-[700px] md:px-[2.5rem] md:py-[1rem] lg:max-w-[1440px] mx-auto">
+        <Header title={title} />
+        <PageTitle title={title} />
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
+        <Stickynav />
+      </div>
     </div>
   );
 };
