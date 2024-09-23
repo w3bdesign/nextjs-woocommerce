@@ -11,9 +11,7 @@ const Categories = ({ categories }: ICategoriesProps) => (
       {categories.map(({ id, name, slug }) => (
         <Link
           key={uuidv4()}
-          as={`/kategori/${slug}?id=${id}`}
-          href="/kategori/[id]"
-          passHref
+          href={`/kategori/${encodeURIComponent(slug)}?id=${encodeURIComponent(id)}`}
         >
           <div className="p-6 cursor-pointer">
             <div className="flex items-center justify-center w-full h-16 text-center border border-gray-300 rounded-lg shadow hover:shadow-outline">
