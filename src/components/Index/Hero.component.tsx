@@ -6,7 +6,7 @@
 const Hero = () => (
   <section
     id="hero"
-    className="flex w-full mx-auto bg-right bg-cover mt-14 md:pt-0 md:items-center bg-hero-background h-[24rem]"
+    className="flex w-full mx-auto bg-right bg-cover mt-14 md:pt-0 md:items-center bg-hero-background h-[24rem] lg:max-w-[1490px]"
   >
     <div className="container mx-auto">
       <div className="flex flex-col items-start justify-center w-full px-6 tracking-wide lg:w-1/2">
