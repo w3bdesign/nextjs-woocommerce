@@ -57,7 +57,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen w-full mx-auto">
-      <div className="container min-w-[140vw] md:min-w-[700px] md:px-[2.5rem] md:py-[1rem] lg:max-w-[1440px] mx-auto">
+      <div className="container min-w-[140vw] md:min-w-[700px] md:px-4 lg:px-6 py-4 lg:max-w-[1600px] mx-auto">
         <Header title={title} />
         <PageTitle title={title} />
         <main className="flex-grow">
