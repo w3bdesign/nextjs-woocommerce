@@ -17,11 +17,32 @@ const Navbar = () => {
   const isMobile = useIsMobile();
   return (
     <header>
-      <nav id="header" className="top-0 z-50 w-full py-1 bg-white">
-        <div className="container flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 py-3 mx-auto mt-0 md:space-x-4">
-          <div className="order-1 md:order-2 mb-4 md:mb-0">
+      <nav id="header" className="top-0 z-50 w-full py-1 bg-white ">
+        <div className="container flex md:flex-wrap flex-col md:flex-row items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96">
+          <div
+            className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1"
+            id="menu"
+          >
+            <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
+              <li>
+                <Link href="/produkter">
+                  <span className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
+                    Produkter
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/kategorier">
+                  <span className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
+                    Kategorier
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className="order-1 md:order-2">
             <Link href="/">
-              <span className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline">
+              <span className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline ">
                 <svg
                   className="mr-2 text-gray-800 fill-current"
                   xmlns="https://www.w3.org/2000/svg"
@@ -40,28 +61,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div
-            className="order-3 w-full md:w-auto md:flex md:items-center md:justify-between md:order-1 md:space-x-4"
-            id="menu"
-          >
-            <ul className="flex flex-col md:flex-row items-center justify-between pt-4 text-base text-gray-700 md:pt-0 md:space-x-4">
-              <li>
-                <Link href="/produkter">
-                  <span className="inline-block py-2 text-lg font-bold no-underline hover:underline">
-                    Produkter
-                  </span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/kategorier">
-                  <span className="inline-block py-2 text-lg font-bold no-underline hover:underline">
-                    Kategorier
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div
-            className="flex items-center order-2 md:order-3 mt-4 md:mt-0"
+            className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
             <AlgoliaSearchBox />
