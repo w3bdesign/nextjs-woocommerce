@@ -61,7 +61,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div
-            className="flex items-center order-2 md:order-3 md:mx-auto lg:mx-0"
+            className="flex items-center order-2 md:order-3"
             id="nav-content"
           >
             <AlgoliaSearchBox />
