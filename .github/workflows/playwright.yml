@@ -7,29 +7,22 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: pnpm/action-setup@v2
-      with:
-        version: 9
     - uses: actions/setup-node@v4
       with:
-        node-version: 20
-        cache: 'pnpm'
+        node-version: 18
     - name: Install dependencies
-      run: pnpm install
+      run: npm ci
     - name: Install Playwright Browsers
-      run: pnpm exec playwright install --with-deps chromium firefox
-    - name: Build the project
-      run: pnpm build
-    - name: Start the application
-      run: pnpm start &
-    - name: Wait for the application to be ready
-      run: |
-        npx wait-on http://localhost:3000
+      run: npx playwright install --with-deps
     - name: Run Playwright tests
+<<<<<<< HEAD
       run: pnpm exec playwright test
+=======
+      run: npx playwright test
+>>>>>>> parent of 6c737a9 (Update playwright.yml)
       env:
           CI: true
           NEXT_PUBLIC_GRAPHQL_URL: ${{ secrets.NEXT_PUBLIC_GRAPHQL_URL }}
