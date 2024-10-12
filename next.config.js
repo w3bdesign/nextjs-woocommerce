@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
+    remotePatterns: [
       'swewoocommerce.dfweb.no',
       'res.cloudinary.com',
       'via.placeholder.com',
