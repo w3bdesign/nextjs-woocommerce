@@ -60,9 +60,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
       <div className="container min-w-[140vw] sm:min-w-[95vw] md:px-4 lg:px-6 py-2 lg:max-w-[1600px] mx-auto">
         <Header title={title} />
         <PageTitle title={title} />
-        <main className="flex-grow">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
         <Footer />
         <Stickynav />
       </div>
