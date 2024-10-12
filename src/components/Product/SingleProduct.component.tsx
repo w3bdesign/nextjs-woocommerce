@@ -96,10 +96,10 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                 </div>
               )}
               {/* Display regular price when not on sale */}
-              {!onSale && (
-               <p className="text-2xl font-bold mb-4">{price}</p>
-              )}
-              <p className="text-lg mb-4 text-center md:text-left">{DESCRIPTION_WITHOUT_HTML}</p>
+              {!onSale && <p className="text-2xl font-bold mb-4">{price}</p>}
+              <p className="text-lg mb-4 text-center md:text-left">
+                {DESCRIPTION_WITHOUT_HTML}
+              </p>
               {Boolean(product.stockQuantity) && (
                 <div className="mb-4 p-2 bg-green-100 border border-green-400 rounded-lg mx-auto md:mx-0 max-w-[14.375rem]">
                   <p className="text-lg text-green-700 font-semibold text-center md:text-left">
@@ -109,7 +109,10 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               )}
               {product.variations && (
                 <div className="mb-4">
-                  <label htmlFor="variant" className="block text-lg font-medium mb-2">
+                  <label
+                    htmlFor="variant"
+                    className="block text-lg font-medium mb-2"
+                  >
                     Varianter
                   </label>
                   <select
@@ -142,7 +145,9 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                     fullWidth={true}
                   />
                 )}
-                {!product.variations && <AddToCart product={product} fullWidth={true} />}
+                {!product.variations && (
+                  <AddToCart product={product} fullWidth={true} />
+                )}
               </div>
             </div>
           </div>

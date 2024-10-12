@@ -91,7 +91,11 @@ export interface IProductRootObject {
  * @param {boolean} fullWidth // Whether the button should be full-width
  */
 
-const AddToCart = ({ product, variationId, fullWidth = false }: IProductRootObject) => {
+const AddToCart = ({
+  product,
+  variationId,
+  fullWidth = false,
+}: IProductRootObject) => {
   const { setCart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
