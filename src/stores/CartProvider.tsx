@@ -49,37 +49,44 @@ export type TRootObjectNull = RootObject | null | undefined;
 interface ICartContext {
   cart: RootObject | null | undefined;
   setCart: React.Dispatch<React.SetStateAction<TRootObjectNull>>;
+  updateCart: (newCart: RootObject) => void;
 }
 
 const CartState = {
   cart: null,
   setCart: () => {},
+  updateCart: () => {},
 };
 
 export const CartContext = createContext<ICartContext>(CartState);
 
 /**
  * Provides a global application context for the entire application with the cart contents
-
  */
 export const CartProvider = ({ children }: ICartProviderProps) => {
   const [cart, setCart] = useState<RootObject | null>();
 
   useEffect(() => {
     // Check if we are client-side before we access the localStorage
-    if (!process.browser) {
-      return;
-    }
-    const localCartData = localStorage.getItem('woocommerce-cart');
+    if (typeof window !== 'undefined') {
+      const localCartData = localStorage.getItem('woocommerce-cart');
 
-    if (localCartData) {
-      const cartData: RootObject = JSON.parse(localCartData);
-      setCart(cartData);
+      if (localCartData) {
+        const cartData: RootObject = JSON.parse(localCartData);
+        setCart(cartData);
+      }
     }
   }, []);
 
+  const updateCart = (newCart: RootObject) => {
+    setCart(newCart);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('woocommerce-cart', JSON.stringify(newCart));
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cart, setCart }}>
+    <CartContext.Provider value={{ cart, setCart, updateCart }}>
       {children}
     </CartContext.Provider>
   );
