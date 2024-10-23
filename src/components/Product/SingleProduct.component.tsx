@@ -185,6 +185,4 @@ interface IProduct {
   };
 }
 
-interface IProductRootObject {
-  product: IProduct;
-}
+
