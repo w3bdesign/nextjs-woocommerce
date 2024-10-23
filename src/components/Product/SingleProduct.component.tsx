@@ -160,29 +160,3 @@ const SingleProduct = ({ product }: IProductRootObject) => {
 };
 
 export default SingleProduct;
-
-// Types (if needed separately)
-interface IProduct {
-  id: string;
-  databaseId: number;
-  name: string;
-  description: string;
-  price: string;
-  regularPrice: string;
-  salePrice: string;
-  onSale: boolean;
-  image: {
-    sourceUrl: string;
-  };
-  stockQuantity: number;
-  variations?: {
-    nodes: Array<{
-      id: string;
-      databaseId: number;
-      name: string;
-      stockQuantity: number;
-    }>;
-  };
-}
-
-
