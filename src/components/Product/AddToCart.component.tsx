@@ -96,7 +96,7 @@ const AddToCart = ({
   variationId,
   fullWidth = false,
 }: IProductRootObject) => {
-  const { setCart, cart } = useContext(CartContext);
+  const { setCart, isLoading: isCartLoading } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productId = product?.databaseId ? product?.databaseId : variationId;
@@ -141,10 +141,6 @@ const AddToCart = ({
   });
 
   const handleAddToCart = () => {
-    if (!cart) {
-      console.log('Cart is not yet initialized. Please wait.');
-      return;
-    }
     addToCart();
     // Refetch cart after 2 seconds
     setTimeout(() => {
@@ -156,10 +152,10 @@ const AddToCart = ({
     <>
       <Button
         handleButtonClick={() => handleAddToCart()}
-        buttonDisabled={addToCartLoading || requestError || !cart}
+        buttonDisabled={addToCartLoading || requestError || isCartLoading}
         fullWidth={fullWidth}
       >
-        {!cart ? 'Loading...' : 'KJØP'}
+        {isCartLoading ? 'Loading...' : 'KJØP'}
       </Button>
     </>
   );
