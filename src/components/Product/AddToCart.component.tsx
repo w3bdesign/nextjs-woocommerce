@@ -153,12 +153,6 @@ const AddToCart = ({
       >
         KJØP
       </Button>
-      {requestError && (
-        <p>
-          Det oppstod en feil ved tillegging i handlekurven. Vennligst prøv
-          igjen.
-        </p>
-      )}
     </>
   );
 };
