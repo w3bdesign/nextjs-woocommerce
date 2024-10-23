@@ -129,7 +129,9 @@ const AddToCart = ({
         updateCart(updatedCart);
       }
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Error adding to cart');
+      console.error(error);
       setRequestError(true);
     },
   });
