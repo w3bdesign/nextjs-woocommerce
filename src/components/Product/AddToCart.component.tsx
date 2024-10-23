@@ -90,12 +90,13 @@ export interface IProductRootObject {
  * @param {number} variationId // Variation ID
  * @param {boolean} fullWidth // Whether the button should be full-width
  */
+
 const AddToCart = ({
   product,
   variationId,
   fullWidth = false,
 }: IProductRootObject) => {
-  const { updateCart } = useContext(CartContext);
+  const { setCart, cart } = useContext(CartContext);
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productId = product?.databaseId ? product?.databaseId : variationId;
@@ -106,14 +107,20 @@ const AddToCart = ({
   };
 
   // Get cart data query
-  const { refetch } = useQuery(GET_CART, {
+  const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: (data) => {
-      // Update cart in the localStorage and React Context.
+    onCompleted: () => {
+      // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-      if (updatedCart) {
-        updateCart(updatedCart);
+
+      if (!updatedCart) {
+        return;
       }
+
+      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
+
+      // Update cart data in React Context.
+      setCart(updatedCart);
     },
   });
 
@@ -122,38 +129,37 @@ const AddToCart = ({
     variables: {
       input: productQueryInput,
     },
-    onCompleted: (data) => {
-      // Immediately update the cart with new values
-      const updatedCart = getFormattedCart(data);
-      if (updatedCart) {
-        updateCart(updatedCart);
-      }
+
+    onCompleted: () => {
+      // Update the cart with new values in React context.
+      refetch();
     },
-    onError: (error) => {
-      console.error('Error adding to cart');
-      console.error(error);
+
+    onError: () => {
       setRequestError(true);
     },
   });
 
-  const handleAddToCart = async () => {
-    try {
-      await addToCart();
-      // Refetch cart immediately after adding to cart
-      await refetch();
-    } catch (error) {
-      setRequestError(true);
+  const handleAddToCart = () => {
+    if (!cart) {
+      console.log('Cart is not yet initialized. Please wait.');
+      return;
     }
+    addToCart();
+    // Refetch cart after 2 seconds
+    setTimeout(() => {
+      refetch();
+    }, 2000);
   };
 
   return (
     <>
       <Button
-        handleButtonClick={handleAddToCart}
-        buttonDisabled={addToCartLoading || requestError}
+        handleButtonClick={() => handleAddToCart()}
+        buttonDisabled={addToCartLoading || requestError || !cart}
         fullWidth={fullWidth}
       >
-        KJØP
+        {!cart ? 'Loading...' : 'KJØP'}
       </Button>
     </>
   );
