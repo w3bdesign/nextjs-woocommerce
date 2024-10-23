@@ -93,7 +93,7 @@ const Hamburger = () => {
                 >
                   <Link href={href} passHref>
                     <span
-                      className="inline-block px-4 py-2 no-underline hover:text-black hover:underline"
+                      className="text-xl inline-block px-4 py-2 no-underline hover:text-black hover:underline"
                       onClick={() => {
                         setisExpanded((prevExpanded) => !prevExpanded);
                       }}
