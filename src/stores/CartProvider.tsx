@@ -51,12 +51,14 @@ interface ICartContext {
   cart: RootObject | null | undefined;
   setCart: React.Dispatch<React.SetStateAction<TRootObjectNull>>;
   updateCart: (newCart: RootObject) => void;
+  isLoading: boolean;
 }
 
 const CartState: ICartContext = {
   cart: null,
   setCart: () => {},
   updateCart: () => {},
+  isLoading: true,
 };
 
 export const CartContext = createContext<ICartContext>(CartState);
@@ -66,6 +68,7 @@ export const CartContext = createContext<ICartContext>(CartState);
  */
 export const CartProvider = ({ children }: ICartProviderProps) => {
   const [cart, setCart] = useState<RootObject | null>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Check if we are client-side before we access the localStorage
@@ -75,6 +78,7 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
         const cartData: RootObject = JSON.parse(localCartData);
         setCart(cartData);
       }
+      setIsLoading(false);
     }
   }, []);
 
@@ -86,8 +90,8 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
   };
 
   const contextValue = useMemo(() => {
-    return { cart, setCart, updateCart };
-  }, [cart]);
+    return { cart, setCart, updateCart, isLoading };
+  }, [cart, isLoading]);
 
   return (
     <CartContext.Provider value={contextValue}>
