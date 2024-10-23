@@ -6,6 +6,7 @@ import React, {
   JSXElementConstructor,
   ReactFragment,
   ReactPortal,
+  useMemo,
 } from 'react';
 
 interface ICartProviderProps {
@@ -52,7 +53,7 @@ interface ICartContext {
   updateCart: (newCart: RootObject) => void;
 }
 
-const CartState = {
+const CartState: ICartContext = {
   cart: null,
   setCart: () => {},
   updateCart: () => {},
@@ -70,7 +71,6 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
     // Check if we are client-side before we access the localStorage
     if (typeof window !== 'undefined') {
       const localCartData = localStorage.getItem('woocommerce-cart');
-
       if (localCartData) {
         const cartData: RootObject = JSON.parse(localCartData);
         setCart(cartData);
@@ -85,8 +85,12 @@ export const CartProvider = ({ children }: ICartProviderProps) => {
     }
   };
 
+  const contextValue = useMemo(() => {
+    return { cart, setCart, updateCart };
+  }, [cart]);
+
   return (
-    <CartContext.Provider value={{ cart, setCart, updateCart }}>
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );
