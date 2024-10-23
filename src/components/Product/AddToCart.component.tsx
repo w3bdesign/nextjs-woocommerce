@@ -90,7 +90,6 @@ export interface IProductRootObject {
  * @param {number} variationId // Variation ID
  * @param {boolean} fullWidth // Whether the button should be full-width
  */
-
 const AddToCart = ({
   product,
   variationId,
@@ -141,7 +140,6 @@ const AddToCart = ({
       // Refetch cart immediately after adding to cart
       await refetch();
     } catch (error) {
-      console.error('Error adding to cart:', error);
       setRequestError(true);
     }
   };
@@ -155,6 +153,12 @@ const AddToCart = ({
       >
         KJØP
       </Button>
+      {requestError && (
+        <p>
+          Det oppstod en feil ved tillegging i handlekurven. Vennligst prøv
+          igjen.
+        </p>
+      )}
     </>
   );
 };
