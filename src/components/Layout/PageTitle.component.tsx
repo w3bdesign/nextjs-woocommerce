@@ -5,7 +5,6 @@ interface IPageTitleProps {
 /**
  * Renders page title for each page.
  * @function PageTitle
- * @param {boolean} marginLeft - Adds extra margin left if true
  * @param {string} title - Title for the page. Is set in <title>{title}</title>
  * @returns {JSX.Element} - Rendered component
  */
