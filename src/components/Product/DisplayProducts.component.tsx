@@ -108,7 +108,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 >
                   <span>
                     <div className="mt-4">
-                      <p className="text-base text-center cursor-pointer hover:text-gray-600 transition-colors">
+                      <p className="text-base font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
                         {name}
                       </p>
                     </div>
