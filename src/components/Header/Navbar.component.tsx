@@ -48,7 +48,7 @@ const Navbar = () => {
                   </span>
                 </Link>
               </div>
-              <Link href="/">
+              <Link href="/" className="hidden lg:block">
                 <span className="text-xl font-bold tracking-widest text-gray-900 hover:text-gray-700 transition-colors">
                   NETTBUTIKK
                 </span>
