@@ -4,10 +4,12 @@
  * @returns {JSX.Element} - Rendered component
  */
 const Footer = () => (
-  <footer className="bg-white mb-4 hidden md:block px-4">
-    <div className="container flex md:flex-wrap flex-col md:flex-row items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96 border border-gray-200 rounded lg:max-w-[1490px]">
-      <div className="text-gray-600 mx-auto">
-        &copy; {new Date().getFullYear()} Daniel / w3bdesign
+  <footer className="w-full bg-white border-t border-gray-200 mt-12">
+    <div className="container mx-auto px-6">
+      <div className="py-4">
+        <div className="text-gray-600 text-center">
+          &copy; {new Date().getFullYear()} Daniel / w3bdesign
+        </div>
       </div>
     </div>
   </footer>

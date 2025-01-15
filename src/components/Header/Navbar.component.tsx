@@ -16,58 +16,55 @@ import useIsMobile from '@/utils/hooks/useIsMobile';
 const Navbar = () => {
   const isMobile = useIsMobile();
   return (
-    <header>
-      <nav id="header" className="top-0 z-50 w-full py-1 bg-white ">
-        <div className="container flex flex-col md:flex-row items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96">
-          <div
-            className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1"
-            id="menu"
-          >
-            <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0">
-              <li>
+    <header className="border-b border-gray-200">
+      <nav id="header" className="top-0 z-50 w-full bg-white">
+        <div className="container mx-auto px-4 sm:px-6 py-4">
+          {isMobile ? (
+            // Mobile layout - logo with search below
+            <div className="flex flex-col space-y-4">
+              <div className="text-center">
+                <Link href="/">
+                  <span className="text-lg font-bold tracking-widest text-gray-900">
+                    NETTBUTIKK
+                  </span>
+                </Link>
+              </div>
+              <div className="w-full">
+                <MobileSearch />
+              </div>
+            </div>
+          ) : (
+            // Desktop layout
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-8">
                 <Link href="/produkter">
-                  <span className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
-                    Produkter
+                  <span className="text-base uppercase tracking-wider group relative">
+                    <span className="relative inline-block">
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
+                      Produkter
+                    </span>
                   </span>
                 </Link>
-              </li>
-              <li>
                 <Link href="/kategorier">
-                  <span className="inline-block py-2 pr-4 text-xl font-bold no-underline hover:underline">
-                    Kategorier
+                  <span className="text-base uppercase tracking-wider group relative">
+                    <span className="relative inline-block">
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
+                      Kategorier
+                    </span>
                   </span>
                 </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="order-1 md:order-2 md:hidden lg:block">
-            <Link href="/">
-              <span className="flex items-center text-xl font-bold tracking-wide text-gray-800 no-underline hover:no-underline ">
-                <svg
-                  className="mr-2 text-gray-800 fill-current"
-                  xmlns="https://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  aria-label="Nettbutikk logo"
-                >
-                  <path
-                    d="M5,22h14c1.103,0,2-0.897,2-2V9c0-0.553-0.447-1-1-1h-3V7c0-2.757-2.243-5-5-5S7,4.243,7,7v1H4C3.447,8,3,8.447,3,9v11 C3,21.103,3.897,22,5,22z M9,7c0-1.654,1.346-3,3-3s3,1.346,3,3v1H9V7z M5,10h2v2h2v-2h6v2h2v-2h2l0.002,10H5V10z"
-                    aria-label="Nettbutikk logo"
-                  />
-                </svg>
-                NETTBUTIKK
-              </span>
-            </Link>
-          </div>
-          <div
-            className="flex items-center order-2 md:order-3"
-            id="nav-content"
-          >
-            <AlgoliaSearchBox />
-            <MobileSearch />
-            {!isMobile && <Cart />}
-          </div>
+              </div>
+              <Link href="/" className="hidden lg:block">
+                <span className="text-xl font-bold tracking-widest text-gray-900 hover:text-gray-700 transition-colors">
+                  NETTBUTIKK
+                </span>
+              </Link>
+              <div className="flex items-center space-x-3">
+                <AlgoliaSearchBox />
+                <Cart />
+              </div>
+            </div>
+          )}
         </div>
       </nav>
     </header>
