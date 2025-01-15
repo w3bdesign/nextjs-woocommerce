@@ -60,18 +60,20 @@ const Layout = ({ children, title }: ILayoutProps) => {
       <Header title={title} />
       {title === 'Hjem' ? (
         <>
-          <main className="flex-grow">
+          <main className="flex-1">
             {children}
           </main>
         </>
       ) : (
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-6 flex-1">
           <PageTitle title={title} />
-          <main className="flex-grow">{children}</main>
+          <main>{children}</main>
         </div>
       )}
-      <Footer />
-      <Stickynav />
+      <div className="mt-auto">
+        <Footer />
+        <Stickynav />
+      </div>
     </div>
   );
 };
