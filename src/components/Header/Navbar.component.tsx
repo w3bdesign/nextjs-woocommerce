@@ -18,40 +18,47 @@ const Navbar = () => {
   return (
     <header className="border-b border-gray-200">
       <nav id="header" className="top-0 z-50 w-full bg-white">
-        <div className="container flex flex-col md:flex-row items-center justify-between px-6 py-4 mx-auto mt-0">
-          <div className="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
-            <ul className="items-center justify-between pt-4 text-base text-gray-700 md:flex md:pt-0 space-x-8">
-              <li>
+        <div className="container mx-auto px-4 sm:px-6 py-4">
+          {isMobile ? (
+            // Mobile layout - logo with search below
+            <div className="flex flex-col space-y-4">
+              <div className="text-center">
+                <Link href="/">
+                  <span className="text-lg font-bold tracking-widest text-gray-900">
+                    NETTBUTIKK
+                  </span>
+                </Link>
+              </div>
+              <div className="w-full">
+                <MobileSearch />
+              </div>
+            </div>
+          ) : (
+            // Desktop layout
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-8">
                 <Link href="/produkter">
-                  <span className="inline-block py-2 text-sm uppercase tracking-wider hover:text-gray-500 transition-colors">
+                  <span className="text-sm uppercase tracking-wider hover:text-gray-500 transition-colors">
                     Produkter
                   </span>
                 </Link>
-              </li>
-              <li>
                 <Link href="/kategorier">
-                  <span className="inline-block py-2 text-sm uppercase tracking-wider hover:text-gray-500 transition-colors">
+                  <span className="text-sm uppercase tracking-wider hover:text-gray-500 transition-colors">
                     Kategorier
                   </span>
                 </Link>
-              </li>
-            </ul>
-          </div>
-          <div className="order-1 md:order-2">
-            <Link href="/">
-              <span className="flex items-center text-xl font-bold tracking-widest text-gray-900 no-underline hover:text-gray-700 transition-colors">
-                NETTBUTIKK
-              </span>
-            </Link>
-          </div>
-          <div
-            className="flex items-center order-2 md:order-3"
-            id="nav-content"
-          >
-            <AlgoliaSearchBox />
-            <MobileSearch />
-            {!isMobile && <Cart />}
-          </div>
+              </div>
+              <Link href="/">
+                <span className="text-xl font-bold tracking-widest text-gray-900 hover:text-gray-700 transition-colors">
+                  NETTBUTIKK
+                </span>
+              </Link>
+              <div className="flex items-center space-x-3">
+                <AlgoliaSearchBox />
+                <Cart />
+              </div>
+            </div>
+          )}
         </div>
       </nav>
     </header>
