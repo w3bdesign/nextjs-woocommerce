@@ -57,13 +57,21 @@ const Layout = ({ children, title }: ILayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen w-full mx-auto">
-      <div className="container min-w-[140vw] sm:min-w-[95vw] md:px-4 lg:px-6 py-2 lg:max-w-[1600px] mx-auto">
-        <Header title={title} />
-        <PageTitle title={title} />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <Stickynav />
-      </div>
+      <Header title={title} />
+      {title === 'Hjem' ? (
+        <>
+          <main className="flex-grow">
+            {children}
+          </main>
+        </>
+      ) : (
+        <div className="container mx-auto px-6">
+          <PageTitle title={title} />
+          <main className="flex-grow">{children}</main>
+        </div>
+      )}
+      <Footer />
+      <Stickynav />
     </div>
   );
 };

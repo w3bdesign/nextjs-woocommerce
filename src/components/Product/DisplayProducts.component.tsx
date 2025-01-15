@@ -47,10 +47,10 @@ interface IDisplayProductsProps {
  */
 
 const DisplayProducts = ({ products }: IDisplayProductsProps) => (
-  <section className="container mx-auto bg-white">
+  <section className="container mx-auto bg-white py-12">
     <div
       id="product-container"
-      className="flex flex-wrap items-center mb-[120px] md:mb-0"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
     >
       {products ? (
         products.map(
@@ -77,34 +77,29 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
             }
 
             return (
-              <div
-                key={uuidv4()}
-                className="flex flex-col p-6 md:w-1/2 xl:w-1/4"
-              >
+              <div key={uuidv4()} className="group">
                 <Link
                   href={`/produkt/${encodeURIComponent(
                     slug,
                   )}?id=${encodeURIComponent(databaseId)}`}
                 >
-                  <span>
+                  <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
                     {image ? (
                       <img
                         id="product-image"
-                        className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
                         src={image.sourceUrl}
                       />
                     ) : (
                       <img
                         id="product-image"
-                        className="transition duration-500 ease-in-out transform cursor-pointer hover:grow hover:shadow-lg hover:scale-105"
+                        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
-                        src={
-                          process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
-                        }
+                        src={process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL}
                       />
                     )}
-                  </span>
+                  </div>
                 </Link>
                 <Link
                   href={`/produkt/${encodeURIComponent(
@@ -112,32 +107,31 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                   )}?id=${encodeURIComponent(databaseId)}`}
                 >
                   <span>
-                    <div className="flex justify-center pt-3">
-                      <p className="font-bold text-center cursor-pointer text-2xl">
+                    <div className="mt-4">
+                      <p className="text-base text-center cursor-pointer hover:text-gray-600 transition-colors">
                         {name}
                       </p>
                     </div>
                   </span>
                 </Link>
-                {/* Display sale price when on sale */}
-                {onSale && (
-                  <div className="flex justify-center">
-                    <div className="pt-1 text-gray-900 text-xl">
-                      {variations && filteredVariantPrice(price, '')}
-                      {!variations && salePrice}
+                <div className="mt-2 text-center">
+                  {onSale ? (
+                    <div className="flex justify-center items-center space-x-2">
+                      <span className="text-red-600">
+                        {variations && filteredVariantPrice(price, '')}
+                        {!variations && salePrice}
+                      </span>
+                      <span className="text-gray-500 text-sm line-through">
+                        {variations && filteredVariantPrice(price, 'right')}
+                        {!variations && regularPrice}
+                      </span>
                     </div>
-                    <div className="pt-1 ml-2 text-gray-500 line-through text-lg">
-                      {variations && filteredVariantPrice(price, 'right')}
-                      {!variations && regularPrice}
-                    </div>
-                  </div>
-                )}
-                {/* Display regular price when not on sale */}
-                {!onSale && (
-                  <p className="pt-1 text-center text-gray-900 text-xl">
-                    {price}
-                  </p>
-                )}
+                  ) : (
+                    <span className="text-gray-900">
+                      {price}
+                    </span>
+                  )}
+                </div>
               </div>
             );
           },
