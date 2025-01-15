@@ -38,13 +38,19 @@ const Navbar = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-8">
                 <Link href="/produkter">
-                  <span className="text-sm uppercase tracking-wider hover:text-gray-500 transition-colors">
-                    Produkter
+                  <span className="text-sm uppercase tracking-wider group relative">
+                    <span className="relative inline-block">
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
+                      Produkter
+                    </span>
                   </span>
                 </Link>
                 <Link href="/kategorier">
-                  <span className="text-sm uppercase tracking-wider hover:text-gray-500 transition-colors">
-                    Kategorier
+                  <span className="text-sm uppercase tracking-wider group relative">
+                    <span className="relative inline-block">
+                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
+                      Kategorier
+                    </span>
                   </span>
                 </Link>
               </div>
