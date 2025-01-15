@@ -2,23 +2,11 @@ import React, {
   useState,
   useEffect,
   createContext,
-  ReactElement,
-  JSXElementConstructor,
-  ReactFragment,
-  ReactPortal,
   useMemo,
 } from 'react';
 
 interface ICartProviderProps {
-  children:
-    | string
-    | number
-    | boolean
-    | ReactElement<any, string | JSXElementConstructor<any>>
-    | ReactFragment
-    | ReactPortal
-    | null
-    | undefined;
+  children: React.ReactNode;
 }
 
 interface Image {
