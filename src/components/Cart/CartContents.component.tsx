@@ -88,7 +88,7 @@ const CartContents = () => {
     <div className="container mx-auto px-4 py-8">
       {data?.cart?.contents?.nodes?.length ? (
         <>
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8  md:w-full">
+          <div className="bg-white rounded-lg p-6 mb-8 md:w-full">
             {data.cart.contents.nodes.map((item: IProductRootObject) => (
               <div
                 key={item.key}
@@ -148,7 +148,7 @@ const CartContents = () => {
               </div>
             ))}
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6 md:w-full">
+          <div className="bg-white rounded-lg p-6 md:w-full">
             <div className="flex justify-end mb-4">
               <span className="font-semibold pr-2">Subtotal:</span>
               <span>{cartTotal}</span>
