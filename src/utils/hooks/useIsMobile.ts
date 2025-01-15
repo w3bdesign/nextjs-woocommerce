@@ -1,20 +1,27 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import debounce from 'lodash/debounce';
 
 const useIsMobile = (): boolean => {
-  const [isMobile, setIsMobile] = useState(false);
+  // Initialize with null to avoid hydration mismatch
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
 
-  useLayoutEffect(() => {
-    const updateSize = (): void => {
+  useEffect(() => {
+    // Skip effect on server side
+    if (typeof window === 'undefined') return;
+
+    const updateSize = debounce((): void => {
       setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', debounce(updateSize, 250));
+    }, 250);
+
+    // Initial check
     updateSize();
 
+    window.addEventListener('resize', updateSize);
     return (): void => window.removeEventListener('resize', updateSize);
   }, []);
 
-  return isMobile;
+  // Return false during SSR, actual value after hydration
+  return isMobile ?? false;
 };
 
 export default useIsMobile;
