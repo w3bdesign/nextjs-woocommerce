@@ -50,7 +50,7 @@ const Cart = ({ stickyNav }: ICartProps) => {
 
       {productCount && (
         <span
-          className={`w-6 h-6 pb-2 -mt-5 text-center rounded-full         
+          className={`w-6 h-6 pb-2 -mt-5 !ml-auto text-center rounded-full
           ${stickyNav ? 'text-black bg-white' : 'text-white bg-black'}`}
         >
           {productCount}
