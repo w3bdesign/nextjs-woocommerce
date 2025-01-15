@@ -3,7 +3,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce/badge)](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=w3bdesign_nextjs-woocommerce&metric=alert_status)](https://sonarcloud.io/dashboard?id=w3bdesign_nextjs-woocommerce)
  
-[![Screenshot 1](./screenshots/screenshot1.jpg)](https://private-user-images.githubusercontent.com/45217974/403621036-7337902d-06d6-4012-b09b-cdb465f8edfd.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzY5ODU1NDUsIm5iZiI6MTczNjk4NTI0NSwicGF0aCI6Ii80NTIxNzk3NC80MDM2MjEwMzYtNzMzNzkwMmQtMDZkNi00MDEyLWIwOWItY2RiNDY1ZjhlZGZkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAxMTUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMTE1VDIzNTQwNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTE1ODlhYjhkYTE2OTgzMzk5OTEzMzgyNTg2NDg4ZjVmNmYxZjM0MWEzNTgzYWI4OGE5YTUxMjlmYzkxMDg3MzUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.OLw1K3naMaLI1qCfubGgQD57haevGnUBMMJymqNcN1I)
+![bilde](https://github.com/user-attachments/assets/08047025-0950-472a-ae7d-932c7faee1db)
+
 
 ## Star History 
 
