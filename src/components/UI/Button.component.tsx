@@ -32,13 +32,16 @@ const Button = ({
   isHero = false,
   href,
 }: IButtonProps) => {
+  const getColorClasses = (buttonColor: TButtonColors) => {
+    if (buttonColor === 'blue') {
+      return 'bg-blue-500 hover:bg-blue-600';
+    }
+    return 'bg-red-500 hover:bg-red-600';
+  };
+
   const buttonClasses = isHero
-    ? 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white text-gray-900 hover:bg-gray-400 hover:text-white shadow-md'
-    : `px-2 lg:px-4 py-2 font-bold border border-gray-400 border-solid rounded text-white ${
-        color === 'blue'
-          ? 'bg-blue-500 hover:bg-blue-600'
-          : 'bg-red-500 hover:bg-red-600'
-      }`;
+    ? 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white bg-opacity-90 text-gray-900 hover:bg-gray-400 hover:bg-opacity-95 hover:text-white hover:shadow-md'
+    : `px-2 lg:px-4 py-2 font-bold border border-gray-400 border-solid rounded text-white ${getColorClasses(color)}`;
 
   const classes = `${buttonClasses} ease-in-out transition-all duration-300 disabled:opacity-50 ${
     fullWidth ? 'w-full md:w-auto' : ''
