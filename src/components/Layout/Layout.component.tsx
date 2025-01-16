@@ -59,7 +59,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
     <div className="flex flex-col min-h-screen w-full mx-auto">
       <Header title={title} />
       {title === 'Hjem' ? (
-        <main className="flex-1 px-2 md:px-0">{children}</main>
+        <main className="flex-1 px-4 md:px-0">{children}</main>
       ) : (
         <div className="container mx-auto px-6 flex-1">
           <PageTitle title={title} />
