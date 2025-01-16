@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import Button from '../UI/Button.component';
 
 /**
  * Renders Hero section for Index page
@@ -25,12 +25,12 @@ const Hero = () => (
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-white mb-6">
           Stripete Zig Zag Pute Sett
         </h1>
-        <Link 
+        <Button 
           href="/produkter"
-          className="inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white text-gray-900 hover:bg-gray-100 transition-colors duration-200"
+          isHero
         >
           Se Utvalget
-        </Link>
+        </Button>
       </div>
     </div>
   </section>

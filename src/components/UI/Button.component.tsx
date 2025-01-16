@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Link from 'next/link';
 
 type TButtonColors = 'red' | 'blue';
 
@@ -8,6 +9,8 @@ interface IButtonProps {
   color?: TButtonColors;
   children: ReactNode;
   fullWidth?: boolean;
+  isHero?: boolean;
+  href?: string;
 }
 
 /**
@@ -26,21 +29,41 @@ const Button = ({
   color = 'blue',
   children,
   fullWidth = false,
-}: IButtonProps) => (
-  <button
-    onClick={handleButtonClick}
-    disabled={buttonDisabled}
-    className={`px-2 lg:px-4 py-2 font-bold bg-blue-500 border border-gray-400 border-solid rounded text-white ease-in-out transition-all duration-300 disabled:opacity-50
-      ${
-        color === 'blue'
-          ? 'bg-blue-500 hover:bg-blue-600'
-          : 'bg-red-500 hover:bg-red-600'
-      }
-      ${fullWidth ? 'w-full md:w-auto' : ''}
-    `}
-  >
-    {children}
-  </button>
-);
+  isHero = false,
+  href,
+}: IButtonProps) => {
+  const getColorClasses = (buttonColor: TButtonColors) => {
+    if (buttonColor === 'blue') {
+      return 'bg-blue-500 hover:bg-blue-600';
+    }
+    return 'bg-red-500 hover:bg-red-600';
+  };
+
+  const buttonClasses = isHero
+    ? 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white bg-opacity-90 text-gray-900 hover:bg-gray-400 hover:bg-opacity-95 hover:text-white hover:shadow-md'
+    : `px-2 lg:px-4 py-2 font-bold border border-gray-400 border-solid rounded text-white ${getColorClasses(color)}`;
+
+  const classes = `${buttonClasses} ease-in-out transition-all duration-300 disabled:opacity-50 ${
+    fullWidth ? 'w-full md:w-auto' : ''
+  }`;
+
+  if (href && isHero) {
+    return (
+      <Link href={href} className={classes}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      onClick={handleButtonClick}
+      disabled={buttonDisabled}
+      className={classes}
+    >
+      {children}
+    </button>
+  );
+};
 
 export default Button;
