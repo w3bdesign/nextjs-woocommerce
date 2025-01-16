@@ -33,7 +33,7 @@ const Button = ({
   href,
 }: IButtonProps) => {
   const buttonClasses = isHero
-    ? 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white text-gray-900 hover:bg-gray-400 hover:text-white'
+    ? 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white text-gray-900 hover:bg-gray-400 hover:text-white shadow-md'
     : `px-2 lg:px-4 py-2 font-bold border border-gray-400 border-solid rounded text-white ${
         color === 'blue'
           ? 'bg-blue-500 hover:bg-blue-600'
