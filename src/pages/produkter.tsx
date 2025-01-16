@@ -1,4 +1,3 @@
-// Components
 import DisplayProducts from '@/components/Product/DisplayProducts.component';
 import Layout from '@/components/Layout/Layout.component';
 
@@ -22,7 +21,9 @@ const Produkter: NextPage = ({
   products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
   <Layout title="Produkter">
-    {products && <DisplayProducts products={products} />}
+    <div className="px-1">
+      {products && <DisplayProducts products={products} />}
+    </div>
   </Layout>
 );
 

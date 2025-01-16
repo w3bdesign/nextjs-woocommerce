@@ -11,7 +11,7 @@ import Hamburger from './Hamburger.component';
  * Includes mobile menu.
  */
 const Stickynav = () => (
-  <nav id="footer" className="fixed bottom-0 z-50 w-full mt-[10rem] md:hidden">
+  <nav id="footer" className="fixed bottom-0 z-50 w-full mt-[10rem] md:hidden px-1">
     <div className="container flex flex-wrap items-center justify-between px-6 py-3 mx-auto mt-0 md:min-w-96 bg-blue-800">
       <Hamburger />
       <div
