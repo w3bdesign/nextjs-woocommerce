@@ -1,4 +1,3 @@
-// Components
 import Hero from '@/components/Index/Hero.component';
 import DisplayProducts from '@/components/Product/DisplayProducts.component';
 import Layout from '@/components/Layout/Layout.component';
@@ -23,8 +22,10 @@ const Index: NextPage = ({
   products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
   <Layout title="Hjem">
-    <Hero />
-    {products && <DisplayProducts products={products} />}
+    <div className="px-1">
+      <Hero />
+      {products && <DisplayProducts products={products} />}
+    </div>
   </Layout>
 );
 

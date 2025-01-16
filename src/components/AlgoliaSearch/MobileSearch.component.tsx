@@ -16,7 +16,7 @@ const MobileSearch = () => {
   const [search, setSearch] = useState<string | null>(null);
   const [hasFocus, sethasFocus] = useState<boolean>(false);
   return (
-    <div className="inline mt-4 md:hidden">
+    <div className="inline mt-4 md:hidden px-1">
       <InstantSearch
         indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
         searchClient={searchClient}
