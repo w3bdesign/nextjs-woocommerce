@@ -40,7 +40,7 @@ const Button = ({
   };
 
   const buttonClasses = isHero
-    ? 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white bg-opacity-90 text-gray-900 hover:bg-gray-400 hover:bg-opacity-95 hover:text-white hover:shadow-md'
+    ? 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white text-gray-900 hover:bg-gray-400 hover:text-white hover:shadow-md'
     : `px-2 lg:px-4 py-2 font-bold border border-gray-400 border-solid rounded text-white ${getColorClasses(color)}`;
 
   const classes = `${buttonClasses} ease-in-out transition-all duration-300 disabled:opacity-50 ${
