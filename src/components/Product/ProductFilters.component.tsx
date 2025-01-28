@@ -79,7 +79,7 @@ const ProductFilters = ({
 
   return (
     <div className="w-full md:w-64 flex-shrink-0">
-      <div className="bg-white p-6 rounded-lg shadow-sm">
+      <div className="bg-white p-8 sm:p-6 rounded-lg shadow-sm">
         <div className="mb-8">
           <h3 className="font-semibold mb-4">PRODUKT TYPE</h3>
           <div className="space-y-2">
