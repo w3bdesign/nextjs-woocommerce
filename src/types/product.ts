@@ -17,6 +17,7 @@ export interface ProductCategory {
 
 export interface ColorNode {
   name: string;
+  slug: string;
 }
 
 export interface SizeNode {

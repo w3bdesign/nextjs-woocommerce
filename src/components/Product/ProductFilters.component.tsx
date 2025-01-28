@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from 'react';
-
 import { Product, ProductType } from '@/types/product';
 
 interface ProductFiltersProps {
@@ -38,31 +37,33 @@ const ProductFilters = ({
       ),
     ),
   ).sort() as string[];
-  // Get unique colors from all products
-  const availableColors = Array.from(
-    new Set(
-      products.flatMap(
-        (product: Product) =>
-          product.allPaColors?.nodes.map(
-            (node: { name: string }) => node.name,
-          ) || [],
-      ),
-    ),
-  ).sort() as string[];
 
-  // Map color names to their CSS classes
-  const colorMap: { [key: string]: string } = {
-    Svart: 'bg-black',
-    Brun: 'bg-brown-500',
-    Beige: 'bg-[#D2B48C]',
-    Grå: 'bg-gray-500',
-    Hvit: 'bg-white border border-gray-300',
-    Blå: 'bg-blue-500',
+  // Get unique colors from all products
+  const availableColors = products
+    .flatMap((product: Product) => product.allPaColors?.nodes || [])
+    .filter((color, index, self) => 
+      index === self.findIndex((c) => c.slug === color.slug)
+    )
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const getColorClass = (slug: string) => {
+    switch (slug.toLowerCase()) {
+      case 'blue':
+        return 'bg-blue-500';
+      case 'grey':
+        return 'bg-gray-500';
+      case 'red':
+        return 'bg-red-500';
+      case 'green':
+        return 'bg-green-500';
+      default:
+        return 'bg-gray-100 border border-gray-300';
+    }
   };
 
-  const colors = availableColors.map((colorName) => ({
-    name: colorName,
-    class: colorMap[colorName] || 'bg-gray-300', // Fallback color if not in map
+  const colors = availableColors.map((color) => ({
+    name: color.name,
+    class: getColorClass(color.slug)
   }));
 
   const toggleSize = (size: string) => {
@@ -134,14 +135,16 @@ const ProductFilters = ({
           </div>
         </div>
 
-        <div>
+        <div className="mb-8">
           <h3 className="font-semibold mb-4">FARGE</h3>
           <div className="grid grid-cols-3 gap-2">
             {colors.map((color) => (
               <button
                 key={color.name}
                 onClick={() => toggleColor(color.name)}
-                className={`w-8 h-8 rounded-full ${color.class} ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
+                  color.class
+                } ${
                   selectedColors.includes(color.name)
                     ? 'ring-2 ring-offset-2 ring-gray-900'
                     : ''
@@ -150,14 +153,14 @@ const ProductFilters = ({
               />
             ))}
           </div>
-
-          <button
-            onClick={resetFilters}
-            className="w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
-          >
-            Resett filter
-          </button>
         </div>
+
+        <button
+          onClick={resetFilters}
+          className="w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+        >
+          Resett filter
+        </button>
       </div>
     </div>
   );

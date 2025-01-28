@@ -137,6 +137,7 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
           allPaColors {
             nodes {
               name
+              slug
             }
           }
           allPaSizes {
