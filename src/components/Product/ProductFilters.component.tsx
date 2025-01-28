@@ -36,7 +36,7 @@ const ProductFilters = ({
           ) || [],
       ),
     ),
-  ).sort() as string[];
+  ).sort((a, b) => a.localeCompare(b)) as string[];
 
   // Get unique colors from all products
   const availableColors = products
