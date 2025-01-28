@@ -87,17 +87,30 @@ const Products2: NextPage = ({
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
-  const [productTypes, setProductTypes] = useState<ProductType[]>([
-    { id: 't-shirts', name: 'T-Shirts', checked: false },
-    { id: 'gensere', name: 'Gensere', checked: false },
-    { id: 'singlet', name: 'Singlet', checked: false },
-    { id: 'skjorter', name: 'Skjorter', checked: false }
-  ]);
+  // Get unique product types from products
+  const initialProductTypes = Array.from(new Set(
+    products?.flatMap(product => 
+      product.productCategories?.nodes.map(cat => ({
+        id: cat.slug,
+        name: cat.name,
+        checked: false
+      })) || []
+    ) || []
+  )).sort((a, b) => a.name.localeCompare(b.name));
+
+  const [productTypes, setProductTypes] = useState<ProductType[]>(initialProductTypes);
 
   const toggleProductType = (id: string) => {
     setProductTypes(prev => prev.map(type => 
       type.id === id ? { ...type, checked: !type.checked } : type
     ));
+  };
+
+  const resetFilters = () => {
+    setSelectedSizes([]);
+    setSelectedColors([]);
+    setPriceRange([0, 1000]);
+    setProductTypes(prev => prev.map(type => ({ ...type, checked: false })));
   };
 
   // Filter products based on selected filters
@@ -180,13 +193,14 @@ const Products2: NextPage = ({
             productTypes={productTypes}
             toggleProductType={toggleProductType}
             products={products}
+            resetFilters={resetFilters}
           />
 
           {/* Main Content */}
           <div className="flex-1">
             <div className="flex justify-between items-center mb-8">
               <h1 className="text-2xl font-medium">
-                Herreklær <span className="text-gray-500">({products.length})</span>
+                Herreklær <span className="text-gray-500">({sortedProducts.length})</span>
               </h1>
 
               <div className="flex items-center gap-4">
