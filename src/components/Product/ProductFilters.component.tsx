@@ -85,16 +85,18 @@ const ProductFilters = ({
 
         <div className="mb-8">
           <h3 className="font-semibold mb-4">PRIS</h3>
-          <input
-            type="range"
-            min="0"
-            max="1000"
-            value={priceRange[1]}
-            onChange={(e) =>
-              setPriceRange([priceRange[0], parseInt(e.target.value)])
-            }
-            className="w-full"
-          />
+            <label htmlFor="price-range" className="sr-only">Pris</label>
+            <input
+              id="price-range"
+              type="range"
+              min="0"
+              max="1000"
+              value={priceRange[1]}
+              onChange={(e) =>
+                setPriceRange([priceRange[0], parseInt(e.target.value)])
+              }
+              className="w-full"
+            />
           <div className="flex justify-between mt-2">
             <span>kr {priceRange[0]}</span>
             <span>kr {priceRange[1]}</span>
