@@ -94,6 +94,14 @@ The current release has been tested and is confirmed working with the following 
 -   Pretty URLs with builtin Nextjs functionality
 -   Tailwind 3 for styling
 -   JSDoc comments
+-   Product filtering:
+    -   Dynamic color filtering using Tailwind's color system
+    -   Mobile-optimized filter layout
+    -   Accessible form controls with ARIA labels
+    -   Price range slider
+    -   Size and color filters
+    -   Product type categorization
+    -   Sorting options (popularity, price, newest)
 
 ## Troubleshooting
 
