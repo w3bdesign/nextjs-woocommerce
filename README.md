@@ -21,6 +21,7 @@
 -   [Issues](#Issues)
 -   [Troubleshooting](#Troubleshooting)
 -   [TODO](#TODO)
+-   [Future Improvements](SUGGESTIONS.md)
 
 ## Installation
 
