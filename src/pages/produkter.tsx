@@ -1,30 +1,44 @@
-// Components
-import DisplayProducts from '@/components/Product/DisplayProducts.component';
+import Head from 'next/head';
 import Layout from '@/components/Layout/Layout.component';
-
-// GraphQL
-import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
-
-// Utilities
+import ProductList from '@/components/Product/ProductList.component';
 import client from '@/utils/apollo/ApolloClient';
-
-// Types
+import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
-
-/**
- * Displays all of the products.
- * @function HomePage
- * @param {InferGetStaticPropsType<typeof getStaticProps>} products
- * @returns {JSX.Element} - Rendered component
- */
 
 const Produkter: NextPage = ({
   products,
-}: InferGetStaticPropsType<typeof getStaticProps>) => (
-  <Layout title="Produkter">
-    {products && <DisplayProducts products={products} />}
-  </Layout>
-);
+  loading,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  if (loading)
+    return (
+      <Layout title="Produkter">
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      </Layout>
+    );
+
+  if (!products)
+    return (
+      <Layout title="Produkter">
+        <div className="flex justify-center items-center min-h-screen">
+          <p className="text-red-500">Ingen produkter funnet</p>
+        </div>
+      </Layout>
+    );
+
+  return (
+    <Layout title="Produkter">
+      <Head>
+        <title>Produkter | WooCommerce Next.js</title>
+      </Head>
+
+      <div className="container mx-auto px-4 py-8">
+        <ProductList products={products} title="Herreklær" />
+      </div>
+    </Layout>
+  );
+};
 
 export default Produkter;
 
