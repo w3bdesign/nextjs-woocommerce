@@ -1,23 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 
-interface ProductType {
-  id: string;
-  name: string;
-  checked: boolean;
-}
-
-interface Product {
-  allPaSizes?: {
-    nodes: {
-      name: string;
-    }[];
-  };
-  allPaColors?: {
-    nodes: {
-      name: string;
-    }[];
-  };
-}
+import { Product, ProductType } from '@/types/product';
 
 interface ProductFiltersProps {
   selectedSizes: string[];
@@ -45,46 +28,52 @@ const ProductFilters = ({
   resetFilters,
 }: ProductFiltersProps) => {
   // Get unique sizes from all products
-  const sizes = Array.from(new Set(
-    products.flatMap((product: Product) => 
-      product.allPaSizes?.nodes.map((node: { name: string }) => node.name) || []
-    )
-  )).sort() as string[];
+  const sizes = Array.from(
+    new Set(
+      products.flatMap(
+        (product: Product) =>
+          product.allPaSizes?.nodes.map(
+            (node: { name: string }) => node.name,
+          ) || [],
+      ),
+    ),
+  ).sort() as string[];
   // Get unique colors from all products
-  const availableColors = Array.from(new Set(
-    products.flatMap((product: Product) => 
-      product.allPaColors?.nodes.map((node: { name: string }) => node.name) || []
-    )
-  )).sort() as string[];
+  const availableColors = Array.from(
+    new Set(
+      products.flatMap(
+        (product: Product) =>
+          product.allPaColors?.nodes.map(
+            (node: { name: string }) => node.name,
+          ) || [],
+      ),
+    ),
+  ).sort() as string[];
 
   // Map color names to their CSS classes
   const colorMap: { [key: string]: string } = {
-    'Svart': 'bg-black',
-    'Brun': 'bg-brown-500',
-    'Beige': 'bg-[#D2B48C]',
-    'Grå': 'bg-gray-500',
-    'Hvit': 'bg-white border border-gray-300',
-    'Blå': 'bg-blue-500'
+    Svart: 'bg-black',
+    Brun: 'bg-brown-500',
+    Beige: 'bg-[#D2B48C]',
+    Grå: 'bg-gray-500',
+    Hvit: 'bg-white border border-gray-300',
+    Blå: 'bg-blue-500',
   };
 
-  const colors = availableColors.map(colorName => ({
+  const colors = availableColors.map((colorName) => ({
     name: colorName,
-    class: colorMap[colorName] || 'bg-gray-300' // Fallback color if not in map
+    class: colorMap[colorName] || 'bg-gray-300', // Fallback color if not in map
   }));
 
   const toggleSize = (size: string) => {
-    setSelectedSizes(prev => 
-      prev.includes(size) 
-        ? prev.filter(s => s !== size)
-        : [...prev, size]
+    setSelectedSizes((prev) =>
+      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size],
     );
   };
 
   const toggleColor = (color: string) => {
-    setSelectedColors(prev => 
-      prev.includes(color) 
-        ? prev.filter(c => c !== color)
-        : [...prev, color]
+    setSelectedColors((prev) =>
+      prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color],
     );
   };
 
@@ -115,7 +104,9 @@ const ProductFilters = ({
             min="0"
             max="1000"
             value={priceRange[1]}
-            onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+            onChange={(e) =>
+              setPriceRange([priceRange[0], parseInt(e.target.value)])
+            }
             className="w-full"
           />
           <div className="flex justify-between mt-2">
@@ -158,16 +149,16 @@ const ProductFilters = ({
                 title={color.name}
               />
             ))}
-        </div>
+          </div>
 
-        <button
-          onClick={resetFilters}
-          className="w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
-        >
-          Resett filter
-        </button>
+          <button
+            onClick={resetFilters}
+            className="w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+          >
+            Resett filter
+          </button>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
