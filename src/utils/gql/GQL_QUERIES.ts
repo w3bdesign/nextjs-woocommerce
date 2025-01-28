@@ -117,6 +117,12 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
         image {
           sourceUrl
         }
+        productCategories {
+          nodes {
+            name
+            slug
+          }
+        }
         ... on SimpleProduct {
           databaseId
           price
@@ -128,11 +134,27 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
           price
           regularPrice
           salePrice
+          allPaColors {
+            nodes {
+              name
+            }
+          }
+          allPaSizes {
+            nodes {
+              name
+            }
+          }
           variations {
             nodes {
               price
               regularPrice
               salePrice
+              attributes {
+                nodes {
+                  name
+                  value
+                }
+              }
             }
           }
         }

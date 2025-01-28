@@ -24,6 +24,24 @@ interface Variations {
   nodes: Node[];
 }
 
+interface ProductCategory {
+  name: string;
+  slug: string;
+}
+
+interface ColorNode {
+  name: string;
+}
+
+interface SizeNode {
+  name: string;
+}
+
+interface AttributeNode {
+  name: string;
+  value: string;
+}
+
 interface Product {
   __typename: string;
   databaseId: number;
@@ -34,7 +52,31 @@ interface Product {
   price: string;
   regularPrice: string;
   salePrice?: string;
-  variations: Variations;
+  productCategories?: {
+    nodes: ProductCategory[];
+  };
+  allPaColors?: {
+    nodes: ColorNode[];
+  };
+  allPaSizes?: {
+    nodes: SizeNode[];
+  };
+  variations: {
+    nodes: Array<{
+      price: string;
+      regularPrice: string;
+      salePrice?: string;
+      attributes?: {
+        nodes: AttributeNode[];
+      };
+    }>;
+  };
+}
+
+interface ProductType {
+  id: string;
+  name: string;
+  checked: boolean;
 }
 
 const Products2: NextPage = ({
@@ -45,6 +87,64 @@ const Products2: NextPage = ({
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [productTypes, setProductTypes] = useState<ProductType[]>([
+    { id: 't-shirts', name: 'T-Shirts', checked: false },
+    { id: 'gensere', name: 'Gensere', checked: false },
+    { id: 'singlet', name: 'Singlet', checked: false },
+    { id: 'skjorter', name: 'Skjorter', checked: false }
+  ]);
+
+  const toggleProductType = (id: string) => {
+    setProductTypes(prev => prev.map(type => 
+      type.id === id ? { ...type, checked: !type.checked } : type
+    ));
+  };
+
+  // Filter products based on selected filters
+  const filteredProducts = products?.filter((product: Product) => {
+    // Filter by price
+    const productPrice = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+    const withinPriceRange = productPrice >= priceRange[0] && productPrice <= priceRange[1];
+    if (!withinPriceRange) return false;
+
+    // Filter by product type
+    const selectedTypes = productTypes.filter(t => t.checked).map(t => t.name.toLowerCase());
+    if (selectedTypes.length > 0) {
+      const productCategories = product.productCategories?.nodes.map((cat: ProductCategory) => cat.name.toLowerCase()) || [];
+      if (!selectedTypes.some(type => productCategories.includes(type))) return false;
+    }
+
+    // Filter by size
+    if (selectedSizes.length > 0) {
+      const productSizes = product.allPaSizes?.nodes.map((node: SizeNode) => node.name) || [];
+      if (!selectedSizes.some(size => productSizes.includes(size))) return false;
+    }
+
+    // Filter by color
+    if (selectedColors.length > 0) {
+      const productColors = product.allPaColors?.nodes.map((node: ColorNode) => node.name) || [];
+      if (!selectedColors.some(color => productColors.includes(color))) return false;
+    }
+
+    return true;
+  });
+
+  // Sort products
+  const sortedProducts = [...(filteredProducts || [])].sort((a, b) => {
+    const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
+    const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
+
+    switch (sortBy) {
+      case 'price-low':
+        return priceA - priceB;
+      case 'price-high':
+        return priceB - priceA;
+      case 'newest':
+        return b.databaseId - a.databaseId;
+      default: // 'popular'
+        return 0;
+    }
+  });
 
   if (loading) return (
     <Layout title="Produkter">
@@ -77,6 +177,9 @@ const Products2: NextPage = ({
             setSelectedColors={setSelectedColors}
             priceRange={priceRange}
             setPriceRange={setPriceRange}
+            productTypes={productTypes}
+            toggleProductType={toggleProductType}
+            products={products}
           />
 
           {/* Main Content */}
@@ -102,7 +205,7 @@ const Products2: NextPage = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {products.map((product: Product) => (
+              {sortedProducts.map((product: Product) => (
                 <ProductCard
                   key={product.databaseId}
                   databaseId={product.databaseId}

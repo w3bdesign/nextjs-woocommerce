@@ -1,5 +1,19 @@
 import { Dispatch, SetStateAction } from 'react';
 
+interface ProductType {
+  id: string;
+  name: string;
+  checked: boolean;
+}
+
+interface Product {
+  allPaSizes?: {
+    nodes: {
+      name: string;
+    }[];
+  };
+}
+
 interface ProductFiltersProps {
   selectedSizes: string[];
   setSelectedSizes: Dispatch<SetStateAction<string[]>>;
@@ -7,6 +21,9 @@ interface ProductFiltersProps {
   setSelectedColors: Dispatch<SetStateAction<string[]>>;
   priceRange: [number, number];
   setPriceRange: Dispatch<SetStateAction<[number, number]>>;
+  productTypes: ProductType[];
+  toggleProductType: (id: string) => void;
+  products: Product[];
 }
 
 const ProductFilters = ({
@@ -16,8 +33,16 @@ const ProductFilters = ({
   setSelectedColors,
   priceRange,
   setPriceRange,
+  productTypes,
+  toggleProductType,
+  products,
 }: ProductFiltersProps) => {
-  const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  // Get unique sizes from all products
+  const sizes = Array.from(new Set(
+    products.flatMap((product: Product) => 
+      product.allPaSizes?.nodes.map((node: { name: string }) => node.name) || []
+    )
+  )).sort() as string[];
   const colors = [
     { name: 'Svart', class: 'bg-black' },
     { name: 'Brun', class: 'bg-brown-500' },
@@ -49,22 +74,17 @@ const ProductFilters = ({
         <div className="mb-8">
           <h3 className="font-semibold mb-4">PRODUKT TYPE</h3>
           <div className="space-y-2">
-            <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox" />
-              <span className="ml-2">T-Shirts</span>
-            </label>
-            <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox" />
-              <span className="ml-2">Gensere</span>
-            </label>
-            <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox" />
-              <span className="ml-2">Singlet</span>
-            </label>
-            <label className="flex items-center">
-              <input type="checkbox" className="form-checkbox" />
-              <span className="ml-2">Skjorter</span>
-            </label>
+            {productTypes.map((type) => (
+              <label key={type.id} className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="form-checkbox"
+                  checked={type.checked}
+                  onChange={() => toggleProductType(type.id)}
+                />
+                <span className="ml-2">{type.name}</span>
+              </label>
+            ))}
           </div>
         </div>
 
