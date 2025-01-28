@@ -46,24 +46,9 @@ const ProductFilters = ({
     )
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const getColorClass = (slug: string) => {
-    switch (slug.toLowerCase()) {
-      case 'blue':
-        return 'bg-blue-500';
-      case 'grey':
-        return 'bg-gray-500';
-      case 'red':
-        return 'bg-red-500';
-      case 'green':
-        return 'bg-green-500';
-      default:
-        return 'bg-gray-100 border border-gray-300';
-    }
-  };
-
   const colors = availableColors.map((color) => ({
     name: color.name,
-    class: getColorClass(color.slug)
+    class: `bg-${color.slug}-500`
   }));
 
   const toggleSize = (size: string) => {
