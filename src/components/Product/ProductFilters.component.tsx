@@ -29,6 +29,7 @@ interface ProductFiltersProps {
   productTypes: ProductType[];
   toggleProductType: (id: string) => void;
   products: Product[];
+  resetFilters: () => void;
 }
 
 const ProductFilters = ({
@@ -41,6 +42,7 @@ const ProductFilters = ({
   productTypes,
   toggleProductType,
   products,
+  resetFilters,
 }: ProductFiltersProps) => {
   // Get unique sizes from all products
   const sizes = Array.from(new Set(
@@ -156,9 +158,16 @@ const ProductFilters = ({
                 title={color.name}
               />
             ))}
-          </div>
         </div>
+
+        <button
+          onClick={resetFilters}
+          className="w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+        >
+          Resett filter
+        </button>
       </div>
+    </div>
     </div>
   );
 };

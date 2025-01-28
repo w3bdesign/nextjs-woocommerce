@@ -7,77 +7,8 @@ import client from '@/utils/apollo/ApolloClient';
 import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
 
-interface Image {
-  __typename: string;
-  sourceUrl?: string;
-}
-
-interface Node {
-  __typename: string;
-  price: string;
-  regularPrice: string;
-  salePrice?: string;
-}
-
-interface Variations {
-  __typename: string;
-  nodes: Node[];
-}
-
-interface ProductCategory {
-  name: string;
-  slug: string;
-}
-
-interface ColorNode {
-  name: string;
-}
-
-interface SizeNode {
-  name: string;
-}
-
-interface AttributeNode {
-  name: string;
-  value: string;
-}
-
-interface Product {
-  __typename: string;
-  databaseId: number;
-  name: string;
-  onSale: boolean;
-  slug: string;
-  image: Image;
-  price: string;
-  regularPrice: string;
-  salePrice?: string;
-  productCategories?: {
-    nodes: ProductCategory[];
-  };
-  allPaColors?: {
-    nodes: ColorNode[];
-  };
-  allPaSizes?: {
-    nodes: SizeNode[];
-  };
-  variations: {
-    nodes: Array<{
-      price: string;
-      regularPrice: string;
-      salePrice?: string;
-      attributes?: {
-        nodes: AttributeNode[];
-      };
-    }>;
-  };
-}
-
-interface ProductType {
-  id: string;
-  name: string;
-  checked: boolean;
-}
+import { Product, ProductCategory, ProductType, SizeNode, ColorNode } from '@/types/product';
+import { getUniqueProductTypes } from '@/utils/functions/productUtils';
 
 const Products2: NextPage = ({
   products,
@@ -87,18 +18,9 @@ const Products2: NextPage = ({
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
-  // Get unique product types from products
-  const initialProductTypes = Array.from(new Set(
-    products?.flatMap(product => 
-      product.productCategories?.nodes.map(cat => ({
-        id: cat.slug,
-        name: cat.name,
-        checked: false
-      })) || []
-    ) || []
-  )).sort((a, b) => a.name.localeCompare(b.name));
-
-  const [productTypes, setProductTypes] = useState<ProductType[]>(initialProductTypes);
+  const [productTypes, setProductTypes] = useState<ProductType[]>(() => 
+    products ? getUniqueProductTypes(products) : []
+  );
 
   const toggleProductType = (id: string) => {
     setProductTypes(prev => prev.map(type => 
