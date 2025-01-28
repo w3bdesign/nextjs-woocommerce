@@ -49,8 +49,9 @@ const ProductList = ({ products, title }: ProductListProps) => {
           </h1>
 
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4">
-            <label className="text-sm font-medium">Sortering:</label>
+            <label htmlFor="sort-select" className="text-sm font-medium">Sortering:</label>
             <select
+              id="sort-select"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="min-w-[140px] border rounded-md px-3 py-1.5 text-sm"
