@@ -12,6 +12,11 @@ interface Product {
       name: string;
     }[];
   };
+  allPaColors?: {
+    nodes: {
+      name: string;
+    }[];
+  };
 }
 
 interface ProductFiltersProps {
@@ -43,14 +48,27 @@ const ProductFilters = ({
       product.allPaSizes?.nodes.map((node: { name: string }) => node.name) || []
     )
   )).sort() as string[];
-  const colors = [
-    { name: 'Svart', class: 'bg-black' },
-    { name: 'Brun', class: 'bg-brown-500' },
-    { name: 'Beige', class: 'bg-[#D2B48C]' },
-    { name: 'Grå', class: 'bg-gray-500' },
-    { name: 'Hvit', class: 'bg-white border border-gray-300' },
-    { name: 'Blå', class: 'bg-blue-500' }
-  ];
+  // Get unique colors from all products
+  const availableColors = Array.from(new Set(
+    products.flatMap((product: Product) => 
+      product.allPaColors?.nodes.map((node: { name: string }) => node.name) || []
+    )
+  )).sort() as string[];
+
+  // Map color names to their CSS classes
+  const colorMap: { [key: string]: string } = {
+    'Svart': 'bg-black',
+    'Brun': 'bg-brown-500',
+    'Beige': 'bg-[#D2B48C]',
+    'Grå': 'bg-gray-500',
+    'Hvit': 'bg-white border border-gray-300',
+    'Blå': 'bg-blue-500'
+  };
+
+  const colors = availableColors.map(colorName => ({
+    name: colorName,
+    class: colorMap[colorName] || 'bg-gray-300' // Fallback color if not in map
+  }));
 
   const toggleSize = (size: string) => {
     setSelectedSizes(prev => 

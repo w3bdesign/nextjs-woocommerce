@@ -12,12 +12,18 @@ interface ProductCardProps {
   };
 }
 
-const ProductCard = ({ databaseId, name, price, slug, image }: ProductCardProps) => {
+const ProductCard = ({
+  databaseId,
+  name,
+  price,
+  slug,
+  image,
+}: ProductCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   return (
     <div className="group">
-      <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
+      <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
         <button
           onClick={() => setIsFavorite(!isFavorite)}
           className="absolute right-4 top-4 z-10 rounded-full bg-white p-2 hover:scale-110 transition-transform duration-200"
@@ -45,6 +51,7 @@ const ProductCard = ({ databaseId, name, price, slug, image }: ProductCardProps)
               alt={name}
               fill
               className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+              priority={databaseId === 1}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
           ) : (
