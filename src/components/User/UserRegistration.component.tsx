@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation, ApolloError } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useForm, FormProvider } from 'react-hook-form';
 import { CREATE_USER } from '../../utils/gql/GQL_MUTATIONS';
 import { InputField } from '../Input/InputField.component';
@@ -14,6 +14,11 @@ interface IRegistrationData {
   lastName: string;
 }
 
+/**
+ * User registration component that handles WooCommerce customer creation
+ * @function UserRegistration
+ * @returns {JSX.Element} - Rendered component with registration form
+ */
 const UserRegistration = () => {
   const methods = useForm<IRegistrationData>();
   const [registerUser, { loading, error }] = useMutation(CREATE_USER);
@@ -27,14 +32,12 @@ const UserRegistration = () => {
 
       const customer = response.data?.registerCustomer?.customer;
       if (customer) {
-        console.log('Customer registration successful:', customer);
         setRegistrationCompleted(true);
       } else {
         throw new Error('Failed to register customer');
       }
     } catch (err: unknown) {
-      const error = err as ApolloError;
-      console.error('Registration error:', error);
+      console.error('Registration error');
     }
   };
 
