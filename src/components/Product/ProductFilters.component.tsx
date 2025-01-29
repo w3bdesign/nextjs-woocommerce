@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { Product, ProductType } from '@/types/product';
 import Button from '@/components/UI/Button.component';
 import Checkbox from '@/components/UI/Checkbox.component';
+import RangeSlider from '@/components/UI/RangeSlider.component';
 
 interface ProductFiltersProps {
   selectedSizes: string[];
@@ -85,22 +86,16 @@ const ProductFilters = ({
 
         <div className="mb-8">
           <h3 className="font-semibold mb-4">PRIS</h3>
-            <label htmlFor="price-range" className="sr-only">Pris</label>
-            <input
-              id="price-range"
-              type="range"
-              min="0"
-              max="1000"
-              value={priceRange[1]}
-              onChange={(e) =>
-                setPriceRange([priceRange[0], parseInt(e.target.value)])
-              }
-              className="w-full cursor-pointer"
-            />
-          <div className="flex justify-between mt-2">
-            <span>kr {priceRange[0]}</span>
-            <span>kr {priceRange[1]}</span>
-          </div>
+          <RangeSlider
+            id="price-range"
+            label="Pris"
+            min={0}
+            max={1000}
+            value={priceRange[1]}
+            startValue={priceRange[0]}
+            onChange={(value) => setPriceRange([priceRange[0], value])}
+            formatValue={(value) => `kr ${value}`}
+          />
         </div>
 
         <div className="mb-8">
