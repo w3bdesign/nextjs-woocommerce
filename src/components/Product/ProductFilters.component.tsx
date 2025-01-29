@@ -1,5 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Product, ProductType } from '@/types/product';
+import Button from '@/components/UI/Button.component';
+import Checkbox from '@/components/UI/Checkbox.component';
+import RangeSlider from '@/components/UI/RangeSlider.component';
 
 interface ProductFiltersProps {
   selectedSizes: string[];
@@ -65,59 +68,48 @@ const ProductFilters = ({
 
   return (
     <div className="w-full md:w-64 flex-shrink-0">
-      <div className="bg-white p-8 sm:p-6 rounded-lg shadow-sm">
+      <div className="bg-white px-8 pb-8 sm:px-6 sm:pb-6 rounded-lg shadow-sm">
         <div className="mb-8">
           <h3 className="font-semibold mb-4">PRODUKT TYPE</h3>
           <div className="space-y-2">
             {productTypes.map((type) => (
-              <label key={type.id} className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox"
-                  checked={type.checked}
-                  onChange={() => toggleProductType(type.id)}
-                />
-                <span className="ml-2">{type.name}</span>
-              </label>
+              <Checkbox
+                key={type.id}
+                id={type.id}
+                label={type.name}
+                checked={type.checked}
+                onChange={() => toggleProductType(type.id)}
+              />
             ))}
           </div>
         </div>
 
         <div className="mb-8">
           <h3 className="font-semibold mb-4">PRIS</h3>
-            <label htmlFor="price-range" className="sr-only">Pris</label>
-            <input
-              id="price-range"
-              type="range"
-              min="0"
-              max="1000"
-              value={priceRange[1]}
-              onChange={(e) =>
-                setPriceRange([priceRange[0], parseInt(e.target.value)])
-              }
-              className="w-full"
-            />
-          <div className="flex justify-between mt-2">
-            <span>kr {priceRange[0]}</span>
-            <span>kr {priceRange[1]}</span>
-          </div>
+          <RangeSlider
+            id="price-range"
+            label="Pris"
+            min={0}
+            max={1000}
+            value={priceRange[1]}
+            startValue={priceRange[0]}
+            onChange={(value) => setPriceRange([priceRange[0], value])}
+            formatValue={(value) => `kr ${value}`}
+          />
         </div>
 
         <div className="mb-8">
           <h3 className="font-semibold mb-4">STØRRELSE</h3>
           <div className="grid grid-cols-3 gap-2">
             {sizes.map((size) => (
-              <button
+              <Button
                 key={size}
-                onClick={() => toggleSize(size)}
-                className={`px-3 py-1 border rounded ${
-                  selectedSizes.includes(size)
-                    ? 'bg-gray-900 text-white'
-                    : 'hover:bg-gray-100'
-                }`}
+                handleButtonClick={() => toggleSize(size)}
+                variant="filter"
+                selected={selectedSizes.includes(size)}
               >
                 {size}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -142,12 +134,12 @@ const ProductFilters = ({
           </div>
         </div>
 
-        <button
-          onClick={resetFilters}
-          className="w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+        <Button
+          handleButtonClick={resetFilters}
+          variant="reset"
         >
           Resett filter
-        </button>
+        </Button>
       </div>
     </div>
   );

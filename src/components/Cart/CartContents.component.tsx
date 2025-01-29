@@ -136,7 +136,7 @@ const CartContents = () => {
                         data.cart.contents.nodes,
                       )
                     }
-                    color="red"
+                    variant="secondary"
                     buttonDisabled={updateCartProcessing}
                   >
                     Fjern
@@ -156,7 +156,7 @@ const CartContents = () => {
             {!isCheckoutPage && (
               <div className="flex justify-center mb-4">
                 <Link href="/kasse" passHref>
-                  <Button fullWidth>GÅ TIL KASSE</Button>
+                  <Button variant="primary" fullWidth>GÅ TIL KASSE</Button>
                 </Link>
               </div>
             )}
@@ -168,7 +168,7 @@ const CartContents = () => {
             Ingen produkter i handlekurven
           </h2>
           <Link href="/produkter" passHref>
-            <Button>Fortsett å handle</Button>
+            <Button variant="primary">Fortsett å handle</Button>
           </Link>
         </div>
       )}
