@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Product, ProductType } from '@/types/product';
+import Button from '@/components/UI/Button.component';
 
 interface ProductFiltersProps {
   selectedSizes: string[];
@@ -107,17 +108,14 @@ const ProductFilters = ({
           <h3 className="font-semibold mb-4">STØRRELSE</h3>
           <div className="grid grid-cols-3 gap-2">
             {sizes.map((size) => (
-              <button
+              <Button
                 key={size}
-                onClick={() => toggleSize(size)}
-                className={`px-3 py-1 border rounded ${
-                  selectedSizes.includes(size)
-                    ? 'bg-gray-900 text-white'
-                    : 'hover:bg-gray-100'
-                }`}
+                handleButtonClick={() => toggleSize(size)}
+                variant="filter"
+                selected={selectedSizes.includes(size)}
               >
                 {size}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -142,12 +140,12 @@ const ProductFilters = ({
           </div>
         </div>
 
-        <button
-          onClick={resetFilters}
-          className="w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+        <Button
+          handleButtonClick={resetFilters}
+          variant="reset"
         >
           Resett filter
-        </button>
+        </Button>
       </div>
     </div>
   );
