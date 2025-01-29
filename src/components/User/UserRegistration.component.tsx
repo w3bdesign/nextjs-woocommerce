@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation, ApolloError } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useForm, FormProvider } from 'react-hook-form';
 import { CREATE_USER } from '../../utils/gql/GQL_MUTATIONS';
 import { InputField } from '../Input/InputField.component';
