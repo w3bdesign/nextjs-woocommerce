@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, ChangeEvent } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { Product, ProductType } from '@/types/product';
 import Button from '@/components/UI/Button.component';
 import Checkbox from '@/components/UI/Checkbox.component';
