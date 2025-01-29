@@ -27,7 +27,7 @@ const Hero = () => (
         </h1>
         <Button 
           href="/produkter"
-          isHero
+          variant="hero"
         >
           Se Utvalget
         </Button>

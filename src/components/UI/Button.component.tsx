@@ -56,7 +56,7 @@ const Button = ({
     fullWidth ? 'w-full md:w-auto' : ''
   }`;
 
-  if (href && variant === 'hero') {
+  if (href) {
     return (
       <Link href={href} className={classes}>
         {children}
