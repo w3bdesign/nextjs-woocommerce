@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import { Product, ProductType } from '@/types/product';
 import Button from '@/components/UI/Button.component';
+import Checkbox from '@/components/UI/Checkbox.component';
 
 interface ProductFiltersProps {
   selectedSizes: string[];
@@ -71,15 +72,13 @@ const ProductFilters = ({
           <h3 className="font-semibold mb-4">PRODUKT TYPE</h3>
           <div className="space-y-2">
             {productTypes.map((type) => (
-              <label key={type.id} className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="form-checkbox"
-                  checked={type.checked}
-                  onChange={() => toggleProductType(type.id)}
-                />
-                <span className="ml-2">{type.name}</span>
-              </label>
+              <Checkbox
+                key={type.id}
+                id={type.id}
+                label={type.name}
+                checked={type.checked}
+                onChange={() => toggleProductType(type.id)}
+              />
             ))}
           </div>
         </div>
