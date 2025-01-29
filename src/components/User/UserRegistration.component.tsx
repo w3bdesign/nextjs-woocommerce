@@ -32,14 +32,12 @@ const UserRegistration = () => {
 
       const customer = response.data?.registerCustomer?.customer;
       if (customer) {
-        console.log('Customer registration successful:', customer);
         setRegistrationCompleted(true);
       } else {
         throw new Error('Failed to register customer');
       }
     } catch (err: unknown) {
-      const error = err as ApolloError;
-      console.error('Registration error:', error);
+      console.error('Registration error');
     }
   };
 
