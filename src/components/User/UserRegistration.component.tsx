@@ -14,6 +14,11 @@ interface IRegistrationData {
   lastName: string;
 }
 
+/**
+ * User registration component that handles WooCommerce customer creation
+ * @function UserRegistration
+ * @returns {JSX.Element} - Rendered component with registration form
+ */
 const UserRegistration = () => {
   const methods = useForm<IRegistrationData>();
   const [registerUser, { loading, error }] = useMutation(CREATE_USER);
