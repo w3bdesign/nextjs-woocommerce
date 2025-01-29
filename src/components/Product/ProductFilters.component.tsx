@@ -95,7 +95,7 @@ const ProductFilters = ({
               onChange={(e) =>
                 setPriceRange([priceRange[0], parseInt(e.target.value)])
               }
-              className="w-full"
+              className="w-full cursor-pointer"
             />
           <div className="flex justify-between mt-2">
             <span>kr {priceRange[0]}</span>
