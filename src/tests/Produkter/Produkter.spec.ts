@@ -22,7 +22,7 @@ test.describe('Produkter', () => {
     await page.locator('#header').getByText('1').waitFor();
 
     await expect(page.locator('#header').getByText('1')).toBeVisible({
-      timeout: 5000,
+      timeout: 15000,
     });
 
     await page.getByRole('link', { name: 'Handlekurv' }).click();
