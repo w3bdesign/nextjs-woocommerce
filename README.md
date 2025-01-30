@@ -129,6 +129,7 @@ This project is tested with BrowserStack.
 - Implement UserRegistration.component.tsx in a registration page
 - Add user dashboard with order history
 - Add Cloudflare Turnstile on registration page
+- Ensure email is real on registration page
 - Add total to cart/checkout page
 - Copy billing address to shipping address
 - Hide products not in stock
