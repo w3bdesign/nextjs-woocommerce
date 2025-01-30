@@ -1,0 +1,100 @@
+name: Repository Documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # allows manual triggering
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch all history for better context
+
+      - name: Wait for other checks
+        run: |
+          echo "Waiting for 5 minutes to allow other checks to complete..."
+          sleep 300
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Repomix
+        run: npm install -g repomix
+
+      - name: Generate Repository Documentation
+        run: |
+          echo "Creating DOCS directory..."
+          mkdir -p DOCS
+          
+          echo "Running Repomix..."
+          if ! repomix --output DOCS/repository_context.txt --style markdown --remove-empty-lines --verbose; then
+            echo "Error: Repomix command failed"
+            # Print directory contents for debugging
+            echo "DOCS directory contents:"
+            ls -la DOCS/
+            exit 1
+          fi
+          
+          echo "Verifying output file..."
+          if [ ! -f "DOCS/repository_context.txt" ]; then
+            echo "Error: repository_context.txt was not created"
+            # Print directory contents for debugging
+            echo "DOCS directory contents:"
+            ls -la DOCS/
+            exit 1
+          fi
+          
+          if [ ! -s "DOCS/repository_context.txt" ]; then
+            echo "Error: repository_context.txt is empty"
+            exit 1
+          fi
+          
+          echo "Repository context file generated successfully"
+          echo "File size: $(stat --format=%s "DOCS/repository_context.txt") bytes"
+          echo "First few lines of the file:"
+          head -n 5 "DOCS/repository_context.txt"
+
+      # Update Documentation
+      - name: Commit and Push Changes
+        run: |
+          echo "Configuring git..."
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          echo "Checking for changes..."
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "Changes detected, committing..."
+            
+            # Stage only repository_context.txt to avoid unintended changes
+            if ! git add DOCS/repository_context.txt; then
+              echo "Error: Failed to stage repository_context.txt"
+              exit 1
+            fi
+            
+            if ! git commit -m "docs: update repository context via Repomix [skip ci]"; then
+              echo "Error: Failed to create commit"
+              exit 1
+            fi
+            
+            echo "Pushing to main branch..."
+            if ! git push; then
+              echo "Error: Failed to push changes"
+              exit 1
+            fi
+            
+            echo "Successfully updated repository context"
+          else
+            echo "No changes detected in repository_context.txt"
+          fi
