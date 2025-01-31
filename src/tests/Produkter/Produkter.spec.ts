@@ -1,7 +1,48 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
 test.describe('Produkter', () => {
   test.beforeEach(async ({ page }) => {
+    // Mock the cart API response
+    await page.route('**/graphql', async (route) => {
+      const json = await route.request().postData();
+      if (json?.includes('AddToCart')) {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            data: {
+              addToCart: {
+                added: true,
+                cartKey: 'test-cart-key',
+                cart: {
+                  contents: {
+                    nodes: [
+                      {
+                        key: 'test-cart-key',
+                        product: {
+                          node: {
+                            name: 'Test simple',
+                            id: '29'
+                          }
+                        },
+                        quantity: 1,
+                        total: '100'
+                      }
+                    ]
+                  },
+                  total: '100',
+                  subtotal: '100',
+                  totalProductsCount: 1
+                }
+              }
+            }
+          })
+        });
+      } else {
+        await route.continue();
+      }
+    });
+
     await page.goto('http://localhost:3000');
   });
 
@@ -15,51 +56,35 @@ test.describe('Produkter', () => {
 
     await expect(page).toHaveURL(/.*simple/);
 
+    // Verify buy button is visible
     await expect(page.getByRole('button', { name: 'KJØP' })).toBeVisible();
 
-    // Click the buy button and wait for it to complete
-    await page.getByRole('button', { name: 'KJØP' }).click();
-    
-    // Wait for network idle to ensure any API calls complete
-    await page.waitForLoadState('networkidle');
-
-    // More specific selector for the cart count and consistent timeout
-    const cartCountSelector = '#header';
-    
-    // Wait for cart count to be visible and equal to "1"
-    await expect(page.locator(cartCountSelector).getByText('1')).toBeVisible({
-      timeout: 30000
-    });
-
-    await page.getByRole('link', { name: 'Handlekurv' }).click();
-
-    await page.locator('section').filter({ hasText: 'Handlekurv' }).waitFor();
-
-    // Check that that Handlekurv is visible
-    await expect(
-      page.locator('section').filter({ hasText: 'Handlekurv' }),
-    ).toBeVisible();
-
-    // Check that we can go to Kasse
-
-    await page.getByRole('button', { name: 'GÅ TIL KASSE' }).click();
-
-    await page.waitForURL('http://localhost:3000/kasse', {
-      waitUntil: 'networkidle',
-    });
-
-    await expect(
-      page.locator('section').filter({ hasText: 'Kasse' }),
-    ).toBeVisible();
-
-    // Check that we can type something in Billing fields
-
-    await page.getByPlaceholder('Etternavn').fill('testetternavn');
-
-    await page.getByPlaceholder('Etternavn').waitFor();
-
-    await expect(page.getByPlaceholder('Etternavn')).toHaveValue(
-      'testetternavn',
+    // Click buy button and wait for the mocked API response
+    const responsePromise = page.waitForResponse(response => 
+      response.url().includes('graphql') && 
+      response.request().postData()?.includes('AddToCart')
     );
+    await page.getByRole('button', { name: 'KJØP' }).click();
+    await responsePromise;
+
+    // Verify cart count updates in header
+    await expect(page.locator('#header').getByText('1')).toBeVisible();
+
+    // Navigate to cart
+    await page.getByRole('link', { name: 'Handlekurv' }).click();
+    await expect(
+      page.locator('section').filter({ hasText: 'Handlekurv' })
+    ).toBeVisible();
+
+    // Navigate to checkout
+    await page.getByRole('button', { name: 'GÅ TIL KASSE' }).click();
+    await page.waitForURL('http://localhost:3000/kasse');
+    await expect(
+      page.locator('section').filter({ hasText: 'Kasse' })
+    ).toBeVisible();
+
+    // Test billing form
+    await page.getByPlaceholder('Etternavn').fill('testetternavn');
+    await expect(page.getByPlaceholder('Etternavn')).toHaveValue('testetternavn');
   });
 });
