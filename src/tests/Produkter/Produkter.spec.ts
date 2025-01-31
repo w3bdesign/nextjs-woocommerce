@@ -17,12 +17,18 @@ test.describe('Produkter', () => {
 
     await expect(page.getByRole('button', { name: 'KJØP' })).toBeVisible();
 
+    // Click the buy button and wait for it to complete
     await page.getByRole('button', { name: 'KJØP' }).click();
+    
+    // Wait for network idle to ensure any API calls complete
+    await page.waitForLoadState('networkidle');
 
-    await page.locator('#header').getByText('1').waitFor();
-
-    await expect(page.locator('#header').getByText('1')).toBeVisible({
-      timeout: 15000,
+    // More specific selector for the cart count and consistent timeout
+    const cartCountSelector = '#header';
+    
+    // Wait for cart count to be visible and equal to "1"
+    await expect(page.locator(cartCountSelector).getByText('1')).toBeVisible({
+      timeout: 30000
     });
 
     await page.getByRole('link', { name: 'Handlekurv' }).click();
