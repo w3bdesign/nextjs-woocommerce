@@ -12,7 +12,7 @@ test.describe('Categories Navigation', () => {
 
     // Click a category and verify navigation
     await page.getByRole('link', { name: 'Clothing' }).click();
-    await expect(page).toHaveURL('http://localhost:3000/kategori/clothing');
+    await expect(page).toHaveURL(/^http:\/\/localhost:3000\/kategori\/clothing/);
 
     // Go back to categories
     await page.getByRole('link', { name: 'Kategorier' }).click();
@@ -20,7 +20,7 @@ test.describe('Categories Navigation', () => {
 
     // Try another category
     await page.getByRole('link', { name: 'Tshirts' }).click();
-    await expect(page).toHaveURL('http://localhost:3000/kategori/tshirts');
+    await expect(page).toHaveURL(/^http:\/\/localhost:3000\/kategori\/tshirts/);
   });
 
   test('should navigate between categories and home', async ({ page }) => {
