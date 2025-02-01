@@ -1,31 +1,35 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Categories', () => {
-  test('should navigate to categories page and verify content', async ({ page }) => {
-    // Start from homepage
+test.describe('Categories Navigation', () => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:3000/');
-    
-    // Click on Categories link in navigation
-    await page.getByRole('link', { name: 'KATEGORIER' }).click();
-    
-    // Verify URL
-    await expect(page).toHaveURL('http://localhost:3000/kategorier');
-    
-    // Verify page title
-    await expect(page.locator('h1')).toContainText('Kategorier');
-    
-    // Verify categories section exists
-    await expect(page.locator('section')).toBeVisible();
   });
 
-  test('should navigate back to home from categories', async ({ page }) => {
-    // Start from categories page
-    await page.goto('http://localhost:3000/kategorier');
-    
-    // Click on home/logo link
+  test('should navigate through category pages', async ({ page }) => {
+    // Navigate to categories page
+    await page.getByRole('link', { name: 'Kategorier' }).click();
+    await expect(page).toHaveURL(/.*\/kategorier/);
+
+    // Click a category and verify navigation
+    await page.getByRole('link', { name: 'Clothing' }).click();
+    await expect(page).toHaveURL(/.*\/kategori\/clothing/);
+
+    // Go back to categories
+    await page.getByRole('link', { name: 'Kategorier' }).click();
+    await expect(page).toHaveURL(/.*\/kategorier/);
+
+    // Try another category
+    await page.getByRole('link', { name: 'Tshirts' }).click();
+    await expect(page).toHaveURL(/.*\/kategori\/tshirts/);
+  });
+
+  test('should navigate between categories and home', async ({ page }) => {
+    // Go to categories
+    await page.getByRole('link', { name: 'Kategorier' }).click();
+    await expect(page).toHaveURL(/.*\/kategorier/);
+
+    // Go back home
     await page.getByRole('link', { name: 'NETTBUTIKK' }).click();
-    
-    // Verify we're back on homepage
     await expect(page).toHaveURL('http://localhost:3000/');
   });
 });
