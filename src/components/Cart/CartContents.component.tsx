@@ -119,12 +119,20 @@ const CartContents = () => {
 
                       // Optimistically update local state
                       if (cart) {
+                        const oldProduct = cart.products.find((p: Product) => p.cartKey === item.key);
+                        const oldQty = oldProduct?.qty || 0;
                         const updatedProducts = cart.products.map((p: Product) => 
                           p.cartKey === item.key ? { ...p, qty: newQty } : p
                         );
+                        
+                        // Calculate new total count
+                        const qtyDiff = newQty - oldQty;
+                        const newTotalCount = cart.totalProductsCount + qtyDiff;
+                        
                         setCart({
                           ...cart,
                           products: updatedProducts,
+                          totalProductsCount: newTotalCount
                         });
                       }
 

@@ -92,7 +92,7 @@ const AddToCart = ({
   variationId,
   fullWidth = false,
 }: IProductRootObject) => {
-  const { setCart, isLoading: isCartLoading } = useCartStore();
+  const { cart, setCart, isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productId = product?.databaseId ? product?.databaseId : variationId;
@@ -124,6 +124,21 @@ const AddToCart = ({
   });
 
   const handleAddToCart = () => {
+    // Optimistically update cart count
+    if (cart) {
+      setCart({
+        ...cart,
+        totalProductsCount: cart.totalProductsCount + 1,
+        products: [...cart.products]
+      });
+    } else {
+      setCart({
+        products: [],
+        totalProductsCount: 1,
+        totalProductsPrice: 0
+      });
+    }
+    
     addToCart();
   };
 
