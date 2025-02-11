@@ -57,7 +57,7 @@ const CheckoutForm = () => {
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
 
   // Get cart data query
-  const { data } = useQuery(GET_CART, {
+  useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       const updatedCart = getFormattedCart(data) as RootObject | undefined;

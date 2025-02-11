@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import useCartStore, { RootObject, Product } from '@/stores/cart';
 import Button from '@/components/UI/Button.component';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
 import {
   getFormattedCart,
@@ -32,13 +31,10 @@ const CartContents = () => {
     },
   });
 
-  const [updateCart, { loading: updateCartProcessing }] = useMutation(
-    UPDATE_CART,
-    {
-      refetchQueries: [{ query: GET_CART }],
-      awaitRefetchQueries: true,
-    },
-  );
+  const [updateCart] = useMutation(UPDATE_CART, {
+    refetchQueries: [{ query: GET_CART }],
+    awaitRefetchQueries: true,
+  });
 
   const handleRemoveProductClick = (
     cartKey: string,
@@ -66,7 +62,6 @@ const CartContents = () => {
           },
         },
       });
-
     }
   };
 
@@ -141,8 +136,7 @@ const CartContents = () => {
                         event,
                         item.key,
                         data.cart.contents.nodes,
-                        updateCart,
-                        updateCartProcessing,
+                        updateCart
                       );
                     }}
                     className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
@@ -155,7 +149,6 @@ const CartContents = () => {
                       )
                     }
                     variant="secondary"
-                    buttonDisabled={updateCartProcessing}
                   >
                     Fjern
                   </Button>
@@ -188,14 +181,6 @@ const CartContents = () => {
           <Link href="/produkter" passHref>
             <Button variant="primary">Fortsett å handle</Button>
           </Link>
-        </div>
-      )}
-      {updateCartProcessing && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg">
-            <p className="text-lg mb-2">Oppdaterer handlekurv...</p>
-            <LoadingSpinner />
-          </div>
         </div>
       )}
     </div>
