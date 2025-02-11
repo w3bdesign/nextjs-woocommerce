@@ -1,6 +1,6 @@
 /*eslint complexity: ["error", 20]*/
 // Imports
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
 
 // Components
@@ -11,7 +11,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
-import { CartContext } from '@/stores/CartProvider';
+import useCartStore, { RootObject } from '@/stores/cart';
 
 // Utils
 import {
@@ -51,29 +51,21 @@ export interface ICheckoutData {
 }
 
 const CheckoutForm = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, setCart } = useCartStore();
   const [orderData, setOrderData] = useState<ICheckoutData | null>(null);
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
 
   // Get cart data query
-  const { data, refetch } = useQuery(GET_CART, {
+  const { data } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data);
-
-      if (!updatedCart && !data.cart.contents.nodes.length) {
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('wooocommerce-cart');
+      const updatedCart = getFormattedCart(data) as RootObject | undefined;
+      if (!updatedCart || !data.cart.contents.nodes.length) {
         setCart(null);
         return;
       }
-
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      // Update cart data in React Context.
-      setCart(updatedCart);
+      setCart(updatedCart as RootObject);
     },
   });
 
@@ -84,16 +76,14 @@ const CheckoutForm = () => {
       variables: {
         input: orderData,
       },
+      refetchQueries: [{ query: GET_CART }],
+      awaitRefetchQueries: true,
       onCompleted: () => {
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('wooocommerce-cart');
         setorderCompleted(true);
         setCart(null);
-        refetch();
       },
       onError: (error) => {
         setRequestError(error);
-        refetch();
       },
     },
   );
@@ -102,15 +92,8 @@ const CheckoutForm = () => {
     if (null !== orderData) {
       // Perform checkout mutation when the value for orderData changes.
       checkout();
-      setTimeout(() => {
-        refetch();
-      }, 2000);
     }
-  }, [checkout, orderData, refetch]);
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+  }, [checkout, orderData]);
 
   const handleFormSubmit = (submitData: ICheckoutDataProps) => {
     const checkOutData = createCheckoutData(submitData);

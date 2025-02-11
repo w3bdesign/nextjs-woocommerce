@@ -1,11 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CartContext } from '@/stores/CartProvider';
+import useCartStore, { RootObject, Product } from '@/stores/cart';
 import Button from '@/components/UI/Button.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
@@ -21,32 +21,22 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
 const CartContents = () => {
   const router = useRouter();
-  const { setCart } = useContext(CartContext);
+  const { cart, setCart } = useCartStore();
   const isCheckoutPage = router.pathname === '/kasse';
 
-  const { data, refetch } = useQuery(GET_CART, {
+  const { data } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      const updatedCart = getFormattedCart(data);
-      if (!updatedCart && !data.cart.contents.nodes.length) {
-        localStorage.removeItem('woocommerce-cart');
-        setCart(null);
-        return;
-      }
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-      setCart(updatedCart);
+    onCompleted: (data) => {
+      const updatedCart = getFormattedCart(data) as RootObject | undefined;
+      setCart(updatedCart || null);
     },
   });
 
   const [updateCart, { loading: updateCartProcessing }] = useMutation(
     UPDATE_CART,
     {
-      onCompleted: () => {
-        refetch();
-        setTimeout(() => {
-          refetch();
-        }, 3000);
-      },
+      refetchQueries: [{ query: GET_CART }],
+      awaitRefetchQueries: true,
     },
   );
 
@@ -55,6 +45,18 @@ const CartContents = () => {
     products: IProductRootObject[],
   ) => {
     if (products?.length) {
+      // Optimistically update local state
+      const currentCart = cart;
+      if (currentCart) {
+        const updatedProducts = currentCart.products.filter((p: Product) => p.cartKey !== cartKey);
+        setCart({
+          ...currentCart,
+          products: updatedProducts,
+          totalProductsCount: currentCart.totalProductsCount - 1
+        });
+      }
+
+      // Update remote state in background
       const updatedItems = getUpdatedItems(products, 0, cartKey);
       updateCart({
         variables: {
@@ -64,16 +66,9 @@ const CartContents = () => {
           },
         },
       });
-    }
-    refetch();
-    setTimeout(() => {
-      refetch();
-    }, 3000);
-  };
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+    }
+  };
 
   const cartTotal = data?.cart?.total || '0';
 
@@ -118,7 +113,22 @@ const CartContents = () => {
                     type="number"
                     min="1"
                     value={item.quantity}
-                    onChange={(event) => {
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                      const newQty = parseInt(event.target.value, 10);
+                      if (isNaN(newQty) || newQty < 1) return;
+
+                      // Optimistically update local state
+                      if (cart) {
+                        const updatedProducts = cart.products.map((p: Product) => 
+                          p.cartKey === item.key ? { ...p, qty: newQty } : p
+                        );
+                        setCart({
+                          ...cart,
+                          products: updatedProducts,
+                        });
+                      }
+
+                      // Update remote state in background
                       handleQuantityChange(
                         event,
                         item.key,

@@ -1,7 +1,7 @@
-import { useContext, useState, useEffect } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 
-import { CartContext } from '@/stores/CartProvider';
+import useCartStore from '@/stores/cart';
 
 interface ICartProps {
   stickyNav?: boolean;
@@ -11,17 +11,9 @@ interface ICartProps {
  * Displays the shopping cart contents.
  * Displays amount of items in cart.
  */
-const Cart = ({ stickyNav }: ICartProps) => {
-  const { cart } = useContext(CartContext);
-  const [productCount, setProductCount] = useState<number | null | undefined>();
-
-  useEffect(() => {
-    if (cart) {
-      setProductCount(cart.totalProductsCount);
-    } else {
-      setProductCount(null);
-    }
-  }, [cart]);
+const Cart: FC<ICartProps> = ({ stickyNav }) => {
+  const { cart, isLoading } = useCartStore();
+  const productCount = !isLoading ? cart?.totalProductsCount : undefined;
 
   return (
     <>
@@ -48,14 +40,14 @@ const Cart = ({ stickyNav }: ICartProps) => {
         </span>
       </Link>
 
-      {productCount && (
+      {productCount ? (
         <span
           className={`w-6 h-6 pb-2 -mt-5 !-ml-2 text-center rounded-full
           ${stickyNav ? 'text-black bg-white' : 'text-white bg-black'}`}
         >
           {productCount}
         </span>
-      )}
+      ) : null}
     </>
   );
 };
