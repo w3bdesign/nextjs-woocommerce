@@ -59,13 +59,9 @@ const CheckoutForm = () => {
   // Get cart data query
   const { data } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
+    onCompleted: (data) => {
       const updatedCart = getFormattedCart(data) as RootObject | undefined;
-      if (!updatedCart || !data.cart.contents.nodes.length) {
-        setCart(null);
-        return;
-      }
-      setCart(updatedCart as RootObject);
+      setCart(updatedCart || null);
     },
   });
 
