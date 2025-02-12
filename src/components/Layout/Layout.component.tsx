@@ -27,13 +27,15 @@ interface ILayoutProps {
  */
 
 const Layout = ({ children, title }: ILayoutProps) => {
-  const { setCart } = useCartStore();
+  const { cart, setCart } = useCartStore();
 
   useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       const updatedCart = getFormattedCart(data) as RootObject | undefined;
-      setCart(updatedCart || null);
+      if (!cart || cart.totalProductsCount !== updatedCart?.totalProductsCount) {
+        setCart(updatedCart || null);
+      }
     },
   });
 

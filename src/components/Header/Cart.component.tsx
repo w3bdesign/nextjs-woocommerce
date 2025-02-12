@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import Link from 'next/link';
+import { useQuery } from '@apollo/client';
 
 import useCartStore from '@/stores/cart';
+import { GET_CART } from '@/utils/gql/GQL_QUERIES';
+import { getFormattedCart } from '@/utils/functions/functions';
 
 interface ICartProps {
   stickyNav?: boolean;
@@ -12,8 +15,26 @@ interface ICartProps {
  * Displays amount of items in cart.
  */
 const Cart: FC<ICartProps> = ({ stickyNav }) => {
-  const { cart, isLoading } = useCartStore();
-  const productCount = !isLoading ? cart?.totalProductsCount : undefined;
+  const { cart, setCart, isLoading } = useCartStore();
+  
+  const { loading: queryLoading, error } = useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      const updatedCart = getFormattedCart(data);
+      if (!cart || cart.totalProductsCount !== updatedCart?.totalProductsCount) {
+        setCart(updatedCart || null);
+      }
+    },
+    onError: (error) => {
+      console.error('Error fetching cart:', error);
+      // On error, we'll show the cached cart data instead of setting to null
+    },
+    // Fetch policy to ensure we get fresh data while respecting cache
+    fetchPolicy: 'cache-and-network',
+  });
+
+  // Use query loading state in combination with store loading state
+  const productCount = (!isLoading && !queryLoading) ? cart?.totalProductsCount : undefined;
 
   return (
     <>

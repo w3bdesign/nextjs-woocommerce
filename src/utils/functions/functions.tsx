@@ -288,26 +288,22 @@ export const getUpdatedItems = (
 export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
-  cart: IProductRootObject[],
+  newQty: number,
   updateCart: (variables: IUpdateCartRootObject) => void,
 ) => {
   if (process.browser) {
     event.stopPropagation();
 
-    // If the user tries to delete the count of product, set that to 1 by default ( This will not allow him to reduce it less than zero )
-    const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
-
-    if (cart.length) {
-      const updatedItems = getUpdatedItems(cart, newQty, cartKey);
-
-      updateCart({
-        variables: {
-          input: {
-            clientMutationId: uuidv4(),
-            items: updatedItems,
-          },
+    updateCart({
+      variables: {
+        input: {
+          clientMutationId: uuidv4(),
+          items: [{
+            key: cartKey,
+            quantity: newQty
+          }],
         },
-      });
-    }
+      },
+    });
   }
 };

@@ -10,9 +10,7 @@ import Button from '@/components/UI/Button.component';
 
 import {
   getFormattedCart,
-  getUpdatedItems,
   handleQuantityChange,
-  IProductRootObject,
 } from '@/utils/functions/functions';
 
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
@@ -23,73 +21,61 @@ const CartContents = () => {
   const { cart, setCart } = useCartStore();
   const isCheckoutPage = router.pathname === '/kasse';
 
-  const { data } = useQuery(GET_CART, {
+  useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
+      // Only update if there's a significant difference to avoid unnecessary re-renders
       const updatedCart = getFormattedCart(data) as RootObject | undefined;
-      setCart(updatedCart || null);
+      if (!cart || cart.totalProductsCount !== updatedCart?.totalProductsCount) {
+        setCart(updatedCart || null);
+      }
     },
   });
 
-  const [updateCart] = useMutation(UPDATE_CART, {
-    refetchQueries: [{ query: GET_CART }],
-    awaitRefetchQueries: true,
-  });
+  const [updateCart] = useMutation(UPDATE_CART);
 
-  const handleRemoveProductClick = (
-    cartKey: string,
-    products: IProductRootObject[],
-  ) => {
-    if (products?.length) {
-      // Optimistically update local state
-      const currentCart = cart;
-      if (currentCart) {
-        const updatedProducts = currentCart.products.filter((p: Product) => p.cartKey !== cartKey);
-        setCart({
-          ...currentCart,
-          products: updatedProducts,
-          totalProductsCount: currentCart.totalProductsCount - 1
-        });
-      }
-
-      // Update remote state in background
-      const updatedItems = getUpdatedItems(products, 0, cartKey);
-      updateCart({
-        variables: {
-          input: {
-            clientMutationId: uuidv4(),
-            items: updatedItems,
-          },
-        },
+  const handleRemoveProductClick = (cartKey: string) => {
+    // Optimistically update local state
+    if (cart) {
+      const updatedProducts = cart.products.filter((p: Product) => p.cartKey !== cartKey);
+      const removedProduct = cart.products.find((p: Product) => p.cartKey === cartKey);
+      const qtyRemoved = removedProduct?.qty || 0;
+      
+      setCart({
+        ...cart,
+        products: updatedProducts,
+        totalProductsCount: cart.totalProductsCount - qtyRemoved
       });
     }
-  };
 
-  const cartTotal = data?.cart?.total || '0';
-
-  const getUnitPrice = (subtotal: string, quantity: number) => {
-    const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g, ''));
-    return isNaN(numericSubtotal)
-      ? 'N/A'
-      : (numericSubtotal / quantity).toFixed(2);
+    // Update remote state in background
+    updateCart({
+      variables: {
+        input: {
+          clientMutationId: uuidv4(),
+          items: [{
+            key: cartKey,
+            quantity: 0
+          }],
+        },
+      },
+    });
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {data?.cart?.contents?.nodes?.length ? (
+      {cart?.products?.length ? (
         <>
           <div className="bg-white rounded-lg p-6 mb-8 md:w-full">
-            {data.cart.contents.nodes.map((item: IProductRootObject) => (
+            {cart.products.map((item: Product) => (
               <div
-                key={item.key}
+                key={item.cartKey}
                 className="flex items-center border-b border-gray-200 py-4"
               >
                 <div className="flex-shrink-0 w-24 h-24 relative hidden md:block">
                   <Image
-                    src={
-                      item.product.node.image?.sourceUrl || '/placeholder.png'
-                    }
-                    alt={item.product.node.name}
+                    src={item.image?.sourceUrl || '/placeholder.png'}
+                    alt={item.name}
                     layout="fill"
                     objectFit="cover"
                     className="rounded"
@@ -97,64 +83,43 @@ const CartContents = () => {
                 </div>
                 <div className="flex-grow ml-4">
                   <h2 className="text-lg font-semibold">
-                    {item.product.node.name}
+                    {item.name}
                   </h2>
                   <p className="text-gray-600">
-                    kr {getUnitPrice(item.subtotal, item.quantity)}
+                    kr {item.price}
                   </p>
                 </div>
                 <div className="flex items-center">
                   <input
                     type="number"
                     min="1"
-                    value={item.quantity}
+                    value={item.qty}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                       const newQty = parseInt(event.target.value, 10);
                       if (isNaN(newQty) || newQty < 1) return;
 
-                      // Optimistically update local state
-                      if (cart) {
-                        const oldProduct = cart.products.find((p: Product) => p.cartKey === item.key);
-                        const oldQty = oldProduct?.qty || 0;
-                        const updatedProducts = cart.products.map((p: Product) => 
-                          p.cartKey === item.key ? { ...p, qty: newQty } : p
-                        );
-                        
-                        // Calculate new total count
-                        const qtyDiff = newQty - oldQty;
-                        const newTotalCount = cart.totalProductsCount + qtyDiff;
-                        
-                        setCart({
-                          ...cart,
-                          products: updatedProducts,
-                          totalProductsCount: newTotalCount
-                        });
-                      }
+                      // Update local state
+                      useCartStore.getState().updateProductQuantity(item.cartKey, newQty);
 
                       // Update remote state in background
                       handleQuantityChange(
                         event,
-                        item.key,
-                        data.cart.contents.nodes,
+                        item.cartKey,
+                        newQty,
                         updateCart
                       );
                     }}
                     className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
                   />
                   <Button
-                    handleButtonClick={() =>
-                      handleRemoveProductClick(
-                        item.key,
-                        data.cart.contents.nodes,
-                      )
-                    }
+                    handleButtonClick={() => handleRemoveProductClick(item.cartKey)}
                     variant="secondary"
                   >
                     Fjern
                   </Button>
                 </div>
                 <div className="ml-4">
-                  <p className="text-lg font-semibold">{item.subtotal}</p>
+                  <p className="text-lg font-semibold">{item.totalPrice}</p>
                 </div>
               </div>
             ))}
@@ -162,7 +127,7 @@ const CartContents = () => {
           <div className="bg-white rounded-lg p-6 md:w-full">
             <div className="flex justify-end mb-4">
               <span className="font-semibold pr-2">Subtotal:</span>
-              <span>{cartTotal}</span>
+              <span>{cart.totalProductsPrice}</span>
             </div>
             {!isCheckoutPage && (
               <div className="flex justify-center mb-4">
