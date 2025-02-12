@@ -40,7 +40,7 @@ const useCartStore = create<CartState>()(
   persist(
     (set) => ({
   cart: null,
-  isLoading: true,
+  isLoading: false, // Start with false since we'll show persisted data immediately
   setCart: (cart: RootObject | null) => set({ cart, isLoading: false }),
   updateCart: (newCart: RootObject) => {
     set({ cart: newCart });
