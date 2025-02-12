@@ -35,18 +35,8 @@ const CartContents = () => {
   const [updateCart] = useMutation(UPDATE_CART);
 
   const handleRemoveProductClick = (cartKey: string) => {
-    // Optimistically update local state
-    if (cart) {
-      const updatedProducts = cart.products.filter((p: Product) => p.cartKey !== cartKey);
-      const removedProduct = cart.products.find((p: Product) => p.cartKey === cartKey);
-      const qtyRemoved = removedProduct?.qty || 0;
-      
-      setCart({
-        ...cart,
-        products: updatedProducts,
-        totalProductsCount: cart.totalProductsCount - qtyRemoved
-      });
-    }
+    // Update local state
+    useCartStore.getState().removeProduct(cartKey);
 
     // Update remote state in background
     updateCart({
