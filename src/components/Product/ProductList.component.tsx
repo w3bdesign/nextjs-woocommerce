@@ -71,6 +71,9 @@ const ProductList = ({ products, title }: ProductListProps) => {
               databaseId={product.databaseId}
               name={product.name}
               price={product.price}
+              regularPrice={product.regularPrice}
+              salePrice={product.salePrice}
+              onSale={product.onSale}
               slug={product.slug}
               image={product.image}
             />

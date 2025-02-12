@@ -1,13 +1,9 @@
-// Imports
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 
-// Components
 import Button from '@/components/UI/Button.component';
-
-// State
-import { CartContext } from '@/stores/CartProvider';
+import useCartStore, { RootObject } from '@/stores/cart';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
@@ -96,7 +92,7 @@ const AddToCart = ({
   variationId,
   fullWidth = false,
 }: IProductRootObject) => {
-  const { setCart, isLoading: isCartLoading } = useContext(CartContext);
+  const { cart, setCart, isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productId = product?.databaseId ? product?.databaseId : variationId;
@@ -107,20 +103,11 @@ const AddToCart = ({
   };
 
   // Get cart data query
-  const { data, refetch } = useQuery(GET_CART, {
+  useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data);
-
-      if (!updatedCart) {
-        return;
-      }
-
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      // Update cart data in React Context.
-      setCart(updatedCart);
+    onCompleted: (data) => {
+      const updatedCart = getFormattedCart(data) as RootObject | undefined;
+      setCart(updatedCart || null);
     },
   });
 
@@ -129,23 +116,30 @@ const AddToCart = ({
     variables: {
       input: productQueryInput,
     },
-
-    onCompleted: () => {
-      // Update the cart with new values in React context.
-      refetch();
-    },
-
+    refetchQueries: [{ query: GET_CART }],
+    awaitRefetchQueries: true,
     onError: () => {
       setRequestError(true);
     },
   });
 
   const handleAddToCart = () => {
+    // Optimistically update cart count
+    if (cart) {
+      setCart({
+        ...cart,
+        totalProductsCount: cart.totalProductsCount + 1,
+        products: [...cart.products]
+      });
+    } else {
+      setCart({
+        products: [],
+        totalProductsCount: 1,
+        totalProductsPrice: 0
+      });
+    }
+    
     addToCart();
-    // Refetch cart after 2 seconds
-    setTimeout(() => {
-      refetch();
-    }, 2000);
   };
 
   return (

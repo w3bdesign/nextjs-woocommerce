@@ -1,15 +1,11 @@
-// Imports
-import { ReactNode, useContext, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { useQuery } from '@apollo/client';
 
-// Components
 import Header from '@/components/Header/Header.component';
 import PageTitle from './PageTitle.component';
 import Footer from '@/components/Footer/Footer.component';
 import Stickynav from '@/components/Footer/Stickynav.component';
-
-// State
-import { CartContext } from '@/stores/CartProvider';
+import useCartStore, { RootObject } from '@/stores/cart';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
@@ -31,29 +27,17 @@ interface ILayoutProps {
  */
 
 const Layout = ({ children, title }: ILayoutProps) => {
-  const { setCart } = useContext(CartContext);
+  const { cart, setCart } = useCartStore();
 
-  const { data, refetch } = useQuery(GET_CART, {
+  useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      // Update cart in the localStorage.
-      const updatedCart = getFormattedCart(data);
-
-      if (!updatedCart && !data?.cart?.contents?.nodes.length) {
-        // Should we clear the localStorage if we have no remote cart?
-        return;
+    onCompleted: (data) => {
+      const updatedCart = getFormattedCart(data) as RootObject | undefined;
+      if (!cart || cart.totalProductsCount !== updatedCart?.totalProductsCount) {
+        setCart(updatedCart || null);
       }
-
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      // Update cart data in React Context.
-      setCart(updatedCart);
     },
   });
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   return (
     <div className="flex flex-col min-h-screen w-full mx-auto">

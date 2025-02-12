@@ -5,6 +5,9 @@ interface ProductCardProps {
   databaseId: number;
   name: string;
   price: string;
+  regularPrice: string;
+  salePrice?: string;
+  onSale: boolean;
   slug: string;
   image?: {
     sourceUrl?: string;
@@ -15,6 +18,9 @@ const ProductCard = ({
   databaseId,
   name,
   price,
+  regularPrice,
+  salePrice,
+  onSale,
   slug,
   image,
 }: ProductCardProps) => {
@@ -47,7 +53,14 @@ const ProductCard = ({
         </div>
       </Link>
       <div className="mt-2 text-center">
-        <span className="text-gray-900">{price}</span>
+        {onSale ? (
+          <div className="flex justify-center items-center space-x-2">
+            <span className="text-red-600">{salePrice}</span>
+            <span className="text-gray-500 text-sm line-through">{regularPrice}</span>
+          </div>
+        ) : (
+          <span className="text-gray-900">{price}</span>
+        )}
       </div>
     </div>
   );

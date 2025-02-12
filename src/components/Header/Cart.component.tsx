@@ -1,7 +1,10 @@
-import { useContext, useState, useEffect } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
+import { useQuery } from '@apollo/client';
 
-import { CartContext } from '@/stores/CartProvider';
+import useCartStore from '@/stores/cart';
+import { GET_CART } from '@/utils/gql/GQL_QUERIES';
+import { getFormattedCart } from '@/utils/functions/functions';
 
 interface ICartProps {
   stickyNav?: boolean;
@@ -11,17 +14,27 @@ interface ICartProps {
  * Displays the shopping cart contents.
  * Displays amount of items in cart.
  */
-const Cart = ({ stickyNav }: ICartProps) => {
-  const { cart } = useContext(CartContext);
-  const [productCount, setProductCount] = useState<number | null | undefined>();
+const Cart: FC<ICartProps> = ({ stickyNav }) => {
+  const { cart, setCart } = useCartStore();
+  
+  useQuery(GET_CART, {
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      const updatedCart = getFormattedCart(data);
+      if (!cart || cart.totalProductsCount !== updatedCart?.totalProductsCount) {
+        setCart(updatedCart || null);
+      }
+    },
+    onError: (error) => {
+      console.error('Error fetching cart:', error);
+      // On error, we'll show the cached cart data instead of setting to null
+    },
+    // Fetch policy to ensure we get fresh data while respecting cache
+    fetchPolicy: 'cache-and-network',
+  });
 
-  useEffect(() => {
-    if (cart) {
-      setProductCount(cart.totalProductsCount);
-    } else {
-      setProductCount(null);
-    }
-  }, [cart]);
+  // Show persisted cart quantity immediately, will be updated if query returns different data
+  const productCount = cart?.totalProductsCount;
 
   return (
     <>
@@ -48,14 +61,14 @@ const Cart = ({ stickyNav }: ICartProps) => {
         </span>
       </Link>
 
-      {productCount && (
+      {productCount ? (
         <span
           className={`w-6 h-6 pb-2 -mt-5 !-ml-2 text-center rounded-full
           ${stickyNav ? 'text-black bg-white' : 'text-white bg-black'}`}
         >
           {productCount}
         </span>
-      )}
+      ) : null}
     </>
   );
 };
