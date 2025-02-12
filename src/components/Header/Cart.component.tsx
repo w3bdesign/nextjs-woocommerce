@@ -17,7 +17,7 @@ interface ICartProps {
 const Cart: FC<ICartProps> = ({ stickyNav }) => {
   const { cart, setCart, isLoading } = useCartStore();
   
-  const { loading: queryLoading, error } = useQuery(GET_CART, {
+  const { loading: queryLoading } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       const updatedCart = getFormattedCart(data);
