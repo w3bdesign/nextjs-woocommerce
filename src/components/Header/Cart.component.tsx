@@ -33,8 +33,8 @@ const Cart: FC<ICartProps> = ({ stickyNav }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  // Use query loading state in combination with store loading state
-  const productCount = (!isLoading && !queryLoading) ? cart?.totalProductsCount : undefined;
+  // Show persisted cart quantity immediately, will be updated if query returns different data
+  const productCount = cart?.totalProductsCount;
 
   return (
     <>
