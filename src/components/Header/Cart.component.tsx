@@ -15,9 +15,9 @@ interface ICartProps {
  * Displays amount of items in cart.
  */
 const Cart: FC<ICartProps> = ({ stickyNav }) => {
-  const { cart, setCart, isLoading } = useCartStore();
+  const { cart, setCart } = useCartStore();
   
-  const { loading: queryLoading } = useQuery(GET_CART, {
+  useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       const updatedCart = getFormattedCart(data);
