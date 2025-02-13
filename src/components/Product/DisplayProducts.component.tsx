@@ -108,7 +108,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 >
                   <span>
                     <div className="mt-4">
-                      <p className="text-base font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
+                      <p className="text-2xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
                         {name}
                       </p>
                     </div>
@@ -117,17 +117,17 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 <div className="mt-2 text-center">
                   {onSale ? (
                     <div className="flex justify-center items-center space-x-2">
-                      <span className="text-red-600">
+                      <span className="text-xl font-bold text-red-600">
                         {variations && filteredVariantPrice(price, '')}
                         {!variations && salePrice}
                       </span>
-                      <span className="text-gray-500 text-sm line-through">
+                      <span className="text-lg text-gray-500 line-through">
                         {variations && filteredVariantPrice(price, 'right')}
                         {!variations && regularPrice}
                       </span>
                     </div>
                   ) : (
-                    <span className="text-gray-900">
+                    <span className="text-lg text-gray-900">
                       {price}
                     </span>
                   )}

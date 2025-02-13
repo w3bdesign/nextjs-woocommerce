@@ -83,7 +83,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               <div className="text-center md:text-left mb-6">
                 {onSale ? (
                   <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-2xl font-bold text-red-600">
                       {product.variations
                         ? filteredVariantPrice(price, '')
                         : salePrice}
