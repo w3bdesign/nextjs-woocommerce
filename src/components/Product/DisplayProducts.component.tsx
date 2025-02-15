@@ -23,7 +23,6 @@ interface Variations {
 
 interface RootObject {
   __typename: string;
-  databaseId: number;
   name: string;
   onSale: boolean;
   slug: string;
@@ -55,7 +54,6 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
       {products ? (
         products.map(
           ({
-            databaseId,
             name,
             price,
             regularPrice,
@@ -78,9 +76,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
 
             return (
               <div key={uuidv4()} className="group">
-                <Link
-                  href={`/produkt/${encodeURIComponent(slug)}`}
-                >
+                <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
                     {image ? (
                       <img
@@ -94,14 +90,14 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                         id="product-image"
                         className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
-                        src={process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL}
+                        src={
+                          process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
+                        }
                       />
                     )}
                   </div>
                 </Link>
-                <Link
-                  href={`/produkt/${encodeURIComponent(slug)}`}
-                >
+                <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <span>
                     <div className="mt-4">
                       <p className="text-2xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
@@ -123,9 +119,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                       </span>
                     </div>
                   ) : (
-                    <span className="text-lg text-gray-900">
-                      {price}
-                    </span>
+                    <span className="text-lg text-gray-900">{price}</span>
                   )}
                 </div>
               </div>

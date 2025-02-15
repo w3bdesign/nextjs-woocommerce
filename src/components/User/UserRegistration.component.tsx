@@ -36,8 +36,8 @@ const UserRegistration = () => {
       } else {
         throw new Error('Failed to register customer');
       }
-    } catch (err: unknown) {
-      console.error('Registration error');
+    } catch (error: unknown) {
+      console.error('Registration error:', error);
     }
   };
 
