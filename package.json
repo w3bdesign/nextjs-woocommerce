@@ -23,11 +23,11 @@
   "author": "w3bdesign",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.12.11",
+    "@apollo/client": "^3.13.1",
     "@types/react": "^19.0.8",
     "algoliasearch": "^4.24.0",
     "autoprefixer": "^10.4.20",
-    "framer-motion": "12.4.1",
+    "framer-motion": "12.4.3",
     "graphql": "^16.10.0",
     "lodash": "^4.17.21",
     "next": "15.1.7",
@@ -42,7 +42,7 @@
   "devDependencies": {
     "@playwright/test": "^1.50.1",
     "@types/lodash": "^4.17.15",
-    "@types/node": "22.13.1",
+    "@types/node": "22.13.4",
     "@types/nprogress": "^0.2.3",
     "@types/react-instantsearch-dom": "^6.12.8",
     "@types/uuid": "^10.0.0",
@@ -51,7 +51,7 @@
     "babel-plugin-styled-components": "^2.1.4",   
     "eslint-config-next": "^15.1.7",
     "postcss-preset-env": "^10.1.4",
-    "prettier": "^3.5.0",
+    "prettier": "^3.5.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"
   }
