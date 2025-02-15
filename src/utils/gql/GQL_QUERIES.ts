@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_SINGLE_PRODUCT = gql`
-  query Product($id: ID!) {
-    product(id: $id, idType: DATABASE_ID) {
+  query Product($slug: ID!) {
+    product(id: $slug, idType: SLUG) {
       id
       databaseId
       averageRating

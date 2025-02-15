@@ -1,5 +1,4 @@
 import Link from 'next/link';
-
 import { trimmedStringToLength } from '@/utils/functions/functions';
 
 interface ISearchResultProps {
@@ -10,7 +9,7 @@ interface ISearchResultProps {
     sale_price: string;
     on_sale: boolean;
     short_description: string;
-    objectID: number;
+    slug: string;
   };
 }
 
@@ -23,7 +22,6 @@ interface ISearchResultProps {
  * @param {string} sale_price Price when on sale
  * @param {boolean} on_sale Is the product on sale? True or false
  * @param {string} short_description Short description of product
- * @param {number} objectID ID of product
  }
  */
 const SearchResults = ({
@@ -34,17 +32,12 @@ const SearchResults = ({
     sale_price,
     on_sale,
     short_description,
-    objectID,
   },
 }: ISearchResultProps) => {
-  // Replace empty spaces with dash (-)
-  const trimmedProductName = product_name.replace(/ /g, '-');
-
   return (
     <article className="cursor-pointer hit">
       <Link
-        href="/produkt/[post]"
-        as={`/produkt/${trimmedProductName}?id=${objectID}`}
+        href={`/produkt/${product_name.replace(/ /g, '-')}`}
         passHref
       >
         <div className="flex p-6 bg-white">

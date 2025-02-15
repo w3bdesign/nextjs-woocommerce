@@ -51,7 +51,7 @@ const AlgoliaSearchBox = () => {
             }}
           />
           {search && (
-            <div className="absolute">
+            <div className="absolute z-50 bg-white shadow-lg rounded-md mt-1 md:w-[18rem]">
               <Hits hitComponent={SearchResults} />
             </div>
           )}
