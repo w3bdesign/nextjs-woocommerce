@@ -79,9 +79,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
             return (
               <div key={uuidv4()} className="group">
                 <Link
-                  href={`/produkt/${encodeURIComponent(
-                    slug,
-                  )}?id=${encodeURIComponent(databaseId)}`}
+                  href={`/produkt/${encodeURIComponent(slug)}`}
                 >
                   <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
                     {image ? (
@@ -102,9 +100,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                   </div>
                 </Link>
                 <Link
-                  href={`/produkt/${encodeURIComponent(
-                    slug,
-                  )}?id=${encodeURIComponent(databaseId)}`}
+                  href={`/produkt/${encodeURIComponent(slug)}`}
                 >
                   <span>
                     <div className="mt-4">

@@ -48,11 +48,21 @@ const Produkt: NextPage = ({
 export default withRouter(Produkt);
 
 export const getServerSideProps: GetServerSideProps = async ({
-  query: { id },
+  params,
+  query,
+  res,
 }) => {
+  // Handle legacy URLs with ID parameter by removing it
+  if (query.id) {
+    res.setHeader('Location', `/produkt/${params?.slug}`);
+    res.statusCode = 301;
+    res.end();
+    return { props: {} };
+  }
+
   const { data, loading, networkStatus } = await client.query({
     query: GET_SINGLE_PRODUCT,
-    variables: { id },
+    variables: { slug: params?.slug },
   });
 
   return {

@@ -11,6 +11,7 @@ interface ISearchResultProps {
     on_sale: boolean;
     short_description: string;
     objectID: number;
+    slug: string;
   };
 }
 
@@ -37,14 +38,10 @@ const SearchResults = ({
     objectID,
   },
 }: ISearchResultProps) => {
-  // Replace empty spaces with dash (-)
-  const trimmedProductName = product_name.replace(/ /g, '-');
-
   return (
     <article className="cursor-pointer hit">
       <Link
-        href="/produkt/[post]"
-        as={`/produkt/${trimmedProductName}?id=${objectID}`}
+        href={`/produkt/${product_name.replace(/ /g, '-')}`}
         passHref
       >
         <div className="flex p-6 bg-white">
