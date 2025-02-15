@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_SINGLE_PRODUCT = gql`
-  query Product($id: ID!) {
-    product(id: $id, idType: DATABASE_ID) {
+  query Product($id: ID!, $idType: ProductIdTypeEnum!) {
+    product(id: $id, idType: $idType) {
       id
       databaseId
       averageRating
@@ -29,6 +29,7 @@ export const GET_SINGLE_PRODUCT = gql`
         regularPrice
         price
         id
+        stockQuantity
         allPaColors {
           nodes {
             name
@@ -73,10 +74,6 @@ export const GET_SINGLE_PRODUCT = gql`
   }
 `;
 
-/**
- * Fetch first 4 products from a specific category
- */
-
 export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
  query MyQuery {
   products(first: 4, where: {category: "Hoodies"}) {
@@ -103,9 +100,6 @@ export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
 }
  `;
 
-/**
- * Fetch first 200 Woocommerce products from GraphQL
- */
 export const FETCH_ALL_PRODUCTS_QUERY = gql`
   query MyQuery {
     products(first: 50) {
@@ -164,9 +158,6 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
   }
 `;
 
-/**
- * Fetch first 20 categories from GraphQL
- */
 export const FETCH_ALL_CATEGORIES_QUERY = gql`
   query Categories {
     productCategories(first: 20) {
@@ -304,7 +295,6 @@ export const GET_CART = gql`
           subtotalTax
         }
       }
-
       subtotal
       subtotalTax
       shippingTax

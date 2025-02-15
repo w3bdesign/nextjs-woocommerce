@@ -45,7 +45,6 @@ interface IDisplayProductsProps {
  * @param {IDisplayProductsProps} products Products to render
  * @returns {JSX.Element} - Rendered component
  */
-
 const DisplayProducts = ({ products }: IDisplayProductsProps) => (
   <section className="container mx-auto bg-white py-12">
     <div
@@ -78,11 +77,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
 
             return (
               <div key={uuidv4()} className="group">
-                <Link
-                  href={`/produkt/${encodeURIComponent(
-                    slug,
-                  )}?id=${encodeURIComponent(databaseId)}`}
-                >
+                <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
                     {image ? (
                       <img
@@ -101,11 +96,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                     )}
                   </div>
                 </Link>
-                <Link
-                  href={`/produkt/${encodeURIComponent(
-                    slug,
-                  )}?id=${encodeURIComponent(databaseId)}`}
-                >
+                <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <span>
                     <div className="mt-4">
                       <p className="text-2xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
@@ -134,7 +125,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 </div>
               </div>
             );
-          },
+          }
         )
       ) : (
         <div className="mx-auto text-xl font-bold text-center text-gray-800 no-underline uppercase">

@@ -38,7 +38,7 @@ const ProductCard = ({
   return (
     <div className="group">
       <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
-        <Link href={`/produkt/${slug}?id=${databaseId}`}>
+<Link href={`/produkt/${slug}`}>
           {image?.sourceUrl ? (
             <Image
               src={image.sourceUrl}
@@ -56,7 +56,7 @@ const ProductCard = ({
         </Link>
       </div>
 
-      <Link href={`/produkt/${slug}?id=${databaseId}`}>
+<Link href={`/produkt/${slug}`}>
         <div className="mt-4">
           <p className="text-2xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
             {name}
