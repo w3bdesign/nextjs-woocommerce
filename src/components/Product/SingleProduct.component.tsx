@@ -75,7 +75,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
 
             {/* Product Details Container */}
             <div className="flex flex-col">
-              <h1 className="text-2xl font-bold text-center md:text-left mb-4">
+              <h1 className="text-xl font-bold text-center md:text-left mb-4">
                 {name}
               </h1>
 
