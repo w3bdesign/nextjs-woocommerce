@@ -50,7 +50,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
     <section className="bg-white mb-[8rem] md:mb-12">
       {isLoading ? (
         <div className="h-56 mt-20">
-          <p className="text-2xl font-bold text-center">Laster produkt ...</p>
+          <p className="text-xl font-bold text-center">Laster produkt ...</p>
           <br />
           <LoadingSpinner />
         </div>
