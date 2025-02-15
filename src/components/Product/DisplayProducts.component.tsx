@@ -100,7 +100,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <span>
                     <div className="mt-4">
-                      <p className="text-2xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
+                      <p className="text-xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
                         {name}
                       </p>
                     </div>
