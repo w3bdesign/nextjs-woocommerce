@@ -133,4 +133,3 @@ This project is tested with BrowserStack.
 - Add total to cart/checkout page
 - Copy billing address to shipping address
 - Hide products not in stock
-- Add better SEO
