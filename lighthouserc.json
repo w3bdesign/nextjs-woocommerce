@@ -4,9 +4,8 @@
       "numberOfRuns": 1,
       "url": [
         "http://localhost:3000/",
-        "http://localhost:3000/cv",
-        "http://localhost:3000/prosjekter",
-        "http://localhost:3000/kontakt"
+        "http://localhost:3000/produkter",
+        "http://localhost:3000/kategorier"
       ],
       "port": 3000,
       "settings": {
@@ -19,9 +18,7 @@
         "skipAudits": ["uses-http2"]
       }
     },
-    "upload": {
-      "target": "temporary-public-storage"
-    },
+    "upload": { "target": "temporary-public-storage" },
     "assert": {
       "assertions": {
         "categories:performance": ["warn", { "minScore": 0.6 }],
