@@ -110,30 +110,32 @@ test('complete checkout process', async ({ page }) => {
 });
 ```
 
-## 4. Security Enhancements
+## 4. WooCommerce Integration Enhancements
 
-### Authentication
-- **Implement Refresh Token Flow**
-  - Gain: Better security, seamless user experience
-  - Example: Add proper token management
+### Session Management
+- **Improve WooCommerce Session Handling**
+  - Gain: Better cart persistence, reduced errors
+  - Example: Enhanced session token management
 
 ```typescript
-class AuthService {
-  async refreshToken() {
-    try {
-      const response = await this.api.post('/refresh-token');
-      this.setTokens(response.data);
-    } catch {
-      this.handleAuthError();
-    }
+// Enhanced WooCommerce session middleware
+const enhancedMiddleware = new ApolloLink((operation, forward) => {
+  const session = getWooSession();
+  if (session && !isExpired(session)) {
+    operation.setContext({
+      headers: {
+        'woocommerce-session': `Session ${session.token}`
+      }
+    });
   }
-}
+  return forward(operation);
+});
 ```
 
-### API Security
-- **Rate Limiting**
-  - Gain: Protect against abuse, ensure fair usage
-  - Example: Implement rate limiting middleware
+### Payment Methods
+- **Additional Payment Gateways**
+  - Gain: More payment options beyond COD
+  - Example: Integrate Stripe/PayPal via WooCommerce
 
 ## 5. Developer Experience
 
@@ -242,15 +244,15 @@ src/
    - Immediate impact on code quality
    - Catches type-related bugs early
 
-2. **Error Boundaries with Sentry**
-   - Quick to implement
-   - Immediate visibility into production issues
-   - Minimal code changes required
+2. **Lighthouse Score Improvements**
+   - Already have CI integration
+   - Focus on performance metrics
+   - Quick accessibility wins
 
-3. **Apollo Cache Optimization**
-   - Configure existing Apollo client
-   - Significant performance improvement
-   - No architectural changes needed
+3. **Cart Total Implementation**
+   - Listed in TODO
+   - High user impact
+   - Relatively simple change
 
 ### High Impact, High Effort (Plan Carefully)
 1. **State Management Refactor**
@@ -279,15 +281,15 @@ src/
    - Build upon existing Playwright E2E tests
    - Already have basic homepage tests
    - Focus on:
-     - Component unit tests
-     - Integration tests for cart/checkout
-     - Performance testing
-     - Visual regression tests
+     - WooCommerce integration tests
+     - Cart/checkout flows
+     - Variable product handling
+     - Stock status updates
 
-2. **Factory Pattern Implementation**
-   - Requires significant refactoring
-   - Benefits mainly future development
-   - Consider when scaling
+2. **User Registration & Dashboard**
+   - Listed in TODO
+   - Requires careful WooCommerce integration
+   - Consider after core improvements
 
 ## Implementation Strategy
 
@@ -309,11 +311,11 @@ src/
    - Builds upon existing test infrastructure
 
 3. **Month 2: Major Improvements**
-   - Start state management refactor
-   - Begin code reorganization
-   - Implement key design patterns
+   - Implement additional payment methods
+   - Add user registration flow
+   - Enhance WooCommerce integration
    - Estimated effort: 3-4 weeks
-   - Coordinate with team sprints
+   - Focus on WooCommerce-specific features
 
 This prioritization ensures:
 - Quick delivery of high-impact improvements
