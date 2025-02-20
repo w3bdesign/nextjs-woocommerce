@@ -73,7 +73,7 @@ The current release has been tested and is confirmed working with the following 
 
 ## Features
 
-- Next.js version 14.3.11
+- Next.js version 15.1.7
 - React version 18.3.1
 - Typescript
 - Tests with Playwright
