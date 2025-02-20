@@ -275,10 +275,14 @@ src/
    - Quick setup process
 
 ### Low Impact, High Effort (Consider Later)
-1. **Complete Test Coverage**
-   - Time-intensive process
-   - Start with critical paths
-   - Implement incrementally
+1. **Expand Test Coverage**
+   - Build upon existing Playwright E2E tests
+   - Already have basic homepage tests
+   - Focus on:
+     - Component unit tests
+     - Integration tests for cart/checkout
+     - Performance testing
+     - Visual regression tests
 
 2. **Factory Pattern Implementation**
    - Requires significant refactoring
@@ -297,9 +301,12 @@ src/
 2. **Week 3-4: Foundation Building**
    - Begin Storybook documentation
    - Set up performance monitoring
-   - Add critical path tests
+   - Expand existing E2E tests with:
+     - Cart manipulation scenarios
+     - Checkout flow validation
+     - Error state handling
    - Estimated effort: 5-7 days
-   - Builds developer confidence
+   - Builds upon existing test infrastructure
 
 3. **Month 2: Major Improvements**
    - Start state management refactor
