@@ -15,7 +15,10 @@
           "best-practices",
           "seo"
         ],
-        "skipAudits": ["uses-http2"]
+        "skipAudits": ["uses-http2"],
+        "throttling": {
+          "method": "simulate"
+        }
       }
     },
     "upload": { "target": "temporary-public-storage" },
