@@ -1,3 +1,4 @@
+[![Lighthouse CI](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/lighthouse.yml)
 [![Playwright Tests](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/playwright.yml/badge.svg)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/playwright.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/29de6847b01142e6a0183988fc3df46a)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
 [![CodeFactor](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce/badge)](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce)
@@ -17,6 +18,7 @@
 
 - [Installation](#Installation)
 - [Features](#Features)
+- [Lighthouse Performance Monitoring](#lighthouse-performance-monitoring)
 - [Issues](#Issues)
 - [Troubleshooting](#Troubleshooting)
 - [TODO](#TODO)
@@ -93,6 +95,15 @@ The current release has been tested and is confirmed working with the following 
 - Pretty URLs with builtin Nextjs functionality
 - Tailwind 3 for styling
 - JSDoc comments
+- Automated Lighthouse performance monitoring
+  - Continuous performance, accessibility, and best practices checks
+  - Automated reports on every pull request
+  - Performance metrics tracking for:
+    - Performance score
+    - Accessibility compliance
+    - Best practices adherence
+    - SEO optimization
+    - Progressive Web App readiness
 - Product filtering:
   - Dynamic color filtering using Tailwind's color system
   - Mobile-optimized filter layout
@@ -101,6 +112,21 @@ The current release has been tested and is confirmed working with the following 
   - Size and color filters
   - Product type categorization
   - Sorting options (popularity, price, newest)
+
+## Lighthouse Performance Monitoring
+
+This project uses automated Lighthouse testing through GitHub Actions to ensure high-quality web performance. On every pull request:
+
+- Performance, accessibility, best practices, and SEO are automatically evaluated
+- Results are posted directly to the pull request
+- Minimum score thresholds are enforced for:
+  - Performance: Analyzing loading performance, interactivity, and visual stability
+  - Accessibility: Ensuring WCAG compliance and inclusive design
+  - Best Practices: Validating modern web development standards
+  - SEO: Checking search engine optimization fundamentals
+  - PWA: Assessing Progressive Web App capabilities
+
+View the latest Lighthouse results in the GitHub Actions tab under the "Lighthouse Check" workflow.
 
 ## Troubleshooting
 
