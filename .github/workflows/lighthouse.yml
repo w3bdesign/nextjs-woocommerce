@@ -35,9 +35,17 @@ jobs:
         run: pnpm install
 
       - name: Build project
+        env:
+          NEXT_PUBLIC_GRAPHQL_URL: "https://swewoocommerce.dfweb.no/graphql"
+          NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL: "https://via.placeholder.com/200"
+          NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL: "https://via.placeholder.com/600"
         run: pnpm build
 
       - name: Start server
+        env:
+          NEXT_PUBLIC_GRAPHQL_URL: "https://swewoocommerce.dfweb.no/graphql"
+          NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL: "https://via.placeholder.com/200"
+          NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL: "https://via.placeholder.com/600"
         run: |
           pnpm start &
           echo "Waiting for server to be ready..."
