@@ -132,10 +132,10 @@ const enhancedMiddleware = new ApolloLink((operation, forward) => {
 });
 ```
 
-### Payment Methods
-- **Additional Payment Gateways**
-  - Gain: More payment options beyond COD
-  - Example: Integrate Stripe/PayPal via WooCommerce
+### Cart Improvements
+- **Enhanced Cart Features**
+  - Gain: Better user experience with cart functionality
+  - Example: Add cart total, copy billing address to shipping
 
 ## 5. Developer Experience
 
@@ -311,11 +311,11 @@ src/
    - Builds upon existing test infrastructure
 
 3. **Month 2: Major Improvements**
-   - Implement additional payment methods
-   - Add user registration flow
-   - Enhance WooCommerce integration
+   - Implement user registration flow
+   - Add cart improvements from TODO list
+   - Enhance WooCommerce session handling
    - Estimated effort: 3-4 weeks
-   - Focus on WooCommerce-specific features
+   - Focus on core user experience
 
 This prioritization ensures:
 - Quick delivery of high-impact improvements
