@@ -46,7 +46,7 @@
     "@lhci/cli": "^0.14.0",
     "@playwright/test": "^1.50.1",
     "@types/lodash": "^4.17.15",
-    "@types/node": "22.13.4",
+    "@types/node": "22.13.5",
     "@types/nprogress": "^0.2.3",
     "@types/react-instantsearch-dom": "^6.12.8",
     "@types/uuid": "^10.0.0",
