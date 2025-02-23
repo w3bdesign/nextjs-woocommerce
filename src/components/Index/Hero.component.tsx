@@ -7,7 +7,7 @@ import Button from '../UI/Button.component';
  * @returns {JSX.Element} - Rendered component
  */
 const Hero = () => (
-  <section className="relative w-full h-[60vh] overflow-hidden">
+  <section className="relative w-full h-[60vh] overflow-hidden p-8 xl:p-0">
     <div className="absolute inset-0">
       <Image
         src="/images/hero.jpg"
