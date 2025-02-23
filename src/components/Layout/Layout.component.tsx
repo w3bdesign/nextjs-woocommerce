@@ -56,7 +56,7 @@ const Layout = ({ children, title }: ILayoutProps) => {
   }, [refetch]);
 
   return (
-    <div className="flex flex-col min-h-screen w-full mx-auto">
+    <div className="flex flex-col min-h-screen w-full mx-auto px-8 xl:px-16 2xl:px-24 max-w-[95%]">
       <Header title={title} />
       {title === 'Hjem' ? (
         <main className="flex-1 px-4 md:px-0">{children}</main>
