@@ -59,7 +59,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
           <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
             {/* Image Container */}
             <div className="mb-6 md:mb-0 group">
-              <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-gray-100">
+              <div className="max-w-xl mx-auto relative overflow-hidden bg-gray-100">
                 <img
                   id="product-image"
                   src={

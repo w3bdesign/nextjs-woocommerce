@@ -77,7 +77,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
             return (
               <div key={uuidv4()} className="group">
                 <Link href={`/produkt/${encodeURIComponent(slug)}`}>
-                  <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
+                  <div className="relative overflow-hidden bg-gray-100">
                     {image ? (
                       <img
                         id="product-image"

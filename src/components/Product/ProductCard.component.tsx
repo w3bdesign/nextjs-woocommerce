@@ -32,7 +32,7 @@ const ProductCard = ({
 
   return (
     <div className="group">
-      <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
+      <div className="overflow-hidden bg-gray-100 relative">
         <Link href={`/produkt/${slug}`}>
           {image?.sourceUrl ? (
             <Image
