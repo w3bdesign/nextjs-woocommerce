@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 
 import FadeLeftToRight from '@/components/Animations/FadeLeftToRight.component';
@@ -22,34 +22,69 @@ const opacityFull = 'opacity-100 group-hover:opacity-100';
 const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
   const [hidden, setHidden] = useState('invisible');
+  const [isAnimating, setIsAnimating] = useState(false);
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isExpanded) {
       setHidden('');
+      setIsAnimating(true);
+      
+      // Clear any existing timeout
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+      
+      // Set a timeout for the animation duration
+      animationTimeoutRef.current = setTimeout(() => {
+        setIsAnimating(false);
+      }, 1000); // Match this with the animation duration
     } else {
-      setTimeout(() => {
+      setIsAnimating(true);
+      
+      // Clear any existing timeout
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+      
+      // Set a timeout for the animation duration and hiding
+      animationTimeoutRef.current = setTimeout(() => {
         setHidden('invisible');
-      }, 1000);
+        setIsAnimating(false);
+      }, 1000); // Match this with the animation duration
     }
+    
+    // Cleanup function to clear timeout when component unmounts
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
   }, [isExpanded]);
 
   const handleMobileMenuClick = useCallback(() => {
+    // Prevent clicks during animation
+    if (isAnimating) {
+      return;
+    }
+    
     /**
      * Anti-pattern: setisExpanded(!isExpanded)
      * Even if your state updates are batched and multiple updates to the enabled/disabled state are made together
      * each update will rely on the correct previous state so that you always end up with the result you expect.
      */
     setisExpanded((prevExpanded) => !prevExpanded);
-  }, [setisExpanded]);
+  }, [setisExpanded, isAnimating]);
 
   return (
     <div className="z-50 md:hidden lg:hidden xl:hidden bg-blue-800">
       <button
-        className="flex flex-col w-16 rounded justify-center items-center group"
+        className={`flex flex-col w-16 rounded justify-center items-center group ${isAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         data-cy="hamburger"
         data-testid="hamburger"
         onClick={handleMobileMenuClick}
         aria-expanded={isExpanded}
+        disabled={isAnimating}
         type="button"
       >
         <span className="sr-only text-white text-2xl">Hamburger</span>
@@ -95,11 +130,13 @@ const Hamburger = () => {
                     <span
                       className="text-xl inline-block px-4 py-2 no-underline hover:text-black hover:underline"
                       onClick={() => {
-                        setisExpanded((prevExpanded) => !prevExpanded);
+                        if (!isAnimating) {
+                          setisExpanded((prevExpanded) => !prevExpanded);
+                        }
                       }}
                       onKeyDown={(event) => {
                         // 'Enter' key or 'Space' key
-                        if (event.key === 'Enter' || event.key === ' ') {
+                        if ((event.key === 'Enter' || event.key === ' ') && !isAnimating) {
                           setisExpanded((prevExpanded) => !prevExpanded);
                         }
                       }}
