@@ -23,37 +23,39 @@ const Hamburger = () => {
   const [isExpanded, setisExpanded] = useState(false);
   const [hidden, setHidden] = useState('invisible');
   const [isAnimating, setIsAnimating] = useState(false);
-  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
 
   useEffect(() => {
     if (isExpanded) {
       setHidden('');
       setIsAnimating(true);
-      
+
       // Clear any existing timeout
       if (animationTimeoutRef.current) {
         clearTimeout(animationTimeoutRef.current);
       }
-      
+
       // Set a timeout for the animation duration
       animationTimeoutRef.current = setTimeout(() => {
         setIsAnimating(false);
       }, 1000); // Match this with the animation duration
     } else {
       setIsAnimating(true);
-      
+
       // Clear any existing timeout
       if (animationTimeoutRef.current) {
         clearTimeout(animationTimeoutRef.current);
       }
-      
+
       // Set a timeout for the animation duration and hiding
       animationTimeoutRef.current = setTimeout(() => {
         setHidden('invisible');
         setIsAnimating(false);
       }, 1000); // Match this with the animation duration
     }
-    
+
     // Cleanup function to clear timeout when component unmounts
     return () => {
       if (animationTimeoutRef.current) {
@@ -67,7 +69,7 @@ const Hamburger = () => {
     if (isAnimating) {
       return;
     }
-    
+
     /**
      * Anti-pattern: setisExpanded(!isExpanded)
      * Even if your state updates are batched and multiple updates to the enabled/disabled state are made together
@@ -136,7 +138,10 @@ const Hamburger = () => {
                       }}
                       onKeyDown={(event) => {
                         // 'Enter' key or 'Space' key
-                        if ((event.key === 'Enter' || event.key === ' ') && !isAnimating) {
+                        if (
+                          (event.key === 'Enter' || event.key === ' ') &&
+                          !isAnimating
+                        ) {
                           setisExpanded((prevExpanded) => !prevExpanded);
                         }
                       }}
