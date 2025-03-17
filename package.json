@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@lhci/cli": "^0.14.0",
-    "@playwright/test": "^1.51.0",
+    "@playwright/test": "^1.51.1",
     "@types/lodash": "^4.17.16",
     "@types/node": "22.13.10",
     "@types/nprogress": "^0.2.3",
