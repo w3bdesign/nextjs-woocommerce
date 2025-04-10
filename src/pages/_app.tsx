@@ -4,6 +4,7 @@ import NProgress from 'nprogress';
 import { ApolloProvider } from '@apollo/client';
 
 import client from '@/utils/apollo/ApolloClient';
+import CartInitializer from '@/components/Cart/CartInitializer.component';
 
 // Types
 import type { AppProps } from 'next/app';
@@ -20,6 +21,7 @@ Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
+      <CartInitializer />
       <Component {...pageProps} />
     </ApolloProvider>
   );
