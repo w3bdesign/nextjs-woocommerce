@@ -1,21 +1,11 @@
 // Imports
-import { ReactNode, useEffect } from 'react';
-import { useQuery } from '@apollo/client';
+import { ReactNode } from 'react';
 
 // Components
 import Header from '@/components/Header/Header.component';
 import PageTitle from './PageTitle.component';
 import Footer from '@/components/Footer/Footer.component';
 import Stickynav from '@/components/Footer/Stickynav.component';
-
-// State
-import { useCartStore } from '@/stores/cartStore';
-
-// Utils
-import { getFormattedCart } from '@/utils/functions/functions';
-
-// GraphQL
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 
 interface ILayoutProps {
   children?: ReactNode;
@@ -31,22 +21,6 @@ interface ILayoutProps {
  */
 
 const Layout = ({ children, title }: ILayoutProps) => {
-  const { syncWithWooCommerce } = useCartStore();
-
-  const { data, refetch } = useQuery(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      const updatedCart = getFormattedCart(data);
-      if (updatedCart) {
-        syncWithWooCommerce(updatedCart);
-      }
-    },
-  });
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
-
   return (
     <div className="flex flex-col min-h-screen w-full mx-auto">
       <Header title={title} />
