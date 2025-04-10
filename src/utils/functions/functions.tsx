@@ -2,7 +2,13 @@
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { RootObject, Product } from '@/stores/CartProvider';
+import type { Product } from '@/stores/cartStore';
+
+interface RootObject {
+  products: Product[];
+  totalProductsCount: number;
+  totalProductsPrice: number;
+}
 
 import { ChangeEvent } from 'react';
 import { IVariationNodes } from '@/components/Product/AddToCart.component';

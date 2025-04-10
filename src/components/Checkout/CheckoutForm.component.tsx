@@ -1,6 +1,6 @@
 /*eslint complexity: ["error", 20]*/
 // Imports
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
 
 // Components
@@ -11,7 +11,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
-import { CartContext } from '@/stores/CartProvider';
+import { useCartStore } from '@/stores/cartStore';
 
 // Utils
 import {
@@ -51,7 +51,7 @@ export interface ICheckoutData {
 }
 
 const CheckoutForm = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
   const [orderData, setOrderData] = useState<ICheckoutData | null>(null);
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
@@ -60,20 +60,14 @@ const CheckoutForm = () => {
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-
-      if (!updatedCart && !data.cart.contents.nodes.length) {
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('wooocommerce-cart');
-        setCart(null);
+      if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
+        clearWooCommerceSession();
         return;
       }
-
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      // Update cart data in React Context.
-      setCart(updatedCart);
+      if (updatedCart) {
+        syncWithWooCommerce(updatedCart);
+      }
     },
   });
 
@@ -85,10 +79,8 @@ const CheckoutForm = () => {
         input: orderData,
       },
       onCompleted: () => {
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('wooocommerce-cart');
+        clearWooCommerceSession();
         setorderCompleted(true);
-        setCart(null);
         refetch();
       },
       onError: (error) => {
