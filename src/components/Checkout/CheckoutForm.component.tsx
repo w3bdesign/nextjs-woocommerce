@@ -1,6 +1,6 @@
 /*eslint complexity: ["error", 20]*/
 // Imports
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
 
 // Components
@@ -11,7 +11,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
-import { CartContext } from '@/stores/CartProvider';
+import { useCartStore } from '@/stores/cartStore';
 
 // Utils
 import {
@@ -51,7 +51,7 @@ export interface ICheckoutData {
 }
 
 const CheckoutForm = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, setCart } = useCartStore();
   const [orderData, setOrderData] = useState<ICheckoutData | null>(null);
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
@@ -63,17 +63,19 @@ const CheckoutForm = () => {
       // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
 
-      if (!updatedCart && !data.cart.contents.nodes.length) {
+      if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
         localStorage.removeItem('woo-session');
-        localStorage.removeItem('wooocommerce-cart');
+        localStorage.removeItem('woocommerce-cart');
         setCart(null);
         return;
       }
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
-      // Update cart data in React Context.
-      setCart(updatedCart);
+      // Update cart data in Zustand store
+      if (updatedCart) {
+        setCart(updatedCart);
+      }
     },
   });
 

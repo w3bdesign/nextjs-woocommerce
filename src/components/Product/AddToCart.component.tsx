@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Button from '@/components/UI/Button.component';
 
 // State
-import { CartContext } from '@/stores/CartProvider';
+import { useCartStore } from '@/stores/cartStore';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
@@ -96,7 +96,7 @@ const AddToCart = ({
   variationId,
   fullWidth = false,
 }: IProductRootObject) => {
-  const { setCart, isLoading: isCartLoading } = useContext(CartContext);
+  const { setCart, isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productId = product?.databaseId ? product?.databaseId : variationId;
@@ -119,7 +119,7 @@ const AddToCart = ({
 
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
 
-      // Update cart data in React Context.
+      // Update cart data in Zustand store
       setCart(updatedCart);
     },
   });

@@ -1,7 +1,7 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-import { CartContext } from '@/stores/CartProvider';
+import { useCartStore } from '@/stores/cartStore';
 
 interface ICartProps {
   stickyNav?: boolean;
@@ -12,7 +12,7 @@ interface ICartProps {
  * Displays amount of items in cart.
  */
 const Cart = ({ stickyNav }: ICartProps) => {
-  const { cart } = useContext(CartContext);
+  const cart = useCartStore((state) => state.cart);
   const [productCount, setProductCount] = useState<number | null | undefined>();
 
   useEffect(() => {

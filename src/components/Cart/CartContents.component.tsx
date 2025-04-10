@@ -1,11 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CartContext } from '@/stores/CartProvider';
+import { useCartStore } from '@/stores/cartStore';
 import Button from '@/components/UI/Button.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
@@ -21,20 +21,22 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
 const CartContents = () => {
   const router = useRouter();
-  const { setCart } = useContext(CartContext);
+  const { setCart } = useCartStore();
   const isCheckoutPage = router.pathname === '/kasse';
 
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       const updatedCart = getFormattedCart(data);
-      if (!updatedCart && !data.cart.contents.nodes.length) {
+      if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
         localStorage.removeItem('woocommerce-cart');
         setCart(null);
         return;
       }
       localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-      setCart(updatedCart);
+      if (updatedCart) {
+        setCart(updatedCart);
+      }
     },
   });
 

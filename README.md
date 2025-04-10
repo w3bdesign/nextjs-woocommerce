@@ -79,11 +79,17 @@ The current release has been tested and is confirmed working with the following 
 - Tests with Playwright
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Support for simple products and variable products
-- Cart handling and checkout with WooCommerce (Cash On Delivery only for now)
+- Cart handling and checkout with WooCommerce using Zustand for state management
+  - Persistent cart state with localStorage sync
+  - Efficient updates through selective subscriptions
+  - Type-safe cart operations
+  - Cash On Delivery payment method
 - Algolia search (requires [algolia-woo-indexer](https://github.com/w3bdesign/algolia-woo-indexer))
 - Meets WCAG accessibility standards where possible
 - Placeholder for products without images
-- Apollo Client with GraphQL
+- State Management:
+  - Zustand for global state management
+  - Apollo Client with GraphQL
 - React Hook Form
 - Native HTML5 form validation
 - Animations with Framer motion, Styled components and Animate.css
