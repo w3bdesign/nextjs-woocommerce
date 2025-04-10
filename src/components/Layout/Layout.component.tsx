@@ -1,5 +1,5 @@
 // Imports
-import React, { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 
 // Components
@@ -31,17 +31,14 @@ interface ILayoutProps {
  */
 
 const Layout = ({ children, title }: ILayoutProps) => {
-  const { updateCart } = useCartStore();
+  const { syncWithWooCommerce } = useCartStore();
 
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
       const updatedCart = getFormattedCart(data);
-      
       if (updatedCart) {
-        // Update cart in localStorage and Zustand store
-        localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-        updateCart(updatedCart);
+        syncWithWooCommerce(updatedCart);
       }
     },
   });

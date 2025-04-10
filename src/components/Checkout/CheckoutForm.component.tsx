@@ -51,7 +51,7 @@ export interface ICheckoutData {
 }
 
 const CheckoutForm = () => {
-  const { cart, setCart } = useCartStore();
+  const { cart, clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
   const [orderData, setOrderData] = useState<ICheckoutData | null>(null);
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
@@ -60,21 +60,13 @@ const CheckoutForm = () => {
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-
       if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('woocommerce-cart');
-        setCart(null);
+        clearWooCommerceSession();
         return;
       }
-
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      // Update cart data in Zustand store
       if (updatedCart) {
-        setCart(updatedCart);
+        syncWithWooCommerce(updatedCart);
       }
     },
   });
@@ -87,10 +79,8 @@ const CheckoutForm = () => {
         input: orderData,
       },
       onCompleted: () => {
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('wooocommerce-cart');
+        clearWooCommerceSession();
         setorderCompleted(true);
-        setCart(null);
         refetch();
       },
       onError: (error) => {

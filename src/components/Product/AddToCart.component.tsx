@@ -96,7 +96,7 @@ const AddToCart = ({
   variationId,
   fullWidth = false,
 }: IProductRootObject) => {
-  const { setCart, isLoading: isCartLoading } = useCartStore();
+  const { syncWithWooCommerce, isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productId = product?.databaseId ? product?.databaseId : variationId;
@@ -110,17 +110,10 @@ const AddToCart = ({
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
     onCompleted: () => {
-      // Update cart in the localStorage.
       const updatedCart = getFormattedCart(data);
-
-      if (!updatedCart) {
-        return;
+      if (updatedCart) {
+        syncWithWooCommerce(updatedCart);
       }
-
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
-
-      // Update cart data in Zustand store
-      setCart(updatedCart);
     },
   });
 

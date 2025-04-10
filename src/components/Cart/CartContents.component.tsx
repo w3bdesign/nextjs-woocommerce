@@ -21,7 +21,7 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
 const CartContents = () => {
   const router = useRouter();
-  const { setCart } = useCartStore();
+  const { clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
   const isCheckoutPage = router.pathname === '/kasse';
 
   const { data, refetch } = useQuery(GET_CART, {
@@ -29,13 +29,11 @@ const CartContents = () => {
     onCompleted: () => {
       const updatedCart = getFormattedCart(data);
       if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
-        localStorage.removeItem('woocommerce-cart');
-        setCart(null);
+        clearWooCommerceSession();
         return;
       }
-      localStorage.setItem('woocommerce-cart', JSON.stringify(updatedCart));
       if (updatedCart) {
-        setCart(updatedCart);
+        syncWithWooCommerce(updatedCart);
       }
     },
   });
