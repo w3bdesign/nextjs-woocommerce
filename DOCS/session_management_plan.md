@@ -1,63 +1,48 @@
-# Plan: Secure Session Management with HttpOnly Cookies (Revised)
+# Plan: Basic CSP & Cart Cleanup (Revised)
 
 ## 1. Introduction
 
-- **Problem:** The current implementation stores the WooCommerce session token (`woo-session`) in `localStorage`, making it vulnerable to Cross-Site Scripting (XSS) attacks. Additionally, cart data is redundantly stored in `localStorage` under both `'cart-store'` (by Zustand persist middleware) and `'woocommerce-cart'` (explicitly in code).
-- **Goal:** Migrate session management from `localStorage` to server-set `HttpOnly` cookies for enhanced security. Simplify cart persistence by relying solely on Zustand's built-in `persist` middleware.
+*   **Problem:** The session token (`woo-session`) stored in `localStorage` is vulnerable to Cross-Site Scripting (XSS) attacks. Implementing a full Content Security Policy (CSP) can be time-consuming. Additionally, cart data is redundantly stored in `localStorage` under both `'cart-store'` (by Zustand persist middleware) and `'woocommerce-cart'` (explicitly in code).
+*   **Goal:** Mitigate the primary XSS risk by implementing a **basic Content Security Policy** focusing on script execution (`script-src`) and API connections (`connect-src`). Improve code hygiene by simplifying cart persistence logic. This approach balances security improvement with implementation time.
 
-## 2. Backend Changes (GraphQL Server - `process.env.NEXT_PUBLIC_GRAPHQL_URL`)
+## 2. Implement Basic Content Security Policy (CSP)
 
-- **(Assumption):** Requires access to modify the backend GraphQL server handling authentication and sessions.
-- **Modify Session Handling:**
-  - **Read Token from Cookie:** Update server logic to read the session token from the `Cookie` HTTP header sent by the browser, instead of the custom `woocommerce-session` header.
-  - **Set HttpOnly Cookie:** When establishing or refreshing a session, the server must send a `Set-Cookie` header in the response. This cookie should contain the session token and have the following attributes:
-    - `HttpOnly`: Prevents access via client-side JavaScript.
-    - `Secure`: Ensures the cookie is only sent over HTTPS connections.
-    - `SameSite=Lax` (or `Strict`): Mitigates Cross-Site Request Forgery (CSRF) risks. `Lax` is generally recommended for a balance between security and usability. `Strict` offers stronger protection but might affect navigation originating from external sites.
-    - `Path=/`: Ensures the cookie is sent for all paths on the domain.
-    - `Max-Age` or `Expires`: Set an appropriate expiration time for the session (e.g., align with the previous 7-day logic or a shorter, security-conscious duration).
-  - **Remove Custom Header Logic:** Remove the server-side logic that reads the `woocommerce-session` header and sends it back in responses.
+*   **Focus:** Primarily target the `script-src` and `connect-src` directives to prevent unauthorized script execution and restrict API endpoints. Other directives (like `style-src`, `img-src`) will not be part of this initial basic implementation but can be added later.
+*   **Audit Sources:** Identify essential sources for:
+    *   **Scripts (`script-src`):** Own domain (`'self'`), required CDNs (if any), analytics providers (if any).
+    *   **Connections (`connect-src`):** Own domain (`'self'`), the GraphQL endpoint (`process.env.NEXT_PUBLIC_GRAPHQL_URL`), analytics endpoints (if any).
+*   **Draft Policy (Iterative Process):**
+    *   Start with a base policy focusing on the target directives. Example:
+        ```
+        default-src 'self'; script-src 'self' 'nonce-{NONCE_PLACEHOLDER}' 'unsafe-eval' [ALLOWED_SCRIPT_SOURCES...]; connect-src 'self' [GraphQL_URL] [ALLOWED_API_SOURCES...]; report-uri /api/csp-violations;
+        ```
+        *(Note: Replace placeholders like `{NONCE_PLACEHOLDER}`, `[ALLOWED_SCRIPT_SOURCES...]`, `[GraphQL_URL]`, `[ALLOWED_API_SOURCES...]` with actual values. `'unsafe-eval'` might be required for Next.js development mode or certain libraries; aim to remove it for production if feasible.)*
+    *   Use the `Content-Security-Policy-Report-Only` header initially. Configure a reporting endpoint (e.g., using `report-uri` or `report-to`) to collect violation reports without blocking resources.
+    *   Analyze violation reports to identify and add any missed essential script or connection sources to the policy.
+*   **Handle Next.js Nonces:**
+    *   Ensure the `script-src` directive includes the `'nonce-{NONCE_PLACEHOLDER}'`.
+    *   Configure Next.js (likely in `next.config.js`) to generate and inject nonces into its inline scripts. This allows legitimate Next.js scripts while blocking others.
+*   **Implementation:** Add the CSP header configuration within `next.config.js` using the `headers` function.
+*   **Testing:**
+    *   Thoroughly test all site functionality with the CSP in `Report-Only` mode in development and staging environments.
+    *   Monitor violation reports closely.
+    *   Once confident, switch to the enforcing `Content-Security-Policy` header in a testing environment before deploying to production.
 
-## 3. Frontend Changes (Next.js Application)
+## 3. Simplify Cart Persistence
 
-- **Modify Apollo Client (`src/utils/apollo/ApolloClient.js`):**
+*   **Modify Apollo Client (`src/utils/apollo/ApolloClient.js`):**
+    *   Locate the `middleware` ApolloLink.
+    *   Within the session expiration check (`if (Date.now() - createdTime > SEVEN_DAYS)`), remove the line: `localStorage.setItem('woocommerce-cart', JSON.stringify({}));`.
+*   **Modify Cart Store (`src/stores/cartStore.ts`):**
+    *   In the `updateCart` function, remove the line: `localStorage.setItem('woocommerce-cart', JSON.stringify(newCart));`.
+    *   In the `syncWithWooCommerce` function, remove the line: `localStorage.setItem('woocommerce-cart', JSON.stringify(cart));`.
+    *   In the `clearWooCommerceSession` function, remove the line: `localStorage.removeItem('woocommerce-cart');`.
+    *   *(Keep `localStorage.removeItem('woo-session');` in `clearWooCommerceSession` as the token remains in localStorage).*
 
-  - **Remove Middleware:** Delete the `middleware` ApolloLink. The browser will automatically handle sending the `HttpOnly` cookie.
-  - **Remove Afterware:** Delete the `afterware` ApolloLink. Storing the session token in `localStorage` is no longer needed.
-  - **Update Client Instantiation:** Modify the `ApolloClient` instantiation to remove the `middleware` and `afterware` from the link chain.
-  - **Ensure Credentials Inclusion:** Verify or explicitly set `credentials: 'include'` in the `createHttpLink` options to ensure cookies are sent with requests.
-    ```javascript
-    // Example modification in createHttpLink
-    createHttpLink({
-      uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-      fetch,
-      credentials: 'include', // Ensure cookies are sent
-    }),
-    ```
-  - **Remove Cart Clearing Logic:** Delete the line `localStorage.setItem('woocommerce-cart', JSON.stringify({}));` from the session expiration check within the (now removed) `middleware`. Cart clearing should be handled separately.
+## 4. Other Frontend Security Best Practices (Maintain)
 
-- **Modify Cart Store (`src/stores/cartStore.ts`):**
+*   **Dependency Management:** Continue using tools like Renovate and regularly run `npm audit` to keep dependencies updated and patch known vulnerabilities.
 
-  - **Simplify Cart Persistence:**
-    - Remove the explicit `localStorage.setItem('woocommerce-cart', ...)` calls from the `updateCart` and `syncWithWooCommerce` functions. Rely solely on the Zustand `persist` middleware (which uses the `'cart-store'` key in `localStorage`).
-  - **Update Clearing Logic:**
-    - In the `clearWooCommerceSession` function, remove the line `localStorage.removeItem('woo-session');`.
-    - In the `clearWooCommerceSession` function, remove the line `localStorage.removeItem('woocommerce-cart');`.
-  - **(Optional but Recommended):** Rename the `clearWooCommerceSession` function to something more accurate like `clearLocalCart` or `resetCartState`, as it will now only clear the local Zustand cart state and not the actual session cookie.
+## 5. Summary
 
-- **Review Authentication Flow:** Ensure login/logout functions correctly interact with the backend endpoints responsible for setting/clearing the `HttpOnly` session cookie.
-
-## 4. Testing
-
-- **Login/Logout:** Verify users can log in and log out successfully. Check browser developer tools (Network tab) to confirm the `Set-Cookie` header is received on login/session creation and that the cookie is cleared or expired on logout. Check the Application tab (Cookies) to ensure the cookie has the `HttpOnly` and `Secure` flags set.
-- **Authenticated Requests:** Confirm that subsequent GraphQL requests automatically include the session cookie in the `Cookie` header and that the backend correctly identifies the user session based on this cookie.
-- **Session Expiration:** Test that the session expires correctly based on the `Max-Age` or `Expires` attribute set by the server. Verify that expired sessions require re-authentication.
-- **Security:** Attempt to access the session cookie via JavaScript (`document.cookie`) in the browser console; it should not be visible or accessible.
-- **Cart Persistence:** Ensure the cart state (stored via Zustand persist under `'cart-store'`) remains consistent across page loads and browser sessions for logged-in users. Verify cart clearing logic works as expected.
-
-## 5. Deployment Considerations
-
-- **Backend First:** Deploy backend changes _before_ deploying frontend changes to ensure the server is ready to handle cookie-based sessions.
-- **Environment Variables:** Ensure `NEXT_PUBLIC_GRAPHQL_URL` is correctly configured in all deployment environments.
-- **HTTPS:** The `Secure` cookie attribute requires the entire site to be served over HTTPS. Ensure HTTPS is enforced in production.
-- **CORS:** If the GraphQL endpoint is hosted on a different domain or subdomain than the Next.js application, ensure Cross-Origin Resource Sharing (CORS) headers (`Access-Control-Allow-Credentials: true`, `Access-Control-Allow-Origin: [Your Frontend Domain]`) are correctly configured on the backend server to allow cookies to be sent and received across origins.
+This plan focuses on achieving a tangible security improvement against XSS by implementing a targeted, basic CSP, while also cleaning up the cart persistence code. It acknowledges the time constraints associated with a full CSP rollout. The session token remains in `localStorage`, but its potential misuse via script injection is significantly reduced.
