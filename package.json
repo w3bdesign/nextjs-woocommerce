@@ -30,7 +30,7 @@
     "@types/react": "^19.1.4",
     "algoliasearch": "^4.24.0",
     "autoprefixer": "^10.4.21",
-    "framer-motion": "12.11.4",
+    "framer-motion": "12.12.1",
     "graphql": "^16.11.0",
     "lodash": "^4.17.21",
     "next": "15.3.2",
