@@ -1,8 +1,8 @@
-[![Lighthouse CI](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/lighthouse.yml)
-[![Playwright Tests](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/playwright.yml/badge.svg)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/playwright.yml)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/29de6847b01142e6a0183988fc3df46a)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
-[![CodeFactor](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce/badge)](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=w3bdesign_nextjs-woocommerce&metric=alert_status)](https://sonarcloud.io/dashboard?id=w3bdesign_nextjs-woocommerce)
+[![Lighthouse CI](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/lighthouse.yml?branch=main&label=Lighthouse%20CI&logo=lighthouse&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/lighthouse.yml)
+[![Playwright Tests](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/playwright.yml?branch=main&label=Playwright%20Tests&logo=playwright&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/playwright.yml)
+[![Codacy Badge](https://img.shields.io/codacy/grade/29de6847b01142e6a0183988fc3df46a?logo=codacy&logoColor=white)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/w3bdesign/nextjs-woocommerce?logo=codefactor&logoColor=white)](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce)
+[![Quality Gate Status](https://img.shields.io/sonar/alert_status/w3bdesign_nextjs-woocommerce?server=https%3A%2F%2Fsonarcloud.io&logo=sonarcloud&logoColor=white)](https://sonarcloud.io/dashboard?id=w3bdesign_nextjs-woocommerce)
 
 ![bilde](https://github.com/user-attachments/assets/08047025-0950-472a-ae7d-932c7faee1db)
 
