@@ -35,7 +35,7 @@
     "lodash": "^4.17.21",
     "next": "15.3.3",
     "nprogress": "^0.2.0",
-    "postcss": "^8.5.4",
+    "postcss": "^8.5.5",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-hook-form": "^7.57.0",
