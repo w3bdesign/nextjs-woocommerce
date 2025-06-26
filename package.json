@@ -44,7 +44,7 @@
     "zustand": "^5.0.5"
   },
   "devDependencies": {
-    "@lhci/cli": "^0.15.0",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.53.1",
     "@types/lodash": "^4.17.19",
     "@types/node": "22.15.33",
