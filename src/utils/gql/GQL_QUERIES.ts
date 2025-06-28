@@ -117,23 +117,29 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
         image {
           sourceUrl
         }
-        productCategories {
-          nodes {
-            name
-            slug
-          }
-        }
         ... on SimpleProduct {
           databaseId
           price
           regularPrice
           salePrice
+          productCategories {
+            nodes {
+              name
+              slug
+            }
+          }
         }
         ... on VariableProduct {
           databaseId
           price
           regularPrice
           salePrice
+          productCategories {
+            nodes {
+              name
+              slug
+            }
+          }
           allPaColors {
             nodes {
               name
