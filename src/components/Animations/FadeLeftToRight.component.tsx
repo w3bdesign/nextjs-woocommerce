@@ -1,5 +1,4 @@
-// CircleCI doesn't like import { motion } from "framer-motion" here, so we use require
-const { motion } = require('framer-motion');
+import { motion, Transition } from 'motion/react';
 
 import type { IAnimateStaggerWithDelayProps } from './types/Animations.types';
 
@@ -21,24 +20,28 @@ const FadeLeftToRight = ({
   staggerDelay,
   animateNotReverse,
 }: IAnimateStaggerWithDelayProps) => {
+  const visibleTransition: Transition = {
+    when: 'beforeChildren',
+    staggerChildren: staggerDelay ? staggerDelay : 0.5,
+    delay,
+    ease: 'easeInOut',
+    staggerDirection: 1,
+  };
+
+  const hiddenTransition: Transition = {
+    when: 'afterChildren',
+    staggerChildren: staggerDelay ? staggerDelay : 0.5,
+    staggerDirection: -1,
+  };
+
   const FadeLeftToRightVariants = {
     visible: {
       opacity: 1,
-      transition: {
-        when: 'beforeChildren',
-        staggerChildren: staggerDelay ? staggerDelay : 0.5,
-        delay,
-        ease: 'easeInOut',
-        staggerDirection: 1,
-      },
+      transition: visibleTransition,
     },
     hidden: {
       opacity: 0,
-      transition: {
-        when: 'afterChildren',
-        staggerChildren: staggerDelay ? staggerDelay : 0.5,
-        staggerDirection: -1,
-      },
+      transition: hiddenTransition,
     },
   };
   return (
