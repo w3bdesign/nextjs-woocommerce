@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Product, ProductType } from '@/types/product';
+
 import Button from '@/components/UI/Button.component';
 import Checkbox from '@/components/UI/Checkbox.component';
 import RangeSlider from '@/components/UI/RangeSlider.component';
