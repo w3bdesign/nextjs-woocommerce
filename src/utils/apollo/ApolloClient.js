@@ -1,11 +1,13 @@
 /*eslint complexity: ["error", 6]*/
 
+/* eslint-disable unicorn/no-thenable */
 import {
   ApolloClient,
   InMemoryCache,
   createHttpLink,
   ApolloLink,
 } from '@apollo/client';
+import { getAuthToken } from '../auth';
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
@@ -13,7 +15,7 @@ const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
  */
-export const middleware = new ApolloLink((operation, forward) => {
+export const middleware = new ApolloLink(async (operation, forward) => {
   /**
    * If session data exist in local storage, set value as session header.
    * Here we also delete the session if it is older than 7 days
@@ -21,6 +23,8 @@ export const middleware = new ApolloLink((operation, forward) => {
   const sessionData = process.browser
     ? JSON.parse(localStorage.getItem('woo-session'))
     : null;
+
+  const headers = {};
 
   if (sessionData && sessionData.token && sessionData.createdTime) {
     const { token, createdTime } = sessionData;
@@ -32,13 +36,20 @@ export const middleware = new ApolloLink((operation, forward) => {
       localStorage.setItem('woocommerce-cart', JSON.stringify({}));
     } else {
       // If it's not, use the token
-      operation.setContext(() => ({
-        headers: {
-          'woocommerce-session': `Session ${token}`,
-        },
-      }));
+      headers['woocommerce-session'] = `Session ${token}`;
     }
   }
+
+  if (process.browser) {
+    const authToken = await getAuthToken();
+    if (authToken) {
+      headers.Authorization = `Bearer ${authToken}`;
+    }
+  }
+
+  operation.setContext({
+    headers,
+  });
 
   return forward(operation);
 });
