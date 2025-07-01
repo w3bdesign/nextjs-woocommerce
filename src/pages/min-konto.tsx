@@ -1,7 +1,8 @@
 import Layout from '@/components/Layout/Layout.component';
 import CustomerAccount from '@/components/User/CustomerAccount.component';
-import type { NextPage } from 'next';
 import withAuth from '@/components/User/withAuth.component';
+
+import type { NextPage } from 'next';
 
 const CustomerAccountPage: NextPage = () => {
   return (

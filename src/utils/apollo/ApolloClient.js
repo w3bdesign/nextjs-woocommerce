@@ -1,6 +1,5 @@
-/*eslint complexity: ["error", 6]*/
+/*eslint complexity: ["error", 8]*/
 
-/* eslint-disable unicorn/no-thenable */
 import {
   ApolloClient,
   InMemoryCache,

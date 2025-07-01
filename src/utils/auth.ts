@@ -1,7 +1,7 @@
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { LOGIN_USER, REFRESH_AUTH_TOKEN } from './gql/GQL_MUTATIONS';
 
-let tokenSetter: NodeJS.Timeout;
+let tokenSetter: ReturnType<typeof setInterval>;
 
 export function hasCredentials() {
   const authToken = sessionStorage.getItem(
