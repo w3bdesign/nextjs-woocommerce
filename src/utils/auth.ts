@@ -5,10 +5,10 @@ let tokenSetter: ReturnType<typeof setInterval>;
 
 export function hasCredentials() {
   const authToken = sessionStorage.getItem(
-    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string
+    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string,
   );
   const refreshToken = localStorage.getItem(
-    process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY as string
+    process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY as string,
   );
 
   if (!!authToken && !!refreshToken) {
@@ -20,7 +20,7 @@ export function hasCredentials() {
 
 export async function getAuthToken() {
   let authToken = sessionStorage.getItem(
-    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string
+    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string,
   );
   if (!authToken || !tokenSetter) {
     authToken = await fetchAuthToken();
@@ -30,7 +30,7 @@ export async function getAuthToken() {
 
 async function fetchAuthToken() {
   const refreshToken = localStorage.getItem(
-    process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY as string
+    process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY as string,
   );
   if (!refreshToken) {
     // No refresh token means the user is not authenticated.
@@ -55,7 +55,7 @@ async function fetchAuthToken() {
     // Save token.
     sessionStorage.setItem(
       process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string,
-      authToken
+      authToken,
     );
     if (tokenSetter) {
       clearInterval(tokenSetter);
@@ -68,7 +68,7 @@ async function fetchAuthToken() {
         }
         fetchAuthToken();
       },
-      Number(process.env.NEXT_PUBLIC_AUTH_KEY_TIMEOUT || 300000)
+      Number(process.env.NEXT_PUBLIC_AUTH_KEY_TIMEOUT || 300000),
     );
 
     return authToken;
@@ -80,20 +80,20 @@ async function fetchAuthToken() {
 function saveCredentials(
   authToken: string,
   sessionToken: string,
-  refreshToken: string | null = null
+  refreshToken: string | null = null,
 ) {
   sessionStorage.setItem(
     process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string,
-    authToken
+    authToken,
   );
   sessionStorage.setItem(
     process.env.NEXT_PUBLIC_SESSION_TOKEN_LS_KEY as string,
-    sessionToken
+    sessionToken,
   );
   if (refreshToken) {
     localStorage.setItem(
       process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY as string,
-      refreshToken
+      refreshToken,
     );
   }
 }
@@ -101,7 +101,7 @@ function saveCredentials(
 export async function login(username: string, password: string) {
   const headers: { [key: string]: string } = {};
   const sessionToken = sessionStorage.getItem(
-    process.env.NEXT_PUBLIC_SESSION_TOKEN_LS_KEY as string
+    process.env.NEXT_PUBLIC_SESSION_TOKEN_LS_KEY as string,
   );
   if (sessionToken) {
     headers['woocommerce-session'] = `Session ${sessionToken}`;
