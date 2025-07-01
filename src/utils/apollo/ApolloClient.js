@@ -6,7 +6,6 @@ import {
   createHttpLink,
   ApolloLink,
 } from '@apollo/client';
-import { getAuthToken } from '../auth';
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
