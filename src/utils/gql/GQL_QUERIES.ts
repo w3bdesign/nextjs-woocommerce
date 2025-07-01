@@ -325,6 +325,17 @@ export const GET_CART = gql`
   }
 `;
 
+export const GET_CURRENT_USER = gql`
+  query GET_CURRENT_USER {
+    customer {
+      id
+      firstName
+      lastName
+      email
+    }
+  }
+`;
+
 export const GET_CUSTOMER_ORDERS = gql`
   query GET_CUSTOMER_ORDERS {
     customer {

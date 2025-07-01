@@ -38,12 +38,8 @@ export const middleware = new ApolloLink(async (operation, forward) => {
     }
   }
 
-  if (process.browser) {
-    const authToken = await getAuthToken();
-    if (authToken) {
-      headers.Authorization = `Bearer ${authToken}`;
-    }
-  }
+  // Cookie-based authentication - no JWT tokens needed
+  // Cookies are automatically included with credentials: 'include'
 
   operation.setContext({
     headers,
