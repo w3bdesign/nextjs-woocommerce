@@ -26,8 +26,8 @@ const UserLogin = () => {
     setLoading(true);
     setError(null);
     try {
-      const customer = await login(data.username, data.password);
-      if (customer) {
+      const result = await login(data.username, data.password);
+      if (result.success && result.status === 'SUCCESS') {
         router.push('/min-konto');
       } else {
         throw new Error('Failed to login');
