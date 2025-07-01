@@ -122,7 +122,7 @@ export async function login(username: string, password: string) {
       variables: { username, password },
     });
 
-    const { authToken, refreshToken, customer } = data.loginWithCookies;
+    const { authToken, refreshToken, customer } = data.login;
 
     if (!authToken || !refreshToken || !customer.sessionToken) {
       throw new Error('Failed to retrieve credentials.');
