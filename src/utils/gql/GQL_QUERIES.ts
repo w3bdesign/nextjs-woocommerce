@@ -324,3 +324,19 @@ export const GET_CART = gql`
     }
   }
 `;
+
+export const GET_CUSTOMER_ORDERS = gql`
+  query GET_CUSTOMER_ORDERS {
+    customer {
+      orders {
+        nodes {
+          id
+          orderNumber
+          status
+          total
+          date
+        }
+      }
+    }
+  }
+`;
