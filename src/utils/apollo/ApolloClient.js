@@ -6,7 +6,6 @@ import {
   createHttpLink,
   ApolloLink,
 } from '@apollo/client';
-import { getAuthToken } from '../auth';
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
@@ -39,12 +38,8 @@ export const middleware = new ApolloLink(async (operation, forward) => {
     }
   }
 
-  if (process.browser) {
-    const authToken = await getAuthToken();
-    if (authToken) {
-      headers.Authorization = `Bearer ${authToken}`;
-    }
-  }
+  // Cookie-based authentication - no JWT tokens needed
+  // Cookies are automatically included with credentials: 'include'
 
   operation.setContext({
     headers,
@@ -97,6 +92,7 @@ const client = new ApolloClient({
       createHttpLink({
         uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
         fetch,
+        credentials: 'include', // Include cookies for authentication
       }),
     ),
   ),
