@@ -4,11 +4,15 @@ import { LOGIN_USER, REFRESH_AUTH_TOKEN } from './gql/GQL_MUTATIONS';
 let tokenSetter: ReturnType<typeof setInterval>;
 
 export function hasCredentials() {
+  if (typeof window === 'undefined') {
+    return false; // Server-side, no credentials available
+  }
+
   const authToken = sessionStorage.getItem(
-    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string,
+    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY as string
   );
   const refreshToken = localStorage.getItem(
-    process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY as string,
+    process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY as string
   );
 
   if (!!authToken && !!refreshToken) {
