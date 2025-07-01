@@ -92,6 +92,7 @@ const client = new ApolloClient({
       createHttpLink({
         uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
         fetch,
+        credentials: 'include', // Include cookies for authentication
       }),
     ),
   ),
