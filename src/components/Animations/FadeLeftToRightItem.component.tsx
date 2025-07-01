@@ -1,6 +1,6 @@
 import { motion, Transition } from 'motion/react';
 
-import type { IAnimateWithDelayProps } from './types/Animations.types';
+import type { IAnimateProps } from './types/Animations.types';
 
 /**
  * Fade content left to right. Needs to be used with FadeLeftToRight as parent container
@@ -10,10 +10,7 @@ import type { IAnimateWithDelayProps } from './types/Animations.types';
  * @returns {JSX.Element} - Rendered component
  */
 
-const FadeLeftToRightItem = ({
-  children,
-  cssClass,
-}: IAnimateWithDelayProps) => {
+const FadeLeftToRightItem = ({ children, cssClass }: IAnimateProps) => {
   const transition: Transition = {
     type: 'spring',
     duration: 0.5,
