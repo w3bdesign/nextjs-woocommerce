@@ -30,10 +30,16 @@ export const CREATE_USER = gql`
 
 export const LOGIN_USER = gql`
   mutation Login($username: String!, $password: String!) {
-    login(input: { username: $username, password: $password }) {
+    loginWithCookies(input: { login: $username, password: $password }) {
+      status
       authToken
       refreshToken
       customer {
+        id
+        email
+        firstName
+        lastName
+        username
         sessionToken
       }
     }
