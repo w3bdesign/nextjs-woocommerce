@@ -1,5 +1,4 @@
-// CircleCI doesn't like import { motion } from "framer-motion" here, so we use require
-const { motion } = require('framer-motion');
+import { motion, Transition } from 'motion/react';
 
 import type { IAnimateProps } from './types/Animations.types';
 
@@ -12,13 +11,23 @@ import type { IAnimateProps } from './types/Animations.types';
  */
 
 const FadeLeftToRightItem = ({ children, cssClass }: IAnimateProps) => {
-  const FadeLeftToRightItemVariants = {
-    visible: { opacity: 1, x: 0 },
+  const transition: Transition = {
+    type: 'spring',
+    duration: 0.5,
+    stiffness: 110,
+  };
+
+  const fadeLeftToRightItemVariants = {
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition,
+    },
     hidden: { opacity: 0, x: -20 },
   };
   return (
     <motion.span
-      variants={FadeLeftToRightItemVariants}
+      variants={fadeLeftToRightItemVariants}
       className={cssClass}
       data-testid="fadelefttorightitem"
     >
