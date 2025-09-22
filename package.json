@@ -50,7 +50,7 @@
     "@types/node": "22.17.1",
     "@types/nprogress": "^0.2.3",
     "@types/react-instantsearch-dom": "^6.12.9",
-    "@types/uuid": "^10.0.0",
+    "@types/uuid": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
     "@typescript-eslint/parser": "^8.44.1",
     "babel-plugin-styled-components": "^2.1.4",
