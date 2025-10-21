@@ -45,6 +45,11 @@ export const mockProducts = [
     productCategories: { nodes: [{ name: 'T-shirts', slug: 't-shirts' }] },
     allPaColors: { nodes: [{ name: 'Red', slug: 'red' }] },
     allPaSizes: { nodes: [{ name: 'M' }] },
+    // Enable 3D configurator for testing
+    configurator: {
+      enabled: true,
+      modelId: 'shoe-v1',
+    },
     variations: {
       __typename: 'ProductVariationConnection',
       nodes: [

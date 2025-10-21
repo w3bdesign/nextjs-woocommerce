@@ -1,6 +1,8 @@
-import { Suspense, type ReactElement } from 'react';
+import { Suspense, useEffect, type ReactElement } from 'react';
 import dynamic from 'next/dynamic';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
+import { initializeConfigurator } from '@/stores/configuratorStore';
+import { getModelConfig, DEFAULT_MODEL_ID } from '@/config/models.registry';
 
 // Dynamically import 3D components to avoid SSR issues
 const Canvas3D = dynamic(
@@ -26,7 +28,7 @@ const ColorPicker = dynamic(
 );
 
 interface ProductConfiguratorProps {
-  modelPath?: string;
+  modelId?: string;
   className?: string;
 }
 
@@ -35,16 +37,39 @@ interface ProductConfiguratorProps {
  * Orchestrates Canvas, Model, and Color Picker
  */
 export default function ProductConfigurator({ 
-  modelPath,
+  modelId = DEFAULT_MODEL_ID,
   className = ''
 }: ProductConfiguratorProps): ReactElement {
+  // Get the model configuration from the registry
+  const modelConfig = getModelConfig(modelId);
+  
+  // Initialize the configurator store with the model config
+  useEffect(() => {
+    if (modelConfig) {
+      initializeConfigurator(modelConfig);
+    } else {
+      console.warn(`Model ID "${modelId}" not found in registry`);
+    }
+  }, [modelId, modelConfig]);
+  
+  // Don't render if model config doesn't exist
+  if (!modelConfig) {
+    return (
+      <div className={`relative w-full ${className}`}>
+        <div className="w-full h-[600px] bg-gray-100 rounded-lg shadow-lg flex items-center justify-center">
+          <p className="text-gray-600">Model configuration not found</p>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className={`relative w-full ${className}`}>
       {/* 3D Canvas Container */}
       <div className="w-full h-[600px] bg-white rounded-lg shadow-lg overflow-hidden">
         <Suspense fallback={<LoadingSpinner />}>
           <Canvas3D>
-            <ModelViewer modelPath={modelPath} />
+            <ModelViewer modelConfig={modelConfig} />
           </Canvas3D>
         </Suspense>
       </div>

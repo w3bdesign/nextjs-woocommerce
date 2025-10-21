@@ -69,6 +69,12 @@ export const GET_SINGLE_PRODUCT = gql`
         }
         id
       }
+      configurator {
+        enabled
+        modelId
+        customPricing
+        defaultConfiguration
+      }
     }
   }
 `;

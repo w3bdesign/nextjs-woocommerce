@@ -4,9 +4,12 @@ import { useGLTF } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
 import type { Group } from 'three';
 import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
+import type { ModelConfig } from '@/types/configurator';
+import { SHOE_CONFIG } from '@/config/shoeModel.config';
 
 interface ModelViewerProps {
   modelPath?: string;
+  modelConfig?: ModelConfig;
 }
 
 /**
@@ -14,11 +17,14 @@ interface ModelViewerProps {
  * Handles model loading, animation, and part selection
  */
 export default function ModelViewer({ 
-  modelPath = '/shoe-draco.glb' 
+  modelPath,
+  modelConfig = SHOE_CONFIG
 }: ModelViewerProps): ReactElement {
+  // Use modelPath from config if not explicitly provided
+  const resolvedModelPath = modelPath || modelConfig.modelPath;
   const ref = useRef<Group>(null);
   const snap = useSnapshot(configuratorState);
-  const { nodes, materials } = useGLTF(modelPath) as any;
+  const { nodes, materials } = useGLTF(resolvedModelPath) as any;
   const [hovered, setHovered] = useState<string | null>(null);
 
   // Animate the model with gentle rotation and bobbing
@@ -76,65 +82,30 @@ export default function ModelViewer({
       onPointerMissed={handlePointerMissed}
       onClick={handleClick}
     >
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe.geometry}
-        material={materials.laces}
-        material-color={snap.items.laces}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe_1.geometry}
-        material={materials.mesh}
-        material-color={snap.items.mesh}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe_2.geometry}
-        material={materials.caps}
-        material-color={snap.items.caps}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe_3.geometry}
-        material={materials.inner}
-        material-color={snap.items.inner}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe_4.geometry}
-        material={materials.sole}
-        material-color={snap.items.sole}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe_5.geometry}
-        material={materials.stripes}
-        material-color={snap.items.stripes}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe_6.geometry}
-        material={materials.band}
-        material-color={snap.items.band}
-      />
-      <mesh
-        receiveShadow
-        castShadow
-        geometry={nodes.shoe_7.geometry}
-        material={materials.patch}
-        material-color={snap.items.patch}
-      />
+      {modelConfig.parts.map((part, index) => {
+        const node = nodes[part.nodeName];
+        const material = materials[part.materialName];
+        
+        // Skip if node or material doesn't exist
+        if (!node?.geometry || !material) {
+          console.warn(`Missing node or material for part: ${part.displayName}`);
+          return null;
+        }
+        
+        return (
+          <mesh
+            key={`${part.nodeName}-${index}`}
+            receiveShadow
+            castShadow
+            geometry={node.geometry}
+            material={material}
+            material-color={snap.items[part.materialName]}
+          />
+        );
+      })}
     </group>
   );
 }
 
-// Preload the model for better performance
-useGLTF.preload('/shoe-draco.glb');
+// Preload the default model for better performance
+useGLTF.preload(SHOE_CONFIG.modelPath);

@@ -75,6 +75,13 @@ export interface IProduct {
   allPaColors?: IAllPaColors;
   allPaSizes?: IAllPaSizes;
   variations?: IVariations;
+  /** Optional: 3D Configurator metadata */
+  configurator?: {
+    enabled: boolean;
+    modelId: string;
+    customPricing?: Record<string, number>;
+    defaultConfiguration?: Record<string, string>;
+  };
 }
 
 export interface IProductRootObject {

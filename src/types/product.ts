@@ -58,6 +58,13 @@ export interface Product {
       };
     }>;
   };
+  /** Optional: 3D Configurator metadata */
+  configurator?: {
+    enabled: boolean;
+    modelId: string;
+    customPricing?: Record<string, number>;
+    defaultConfiguration?: Record<string, string>;
+  };
 }
 
 export interface ProductType {

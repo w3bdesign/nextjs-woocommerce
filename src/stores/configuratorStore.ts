@@ -1,4 +1,6 @@
 import { proxy } from 'valtio';
+import type { ModelConfig } from '@/types/configurator';
+import { SHOE_CONFIG } from '@/config/shoeModel.config';
 
 /**
  * Configurator state management using Valtio proxy
@@ -11,33 +13,33 @@ interface ConfiguratorState {
 
 export const configuratorState = proxy<ConfiguratorState>({
   current: null,
-  items: {
-    laces: '#ffffff',
-    mesh: '#ffffff',
-    caps: '#ffffff',
-    inner: '#ffffff',
-    sole: '#ffffff',
-    stripes: '#ffffff',
-    band: '#ffffff',
-    patch: '#ffffff',
-  },
+  items: {},
 });
 
 /**
+ * Initialize configurator with a model configuration
+ * Populates the items state with default colors from the model config
+ */
+export const initializeConfigurator = (modelConfig: ModelConfig): void => {
+  const items: Record<string, string> = {};
+  
+  modelConfig.parts.forEach(part => {
+    items[part.materialName] = part.defaultColor;
+  });
+  
+  configuratorState.current = null;
+  configuratorState.items = items;
+};
+
+// Initialize with shoe config on module load (default behavior)
+initializeConfigurator(SHOE_CONFIG);
+
+/**
  * Reset configurator to default state
+ * Uses the shoe config as the default for backwards compatibility
  */
 export const resetConfigurator = (): void => {
-  configuratorState.current = null;
-  configuratorState.items = {
-    laces: '#ffffff',
-    mesh: '#ffffff',
-    caps: '#ffffff',
-    inner: '#ffffff',
-    sole: '#ffffff',
-    stripes: '#ffffff',
-    band: '#ffffff',
-    patch: '#ffffff',
-  };
+  initializeConfigurator(SHOE_CONFIG);
 };
 
 /**
