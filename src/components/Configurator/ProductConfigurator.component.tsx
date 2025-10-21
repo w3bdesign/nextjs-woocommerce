@@ -1,35 +1,36 @@
 import { Suspense, useEffect, type ReactElement } from 'react';
 import dynamic from 'next/dynamic';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Info } from 'lucide-react';
 import { initializeConfigurator } from '@/stores/configuratorStore';
 import { getModelConfig, DEFAULT_MODEL_ID } from '@/config/models.registry';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 // Dynamically import 3D components to avoid SSR issues
-const Canvas3D = dynamic(
-  () => import('./Canvas3D.component'),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    )
-  }
-);
+const Canvas3D = dynamic(() => import('./Canvas3D.component'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    </div>
+  ),
+});
 
-const ModelViewer = dynamic(
-  () => import('./ModelViewer.component'),
-  { ssr: false }
-);
+const ModelViewer = dynamic(() => import('./ModelViewer.component'), {
+  ssr: false,
+});
 
-const ColorPicker = dynamic(
-  () => import('./ColorPicker.component'),
-  { ssr: false }
-);
+const ColorPicker = dynamic(() => import('./ColorPicker.component'), {
+  ssr: false,
+});
 
 const InteractiveControls = dynamic(
   () => import('./InteractiveControls.component'),
-  { ssr: false }
+  { ssr: false },
 );
 
 interface ProductConfiguratorProps {
@@ -41,13 +42,13 @@ interface ProductConfiguratorProps {
  * Main 3D Product Configurator component
  * Orchestrates Canvas, Model, and Color Picker
  */
-export default function ProductConfigurator({ 
+export default function ProductConfigurator({
   modelId = DEFAULT_MODEL_ID,
-  className = ''
+  className = '',
 }: ProductConfiguratorProps): ReactElement {
   // Get the model configuration from the registry
   const modelConfig = getModelConfig(modelId);
-  
+
   // Initialize the configurator store with the model config
   useEffect(() => {
     if (modelConfig) {
@@ -56,7 +57,7 @@ export default function ProductConfigurator({
       console.warn(`Model ID "${modelId}" not found in registry`);
     }
   }, [modelId, modelConfig]);
-  
+
   // Don't render if model config doesn't exist
   if (!modelConfig) {
     return (
@@ -67,59 +68,74 @@ export default function ProductConfigurator({
       </div>
     );
   }
-  
+
   return (
-    <div className={`relative w-full ${className}`}>
-      {/* 3D Canvas Container */}
-      <div className="w-full h-[600px] bg-white rounded-lg shadow-lg overflow-hidden">
-        <Suspense fallback={
-          <div className="w-full h-full flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        }>
-          <Canvas3D shadowConfig={modelConfig.shadow}>
-            <ModelViewer modelConfig={modelConfig} />
-          </Canvas3D>
-        </Suspense>
-      </div>
+    <div className={`w-full ${className}`}>
+      {/* Main Configurator Container - Flex Layout */}
+      <div className="flex flex-col lg:flex-row rounded-lg shadow-lg overflow-hidden bg-white relative">
+        {/* 3D Canvas Container */}
+        <div className="flex-1 h-[400px] md:h-[500px] lg:h-[600px] bg-white relative">
+          {/* Info Icon Tooltip - Top Right Corner */}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white shadow-lg border border-gray-200 flex items-center justify-center transition-all hover:scale-110"
+                  aria-label="Customization Guide"
+                >
+                  <Info className="w-4 h-4 text-blue-600" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="max-w-xs">
+                <div className="space-y-2">
+                  <p className="font-semibold text-sm">Customization Guide</p>
+                  <ul className="text-xs space-y-1.5">
+                    <li>
+                      🎨 Click on the model to select parts and change colors
+                    </li>
+                    {modelConfig.interactiveParts &&
+                      modelConfig.interactiveParts.length > 0 && (
+                        <li>
+                          🚪 Use the controls to open/close doors and toggle
+                          parts
+                        </li>
+                      )}
+                    <li>🖱️ Drag to rotate and scroll to zoom the 3D view</li>
+                  </ul>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
 
-      {/* Color Picker Overlay */}
-      <Suspense fallback={null}>
-        <ColorPicker />
-      </Suspense>
-
-      {/* Interactive Controls - Fixed position top right */}
-      <Suspense fallback={null}>
-        <InteractiveControls interactiveParts={modelConfig.interactiveParts} />
-      </Suspense>
-
-      {/* Instructions */}
-      <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
-        <div className="flex items-start gap-3">
-          <svg 
-            className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" 
-            fill="currentColor" 
-            viewBox="0 0 20 20"
+          <Suspense
+            fallback={
+              <div className="w-full h-full flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            }
           >
-            <path 
-              fillRule="evenodd" 
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" 
-              clipRule="evenodd" 
-            />
-          </svg>
-          <div className="flex-1">
-            <p className="text-sm text-gray-700 mb-2">
-              <strong className="text-blue-600">Customization Guide:</strong>
-            </p>
-            <ul className="text-sm text-gray-600 space-y-1">
-              <li>🎨 <strong>Click on the model</strong> to select parts and change colors (left panel)</li>
-              {modelConfig.interactiveParts && modelConfig.interactiveParts.length > 0 && (
-                <li>🚪 <strong>Use controls on the right</strong> to open/close doors and toggle parts</li>
-              )}
-              <li>🖱️ <strong>Drag to rotate</strong> and scroll to zoom the 3D view</li>
-            </ul>
-          </div>
+            <Canvas3D shadowConfig={modelConfig.shadow}>
+              <ModelViewer modelConfig={modelConfig} />
+            </Canvas3D>
+          </Suspense>
         </div>
+
+        {/* Controls Sidebar */}
+        <aside
+          className="w-full lg:w-80 bg-gradient-to-b from-gray-50 to-white border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto"
+          style={{ maxHeight: '600px' }}
+          aria-label="Configurator Controls"
+        >
+          <Suspense fallback={null}>
+            <ColorPicker />
+          </Suspense>
+
+          <Suspense fallback={null}>
+            <InteractiveControls
+              interactiveParts={modelConfig.interactiveParts}
+            />
+          </Suspense>
+        </aside>
       </div>
     </div>
   );

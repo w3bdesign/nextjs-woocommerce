@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Container } from './Container.component';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -35,7 +36,7 @@ const BreadcrumbNav = ({ items, className }: BreadcrumbNavProps) => {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className={className || 'container mx-auto px-4 pt-4'}>
+    <Container paddingClassName="px-4 pt-4" className={className}>
       <Breadcrumb>
         <BreadcrumbList>
           {items.map((item, index) => {
@@ -59,7 +60,7 @@ const BreadcrumbNav = ({ items, className }: BreadcrumbNavProps) => {
           })}
         </BreadcrumbList>
       </Breadcrumb>
-    </div>
+    </Container>
   );
 };
 

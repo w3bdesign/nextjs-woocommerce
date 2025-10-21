@@ -73,73 +73,54 @@ const SingleProduct = ({ product }: IProductRootObject) => {
         </Container>
       ) : (
         <Container paddingClassName="px-4 py-8">
-          <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
-            {/* Image/Configurator Container */}
-            <div className="mb-6 md:mb-0 group">
+          {/* Configurator takes full width */}
+          <div className="mb-6 md:mb-0">
+            {product.configurator?.enabled ? (
+              <ProductConfigurator modelId={product.configurator.modelId} />
+            ) : (
               <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-gray-100">
-                {product.configurator?.enabled ? (
-                  <ProductConfigurator modelId={product.configurator.modelId} />
-                ) : (
-                  <img
-                    src={product.image?.sourceUrl}
-                    alt={name}
-                    className="w-full h-full object-cover"
-                  />
-                )}
+                <img
+                  src={product.image?.sourceUrl}
+                  alt={name}
+                  className="w-full h-full object-cover"
+                />
               </div>
+            )}
+          </div>
+
+          {/* Price and Purchase Section - Below Configurator */}
+          <div className="mt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6 p-6 bg-gradient-to-r from-gray-50 to-white rounded-lg border border-gray-200">
+            {/* Left: Price Display */}
+            <div>
+              {product.variations ? (
+                <PriceGroup
+                  price={price}
+                  onSale={onSale}
+                  size="xl"
+                  currency="kr"
+                />
+              ) : (
+                <PriceGroup
+                  price={price}
+                  salePrice={salePrice}
+                  regularPrice={regularPrice}
+                  onSale={onSale}
+                  size="xl"
+                  currency="kr"
+                />
+              )}
             </div>
 
-            {/* Product Details Container */}
-            <div className="flex flex-col">
-              <TypographyH1 className="text-center md:text-left mb-4">
-                {name}
-              </TypographyH1>
-
-              {/* Price Display */}
-              <div className="text-center md:text-left mb-6">
-                {product.variations ? (
-                  <PriceGroup
-                    price={price}
-                    onSale={onSale}
-                    size="xl"
-                    currency="kr"
-                  />
-                ) : (
-                  <PriceGroup
-                    price={price}
-                    salePrice={salePrice}
-                    regularPrice={regularPrice}
-                    onSale={onSale}
-                    size="xl"
-                    currency="kr"
-                  />
-                )}
-              </div>
-
-              {/* Description */}
-              <TypographyP className="mb-6 text-center md:text-left">
-                {DESCRIPTION_WITHOUT_HTML}
-              </TypographyP>
-
-              {/* Stock Status */}
-              {Boolean(product.stockQuantity) && (
-                <div className="mb-6 mx-auto md:mx-0">
-                  <div className="p-2 bg-green-100 border border-green-400 rounded-lg max-w-[14.375rem]">
-                    <TypographyLarge className="text-green-700 text-center md:text-left">
-                      {product.stockQuantity} in stock
-                    </TypographyLarge>
-                  </div>
-                </div>
-              )}
-
+            {/* Right: Add to Cart */}
+            <div className="flex flex-col gap-4">
               {/* Variations Select */}
               {product.variations && (
-                <div className="mb-6 mx-auto md:mx-0 w-full max-w-[14.375rem]">
+                <div className="w-full md:w-64">
                   <label
                     htmlFor="variant"
-                    className="block text-lg font-medium mb-2 text-center md:text-left"
+                    className="block text-sm font-medium mb-2"
                   >
-                    Variations
+                    Select Variation
                   </label>
                   <select
                     id="variant"
@@ -161,7 +142,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               )}
 
               {/* Add to Cart Button */}
-              <div className="w-full mx-auto md:mx-0 max-w-[14.375rem]">
+              <div className="w-full md:w-64">
                 {product.variations ? (
                   <AddToCart
                     product={product}

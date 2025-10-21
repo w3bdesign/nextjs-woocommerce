@@ -13,11 +13,12 @@ export const mockProducts = [
       id: 'img-101',
       uri: '/images/cabinet.jpg',
       title: 'Modern Oak Cabinet',
-      srcSet: 'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
+      srcSet:
+        'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
       sourceUrl: 'https://placehold.co/600x600',
     },
-    price: 'kr4999.00',
-    regularPrice: 'kr5999.00',
+    price: '$4999.00',
+    regularPrice: '$5999.00',
     salePrice: null,
     stockQuantity: 15,
     productCategories: { nodes: [{ name: 'Cabinets', slug: 'cabinets' }] },
@@ -33,7 +34,8 @@ export const mockProducts = [
     databaseId: 102,
     averageRating: 4.1,
     name: 'Mock Tee',
-    description: 'A versatile mock product with variants for testing the shoe configurator POC.',
+    description:
+      'A versatile mock product with variants for testing the shoe configurator POC.',
     onSale: true,
     slug: 'mock-tee',
     image: {
@@ -41,13 +43,16 @@ export const mockProducts = [
       id: 'img-102',
       uri: '/images/tee.jpg',
       title: 'Mock Tee',
-      srcSet: 'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
+      srcSet:
+        'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
       sourceUrl: 'https://placehold.co/600x600',
     },
-    price: 'kr299.00 - kr349.00',
-    regularPrice: 'kr349.00',
-    salePrice: 'kr299.00',
-    productCategories: { nodes: [{ name: 'Accessories', slug: 'accessories' }] },
+    price: '$299.00 - kr349.00',
+    regularPrice: '$349.00',
+    salePrice: '$299.00',
+    productCategories: {
+      nodes: [{ name: 'Accessories', slug: 'accessories' }],
+    },
     allPaColors: { nodes: [{ name: 'Red', slug: 'red' }] },
     allPaSizes: { nodes: [{ name: 'M' }] },
     // Enable 3D configurator for testing (shoe POC)
@@ -67,9 +72,9 @@ export const mockProducts = [
           stockQuantity: 7,
           purchasable: true,
           onSale: true,
-          price: 'kr299.00',
-          salePrice: 'kr299.00',
-          regularPrice: 'kr349.00',
+          price: '$299.00',
+          salePrice: '$299.00',
+          regularPrice: '$349.00',
           attributes: { nodes: [] },
         },
       ],
@@ -89,12 +94,13 @@ export const mockProducts = [
       id: 'img-103',
       uri: '/images/table.jpg',
       title: 'Scandinavian Dining Table',
-      srcSet: 'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
+      srcSet:
+        'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
       sourceUrl: 'https://placehold.co/600x600',
     },
-    price: 'kr6999.00',
-    regularPrice: 'kr8999.00',
-    salePrice: 'kr6999.00',
+    price: '$6999.00',
+    regularPrice: '$8999.00',
+    salePrice: '$6999.00',
     stockQuantity: 8,
     productCategories: { nodes: [{ name: 'Tables', slug: 'tables' }] },
   },
@@ -112,11 +118,12 @@ export const mockProducts = [
       id: 'img-104',
       uri: '/images/sofa.jpg',
       title: 'Velvet Sofa',
-      srcSet: 'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
+      srcSet:
+        'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
       sourceUrl: 'https://placehold.co/600x600',
     },
-    price: 'kr12999.00',
-    regularPrice: 'kr12999.00',
+    price: '$12999.00',
+    regularPrice: '$12999.00',
     salePrice: null,
     stockQuantity: 5,
     productCategories: { nodes: [{ name: 'Sofas', slug: 'sofas' }] },
@@ -127,7 +134,8 @@ export const mockProducts = [
     databaseId: 105,
     averageRating: 4.6,
     name: 'Ergonomic Office Chair',
-    description: 'Comfortable office chair with lumbar support and adjustable height.',
+    description:
+      'Comfortable office chair with lumbar support and adjustable height.',
     onSale: true,
     slug: 'ergonomic-office-chair',
     image: {
@@ -135,12 +143,13 @@ export const mockProducts = [
       id: 'img-105',
       uri: '/images/chair.jpg',
       title: 'Ergonomic Office Chair',
-      srcSet: 'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
+      srcSet:
+        'https://placehold.co/300x300 300w, https://placehold.co/600x600 600w',
       sourceUrl: 'https://placehold.co/600x600',
     },
-    price: 'kr2499.00',
-    regularPrice: 'kr2999.00',
-    salePrice: 'kr2499.00',
+    price: '$2499.00',
+    regularPrice: '$2999.00',
+    salePrice: '$2499.00',
     stockQuantity: 20,
     productCategories: { nodes: [{ name: 'Chairs', slug: 'chairs' }] },
   },
@@ -150,11 +159,36 @@ export const mockCategories = {
   productCategories: {
     __typename: 'RootQueryToProductCategoryConnection',
     nodes: [
-      { __typename: 'ProductCategory', id: 'cat1', name: 'Sofas', slug: 'sofas' },
-      { __typename: 'ProductCategory', id: 'cat2', name: 'Tables', slug: 'tables' },
-      { __typename: 'ProductCategory', id: 'cat3', name: 'Chairs', slug: 'chairs' },
-      { __typename: 'ProductCategory', id: 'cat4', name: 'Cabinets', slug: 'cabinets' },
-      { __typename: 'ProductCategory', id: 'cat5', name: 'Accessories', slug: 'accessories' },
+      {
+        __typename: 'ProductCategory',
+        id: 'cat1',
+        name: 'Sofas',
+        slug: 'sofas',
+      },
+      {
+        __typename: 'ProductCategory',
+        id: 'cat2',
+        name: 'Tables',
+        slug: 'tables',
+      },
+      {
+        __typename: 'ProductCategory',
+        id: 'cat3',
+        name: 'Chairs',
+        slug: 'chairs',
+      },
+      {
+        __typename: 'ProductCategory',
+        id: 'cat4',
+        name: 'Cabinets',
+        slug: 'cabinets',
+      },
+      {
+        __typename: 'ProductCategory',
+        id: 'cat5',
+        name: 'Accessories',
+        slug: 'accessories',
+      },
     ],
   },
 };
@@ -179,7 +213,10 @@ export const mockCart = {
 };
 
 // Category helpers
-export const categoryById: Record<string, { id: string; name: string; slug: string }> = {
+export const categoryById: Record<
+  string,
+  { id: string; name: string; slug: string }
+> = {
   cat1: { id: 'cat1', name: 'Sofas', slug: 'sofas' },
   cat2: { id: 'cat2', name: 'Tables', slug: 'tables' },
   cat3: { id: 'cat3', name: 'Chairs', slug: 'chairs' },
@@ -194,7 +231,9 @@ export function getProductBySlug(slug: string) {
 export function getProductsByCategoryId(id: string) {
   const cat = categoryById[id];
   if (!cat) return [];
-  return mockProducts.filter((p) => p.productCategories?.nodes?.some((c: any) => c.slug === cat.slug));
+  return mockProducts.filter((p) =>
+    p.productCategories?.nodes?.some((c: any) => c.slug === cat.slug),
+  );
 }
 
 // Mock user and orders
@@ -218,7 +257,7 @@ export const mockOrders = {
           id: 'order-1001',
           orderNumber: 1001,
           status: 'COMPLETED',
-          total: 'kr848.00',
+          total: '$848.00',
           date: new Date().toISOString(),
           __typename: 'Order',
         },
