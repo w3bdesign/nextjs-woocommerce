@@ -11,12 +11,23 @@ interface ConfiguratorState {
   items: Record<string, string>;
   /** Interactive parts state (true = active/open, false = inactive/closed) */
   interactiveStates: Record<string, boolean>;
+  /** Dimensions in cm [width, height, depth] */
+  dimensions: {
+    width: number;
+    height: number;
+    depth: number;
+  };
 }
 
 export const configuratorState = proxy<ConfiguratorState>({
   current: null,
   items: {},
   interactiveStates: {},
+  dimensions: {
+    width: 0,
+    height: 0,
+    depth: 0,
+  },
 });
 
 /**
@@ -27,14 +38,14 @@ export const configuratorState = proxy<ConfiguratorState>({
 export const initializeConfigurator = (modelConfig: ModelConfig): void => {
   const items: Record<string, string> = {};
   const interactiveStates: Record<string, boolean> = {};
-  
-  modelConfig.parts.forEach(part => {
+
+  modelConfig.parts.forEach((part) => {
     items[part.materialName] = part.defaultColor;
   });
-  
+
   // Initialize interactive parts states
   if (modelConfig.interactiveParts) {
-    modelConfig.interactiveParts.forEach(part => {
+    modelConfig.interactiveParts.forEach((part) => {
       const stateKey = part.stateKey || part.nodeName;
       // Only set if not already set (avoid overwriting with later parts)
       if (!(stateKey in interactiveStates)) {
@@ -42,10 +53,26 @@ export const initializeConfigurator = (modelConfig: ModelConfig): void => {
       }
     });
   }
-  
+
   configuratorState.current = null;
   configuratorState.items = items;
   configuratorState.interactiveStates = interactiveStates;
+
+  // Initialize dimensions from config or defaults
+  if (modelConfig.dimensions) {
+    configuratorState.dimensions = {
+      width: modelConfig.dimensions.width.default,
+      height: modelConfig.dimensions.height.default,
+      depth: modelConfig.dimensions.depth.default,
+    };
+  } else {
+    // Fallback for models without dimension constraints
+    configuratorState.dimensions = {
+      width: 100,
+      height: 100,
+      depth: 100,
+    };
+  }
 };
 
 // Initialize with shoe config on module load (default behavior)
@@ -70,13 +97,17 @@ export const setCurrentPart = (part: string | null): void => {
  * Toggle an interactive part state (e.g., open/close door)
  */
 export const toggleInteractivePart = (nodeName: string): void => {
-  configuratorState.interactiveStates[nodeName] = !configuratorState.interactiveStates[nodeName];
+  configuratorState.interactiveStates[nodeName] =
+    !configuratorState.interactiveStates[nodeName];
 };
 
 /**
  * Set an interactive part state explicitly
  */
-export const setInteractivePartState = (nodeName: string, state: boolean): void => {
+export const setInteractivePartState = (
+  nodeName: string,
+  state: boolean,
+): void => {
   configuratorState.interactiveStates[nodeName] = state;
 };
 
@@ -86,5 +117,28 @@ export const setInteractivePartState = (nodeName: string, state: boolean): void 
 export const updatePartColor = (part: string, color: string): void => {
   if (configuratorState.items[part] !== undefined) {
     configuratorState.items[part] = color;
+  }
+};
+
+/**
+ * Set dimension value (in cm)
+ */
+export const setDimension = (
+  axis: 'width' | 'height' | 'depth',
+  value: number,
+): void => {
+  configuratorState.dimensions[axis] = value;
+};
+
+/**
+ * Reset dimensions to defaults from model config
+ */
+export const resetDimensions = (modelConfig: ModelConfig): void => {
+  if (modelConfig.dimensions) {
+    configuratorState.dimensions = {
+      width: modelConfig.dimensions.width.default,
+      height: modelConfig.dimensions.height.default,
+      depth: modelConfig.dimensions.depth.default,
+    };
   }
 };

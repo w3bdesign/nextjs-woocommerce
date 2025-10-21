@@ -1,6 +1,6 @@
 /**
  * Configurator Type Definitions
- * 
+ *
  * These types define the structure for configurable 3D models,
  * enabling support for multiple different models and products.
  */
@@ -43,19 +43,19 @@ export interface ShadowConfig {
 export interface ModelPart {
   /** The node name in the GLTF/GLB file (e.g., "shoe", "shoe_1") */
   nodeName: string;
-  
+
   /** The material identifier used for color/texture application */
   materialName: string;
-  
+
   /** User-friendly display name shown in the UI */
   displayName: string;
-  
+
   /** Default hex color for this part */
   defaultColor: string;
-  
+
   /** Optional: Restrict available colors to a predefined palette */
   allowedColors?: string[];
-  
+
   /** Optional: Type of customization (for future extensibility) */
   type?: 'color' | 'texture' | 'material';
 }
@@ -79,34 +79,34 @@ export interface AnimationState {
 export interface InteractivePart {
   /** The node name in the GLTF/GLB file */
   nodeName: string;
-  
+
   /** The material identifier (for consistent identification) */
   materialName: string;
-  
+
   /** User-friendly display name shown in the UI */
   displayName: string;
-  
+
   /** Group/category for the interactive part (e.g., "left-door", "right-door") */
   group?: string;
-  
+
   /** State key to use (defaults to nodeName). Share key between parts to link them */
   stateKey?: string;
-  
+
   /** Default state (true = active/open, false = inactive/closed) */
   defaultState: boolean;
-  
+
   /** Animation/transform when in "active" state (e.g., door open) */
   activeState: AnimationState;
-  
+
   /** Animation/transform when in "inactive" state (e.g., door closed) */
   inactiveState: AnimationState;
-  
+
   /** Animation duration in milliseconds (default: 500ms) */
   animationDuration?: number;
-  
+
   /** Whether this part should be visible in the given state */
   visibilityToggle?: boolean;
-  
+
   /** If true, inverts visibility logic (show when inactive, hide when active) */
   invertVisibility?: boolean;
 }
@@ -117,34 +117,59 @@ export interface InteractivePart {
 export interface ModelConfig {
   /** Unique identifier for this model configuration */
   id: string;
-  
+
   /** Display name for the model */
   name: string;
-  
+
   /** Path to the GLTF/GLB file in the public directory */
   modelPath: string;
-  
+
   /** Array of customizable parts */
   parts: ModelPart[];
-  
+
   /** Optional: Custom camera configuration */
   camera?: CameraConfig;
-  
+
   /** Optional: Animation settings */
   animations?: AnimationConfig;
-  
+
   /** Optional: Interactive parts that can be toggled (doors, drawers, etc.) */
   interactiveParts?: InteractivePart[];
-  
+
   /** Optional: Shadow configuration for ground plane */
   shadow?: ShadowConfig;
-  
+
   /** Optional: Scale factor for the model (default: 1) */
   scale?: number;
-  
+
   /** Optional: Position offset [x, y, z] for the model (default: [0, 0, 0]) */
   position?: [number, number, number];
-  
+
+  /** Optional: Dimension constraints for scaling */
+  dimensions?: {
+    /** Width (X axis) constraints in cm */
+    width: {
+      min: number;
+      max: number;
+      default: number;
+      step: number;
+    };
+    /** Height (Y axis) constraints in cm */
+    height: {
+      min: number;
+      max: number;
+      default: number;
+      step: number;
+    };
+    /** Depth (Z axis) constraints in cm */
+    depth: {
+      min: number;
+      max: number;
+      default: number;
+      step: number;
+    };
+  };
+
   /** Optional: Additional metadata */
   metadata?: {
     description?: string;
@@ -160,13 +185,13 @@ export interface ModelConfig {
 export interface ProductConfiguratorMetadata {
   /** Whether the configurator is enabled for this product */
   enabled: boolean;
-  
+
   /** Reference to the ModelConfig ID to use */
   modelId: string;
-  
+
   /** Optional: Custom pricing rules based on configuration */
   customPricing?: Record<string, number>;
-  
+
   /** Optional: Default configuration to start with */
   defaultConfiguration?: Record<string, string>;
 }

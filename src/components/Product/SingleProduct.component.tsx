@@ -14,7 +14,7 @@ const ProductConfigurator = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
+      <div className="w-full h-[750px] flex items-center justify-center bg-gray-100 rounded-lg">
         <Skeleton className="w-full h-full" />
       </div>
     ),

@@ -33,6 +33,11 @@ const InteractiveControls = dynamic(
   { ssr: false },
 );
 
+const DimensionControls = dynamic(
+  () => import('./DimensionControls.component'),
+  { ssr: false },
+);
+
 interface ProductConfiguratorProps {
   modelId?: string;
   className?: string;
@@ -128,6 +133,10 @@ export default function ProductConfigurator({
         >
           <Suspense fallback={null}>
             <ColorPicker />
+          </Suspense>
+
+          <Suspense fallback={null}>
+            <DimensionControls modelId={modelId} />
           </Suspense>
 
           <Suspense fallback={null}>

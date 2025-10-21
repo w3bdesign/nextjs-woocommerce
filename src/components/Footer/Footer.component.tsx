@@ -8,7 +8,7 @@ const Footer = () => (
     <div className="container mx-auto px-6">
       <div className="py-4">
         <div className="text-gray-600 text-center">
-          &copy; {new Date().getFullYear()} Daniel / w3bdesign
+          &copy; {new Date().getFullYear()} Mebl
         </div>
       </div>
     </div>
