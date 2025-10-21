@@ -1,13 +1,22 @@
 import algoliasearch from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import SearchResults from './SearchResults.component';
 
-const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? 'changethis',
-  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY ?? 'changethis',
-);
+// Check if Algolia is properly configured
+const isAlgoliaConfigured = () => {
+  const appId = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
+  const apiKey = process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY;
+  return appId && apiKey && appId !== 'changeme' && apiKey !== 'changethis';
+};
+
+const searchClient = isAlgoliaConfigured()
+  ? algoliasearch(
+      process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
+      process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY!,
+    )
+  : null;
 
 /**
  * Algolia search for mobile menu.
@@ -15,6 +24,20 @@ const searchClient = algoliasearch(
 const MobileSearch = () => {
   const [search, setSearch] = useState<string | null>(null);
   const [hasFocus, sethasFocus] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isAlgoliaConfigured()) {
+      console.warn(
+        'Algolia search is not configured. Please set NEXT_PUBLIC_ALGOLIA_APP_ID and NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY in your .env.local file.',
+      );
+    }
+  }, []);
+
+  // If Algolia is not configured, don't render the search box
+  if (!searchClient) {
+    return null;
+  }
+
   return (
     <div className="inline mt-4 md:hidden">
       <InstantSearch

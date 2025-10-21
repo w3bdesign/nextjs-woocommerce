@@ -1,3 +1,6 @@
+/* Import Inter font for better typography */
+@import url("https://rsms.me/inter/inter.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -42,3 +45,48 @@
 .ais-SearchBox-input[type='search']::-webkit-search-cancel-button {
   display: none;
 }
+
+/* 3D Configurator Styles */
+
+.react-colorful {
+  width: 200px !important;
+  height: 200px !important;
+}
+
+/* Smooth transitions for 3D elements */
+canvas {
+  outline: none;
+  touch-action: none;
+}
+
+/* Custom cursor for 3D interaction */
+.cursor-3d-active {
+  cursor: pointer;
+}
+
+/* Ensure proper z-index layering */
+.configurator-overlay {
+  z-index: 50;
+}
+
+/* Loading state for 3D content */
+.configurator-loading {
+  background: linear-gradient(
+    90deg,
+    rgba(243, 244, 246, 1) 0%,
+    rgba(229, 231, 235, 1) 50%,
+    rgba(243, 244, 246, 1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+

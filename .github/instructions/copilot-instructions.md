@@ -2,9 +2,8 @@
 
 ## File Creation Policy
 
-**RULE:** Do not generate or create summary, status, or temporary documentation files unless the user specifically asks for them.
+Do not generate or create summary, status, or temporary documentation files unless the user specifically asks for them.
 
-- Do NOT create files named with patterns like `*_SUMMARY.md`, `*_STATUS.md`, `*_FIX.md`
 - Do NOT create documentation files for completed tasks unless requested
 - Do NOT create temporary status tracking files
 - Only create code files or update existing documentation if the user requests it

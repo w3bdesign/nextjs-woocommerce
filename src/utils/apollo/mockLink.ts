@@ -127,7 +127,8 @@ export const mockLink = new ApolloLink((operation) => {
         }
 
         // Default: minimal empty structures to avoid undefined access
-  observer.next({ data: { products: { __typename: 'RootQueryToProductConnection', nodes: [] }, productCategories: { __typename: 'RootQueryToProductCategoryConnection', nodes: [] } } });
+        console.warn(`[MockLink] Unhandled operation: ${operationName || 'unknown'}. Returning empty response.`);
+        observer.next({ data: {} });
         observer.complete();
       } catch (e) {
         observer.error(e);

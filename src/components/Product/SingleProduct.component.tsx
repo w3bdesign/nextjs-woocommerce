@@ -1,5 +1,6 @@
 // Imports
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 
 // Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
@@ -7,6 +8,19 @@ import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 // Components
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
+
+// Dynamically import 3D configurator to avoid SSR issues
+const ProductConfigurator = dynamic(
+  () => import('@/components/Configurator/ProductConfigurator.component'),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+);
 
 const SingleProduct = ({ product }: IProductRootObject) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -60,16 +74,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
             {/* Image Container */}
             <div className="mb-6 md:mb-0 group">
               <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-gray-100">
-                <img
-                  id="product-image"
-                  src={
-                    image?.sourceUrl ||
-                    process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ||
-                    placeholderFallBack
-                  }
-                  alt={name}
-                  className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
-                />
+                <ProductConfigurator />
               </div>
             </div>
 

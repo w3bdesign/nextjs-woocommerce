@@ -101,7 +101,28 @@ const link = useMocks
 const client = new ApolloClient({
   ssrMode: clientSide,
   link,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          cart: {
+            merge: true,
+          },
+        },
+      },
+    },
+  }),
 });
+
+// Log configuration status in development
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+  const algoliaConfigured = 
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID && 
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID !== 'changeme';
+  
+  console.info('[MEBL] Configuration status:');
+  console.info(`  - GraphQL: ${useMocks ? '🔶 Using mocks' : '✅ Connected to ' + process.env.NEXT_PUBLIC_GRAPHQL_URL}`);
+  console.info(`  - Algolia Search: ${algoliaConfigured ? '✅ Configured' : '⚠️  Not configured (search disabled)'}`);
+}
 
 export default client;
