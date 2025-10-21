@@ -33,7 +33,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
     }
   }, [product.variations]);
 
-  const { description, name, onSale, price, regularPrice, salePrice } = product;
+  const { name, onSale, price, regularPrice, salePrice } = product;
 
   return (
     <section className="bg-white mb-[8rem] md:mb-12">
