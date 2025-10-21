@@ -68,7 +68,7 @@ export default function ProductConfigurator({
       {/* 3D Canvas Container */}
       <div className="w-full h-[600px] bg-white rounded-lg shadow-lg overflow-hidden">
         <Suspense fallback={<LoadingSpinner />}>
-          <Canvas3D>
+          <Canvas3D shadowConfig={modelConfig.shadow}>
             <ModelViewer modelConfig={modelConfig} />
           </Canvas3D>
         </Suspense>

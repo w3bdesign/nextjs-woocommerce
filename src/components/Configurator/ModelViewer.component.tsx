@@ -27,17 +27,34 @@ export default function ModelViewer({
   const { nodes, materials } = useGLTF(resolvedModelPath) as any;
   const [hovered, setHovered] = useState<string | null>(null);
 
-  // Animate the model with gentle rotation and bobbing
+  // Animate the model with gentle rotation and bobbing (if enabled)
   useFrame((state) => {
     if (!ref.current) return;
     
+    const animations = modelConfig.animations;
+    
+    // Only apply animations if enabled
+    if (!animations?.enableRotation && !animations?.enableBobbing) {
+      return; // Skip animation frame entirely if both are disabled
+    }
+    
     const t = state.clock.getElapsedTime();
-    ref.current.rotation.set(
-      Math.cos(t / 4) / 8,
-      Math.sin(t / 4) / 8,
-      -0.2 - (1 + Math.sin(t / 1.5)) / 20
-    );
-    ref.current.position.y = (1 + Math.sin(t / 1.5)) / 10;
+    
+    // Apply rotation animation if enabled
+    if (animations?.enableRotation) {
+      const speed = animations.rotationSpeed ?? 1;
+      ref.current.rotation.set(
+        Math.cos(t / 4 / speed) / 8,
+        Math.sin(t / 4 / speed) / 8,
+        -0.2 - (1 + Math.sin(t / 1.5 / speed)) / 20
+      );
+    }
+    
+    // Apply bobbing animation if enabled
+    if (animations?.enableBobbing) {
+      const amplitude = animations.bobbingAmplitude ?? 0.1;
+      ref.current.position.y = (modelConfig.position?.[1] ?? 0) + (1 + Math.sin(t / 1.5)) * amplitude;
+    }
   });
 
   // Custom cursor for hovered parts
@@ -77,6 +94,8 @@ export default function ModelViewer({
   return (
     <group
       ref={ref}
+      scale={modelConfig.scale ?? 1}
+      position={modelConfig.position ?? [0, 0, 0]}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
       onPointerMissed={handlePointerMissed}

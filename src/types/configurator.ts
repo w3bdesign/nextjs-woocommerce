@@ -24,6 +24,20 @@ export interface AnimationConfig {
 }
 
 /**
+ * Shadow configuration for the ground plane
+ */
+export interface ShadowConfig {
+  /** Y position of the shadow plane (default: -0.8) */
+  position?: number;
+  /** Opacity of the shadow (0-1, default: 0.25) */
+  opacity?: number;
+  /** Scale/size of the shadow (default: 10) */
+  scale?: number;
+  /** Blur amount (default: 1.5) */
+  blur?: number;
+}
+
+/**
  * Defines a customizable part of a 3D model
  */
 export interface ModelPart {
@@ -67,6 +81,15 @@ export interface ModelConfig {
   
   /** Optional: Animation settings */
   animations?: AnimationConfig;
+  
+  /** Optional: Shadow configuration for ground plane */
+  shadow?: ShadowConfig;
+  
+  /** Optional: Scale factor for the model (default: 1) */
+  scale?: number;
+  
+  /** Optional: Position offset [x, y, z] for the model (default: [0, 0, 0]) */
+  position?: [number, number, number];
   
   /** Optional: Additional metadata */
   metadata?: {

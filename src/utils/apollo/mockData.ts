@@ -21,6 +21,11 @@ export const mockProducts = [
     salePrice: null,
     stockQuantity: 15,
     productCategories: { nodes: [{ name: 'Hoodies', slug: 'hoodies' }] },
+    // Enable 3D configurator with cabinet model
+    configurator: {
+      enabled: true,
+      modelId: 'cabinet-v1',
+    },
   },
   {
     __typename: 'VariableProduct',

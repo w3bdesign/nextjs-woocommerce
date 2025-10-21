@@ -1,5 +1,6 @@
 import type { ModelConfig } from '@/types/configurator';
 import { SHOE_CONFIG } from './shoeModel.config';
+import { CABINET_CONFIG } from './cabinetModel.config';
 
 /**
  * Model Registry
@@ -14,6 +15,7 @@ import { SHOE_CONFIG } from './shoeModel.config';
  */
 export const MODEL_REGISTRY: Record<string, ModelConfig> = {
   'shoe-v1': SHOE_CONFIG,
+  'cabinet-v1': CABINET_CONFIG,
   
   // Add more models here as they become available:
   // 'sofa-modern-v1': SOFA_CONFIG,
