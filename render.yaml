@@ -2,8 +2,8 @@ services:
   - name: nextjs-woocommerce
     type: web
     runtime: node
-    plan: starter
-    region: oregon
+    plan: free
+    region: frankfurt
     buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
