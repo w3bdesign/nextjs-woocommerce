@@ -97,8 +97,12 @@ The current release has been tested and is confirmed working with the following 
   - Apollo Client with GraphQL
 - React Hook Form
 - Native HTML5 form validation
+- UI Components:
+  - **Shadcn/UI** - Modern, accessible component library built on Radix UI primitives
+  - Customizable components with Tailwind CSS variants
+  - Full TypeScript support with proper type inference
+  - Accessible by default (WCAG compliant via Radix UI)
 - Animations with Framer motion, Styled components and Animate.css
-- Loading spinner created with Styled Components
 - Shows page load progress with Nprogress during navigation
 - Fully responsive design
 - Category and product listings
@@ -119,10 +123,125 @@ The current release has been tested and is confirmed working with the following 
   - Dynamic color filtering using Tailwind's color system
   - Mobile-optimized filter layout
   - Accessible form controls with ARIA labels
-  - Price range slider
-  - Size and color filters
+  - Price range slider (Shadcn Slider component)
+  - Size and color filters (Shadcn Checkbox components)
   - Product type categorization
-  - Sorting options (popularity, price, newest)
+  - Sorting options (Shadcn DropdownMenu with RadioGroup)
+
+## UI Component Architecture
+
+This project uses [Shadcn/UI](https://ui.shadcn.com/) - a collection of re-usable components built with Radix UI and Tailwind CSS.
+
+### Why Shadcn/UI?
+
+- **Accessible by Default**: Built on Radix UI primitives ensuring WCAG compliance
+- **Customizable**: Components are copied into your codebase, giving you full control
+- **Type-Safe**: Full TypeScript support with proper type inference
+- **Consistent Design**: Unified design system with Tailwind CSS
+- **Performance**: Tree-shakeable and optimized bundle sizes
+
+### Installed Components
+
+Located in `/src/components/ui/`:
+
+- **Form Controls**: Button, Input, Label, Checkbox, Slider
+- **Layout**: Card, Table, Separator
+- **Feedback**: Alert, Toast, Skeleton, Badge
+- **Navigation**: Breadcrumb, DropdownMenu
+- **Overlays**: Dialog, Sheet, Tooltip, Popover
+- **Advanced**: Tabs, Accordion, AlertDialog
+
+### Component Usage Examples
+
+#### Button with Next.js Link
+```tsx
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
+<Button variant="default" asChild>
+  <Link href="/products">Shop Now</Link>
+</Button>
+```
+
+#### Form with Shadcn Components
+```tsx
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+
+<div className="space-y-2">
+  <Label htmlFor="email">Email</Label>
+  <Input id="email" type="email" placeholder="you@example.com" />
+  <Button type="submit">Submit</Button>
+</div>
+```
+
+#### Toast Notifications
+```tsx
+import { useToast } from '@/components/ui/use-toast';
+
+const { toast } = useToast();
+
+toast({
+  title: "Success!",
+  description: "Product added to cart",
+});
+```
+
+#### Table with Loading State
+```tsx
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
+
+{loading ? (
+  <TableBody>
+    {[...Array(3)].map((_, i) => (
+      <TableRow key={i}>
+        <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+) : (
+  <TableBody>
+    {/* Actual data */}
+  </TableBody>
+)}
+```
+
+### Customization
+
+Components use CSS variables defined in `globals.css` for theming:
+
+```css
+:root {
+  --primary: 210 40% 98%;
+  --wood: 30 25% 45%;
+  --fabric: 200 20% 60%;
+  --metal: 220 15% 50%;
+}
+```
+
+Modify these values or extend with your own custom colors in `tailwind.config.js`.
+
+### Migration Patterns
+
+When migrating from old components to Shadcn:
+
+1. **Replace imports**: `@/components/UI/Button` → `@/components/ui/button`
+2. **Use `asChild` pattern**: For Link wrapping with buttons
+3. **Separate Label components**: Don't nest labels inside inputs
+4. **Array values for ranges**: Slider uses `[min, max]` format
+5. **Toast for notifications**: Replace inline success/error messages
+6. **Skeleton for loading**: Match the structure of your loaded content
+
+### Resources
+
+- [Shadcn/UI Documentation](https://ui.shadcn.com/)
+- [Radix UI Primitives](https://www.radix-ui.com/primitives)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+- Product filtering:
 
 ## Lighthouse Performance Monitoring
 

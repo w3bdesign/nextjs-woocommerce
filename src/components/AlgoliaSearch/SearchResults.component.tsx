@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { trimmedStringToLength } from '@/utils/functions/functions';
+import { TypographyLarge, TypographyP } from '@/components/UI/Typography.component';
 
 interface ISearchResultProps {
   hit: {
@@ -50,22 +51,22 @@ const SearchResults = ({
           </header>
           <div className="pl-4 text-left">
             {product_name && (
-              <span className="text-lg font-bold">{product_name}</span>
+              <TypographyLarge>{product_name}</TypographyLarge>
             )}
             <br />
             {on_sale && (
               <>
-                <span className="text-base line-through">
+                <TypographyP className="inline line-through">
                   kr {regular_price}
-                </span>
-                <span className="ml-2 text-base">kr {sale_price}</span>
+                </TypographyP>
+                <TypographyP className="inline ml-2">kr {sale_price}</TypographyP>
               </>
             )}
-            {!on_sale && <span className="text-base">kr {regular_price}</span>}
+            {!on_sale && <TypographyP className="inline">kr {regular_price}</TypographyP>}
             <br />
-            <span className="text-base">
+            <TypographyP className="inline">
               {trimmedStringToLength(short_description, 30)}
-            </span>
+            </TypographyP>
           </div>
         </div>
       </Link>

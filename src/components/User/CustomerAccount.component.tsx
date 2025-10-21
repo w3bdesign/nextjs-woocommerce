@@ -1,6 +1,18 @@
 import { useQuery } from '@apollo/client';
 import { GET_CUSTOMER_ORDERS } from '../../utils/gql/GQL_QUERIES';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AlertCircle } from 'lucide-react';
+import { TypographyH2 } from '@/components/UI/Typography.component';
 
 interface Order {
   id: string;
@@ -18,41 +30,98 @@ interface Order {
 const CustomerAccount = () => {
   const { loading, error, data } = useQuery(GET_CUSTOMER_ORDERS);
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) {
+    return (
+      <div>
+        <Skeleton className="h-8 w-48 mb-6" />
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[120px]">Order Number</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Total</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[...Array(3)].map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-20" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-4 w-16 ml-auto" /></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          Failed to load your orders. {error.message}
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   const orders = data?.customer?.orders?.nodes;
 
+  const getStatusVariant = (status: string) => {
+    switch (status.toUpperCase()) {
+      case 'COMPLETED':
+        return 'default';
+      case 'PROCESSING':
+        return 'secondary';
+      case 'PENDING':
+        return 'outline';
+      case 'CANCELLED':
+        return 'destructive';
+      default:
+        return 'secondary';
+    }
+  };
+
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">My Orders</h1>
+      <TypographyH2 className="mb-6">My Orders</TypographyH2>
       {orders && orders.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b">Order Number</th>
-                <th className="py-2 px-4 border-b">Date</th>
-                <th className="py-2 px-4 border-b">Status</th>
-                <th className="py-2 px-4 border-b">Total</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[120px]">Order Number</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Total</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {orders.map((order: Order) => (
-                <tr key={order.id}>
-                  <td className="py-2 px-4 border-b">{order.orderNumber}</td>
-                  <td className="py-2 px-4 border-b">
+                <TableRow key={order.id}>
+                  <TableCell className="font-medium">#{order.orderNumber}</TableCell>
+                  <TableCell>
                     {new Date(order.date).toLocaleDateString()}
-                  </td>
-                  <td className="py-2 px-4 border-b">{order.status}</td>
-                  <td className="py-2 px-4 border-b">{order.total}</td>
-                </tr>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={getStatusVariant(order.status)}>
+                      {order.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">{order.total}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       ) : (
-        <p>You have no orders.</p>
+        <p className="text-muted-foreground">You have no orders yet.</p>
       )}
     </div>
   );

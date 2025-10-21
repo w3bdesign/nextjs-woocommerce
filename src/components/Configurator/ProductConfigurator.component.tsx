@@ -1,6 +1,6 @@
 import { Suspense, useEffect, type ReactElement } from 'react';
 import dynamic from 'next/dynamic';
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
+import { Loader2 } from 'lucide-react';
 import { initializeConfigurator } from '@/stores/configuratorStore';
 import { getModelConfig, DEFAULT_MODEL_ID } from '@/config/models.registry';
 
@@ -11,7 +11,7 @@ const Canvas3D = dynamic(
     ssr: false,
     loading: () => (
       <div className="w-full h-full flex items-center justify-center">
-        <LoadingSpinner />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     )
   }
@@ -72,7 +72,11 @@ export default function ProductConfigurator({
     <div className={`relative w-full ${className}`}>
       {/* 3D Canvas Container */}
       <div className="w-full h-[600px] bg-white rounded-lg shadow-lg overflow-hidden">
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={
+          <div className="w-full h-full flex items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        }>
           <Canvas3D shadowConfig={modelConfig.shadow}>
             <ModelViewer modelConfig={modelConfig} />
           </Canvas3D>

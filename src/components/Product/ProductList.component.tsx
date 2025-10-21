@@ -2,6 +2,16 @@ import { Product } from '@/types/product';
 import { useProductFilters } from '@/hooks/useProductFilters';
 import ProductCard from './ProductCard.component';
 import ProductFilters from './ProductFilters.component';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { ChevronDown } from 'lucide-react';
+import { TypographyH2, TypographySmall } from '@/components/UI/Typography.component';
 
 interface ProductListProps {
   products: Product[];
@@ -44,23 +54,39 @@ const ProductList = ({ products, title }: ProductListProps) => {
       {/* Main Content */}
       <div className="flex-1">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
-          <h1 className="text-xl sm:text-2xl font-medium text-center sm:text-left">
+          <TypographyH2 className="text-center sm:text-left">
             {title} <span className="text-gray-500">({filteredProducts.length})</span>
-          </h1>
+          </TypographyH2>
 
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4">
-            <label htmlFor="sort-select" className="text-sm font-medium">Sort by:</label>
-            <select
-              id="sort-select"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="min-w-[140px] border rounded-md px-3 py-1.5 text-sm"
-            >
-              <option value="popular">Popular</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="newest">Newest</option>
-            </select>
+            <TypographySmall className="font-medium">Sort by:</TypographySmall>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="min-w-[180px] justify-between">
+                  {sortBy === 'popular' && 'Popular'}
+                  {sortBy === 'price-low' && 'Price: Low to High'}
+                  {sortBy === 'price-high' && 'Price: High to Low'}
+                  {sortBy === 'newest' && 'Newest'}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-[180px]">
+                <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
+                  <DropdownMenuRadioItem value="popular">
+                    Popular
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="price-low">
+                    Price: Low to High
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="price-high">
+                    Price: High to Low
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="newest">
+                    Newest
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 

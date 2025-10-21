@@ -6,8 +6,11 @@ import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useCartStore } from '@/stores/cartStore';
-import Button from '@/components/UI/Button.component';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Price } from '@/components/UI/Price.component';
+import { Container } from '@/components/Layout/Container.component';
+import { TypographyH2, TypographyH3, TypographyP } from '@/components/UI/Typography.component';
 
 import {
   getFormattedCart,
@@ -91,7 +94,7 @@ const CartContents = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <Container paddingClassName="px-4 py-8">
       {data?.cart?.contents?.nodes?.length ? (
         <>
           <div className="bg-white rounded-lg p-6 mb-8 md:w-full">
@@ -112,12 +115,12 @@ const CartContents = () => {
                   />
                 </div>
                 <div className="flex-grow ml-4">
-                  <h2 className="text-lg font-semibold">
+                  <TypographyH3>
                     {item.product.node.name}
-                  </h2>
-                  <p className="text-gray-600">
+                  </TypographyH3>
+                  <TypographyP className="text-gray-600">
                     kr {getUnitPrice(item.subtotal, item.quantity)}
-                  </p>
+                  </TypographyP>
                 </div>
                 <div className="flex items-center">
                   <input
@@ -136,20 +139,20 @@ const CartContents = () => {
                     className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
                   />
                   <Button
-                    handleButtonClick={() =>
+                    onClick={() =>
                       handleRemoveProductClick(
                         item.key,
                         data.cart.contents.nodes,
                       )
                     }
-                    variant="secondary"
-                    buttonDisabled={updateCartProcessing}
+                    variant="destructive"
+                    disabled={updateCartProcessing}
                   >
                     Remove
                   </Button>
                 </div>
                 <div className="ml-4">
-                  <p className="text-lg font-semibold">{item.subtotal}</p>
+                  <Price value={item.subtotal} size="lg" />
                 </div>
               </div>
             ))}
@@ -157,36 +160,39 @@ const CartContents = () => {
           <div className="bg-white rounded-lg p-6 md:w-full">
             <div className="flex justify-end mb-4">
               <span className="font-semibold pr-2">Subtotal:</span>
-              <span>{cartTotal}</span>
+              <Price value={cartTotal} size="lg" />
             </div>
             {!isCheckoutPage && (
               <div className="flex justify-center mb-4">
-                <Link href="/checkout" passHref>
-                  <Button variant="primary" fullWidth>PROCEED TO CHECKOUT</Button>
-                </Link>
+                <Button variant="default" className="w-full md:w-auto" asChild>
+                  <Link href="/checkout">PROCEED TO CHECKOUT</Link>
+                </Button>
               </div>
             )}
           </div>
         </>
       ) : (
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">
+          <TypographyH2 className="mb-4">
             No products in cart
-          </h2>
-          <Link href="/products" passHref>
-            <Button variant="primary">Continue Shopping</Button>
-          </Link>
+          </TypographyH2>
+          <Button variant="default" asChild>
+            <Link href="/products">Continue Shopping</Link>
+          </Button>
         </div>
       )}
       {updateCartProcessing && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg">
-            <p className="text-lg mb-2">Updating cart...</p>
-            <LoadingSpinner />
+          <div className="bg-white p-8 rounded-lg min-w-[300px]">
+            <div className="space-y-3">
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 

@@ -5,6 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 
 import client from '@/utils/apollo/ApolloClient';
 import CartInitializer from '@/components/Cart/CartInitializer.component';
+import { Toaster } from '@/components/ui/toaster';
 
 // Types
 import type { AppProps } from 'next/app';
@@ -23,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ApolloProvider client={client}>
       <CartInitializer />
       <Component {...pageProps} />
+      <Toaster />
     </ApolloProvider>
   );
 }

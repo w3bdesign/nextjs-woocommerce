@@ -2,11 +2,16 @@
 // Imports
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, ApolloError } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 // Components
 import Billing from './Billing.component';
 import CartContents from '../Cart/CartContents.component';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
+import { TypographyH2, TypographyLarge } from '@/components/UI/Typography.component';
 
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
@@ -55,6 +60,8 @@ const CheckoutForm = () => {
   const [orderData, setOrderData] = useState<ICheckoutData | null>(null);
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
+  const { toast } = useToast();
+  const router = useRouter();
 
   // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
@@ -90,17 +97,30 @@ const CheckoutForm = () => {
     if (checkoutData) {
       clearWooCommerceSession();
       setorderCompleted(true);
+      toast({
+        title: 'Order placed successfully!',
+        description: 'Thank you for your order. We will process it shortly.',
+      });
       refetch();
+      // Redirect to home after 3 seconds
+      setTimeout(() => {
+        router.push('/');
+      }, 3000);
     }
-  }, [checkoutData, clearWooCommerceSession, refetch]);
+  }, [checkoutData, clearWooCommerceSession, refetch, toast, router]);
 
   // Handle checkout error
   useEffect(() => {
     if (checkoutError) {
       setRequestError(checkoutError);
+      toast({
+        title: 'Checkout error',
+        description: 'An error occurred while processing your order. Please try again.',
+        variant: 'destructive',
+      });
       refetch();
     }
-  }, [checkoutError, refetch]);
+  }, [checkoutError, refetch, toast]);
 
   useEffect(() => {
     if (null !== orderData) {
@@ -133,29 +153,40 @@ const CheckoutForm = () => {
           <Billing handleFormSubmit={handleFormSubmit} />
           {/*Error display*/}
           {requestError && (
-            <div className="h-32 text-xl text-center text-red-600">
-              An error has occurred.
+            <div className="max-w-2xl mx-auto my-6">
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Checkout Error</AlertTitle>
+                <AlertDescription>
+                  An error occurred while processing your order. Please try again or contact support if the problem persists.
+                </AlertDescription>
+              </Alert>
             </div>
           )}
           {/* Checkout Loading*/}
           {checkoutLoading && (
-            <div className="text-xl text-center">
-              Processing order, please wait...
-              <LoadingSpinner />
+            <div className="space-y-4">
+              <Skeleton className="h-6 w-64 mx-auto" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-4 w-4/5" />
+              </div>
+              <Skeleton className="h-10 w-32 mx-auto mt-6" />
             </div>
           )}
         </div>
       ) : (
         <>
           {!cart && !orderCompleted && (
-            <h1 className="text-2xl m-12 mt-24 font-bold text-center">
+            <TypographyH2 className="m-12 mt-24 text-center">
               No products in cart
-            </h1>
+            </TypographyH2>
           )}
           {orderCompleted && (
-            <div className="container h-24 m-12 mx-auto mt-24 text-xl text-center">
+            <TypographyLarge className="container h-24 m-12 mx-auto mt-24 text-center">
               Thank you for your order!
-            </div>
+            </TypographyLarge>
           )}
         </>
       )}

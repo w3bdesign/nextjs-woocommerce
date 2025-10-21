@@ -4,7 +4,8 @@ import { useQuery, useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 
 // Components
-import Button from '@/components/UI/Button.component';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 // State
 import { useCartStore } from '@/stores/cartStore';
@@ -105,6 +106,7 @@ const AddToCart = ({
 }: IProductRootObject) => {
   const { syncWithWooCommerce, isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
+  const { toast } = useToast();
 
   const productId = product?.databaseId ? product?.databaseId : variationId;
 
@@ -134,6 +136,11 @@ const AddToCart = ({
 
     onError: () => {
       setRequestError(true);
+      toast({
+        title: 'Error',
+        description: 'Failed to add product to cart. Please try again.',
+        variant: 'destructive',
+      });
     },
   });
 
@@ -142,8 +149,12 @@ const AddToCart = ({
     if (mutationData) {
       // Update the cart with new values in React context.
       refetch();
+      toast({
+        title: 'Added to cart',
+        description: `${product.name} has been added to your cart.`,
+      });
     }
-  }, [mutationData, refetch]);
+  }, [mutationData, refetch, product.name, toast]);
 
   const handleAddToCart = () => {
     addToCart();
@@ -156,9 +167,9 @@ const AddToCart = ({
   return (
     <>
       <Button
-        handleButtonClick={() => handleAddToCart()}
-        buttonDisabled={addToCartLoading || requestError || isCartLoading}
-        fullWidth={fullWidth}
+        onClick={() => handleAddToCart()}
+        disabled={addToCartLoading || requestError || isCartLoading}
+        className={fullWidth ? 'w-full md:w-auto' : ''}
       >
         {isCartLoading ? 'Loading...' : 'BUY'}
       </Button>

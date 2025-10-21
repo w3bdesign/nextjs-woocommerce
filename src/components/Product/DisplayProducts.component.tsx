@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
+import { TypographyH4, TypographyLarge, TypographyP } from '@/components/UI/Typography.component';
 
 interface Image {
   __typename: string;
@@ -100,26 +101,26 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 <Link href={`/product/${encodeURIComponent(slug)}`}>
                   <span>
                     <div className="mt-4">
-                      <p className="text-xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
+                      <TypographyH4 className="text-center cursor-pointer hover:text-gray-600 transition-colors">
                         {name}
-                      </p>
+                      </TypographyH4>
                     </div>
                   </span>
                 </Link>
                 <div className="mt-2 text-center">
                   {onSale ? (
                     <div className="flex justify-center items-center space-x-2">
-                      <span className="text-xl font-bold text-red-600">
+                      <TypographyLarge className="text-red-600">
                         {variations && filteredVariantPrice(price, '')}
                         {!variations && salePrice}
-                      </span>
-                      <span className="text-lg text-gray-500 line-through">
+                      </TypographyLarge>
+                      <TypographyP className="text-gray-500 line-through">
                         {variations && filteredVariantPrice(price, 'right')}
                         {!variations && regularPrice}
-                      </span>
+                      </TypographyP>
                     </div>
                   ) : (
-                    <span className="text-lg text-gray-900">{price}</span>
+                    <TypographyLarge>{price}</TypographyLarge>
                   )}
                 </div>
               </div>
@@ -128,9 +129,9 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
         )
       ) : (
         <div className="flex justify-center items-center p-8">
-          <p className="text-gray-500 text-lg">
+          <TypographyLarge className="text-gray-500">
             No products found
-          </p>
+          </TypographyLarge>
         </div>
       )}
     </div>

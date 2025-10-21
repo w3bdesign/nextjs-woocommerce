@@ -1,5 +1,7 @@
 import Image from 'next/image';
-import Button from '../UI/Button.component';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { TypographyH1 } from '@/components/UI/Typography.component';
 
 /**
  * Renders Hero section for Index page
@@ -21,14 +23,14 @@ const Hero = () => (
     
     <div className="relative h-full container mx-auto flex items-center p-4 md:p-0">
       <div className="max-w-xl">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-white mb-6">
+        <TypographyH1 className="font-light text-white mb-6">
           Premium Furniture Collection
-        </h1>
+        </TypographyH1>
         <Button 
-          href="/products"
           variant="hero"
+          asChild
         >
-          Shop Now
+          <Link href="/products">Shop Now</Link>
         </Button>
       </div>
     </div>

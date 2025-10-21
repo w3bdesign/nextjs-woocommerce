@@ -4,6 +4,26 @@ import { hasCredentials } from '../../utils/auth';
 import Cart from './Cart.component';
 import AlgoliaSearchBox from '../AlgoliaSearch/AlgoliaSearchBox.component';
 import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
+import { Container } from '../Layout/Container.component';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Menu } from 'lucide-react';
+import { siteConfig } from '@/config/site';
+import { cn } from '@/lib/utils';
+import { TypographyLarge } from '@/components/UI/Typography.component';
 
 /**
  * Navigation for the application.
@@ -11,6 +31,7 @@ import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
  */
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setLoggedIn(hasCredentials());
@@ -19,78 +40,156 @@ const Navbar = () => {
   return (
     <header className="border-b border-gray-200">
       <nav id="header" className="top-0 z-50 w-full bg-white">
-        <div className="container mx-auto px-4 sm:px-6 py-4">
-          <div className="flex flex-col space-y-4 md:hidden">
-            <div className="text-center">
-              <Link href="/">
-                <span className="text-lg font-bold tracking-widest text-gray-900">
-                  MEBL FURNITURE
-                </span>
-              </Link>
-            </div>
-            <div className="w-full">
-              <MobileSearch />
-            </div>
-          </div>
-                    <div className="hidden md:flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <Link href="/products">
-                <span className="text-base uppercase tracking-wider group relative">
-                  <span className="relative inline-block">
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                    Products
-                  </span>
-                </span>
-              </Link>
-              <Link href="/categories">
-                <span className="text-base uppercase tracking-wider group relative">
-                  <span className="relative inline-block">
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                    Categories
-                  </span>
-                </span>
-              </Link>
-            </div>
-            <Link href="/" className="hidden lg:block">
-              <span className="text-xl font-bold tracking-widest text-gray-900 hover:text-gray-700 transition-colors">
-                MEBL FURNITURE
+        <Container paddingClassName="px-4 sm:px-6 py-4">
+          {/* Mobile Navigation */}
+          <div className="flex items-center justify-between md:hidden">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle>{siteConfig.name}</SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col space-y-4 mt-8">
+                  {/* Main Navigation */}
+                  {siteConfig.mainNav.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                  
+                  {/* Divider */}
+                  <div className="border-t border-gray-200 my-4" />
+                  
+                  {/* Auth Navigation */}
+                  {loggedIn ? (
+                    <Link
+                      href={siteConfig.authNav.account.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
+                    >
+                      {siteConfig.authNav.account.title}
+                    </Link>
+                  ) : (
+                    <>
+                      <Link
+                        href={siteConfig.authNav.login.href}
+                        onClick={() => setIsOpen(false)}
+                        className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
+                      >
+                        {siteConfig.authNav.login.title}
+                      </Link>
+                      <Link
+                        href={siteConfig.authNav.register.href}
+                        onClick={() => setIsOpen(false)}
+                        className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
+                      >
+                        {siteConfig.authNav.register.title}
+                      </Link>
+                    </>
+                  )}
+                  
+                  {/* Mobile Search */}
+                  <div className="pt-4">
+                    <MobileSearch />
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+            
+            <Link href="/" className="flex-1 text-center">
+              <span className="text-lg font-bold tracking-widest text-gray-900">
+                {siteConfig.name}
               </span>
             </Link>
+            
+            <Cart />
+          </div>
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center justify-between">
+            {/* Left: Main Navigation */}
+            <NavigationMenu>
+              <NavigationMenuList>
+                {siteConfig.mainNav.map((item) => (
+                  <NavigationMenuItem key={item.href}>
+                    <Link href={item.href} legacyBehavior passHref>
+                      <NavigationMenuLink className={cn(
+                        navigationMenuTriggerStyle(),
+                        "uppercase tracking-wider text-sm"
+                      )}>
+                        {item.title}
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            {/* Center: Logo */}
+            <Link href="/" className="hidden lg:block">
+              <TypographyLarge className="tracking-widest hover:text-gray-700 transition-colors">
+                {siteConfig.name}
+              </TypographyLarge>
+            </Link>
+
+            {/* Right: Search, Auth, Cart */}
             <div className="flex items-center space-x-3">
               <AlgoliaSearchBox />
-              {loggedIn ? (
-                <Link href="/my-account">
-                  <span className="text-base uppercase tracking-wider group relative">
-                    <span className="relative inline-block">
-                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                      My Account
-                    </span>
-                  </span>
-                </Link>
-              ) : (
-                <>
-                  <Link href="/login">
-                    <span className="text-base uppercase tracking-wider group relative">
-                      <span className="relative inline-block">
-                        <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                        Login
-                      </span>
-                    </span>
-                  </Link>
-                  <Link href="/register">
-                    <span className="text-base uppercase tracking-wider group relative">
-                      <span className="relative inline-block">
-                        <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                        Register
-                      </span>
-                    </span>
-                  </Link>
-                </>
-              )}
+              
+              <NavigationMenu>
+                <NavigationMenuList>
+                  {loggedIn ? (
+                    <NavigationMenuItem>
+                      <Link href={siteConfig.authNav.account.href} legacyBehavior passHref>
+                        <NavigationMenuLink className={cn(
+                          navigationMenuTriggerStyle(),
+                          "uppercase tracking-wider text-sm"
+                        )}>
+                          {siteConfig.authNav.account.title}
+                        </NavigationMenuLink>
+                      </Link>
+                    </NavigationMenuItem>
+                  ) : (
+                    <>
+                      <NavigationMenuItem>
+                        <Link href={siteConfig.authNav.login.href} legacyBehavior passHref>
+                          <NavigationMenuLink className={cn(
+                            navigationMenuTriggerStyle(),
+                            "uppercase tracking-wider text-sm"
+                          )}>
+                            {siteConfig.authNav.login.title}
+                          </NavigationMenuLink>
+                        </Link>
+                      </NavigationMenuItem>
+                      <NavigationMenuItem>
+                        <Link href={siteConfig.authNav.register.href} legacyBehavior passHref>
+                          <NavigationMenuLink className={cn(
+                            navigationMenuTriggerStyle(),
+                            "uppercase tracking-wider text-sm"
+                          )}>
+                            {siteConfig.authNav.register.title}
+                          </NavigationMenuLink>
+                        </Link>
+                      </NavigationMenuItem>
+                    </>
+                  )}
+                </NavigationMenuList>
+              </NavigationMenu>
+              
               <Cart />
             </div>
           </div>
-        </div>
+        </Container>
       </nav>
     </header>
   );

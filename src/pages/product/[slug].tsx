@@ -1,9 +1,18 @@
 // Imports
 import { withRouter } from 'next/router';
+import Link from 'next/link';
 
 // Components
 import SingleProduct from '@/components/Product/SingleProduct.component';
 import Layout from '@/components/Layout/Layout.component';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 // Utilities
 import client from '@/utils/apollo/ApolloClient';
@@ -31,6 +40,29 @@ const Product: NextPage = ({
   const hasError = networkStatus === '8';
   return (
     <Layout title={`${product.name ? product.name : ''}`}>
+      {product && (
+        <div className="container mx-auto px-4 pt-4">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Home</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/products">Products</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{product.name}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      )}
       {product ? (
         <SingleProduct product={product} />
       ) : (

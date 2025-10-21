@@ -7,7 +7,9 @@ import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 // Components
 import AddToCart, { IProductRootObject } from './AddToCart.component';
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Container } from '@/components/Layout/Container.component';
+import { TypographyH1, TypographyH4, TypographyP, TypographyLarge } from '@/components/UI/Typography.component';
 
 // Dynamically import 3D configurator to avoid SSR issues
 const ProductConfigurator = dynamic(
@@ -16,7 +18,7 @@ const ProductConfigurator = dynamic(
     ssr: false,
     loading: () => (
       <div className="w-full h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
-        <LoadingSpinner />
+        <Skeleton className="w-full h-full" />
       </div>
     )
   }
@@ -61,13 +63,26 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   return (
     <section className="bg-white mb-[8rem] md:mb-12">
       {isLoading ? (
-        <div className="h-56 mt-20">
-          <p className="text-xl font-bold text-center">Loading product...</p>
-          <br />
-          <LoadingSpinner />
-        </div>
+        <Container paddingClassName="px-4 py-8">
+          <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
+            {/* Image Skeleton */}
+            <div className="mb-6 md:mb-0">
+              <Skeleton className="w-full max-w-xl mx-auto aspect-[3/4]" />
+            </div>
+            
+            {/* Product Details Skeleton */}
+            <div className="flex flex-col space-y-4">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-6 w-1/2" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+              <Skeleton className="h-10 w-32 mt-6" />
+            </div>
+          </div>
+        </Container>
       ) : (
-        <div className="container mx-auto px-4 py-8">
+        <Container paddingClassName="px-4 py-8">
           <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
             {/* Image/Configurator Container */}
             <div className="mb-6 md:mb-0 group">
@@ -86,42 +101,42 @@ const SingleProduct = ({ product }: IProductRootObject) => {
 
             {/* Product Details Container */}
             <div className="flex flex-col">
-              <h1 className="text-xl font-bold text-center md:text-left mb-4">
+              <TypographyH1 className="text-center md:text-left mb-4">
                 {name}
-              </h1>
+              </TypographyH1>
 
               {/* Price Display */}
               <div className="text-center md:text-left mb-6">
                 {onSale ? (
                   <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
-                    <p className="text-xl font-bold text-red-600">
+                    <TypographyH4 className="text-red-600">
                       {product.variations
                         ? filteredVariantPrice(price, '')
                         : salePrice}
-                    </p>
-                    <p className="text-xl text-gray-500 line-through">
+                    </TypographyH4>
+                    <TypographyH4 className="text-gray-500 line-through">
                       {product.variations
                         ? filteredVariantPrice(price, 'right')
                         : regularPrice}
-                    </p>
+                    </TypographyH4>
                   </div>
                 ) : (
-                  <p className="text-xl font-bold">{price}</p>
+                  <TypographyH4>{price}</TypographyH4>
                 )}
               </div>
 
               {/* Description */}
-              <p className="text-lg mb-6 text-center md:text-left">
+              <TypographyP className="mb-6 text-center md:text-left">
                 {DESCRIPTION_WITHOUT_HTML}
-              </p>
+              </TypographyP>
 
               {/* Stock Status */}
               {Boolean(product.stockQuantity) && (
                 <div className="mb-6 mx-auto md:mx-0">
                   <div className="p-2 bg-green-100 border border-green-400 rounded-lg max-w-[14.375rem]">
-                    <p className="text-lg text-green-700 font-semibold text-center md:text-left">
+                    <TypographyLarge className="text-green-700 text-center md:text-left">
                       {product.stockQuantity} in stock
-                    </p>
+                    </TypographyLarge>
                   </div>
                 </div>
               )}
@@ -168,7 +183,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       )}
     </section>
   );

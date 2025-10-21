@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, ComponentType, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_CURRENT_USER } from '../../utils/gql/GQL_QUERIES';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import { Loader2 } from 'lucide-react';
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const Wrapper = (props: P) => {
@@ -29,7 +29,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
     if (loading || isChecking) {
       return (
         <div className="flex justify-center items-center min-h-screen">
-          <LoadingSpinner />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       );
     }
