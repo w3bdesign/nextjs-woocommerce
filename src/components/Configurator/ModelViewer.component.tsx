@@ -6,6 +6,7 @@ import type { Group } from 'three';
 import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
 import { SHOE_CONFIG } from '@/config/shoeModel.config';
+import InteractiveMesh from './InteractiveMesh.component';
 
 interface ModelViewerProps {
   modelPath?: string;
@@ -91,6 +92,11 @@ export default function ModelViewer({
     setCurrentPart(e.object.material.name);
   };
 
+  // Get list of interactive part node names for filtering
+  const interactiveNodeNames = new Set(
+    modelConfig.interactiveParts?.map(p => p.nodeName) ?? []
+  );
+
   return (
     <group
       ref={ref}
@@ -101,6 +107,7 @@ export default function ModelViewer({
       onPointerMissed={handlePointerMissed}
       onClick={handleClick}
     >
+      {/* Regular customizable parts */}
       {modelConfig.parts.map((part, index) => {
         const node = nodes[part.nodeName];
         const material = materials[part.materialName];
@@ -122,6 +129,27 @@ export default function ModelViewer({
             material-map={null}
             material-roughness={0.6}
             material-metalness={0.1}
+          />
+        );
+      })}
+      
+      {/* Interactive parts (doors, drawers, etc.) */}
+      {modelConfig.interactiveParts?.map((part, index) => {
+        const node = nodes[part.nodeName];
+        const material = materials[part.materialName];
+        
+        // Skip if node or material doesn't exist
+        if (!node?.geometry || !material) {
+          console.warn(`Missing interactive node or material for part: ${part.displayName}`);
+          return null;
+        }
+        
+        return (
+          <InteractiveMesh
+            key={`interactive-${part.nodeName}-${index}`}
+            part={part}
+            geometry={node.geometry}
+            material={material}
           />
         );
       })}

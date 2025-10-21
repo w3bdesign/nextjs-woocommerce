@@ -9,26 +9,43 @@ import { SHOE_CONFIG } from '@/config/shoeModel.config';
 interface ConfiguratorState {
   current: string | null;
   items: Record<string, string>;
+  /** Interactive parts state (true = active/open, false = inactive/closed) */
+  interactiveStates: Record<string, boolean>;
 }
 
 export const configuratorState = proxy<ConfiguratorState>({
   current: null,
   items: {},
+  interactiveStates: {},
 });
 
 /**
  * Initialize configurator with a model configuration
  * Populates the items state with default colors from the model config
+ * and interactive states with their default values
  */
 export const initializeConfigurator = (modelConfig: ModelConfig): void => {
   const items: Record<string, string> = {};
+  const interactiveStates: Record<string, boolean> = {};
   
   modelConfig.parts.forEach(part => {
     items[part.materialName] = part.defaultColor;
   });
   
+  // Initialize interactive parts states
+  if (modelConfig.interactiveParts) {
+    modelConfig.interactiveParts.forEach(part => {
+      const stateKey = part.stateKey || part.nodeName;
+      // Only set if not already set (avoid overwriting with later parts)
+      if (!(stateKey in interactiveStates)) {
+        interactiveStates[stateKey] = part.defaultState;
+      }
+    });
+  }
+  
   configuratorState.current = null;
   configuratorState.items = items;
+  configuratorState.interactiveStates = interactiveStates;
 };
 
 // Initialize with shoe config on module load (default behavior)
@@ -47,6 +64,20 @@ export const resetConfigurator = (): void => {
  */
 export const setCurrentPart = (part: string | null): void => {
   configuratorState.current = part;
+};
+
+/**
+ * Toggle an interactive part state (e.g., open/close door)
+ */
+export const toggleInteractivePart = (nodeName: string): void => {
+  configuratorState.interactiveStates[nodeName] = !configuratorState.interactiveStates[nodeName];
+};
+
+/**
+ * Set an interactive part state explicitly
+ */
+export const setInteractivePartState = (nodeName: string, state: boolean): void => {
+  configuratorState.interactiveStates[nodeName] = state;
 };
 
 /**

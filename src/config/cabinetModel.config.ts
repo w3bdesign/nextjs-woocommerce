@@ -28,21 +28,69 @@ export const CABINET_CONFIG: ModelConfig = {
       displayName: 'Cabinet Body',
       defaultColor: '#8B4513', // Saddle brown - natural wood color
     },
+  ],
+  
+  // Interactive parts that can be toggled
+  // Each door has 2 meshes (closed and open) that share a stateKey
+  // When state is FALSE (closed): show closed mesh, hide open mesh
+  // When state is TRUE (open): hide closed mesh, show open mesh
+  interactiveParts: [
+    // Left door - closed mesh (visible when state = false/closed)
     {
       nodeName: 'Door_Closed_Left_m_cabinet_0',
       materialName: 'm_cabinet',
       displayName: 'Left Door',
-      defaultColor: '#8B4513', // Matching wood color
+      stateKey: 'leftDoor', // Shared state key
+      group: 'doors',
+      defaultState: false, // FALSE = closed (show this mesh)
+      visibilityToggle: true,
+      invertVisibility: true, // Show when INACTIVE (closed)
+      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      animationDuration: 300,
     },
+    // Left door - open mesh (visible when state = true/open)
+    {
+      nodeName: 'Door_Left_m_cabinet_0',
+      materialName: 'm_cabinet',
+      displayName: 'Left Door',
+      stateKey: 'leftDoor', // Same state key as closed mesh
+      group: 'doors',
+      defaultState: false, // FALSE = closed (hide this mesh)
+      visibilityToggle: true,
+      invertVisibility: false, // Show when ACTIVE (open)
+      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      animationDuration: 300,
+    },
+    // Right door - closed mesh
     {
       nodeName: 'Door_Closed_Right_m_cabinet_0',
       materialName: 'm_cabinet',
       displayName: 'Right Door',
-      defaultColor: '#8B4513', // Matching wood color
+      stateKey: 'rightDoor',
+      group: 'doors',
+      defaultState: false, // FALSE = closed
+      visibilityToggle: true,
+      invertVisibility: true, // Show when closed
+      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      animationDuration: 300,
     },
-    // Note: Open door states (Door_Left_m_cabinet_0, Door_Right_m_cabinet_0)
-    // are not included as the configurator would need visibility toggle functionality
-    // to properly show/hide them. For now, we're showing closed doors only.
+    // Right door - open mesh
+    {
+      nodeName: 'Door_Right_m_cabinet_0',
+      materialName: 'm_cabinet',
+      displayName: 'Right Door',
+      stateKey: 'rightDoor',
+      group: 'doors',
+      defaultState: false, // FALSE = closed
+      visibilityToggle: true,
+      invertVisibility: false, // Show when open
+      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
+      animationDuration: 300,
+    },
   ],
   
   // Scale down the model to fit in the viewport (cabinet is very large)
