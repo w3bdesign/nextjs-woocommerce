@@ -120,20 +120,23 @@ const AddToCart = ({
   }, [data, syncWithWooCommerce]);
 
   // Add to cart mutation
-  const [addToCart, { loading: addToCartLoading }] = useMutation(ADD_TO_CART, {
+  const [addToCart, { loading: addToCartLoading, data: mutationData }] = useMutation(ADD_TO_CART, {
     variables: {
       input: productQueryInput,
-    },
-
-    onCompleted: () => {
-      // Update the cart with new values in React context.
-      refetch();
     },
 
     onError: () => {
       setRequestError(true);
     },
   });
+
+  // Handle mutation completion with useEffect instead of deprecated onCompleted
+  useEffect(() => {
+    if (mutationData) {
+      // Update the cart with new values in React context.
+      refetch();
+    }
+  }, [mutationData, refetch]);
 
   const handleAddToCart = () => {
     addToCart();

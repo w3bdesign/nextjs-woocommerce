@@ -42,17 +42,19 @@ const CartContents = () => {
     }
   }, [data, clearWooCommerceSession, syncWithWooCommerce]);
 
-  const [updateCart, { loading: updateCartProcessing }] = useMutation(
+  const [updateCart, { loading: updateCartProcessing, data: updateCartData }] = useMutation(
     UPDATE_CART,
-    {
-      onCompleted: () => {
-        refetch();
-        setTimeout(() => {
-          refetch();
-        }, 3000);
-      },
-    },
   );
+
+  // Handle update cart completion with useEffect instead of deprecated onCompleted
+  useEffect(() => {
+    if (updateCartData) {
+      refetch();
+      setTimeout(() => {
+        refetch();
+      }, 3000);
+    }
+  }, [updateCartData, refetch]);
 
   const handleRemoveProductClick = (
     cartKey: string,

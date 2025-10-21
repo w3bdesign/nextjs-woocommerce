@@ -11,7 +11,7 @@ services:
       - key: NEXT_PUBLIC_GRAPHQL_URL
         sync: false
       - key: NEXT_PUBLIC_ENABLE_MOCKS
-        value: "false"
+        value: "true"
       - key: NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
         value: https://via.placeholder.com/300
       - key: NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL

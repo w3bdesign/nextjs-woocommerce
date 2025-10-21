@@ -59,7 +59,11 @@ const CheckoutForm = () => {
   // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
+  });
+
+  // Sync cart data when query completes
+  useEffect(() => {
+    if (data) {
       const updatedCart = getFormattedCart(data);
       if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
         clearWooCommerceSession();
@@ -68,27 +72,35 @@ const CheckoutForm = () => {
       if (updatedCart) {
         syncWithWooCommerce(updatedCart);
       }
-    },
-  });
+    }
+  }, [data, clearWooCommerceSession, syncWithWooCommerce]);
 
   // Checkout GraphQL mutation
-  const [checkout, { loading: checkoutLoading }] = useMutation(
+  const [checkout, { loading: checkoutLoading, data: checkoutData, error: checkoutError }] = useMutation(
     CHECKOUT_MUTATION,
     {
       variables: {
         input: orderData,
       },
-      onCompleted: () => {
-        clearWooCommerceSession();
-        setorderCompleted(true);
-        refetch();
-      },
-      onError: (error) => {
-        setRequestError(error);
-        refetch();
-      },
     },
   );
+
+  // Handle checkout completion with useEffect instead of deprecated onCompleted
+  useEffect(() => {
+    if (checkoutData) {
+      clearWooCommerceSession();
+      setorderCompleted(true);
+      refetch();
+    }
+  }, [checkoutData, clearWooCommerceSession, refetch]);
+
+  // Handle checkout error
+  useEffect(() => {
+    if (checkoutError) {
+      setRequestError(checkoutError);
+      refetch();
+    }
+  }, [checkoutError, refetch]);
 
   useEffect(() => {
     if (null !== orderData) {
