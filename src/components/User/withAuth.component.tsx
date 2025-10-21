@@ -20,7 +20,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
         
         // If there's an error or no customer data, user is not authenticated
         if (error || !data?.customer) {
-          router.push('/logg-inn');
+          router.push('/login');
         }
       }
     }, [data, loading, error, router]);

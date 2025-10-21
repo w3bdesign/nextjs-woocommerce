@@ -25,14 +25,14 @@ const CustomerAccount = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Mine ordre</h1>
+      <h1 className="text-2xl font-bold mb-4">My Orders</h1>
       {orders && orders.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white">
             <thead>
               <tr>
-                <th className="py-2 px-4 border-b">Ordrenummer</th>
-                <th className="py-2 px-4 border-b">Dato</th>
+                <th className="py-2 px-4 border-b">Order Number</th>
+                <th className="py-2 px-4 border-b">Date</th>
                 <th className="py-2 px-4 border-b">Status</th>
                 <th className="py-2 px-4 border-b">Total</th>
               </tr>
@@ -52,7 +52,7 @@ const CustomerAccount = () => {
           </table>
         </div>
       ) : (
-        <p>Du har ingen ordre.</p>
+        <p>You have no orders.</p>
       )}
     </div>
   );

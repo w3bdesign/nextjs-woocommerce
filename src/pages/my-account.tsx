@@ -6,7 +6,7 @@ import type { NextPage } from 'next';
 
 const CustomerAccountPage: NextPage = () => {
   return (
-    <Layout title="Min konto">
+    <Layout title="My Account">
       <div className="container mx-auto px-4 py-8">
         <CustomerAccount />
       </div>

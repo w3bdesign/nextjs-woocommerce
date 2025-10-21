@@ -53,21 +53,26 @@ The current release has been tested and is confirmed working with the following 
 
 3.  Make sure WooCommerce has some products already
 
-4.  Clone or fork the repo and modify `.env.example` and rename it to `.env`
+4.  Clone or fork the repo. For local development, copy `.env.example` to `.env.local` and adjust values.
 
-    Then set the environment variables accordingly in Vercel or your preferred hosting solution.
+  Key variables:
+  - `NEXT_PUBLIC_GRAPHQL_URL` – Your WPGraphQL endpoint (e.g. https://yourwp.site/graphql)
+  - `NEXT_PUBLIC_ENABLE_MOCKS` – Set to `true` to run without a backend using in-app mocks
+  - Algolia (optional): `NEXT_PUBLIC_ALGOLIA_APP_ID`, `NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY`, `NEXT_PUBLIC_ALGOLIA_INDEX_NAME`
 
-    See <https://vercel.com/docs/environment-variables>
+  This boilerplate also includes a `render.yaml` for Render.com deployment. On Render, set the above env vars in the service settings or rely on `render.yaml` prompts for secrets.
 
 5.  Modify the values according to your setup
 
-6.  Start the server with `npm run dev`
+6.  Install dependencies and start the server
+  - `npm install`
+  - `npm run dev`
 
 7.  Enable COD (Cash On Demand) payment method in WooCommerce
 
 8.  Add a product to the cart
 
-9.  Proceed to checkout (Gå til kasse)
+9.  Proceed to checkout
 
 10. Fill in your details and place the order
 
@@ -143,6 +148,29 @@ Check that you are using the 0.12.0 version of the [wp-graphql-woocommerce](http
 ### The products page isn't loading
 
 Check the attributes of the products. Right now the application requires Size and Color.
+
+If you're running without a backend, ensure `NEXT_PUBLIC_ENABLE_MOCKS=true` is set in `.env.local` to use the built-in GraphQL mocks for development.
+
+## Render.com Deployment
+
+This repo includes a `render.yaml` Blueprint to deploy as a Node Web Service on Render.
+
+- Build Command: `npm install && npm run build`
+- Start Command: `npm run start`
+- Node version: pinned via `.node-version` (22.16.0) or set `NODE_VERSION` env var on Render
+- Required environment variables: `NEXT_PUBLIC_GRAPHQL_URL` (your WPGraphQL endpoint)
+- Optional: Algolia keys and index name
+
+Steps:
+1. Push your repo to GitHub/GitLab/Bitbucket.
+2. In Render Dashboard: New > Blueprint > select your repo containing `render.yaml`.
+3. When prompted, provide secret values for variables marked with `sync: false` (e.g., `NEXT_PUBLIC_GRAPHQL_URL`).
+4. Finish creation; Render will build and run the service at an `onrender.com` URL.
+
+Notes:
+- SSR and API routes run on Render’s Node runtime. The app binds to the default `PORT` provided by Render automatically via `next start`.
+- If your WooCommerce/WordPress is behind auth or firewalls, allow Render to access it or proxy accordingly.
+- For preview environments or temporary lack of backend, set `NEXT_PUBLIC_ENABLE_MOCKS=true` to serve mock catalog data.
 
 ## Issues
 

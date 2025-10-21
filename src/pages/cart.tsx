@@ -5,10 +5,10 @@ import CartContents from '@/components/Cart/CartContents.component';
 // Types
 import type { NextPage } from 'next';
 
-const Handlekurv: NextPage = () => (
-  <Layout title="Handlekurv">
+const Cart: NextPage = () => (
+  <Layout title="Cart">
     <CartContents />
   </Layout>
 );
 
-export default Handlekurv;
+export default Cart;

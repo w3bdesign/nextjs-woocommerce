@@ -1,5 +1,5 @@
 // Imports
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -109,13 +109,15 @@ const AddToCart = ({
   // Get cart data query
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      const updatedCart = getFormattedCart(data);
-      if (updatedCart) {
-        syncWithWooCommerce(updatedCart);
-      }
-    },
   });
+
+  useEffect(() => {
+    if (!data) return;
+    const updatedCart = getFormattedCart(data as any);
+    if (updatedCart) {
+      syncWithWooCommerce(updatedCart);
+    }
+  }, [data, syncWithWooCommerce]);
 
   // Add to cart mutation
   const [addToCart, { loading: addToCartLoading }] = useMutation(ADD_TO_CART, {
@@ -148,7 +150,7 @@ const AddToCart = ({
         buttonDisabled={addToCartLoading || requestError || isCartLoading}
         fullWidth={fullWidth}
       >
-        {isCartLoading ? 'Loading...' : 'KJØP'}
+        {isCartLoading ? 'Loading...' : 'BUY'}
       </Button>
     </>
   );

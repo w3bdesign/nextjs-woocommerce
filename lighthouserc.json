@@ -4,8 +4,8 @@
       "numberOfRuns": 1,
       "url": [
         "http://localhost:3000/",
-        "http://localhost:3000/produkter",
-        "http://localhost:3000/kategorier"
+        "http://localhost:3000/products",
+        "http://localhost:3000/categories"
       ],
       "port": 3000,
       "settings": {       

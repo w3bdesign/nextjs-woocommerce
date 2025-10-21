@@ -37,7 +37,7 @@ const SearchResults = ({
   return (
     <article className="cursor-pointer hit">
       <Link
-        href={`/produkt/${product_name.replace(/ /g, '-')}`}
+        href={`/product/${product_name.replace(/ /g, '-')}`}
         passHref
       >
         <div className="flex p-6 bg-white">

@@ -22,15 +22,18 @@ const CartInitializer = () => {
 
   const { data, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      // On successful fetch, format the data and sync with the store
-      const updatedCart = getFormattedCart(data);
-      if (updatedCart) {
-        syncWithWooCommerce(updatedCart);
-      }
-    },
-    // Consider error handling if needed (e.g., onError callback)
   });
+
+  // Sync cart on data changes
+  useEffect(() => {
+    if (!data) return;
+    // If cart shape is missing, do nothing
+    if (!(data as any)?.cart?.contents?.nodes) return;
+    const updatedCart = getFormattedCart(data as any);
+    if (updatedCart) {
+      syncWithWooCommerce(updatedCart);
+    }
+  }, [data, syncWithWooCommerce]);
 
   useEffect(() => {
     refetch();

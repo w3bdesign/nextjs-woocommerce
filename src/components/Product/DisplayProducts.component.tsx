@@ -76,7 +76,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
 
             return (
               <div key={uuidv4()} className="group">
-                <Link href={`/produkt/${encodeURIComponent(slug)}`}>
+                <Link href={`/product/${encodeURIComponent(slug)}`}>
                   <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
                     {image ? (
                       <img
@@ -97,7 +97,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                     )}
                   </div>
                 </Link>
-                <Link href={`/produkt/${encodeURIComponent(slug)}`}>
+                <Link href={`/product/${encodeURIComponent(slug)}`}>
                   <span>
                     <div className="mt-4">
                       <p className="text-xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
@@ -127,8 +127,10 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
           },
         )
       ) : (
-        <div className="mx-auto text-xl font-bold text-center text-gray-800 no-underline uppercase">
-          Ingen produkter funnet
+        <div className="flex justify-center items-center p-8">
+          <p className="text-gray-500 text-lg">
+            No products found
+          </p>
         </div>
       )}
     </div>

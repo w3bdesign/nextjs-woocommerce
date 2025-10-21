@@ -26,33 +26,33 @@ function getErrorMessage(error: any): string {
     // Map GraphQL error messages to user-friendly messages
     switch (message) {
       case 'invalid_username':
-        return 'Ugyldig brukernavn eller e-postadresse. Vennligst sjekk og prøv igjen.';
+        return 'Invalid username or email address. Please check and try again.';
       case 'incorrect_password':
-        return 'Feil passord. Vennligst sjekk passordet ditt og prøv igjen.';
+        return 'Incorrect password. Please check your password and try again.';
       case 'invalid_email':
-        return 'Ugyldig e-postadresse. Vennligst skriv inn en gyldig e-postadresse.';
+        return 'Invalid email address. Please enter a valid email address.';
       case 'empty_username':
-        return 'Vennligst skriv inn brukernavn eller e-postadresse.';
+        return 'Please enter a username or email address.';
       case 'empty_password':
-        return 'Vennligst skriv inn passord.';
+        return 'Please enter a password.';
       case 'too_many_retries':
-        return 'For mange mislykkede forsøk. Vennligst vent litt før du prøver igjen.';
+        return 'Too many failed attempts. Please wait a moment before trying again.';
       default:
-        return 'Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.';
+        return 'Login failed. Please check your credentials and try again.';
     }
   }
   
   // Check for network errors
   if (error.networkError) {
-    return 'Nettverksfeil. Vennligst sjekk internetttilkoblingen din og prøv igjen.';
+    return 'Network error. Please check your internet connection and try again.';
   }
   
   // Fallback for other errors
   if (error.message) {
-    return 'Det oppstod en feil under innlogging. Vennligst prøv igjen.';
+    return 'An error occurred during login. Please try again.';
   }
   
-  return 'En ukjent feil oppstod. Vennligst prøv igjen senere.';
+  return 'An unknown error occurred. Please try again later.';
 }
 
 export async function login(username: string, password: string) {
@@ -71,7 +71,7 @@ export async function login(username: string, password: string) {
     const loginResult = data.loginWithCookies;
 
     if (loginResult.status !== 'SUCCESS') {
-      throw new Error('Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.');
+      throw new Error('Login failed. Please check your credentials and try again.');
     }
 
     // On successful login, cookies are automatically set by the server

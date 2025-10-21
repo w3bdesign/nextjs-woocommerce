@@ -1,0 +1,38 @@
+services:
+  - name: nextjs-woocommerce
+    type: web
+    runtime: node
+    plan: starter
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      # Core storefront variables
+      - key: NEXT_PUBLIC_GRAPHQL_URL
+        sync: false
+      - key: NEXT_PUBLIC_ENABLE_MOCKS
+        value: "false"
+      - key: NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
+        value: https://via.placeholder.com/300
+      - key: NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL
+        value: https://via.placeholder.com/600
+
+      # Optional: Algolia (search)
+      - key: NEXT_PUBLIC_ALGOLIA_APP_ID
+        sync: false
+      - key: NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_ALGOLIA_INDEX_NAME
+        value: algolia
+
+      # Optional: WooCommerce REST (not used by GraphQL app, kept for future)
+      - key: WOO_REST_API_URL
+        sync: false
+      - key: WOO_CONSUMER_KEY
+        sync: false
+      - key: WOO_CONSUMER_SECRET
+        sync: false
+
+      # Node version pin for Render runtime
+      - key: NODE_VERSION
+        value: 22.16.0

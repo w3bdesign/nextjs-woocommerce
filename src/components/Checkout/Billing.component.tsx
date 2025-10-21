@@ -31,7 +31,7 @@ const OrderButton = () => {
         {...register('paymentMethod')}
       />
       <div className="mt-4 flex justify-center">
-        <Button>BESTILL</Button>
+        <Button>PLACE ORDER</Button>
       </div>
     </div>
   );

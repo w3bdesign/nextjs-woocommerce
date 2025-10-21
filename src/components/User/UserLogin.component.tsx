@@ -28,7 +28,7 @@ const UserLogin = () => {
     try {
       const result = await login(data.username, data.password);
       if (result.success && result.status === 'SUCCESS') {
-        router.push('/min-konto');
+        router.push('/my-account');
       } else {
         throw new Error('Failed to login');
       }
@@ -51,13 +51,13 @@ const UserLogin = () => {
           <div className="mx-auto lg:w-1/2 flex flex-wrap">
             <InputField
               inputName="username"
-              inputLabel="Brukernavn eller e-post"
+              inputLabel="Username or email"
               type="text"
               customValidation={{ required: true }}
             />
             <InputField
               inputName="password"
-              inputLabel="Passord"
+              inputLabel="Password"
               type="password"
               customValidation={{ required: true }}
             />
@@ -71,7 +71,7 @@ const UserLogin = () => {
             <div className="w-full p-2">
               <div className="mt-4 flex justify-center">
                 <Button variant="primary" buttonDisabled={loading}>
-                  {loading ? <LoadingSpinner /> : 'Logg inn'}
+                  {loading ? <LoadingSpinner /> : 'Login'}
                 </Button>
               </div>
             </div>

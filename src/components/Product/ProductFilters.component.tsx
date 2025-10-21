@@ -71,7 +71,7 @@ const ProductFilters = ({
     <div className="w-full md:w-64 flex-shrink-0">
       <div className="bg-white px-8 pb-8 sm:px-6 sm:pb-6 rounded-lg shadow-sm">
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">PRODUKT TYPE</h3>
+          <h3 className="font-semibold mb-4">PRODUCT TYPE</h3>
           <div className="space-y-2">
             {productTypes.map((type) => (
               <Checkbox
@@ -86,10 +86,10 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">PRIS</h3>
+          <h3 className="font-semibold mb-4">PRICE</h3>
           <RangeSlider
             id="price-range"
-            label="Pris"
+            label="Price"
             min={0}
             max={1000}
             value={priceRange[1]}
@@ -100,7 +100,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">STØRRELSE</h3>
+          <h3 className="font-semibold mb-4">SIZE</h3>
           <div className="grid grid-cols-3 gap-2">
             {sizes.map((size) => (
               <Button
@@ -116,7 +116,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">FARGE</h3>
+          <h3 className="font-semibold mb-4">COLOR</h3>
           <div className="grid grid-cols-3 gap-2">
             {colors.map((color) => (
               <button
@@ -139,7 +139,7 @@ const ProductFilters = ({
           handleButtonClick={resetFilters}
           variant="reset"
         >
-          Resett filter
+          Reset filters
         </Button>
       </div>
     </div>

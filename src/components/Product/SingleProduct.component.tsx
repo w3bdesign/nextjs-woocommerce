@@ -50,7 +50,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
     <section className="bg-white mb-[8rem] md:mb-12">
       {isLoading ? (
         <div className="h-56 mt-20">
-          <p className="text-xl font-bold text-center">Laster produkt ...</p>
+          <p className="text-xl font-bold text-center">Loading product...</p>
           <br />
           <LoadingSpinner />
         </div>
@@ -109,7 +109,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                 <div className="mb-6 mx-auto md:mx-0">
                   <div className="p-2 bg-green-100 border border-green-400 rounded-lg max-w-[14.375rem]">
                     <p className="text-lg text-green-700 font-semibold text-center md:text-left">
-                      {product.stockQuantity} på lager
+                      {product.stockQuantity} in stock
                     </p>
                   </div>
                 </div>
@@ -122,7 +122,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                     htmlFor="variant"
                     className="block text-lg font-medium mb-2 text-center md:text-left"
                   >
-                    Varianter
+                    Variations
                   </label>
                   <select
                     id="variant"
@@ -135,7 +135,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                     {product.variations.nodes.map(
                       ({ id, name, databaseId, stockQuantity }) => (
                         <option key={id} value={databaseId}>
-                          {name.split('- ').pop()} - ({stockQuantity} på lager)
+                          {name.split('- ').pop()} - ({stockQuantity} in stock)
                         </option>
                       ),
                     )}

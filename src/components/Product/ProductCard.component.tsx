@@ -32,8 +32,8 @@ const ProductCard = ({
 
   return (
     <div className="group">
-      <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
-        <Link href={`/produkt/${slug}`}>
+      <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 rounded-lg">
+        <Link href={`/product/${slug}`}>
           {image?.sourceUrl ? (
             <Image
               src={image.sourceUrl}
@@ -51,7 +51,7 @@ const ProductCard = ({
         </Link>
       </div>
 
-      <Link href={`/produkt/${slug}`}>
+      <Link href={`/product/${slug}`}>
         <div className="mt-4">
           <p className="text-xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
             {name}

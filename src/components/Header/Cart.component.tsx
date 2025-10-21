@@ -25,10 +25,10 @@ const Cart = ({ stickyNav }: ICartProps) => {
 
   return (
     <>
-      <Link href="/handlekurv">
+      <Link href="/cart">
         <span
           className="pl-4 mt-4 no-underline inline-block"
-          aria-label="Handlekurv"
+          aria-label="Shopping Cart"
         >
           <svg
             className={`${stickyNav ? 'fill-white' : 'fill-current'}`}
@@ -36,7 +36,7 @@ const Cart = ({ stickyNav }: ICartProps) => {
             width="55"
             height="55"
             viewBox="0 0 30 30"
-            aria-label="Handlekurv"
+            aria-label="Shopping Cart"
             role="img"
           >
             <path

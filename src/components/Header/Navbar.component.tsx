@@ -24,7 +24,7 @@ const Navbar = () => {
             <div className="text-center">
               <Link href="/">
                 <span className="text-lg font-bold tracking-widest text-gray-900">
-                  NETTBUTIKK
+                  WEBSHOP
                 </span>
               </Link>
             </div>
@@ -32,21 +32,21 @@ const Navbar = () => {
               <MobileSearch />
             </div>
           </div>
-          <div className="hidden md:flex items-center justify-between">
+                    <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <Link href="/produkter">
+              <Link href="/products">
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                    Produkter
+                    Products
                   </span>
                 </span>
               </Link>
-              <Link href="/kategorier">
+              <Link href="/categories">
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                    Kategorier
+                    Categories
                   </span>
                 </span>
               </Link>
@@ -59,29 +59,29 @@ const Navbar = () => {
             <div className="flex items-center space-x-3">
               <AlgoliaSearchBox />
               {loggedIn ? (
-                <Link href="/min-konto">
+                <Link href="/my-account">
                   <span className="text-base uppercase tracking-wider group relative">
                     <span className="relative inline-block">
                       <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                      Min konto
+                      My Account
                     </span>
                   </span>
                 </Link>
               ) : (
                 <>
-                  <Link href="/logg-inn">
+                  <Link href="/login">
                     <span className="text-base uppercase tracking-wider group relative">
                       <span className="relative inline-block">
                         <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                        Logg inn
+                        Login
                       </span>
                     </span>
                   </Link>
-                  <Link href="/registrer">
+                  <Link href="/register">
                     <span className="text-base uppercase tracking-wider group relative">
                       <span className="relative inline-block">
                         <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                        Registrer
+                        Register
                       </span>
                     </span>
                   </Link>

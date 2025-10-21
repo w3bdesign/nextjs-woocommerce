@@ -1,11 +1,7 @@
 /*eslint complexity: ["error", 8]*/
 
-import {
-  ApolloClient,
-  InMemoryCache,
-  createHttpLink,
-  ApolloLink,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } from '@apollo/client';
+import { mockLink } from './mockLink';
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
@@ -84,18 +80,27 @@ export const afterware = new ApolloLink((operation, forward) =>
 
 const clientSide = typeof window === 'undefined';
 
+// Decide whether to use mock link
+const useMocks =
+  (process.env.NEXT_PUBLIC_ENABLE_MOCKS || '').toString().toLowerCase() === 'true' ||
+  !process.env.NEXT_PUBLIC_GRAPHQL_URL;
+
+const link = useMocks
+  ? mockLink
+  : middleware.concat(
+      afterware.concat(
+        createHttpLink({
+          uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+          fetch,
+          credentials: 'include', // Include cookies for authentication
+        }),
+      ),
+    );
+
 // Apollo GraphQL client.
 const client = new ApolloClient({
   ssrMode: clientSide,
-  link: middleware.concat(
-    afterware.concat(
-      createHttpLink({
-        uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-        fetch,
-        credentials: 'include', // Include cookies for authentication
-      }),
-    ),
-  ),
+  link,
   cache: new InMemoryCache(),
 });
 

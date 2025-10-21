@@ -5,7 +5,7 @@ import type { NextPage } from 'next';
 
 const LoginPage: NextPage = () => {
   return (
-    <Layout title="Logg inn">
+    <Layout title="Login">
       <div className="container mx-auto px-4 py-8">
         <UserLogin />
       </div>

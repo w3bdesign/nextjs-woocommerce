@@ -22,12 +22,13 @@ const MobileSearch = () => {
         searchClient={searchClient}
       >
         <SearchBox
+          aria-label="Search here"
           translations={{
-            submitTitle: 'Søk',
-            resetTitle: 'Slett søketekst',
-            placeholder: 'Søk etter produkter',
+            submitTitle: 'Search',
+            resetTitle: 'Clear search text',
+            placeholder: 'Search for products',
           }}
-          className={`px-4 py-2 text-base bg-white border outline-none rounded ${
+          className={`w-full px-4 py-2 text-base bg-white border outline-none rounded ${
             hasFocus ? 'border-black' : 'border-gray-400'
           }`}
           onReset={() => {

@@ -49,17 +49,17 @@ const ProductList = ({ products, title }: ProductListProps) => {
           </h1>
 
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4">
-            <label htmlFor="sort-select" className="text-sm font-medium">Sortering:</label>
+            <label htmlFor="sort-select" className="text-sm font-medium">Sort by:</label>
             <select
               id="sort-select"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="min-w-[140px] border rounded-md px-3 py-1.5 text-sm"
             >
-              <option value="popular">Populær</option>
-              <option value="price-low">Pris: Lav til Høy</option>
-              <option value="price-high">Pris: Høy til Lav</option>
-              <option value="newest">Nyeste</option>
+              <option value="popular">Popular</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="newest">Newest</option>
             </select>
           </div>
         </div>

@@ -20,11 +20,11 @@ import { GET_SINGLE_PRODUCT } from '@/utils/gql/GQL_QUERIES';
 
 /**
  * Display a single product with dynamic pretty urls
- * @function Produkt
+ * @function Product
  * @param {InferGetServerSidePropsType<typeof getServerSideProps>} products
  * @returns {JSX.Element} - Rendered component
  */
-const Produkt: NextPage = ({
+const Product: NextPage = ({
   product,
   networkStatus,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -34,18 +34,18 @@ const Produkt: NextPage = ({
       {product ? (
         <SingleProduct product={product} />
       ) : (
-        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
+        <div className="mt-8 text-2xl text-center">Loading product...</div>
       )}
       {hasError && (
         <div className="mt-8 text-2xl text-center">
-          Feil under lasting av produkt ...
+          Error loading product...
         </div>
       )}
     </Layout>
   );
 };
 
-export default withRouter(Produkt);
+export default withRouter(Product);
 
 export const getServerSideProps: GetServerSideProps = async ({
   params,
@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   // Handle legacy URLs with ID parameter by removing it
   if (query.id) {
-    res.setHeader('Location', `/produkt/${params?.slug}`);
+    res.setHeader('Location', `/product/${params?.slug}`);
     res.statusCode = 301;
     res.end();
     return { props: {} };

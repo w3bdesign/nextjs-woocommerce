@@ -122,13 +122,13 @@ const CheckoutForm = () => {
           {/*Error display*/}
           {requestError && (
             <div className="h-32 text-xl text-center text-red-600">
-              En feil har oppstått.
+              An error has occurred.
             </div>
           )}
           {/* Checkout Loading*/}
           {checkoutLoading && (
             <div className="text-xl text-center">
-              Behandler ordre, vennligst vent ...
+              Processing order, please wait...
               <LoadingSpinner />
             </div>
           )}
@@ -137,12 +137,12 @@ const CheckoutForm = () => {
         <>
           {!cart && !orderCompleted && (
             <h1 className="text-2xl m-12 mt-24 font-bold text-center">
-              Ingen produkter i handlekurven
+              No products in cart
             </h1>
           )}
           {orderCompleted && (
             <div className="container h-24 m-12 mx-auto mt-24 text-xl text-center">
-              Takk for din ordre!
+              Thank you for your order!
             </div>
           )}
         </>

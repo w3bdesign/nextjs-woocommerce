@@ -12,7 +12,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 /**
  * Display a single product with dynamic pretty urls
  */
-const Produkt = ({
+const Category = ({
   categoryName,
   products,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -21,13 +21,13 @@ const Produkt = ({
       {products ? (
         <DisplayProducts products={products} />
       ) : (
-        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
+        <div className="mt-8 text-2xl text-center">Loading products...</div>
       )}
     </Layout>
   );
 };
 
-export default withRouter(Produkt);
+export default withRouter(Category);
 
 export const getServerSideProps: GetServerSideProps = async ({
   query: { id },

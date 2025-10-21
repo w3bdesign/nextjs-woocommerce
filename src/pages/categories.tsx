@@ -1,6 +1,6 @@
 import { NextPage, InferGetStaticPropsType, GetStaticProps } from 'next';
 
-import Categories from '@/components/Category/Categories.component';
+import CategoriesComponent from '@/components/Category/Categories.component';
 import Layout from '@/components/Layout/Layout.component';
 
 import client from '@/utils/apollo/ApolloClient';
@@ -10,15 +10,15 @@ import { FETCH_ALL_CATEGORIES_QUERY } from '@/utils/gql/GQL_QUERIES';
 /**
  * Category page displays all of the categories
  */
-const Kategorier: NextPage = ({
+const Categories: NextPage = ({
   categories,
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
-  <Layout title="Kategorier">
-    {categories && <Categories categories={categories} />}
+  <Layout title="Categories">
+    {categories && <CategoriesComponent categories={categories} />}
   </Layout>
 );
 
-export default Kategorier;
+export default Categories;
 
 export const getStaticProps: GetStaticProps = async () => {
   const result = await client.query({

@@ -152,7 +152,8 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
   if (!data) {
     return;
   }
-  const givenProducts = data.cart.contents.nodes;
+  // Guard against missing cart/contents
+  const givenProducts = (data as any)?.cart?.contents?.nodes ?? [];
 
   // Create an empty object.
   formattedCart.products = [];
@@ -211,7 +212,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
     i++;
   });
   formattedCart.totalProductsCount = totalProductsCount;
-  formattedCart.totalProductsPrice = data.cart.total;
+  formattedCart.totalProductsPrice = (data as any)?.cart?.total ?? 0;
 
   return formattedCart;
 };

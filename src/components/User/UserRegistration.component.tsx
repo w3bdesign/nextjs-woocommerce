@@ -45,9 +45,9 @@ const UserRegistration = () => {
     return (
       <div className="text-center my-8">
         <h2 className="text-2xl font-bold text-green-600 mb-4">
-          Registrering vellykket!
+          Registration successful!
         </h2>
-        <p>Du kan nå logge inn med din konto.</p>
+        <p>You can now log in with your account.</p>
       </div>
     );
   }
