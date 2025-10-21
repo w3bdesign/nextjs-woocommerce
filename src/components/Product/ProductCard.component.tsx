@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { paddedPrice } from '@/utils/functions/functions';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PriceGroup } from '@/components/UI/Price.component';
@@ -29,18 +28,13 @@ const ProductCard = ({
   slug,
   image,
 }: ProductCardProps) => {
-  // Add padding/empty character after currency symbol
-  const formattedPrice = price ? paddedPrice(price, 'kr') : price;
-  const formattedRegularPrice = regularPrice ? paddedPrice(regularPrice, 'kr') : regularPrice;
-  const formattedSalePrice = salePrice ? paddedPrice(salePrice, 'kr') : salePrice;
-
   return (
     <Card className="group overflow-hidden border-0 shadow-sm hover:shadow-md transition-shadow">
       <CardContent className="p-0">
         <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
           {onSale && (
-            <Badge 
-              variant="destructive" 
+            <Badge
+              variant="destructive"
               className="absolute top-2 right-2 z-10"
             >
               SALE
@@ -72,9 +66,12 @@ const ProductCard = ({
           </TypographyH4>
         </Link>
         <PriceGroup
-          salePrice={onSale ? formattedSalePrice : null}
-          regularPrice={onSale ? formattedRegularPrice : formattedPrice}
+          price={price}
+          salePrice={salePrice}
+          regularPrice={regularPrice}
+          onSale={onSale}
           size="lg"
+          currency="kr"
         />
       </CardFooter>
     </Card>

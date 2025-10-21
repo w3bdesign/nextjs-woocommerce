@@ -1,42 +1,20 @@
 // Components
 import Layout from '@/components/Layout/Layout.component';
 import CheckoutForm from '@/components/Checkout/CheckoutForm.component';
-import Link from 'next/link';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
 
 // Types
 import type { NextPage } from 'next';
 
 const Checkout: NextPage = () => (
   <Layout title="Checkout">
-    <div className="container mx-auto px-4 pt-4">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="/cart">Cart</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Checkout</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-    </div>
+    <BreadcrumbNav
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Cart', href: '/cart' },
+        { label: 'Checkout' },
+      ]}
+    />
     <CheckoutForm />
   </Layout>
 );

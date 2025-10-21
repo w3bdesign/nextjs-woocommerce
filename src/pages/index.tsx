@@ -1,6 +1,6 @@
 // Components
 import Hero from '@/components/Index/Hero.component';
-import DisplayProducts from '@/components/Product/DisplayProducts.component';
+import ProductGrid from '@/components/Product/ProductGrid.component';
 import Layout from '@/components/Layout/Layout.component';
 
 // Utilities
@@ -24,7 +24,14 @@ const Index: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => (
   <Layout title="Home">
     <Hero />
-    {products && <DisplayProducts products={products} />}
+    {products && (
+      <section className="container mx-auto bg-white py-12">
+        <ProductGrid
+          products={products}
+          columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+        />
+      </section>
+    )}
   </Layout>
 );
 

@@ -1,3 +1,13 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+  "chat.instructionsFilesLocations": { "path": ".github/instructions" },
+  "chat.promptFilesLocations": { "path": ".github/prompts" },
+
+  // Editor / Prettier defaults for the workspace
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "prettier.requireConfig": true
 }

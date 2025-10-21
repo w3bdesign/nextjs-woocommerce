@@ -1,17 +1,9 @@
 import { withRouter } from 'next/router';
-import Link from 'next/link';
 
 // Components
 import Layout from '@/components/Layout/Layout.component';
-import DisplayProducts from '@/components/Product/DisplayProducts.component';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import ProductGrid from '@/components/Product/ProductGrid.component';
+import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
 
 import client from '@/utils/apollo/ApolloClient';
 
@@ -28,30 +20,16 @@ const Category = ({
   return (
     <Layout title={`${categoryName ? categoryName : ''}`}>
       {categoryName && (
-        <div className="container mx-auto px-4 pt-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/">Home</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/categories">Categories</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{categoryName}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        <BreadcrumbNav
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Categories', href: '/categories' },
+            { label: categoryName },
+          ]}
+        />
       )}
       {products ? (
-        <DisplayProducts products={products} />
+        <ProductGrid products={products} />
       ) : (
         <div className="mt-8 text-2xl text-center">Loading products...</div>
       )}

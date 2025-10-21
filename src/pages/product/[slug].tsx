@@ -1,18 +1,10 @@
 // Imports
 import { withRouter } from 'next/router';
-import Link from 'next/link';
 
 // Components
 import SingleProduct from '@/components/Product/SingleProduct.component';
 import Layout from '@/components/Layout/Layout.component';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
 
 // Utilities
 import client from '@/utils/apollo/ApolloClient';
@@ -41,27 +33,13 @@ const Product: NextPage = ({
   return (
     <Layout title={`${product.name ? product.name : ''}`}>
       {product && (
-        <div className="container mx-auto px-4 pt-4">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/">Home</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/products">Products</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{product.name}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        <BreadcrumbNav
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Products', href: '/products' },
+            { label: product.name },
+          ]}
+        />
       )}
       {product ? (
         <SingleProduct product={product} />

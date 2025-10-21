@@ -2,26 +2,28 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
-// Utils
-import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
-
 // Components
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Container } from '@/components/Layout/Container.component';
-import { TypographyH1, TypographyH4, TypographyP, TypographyLarge } from '@/components/UI/Typography.component';
+import {
+  TypographyH1,
+  TypographyP,
+  TypographyLarge,
+} from '@/components/UI/Typography.component';
+import { PriceGroup } from '@/components/UI/Price.component';
 
 // Dynamically import 3D configurator to avoid SSR issues
 const ProductConfigurator = dynamic(
   () => import('@/components/Configurator/ProductConfigurator.component'),
-  { 
+  {
     ssr: false,
     loading: () => (
       <div className="w-full h-[600px] flex items-center justify-center bg-gray-100 rounded-lg">
         <Skeleton className="w-full h-full" />
       </div>
-    )
-  }
+    ),
+  },
 );
 
 const SingleProduct = ({ product }: IProductRootObject) => {
@@ -38,19 +40,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
     }
   }, [product.variations]);
 
-  let { description, name, onSale, price, regularPrice, salePrice } =
-    product;
-
-  // Add padding/empty character after currency symbol here
-  if (price) {
-    price = paddedPrice(price, 'kr');
-  }
-  if (regularPrice) {
-    regularPrice = paddedPrice(regularPrice, 'kr');
-  }
-  if (salePrice) {
-    salePrice = paddedPrice(salePrice, 'kr');
-  }
+  const { description, name, onSale, price, regularPrice, salePrice } = product;
 
   // Strip out HTML from description
   if (process.browser) {
@@ -69,7 +59,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
             <div className="mb-6 md:mb-0">
               <Skeleton className="w-full max-w-xl mx-auto aspect-[3/4]" />
             </div>
-            
+
             {/* Product Details Skeleton */}
             <div className="flex flex-col space-y-4">
               <Skeleton className="h-8 w-3/4" />
@@ -90,8 +80,8 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                 {product.configurator?.enabled ? (
                   <ProductConfigurator modelId={product.configurator.modelId} />
                 ) : (
-                  <img 
-                    src={product.image?.sourceUrl} 
+                  <img
+                    src={product.image?.sourceUrl}
                     alt={name}
                     className="w-full h-full object-cover"
                   />
@@ -107,21 +97,22 @@ const SingleProduct = ({ product }: IProductRootObject) => {
 
               {/* Price Display */}
               <div className="text-center md:text-left mb-6">
-                {onSale ? (
-                  <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
-                    <TypographyH4 className="text-red-600">
-                      {product.variations
-                        ? filteredVariantPrice(price, '')
-                        : salePrice}
-                    </TypographyH4>
-                    <TypographyH4 className="text-gray-500 line-through">
-                      {product.variations
-                        ? filteredVariantPrice(price, 'right')
-                        : regularPrice}
-                    </TypographyH4>
-                  </div>
+                {product.variations ? (
+                  <PriceGroup
+                    price={price}
+                    onSale={onSale}
+                    size="xl"
+                    currency="kr"
+                  />
                 ) : (
-                  <TypographyH4>{price}</TypographyH4>
+                  <PriceGroup
+                    price={price}
+                    salePrice={salePrice}
+                    regularPrice={regularPrice}
+                    onSale={onSale}
+                    size="xl"
+                    currency="kr"
+                  />
                 )}
               </div>
 

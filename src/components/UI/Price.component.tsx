@@ -18,6 +18,10 @@ interface PriceProps {
    */
   size?: 'sm' | 'md' | 'lg' | 'xl';
   /**
+   * Currency symbol to auto-format (adds space after if not present)
+   */
+  currency?: string;
+  /**
    * Additional CSS classes
    */
   className?: string;
@@ -26,15 +30,22 @@ interface PriceProps {
 /**
  * Price component for consistent price display across the furniture store
  * Handles sale prices, original prices, and different size variants
+ * Automatically formats currency by adding space after symbol
  */
 export const Price = ({
   value,
   isSale = false,
   isOriginal = false,
   size = 'lg',
+  currency = 'kr',
   className,
 }: PriceProps) => {
   if (!value) return null;
+
+  // Auto-format: Add space after currency if not present
+  const formattedValue = value.includes(currency)
+    ? value.split(currency).join(`${currency} `)
+    : value;
 
   const sizeClasses = {
     sm: 'text-sm',
@@ -51,40 +62,85 @@ export const Price = ({
       'text-gray-500 line-through': isOriginal,
       'text-gray-900': !isSale && !isOriginal,
     },
-    className
+    className,
   );
 
-  return <span className={baseClasses}>{value}</span>;
+  return <span className={baseClasses}>{formattedValue}</span>;
 };
 
 /**
  * PriceGroup component for displaying sale price alongside original price
  */
 interface PriceGroupProps {
-  salePrice: string | null | undefined;
-  regularPrice: string | null | undefined;
+  /**
+   * Primary price field (used when not on sale)
+   */
+  price?: string | null | undefined;
+  /**
+   * Sale price (displayed in red when product is on sale)
+   */
+  salePrice?: string | null | undefined;
+  /**
+   * Regular/original price (shown with line-through when on sale)
+   */
+  regularPrice?: string | null | undefined;
+  /**
+   * Whether product is on sale (auto-detects sale pricing)
+   */
+  onSale?: boolean;
+  /**
+   * Size variant
+   */
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  /**
+   * Currency symbol for formatting
+   */
+  currency?: string;
+  /**
+   * Additional CSS classes
+   */
   className?: string;
 }
 
+/**
+ * Smart price group that handles all WooCommerce price scenarios
+ * Automatically formats prices and handles sale/regular display
+ */
 export const PriceGroup = ({
+  price,
   salePrice,
   regularPrice,
+  onSale = false,
   size = 'lg',
+  currency = 'kr',
   className,
 }: PriceGroupProps) => {
-  if (!salePrice && !regularPrice) return null;
+  // Handle different WooCommerce price scenarios
+  const displaySalePrice = onSale ? salePrice || price : null;
+  const displayRegularPrice = onSale ? regularPrice : price || regularPrice;
+
+  if (!displaySalePrice && !displayRegularPrice) return null;
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
-      {salePrice && (
-        <Price value={salePrice} isSale size={size} />
+      {displaySalePrice && (
+        <Price
+          value={displaySalePrice}
+          isSale
+          size={size}
+          currency={currency}
+        />
       )}
-      {regularPrice && salePrice && (
-        <Price value={regularPrice} isOriginal size={size === 'xl' ? 'lg' : size} />
+      {displayRegularPrice && displaySalePrice && (
+        <Price
+          value={displayRegularPrice}
+          isOriginal
+          size={size === 'xl' ? 'lg' : size}
+          currency={currency}
+        />
       )}
-      {!salePrice && regularPrice && (
-        <Price value={regularPrice} size={size} />
+      {!displaySalePrice && displayRegularPrice && (
+        <Price value={displayRegularPrice} size={size} currency={currency} />
       )}
     </div>
   );

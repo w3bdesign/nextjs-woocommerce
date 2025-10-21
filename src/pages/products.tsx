@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Layout from '@/components/Layout/Layout.component';
-import ProductList from '@/components/Product/ProductList.component';
+import ProductGrid from '@/components/Product/ProductGrid.component';
 import client from '@/utils/apollo/ApolloClient';
 import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -49,7 +49,12 @@ const Products: NextPage = ({
       </Head>
 
       <div className="container mx-auto px-4 py-8">
-        <ProductList products={products} title="Furniture Collection" />
+        <ProductGrid
+          products={products}
+          title="Furniture Collection"
+          showFilters={true}
+          showSorting={true}
+        />
       </div>
     </Layout>
   );
