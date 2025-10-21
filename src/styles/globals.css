@@ -1,5 +1,5 @@
 /* Import Inter font for better typography */
-@import url("https://rsms.me/inter/inter.css");
+@import url('https://rsms.me/inter/inter.css');
 
 @tailwind base;
 @tailwind components;
@@ -57,11 +57,7 @@
 canvas {
   outline: none;
   touch-action: none;
-}
-
-/* Custom cursor for 3D interaction */
-.cursor-3d-active {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 /* Ensure proper z-index layering */
@@ -90,8 +86,6 @@ canvas {
   }
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -100,7 +94,7 @@ canvas {
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    
+
     /* Brand colors - furniture store theme */
     --primary: 221 83% 53%; /* Blue-600 for primary actions */
     --primary-foreground: 0 0% 98%;
@@ -112,20 +106,20 @@ canvas {
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    
+
     /* Furniture-specific colors */
     --success: 142 71% 45%; /* Green-600 for success states */
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%; /* Amber-500 for warnings */
     --warning-foreground: 0 0% 9%;
-    
+
     /* Material colors for furniture */
     --wood-light: 43 74% 66%; /* Light wood tone */
     --wood-dark: 25 95% 53%; /* Dark wood tone */
     --fabric-beige: 40 60% 90%; /* Fabric beige */
     --metal-silver: 240 5% 65%; /* Metal silver */
     --metal-gold: 43 74% 66%; /* Metal gold */
-    
+
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 221 83% 53%; /* Match primary */
@@ -136,7 +130,7 @@ canvas {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
-  
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -144,7 +138,7 @@ canvas {
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    
+
     /* Brand colors - dark mode */
     --primary: 217 91% 60%; /* Lighter blue for dark mode */
     --primary-foreground: 0 0% 9%;
@@ -156,20 +150,20 @@ canvas {
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    
+
     /* Furniture-specific colors - dark mode adjusted */
     --success: 142 71% 45%;
     --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 9%;
-    
+
     /* Material colors for furniture - dark mode */
     --wood-light: 43 74% 56%;
     --wood-dark: 25 95% 43%;
     --fabric-beige: 40 60% 70%;
     --metal-silver: 240 5% 55%;
     --metal-gold: 43 74% 56%;
-    
+
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 217 91% 60%; /* Match primary */
@@ -187,7 +181,8 @@ canvas {
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
   }
 }
-

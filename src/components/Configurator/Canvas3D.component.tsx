@@ -12,28 +12,25 @@ interface Canvas3DProps {
  * Main 3D Canvas component with lighting and controls
  * Uses Next.js dynamic import to avoid SSR issues
  */
-export default function Canvas3D({ children, shadowConfig }: Canvas3DProps): ReactElement {
+export default function Canvas3D({
+  children,
+  shadowConfig,
+}: Canvas3DProps): ReactElement {
   return (
     <Canvas
       shadows
       camera={{ position: [0, 0, 4], fov: 45 }}
-      style={{ 
+      style={{
         background: 'white',
         width: '100%',
-        height: '100%'
+        height: '100%',
+        cursor: 'pointer',
       }}
     >
       {/* Lighting setup */}
       <ambientLight intensity={1.2} />
-      <directionalLight
-        position={[5, 5, 5]}
-        intensity={1.5}
-        castShadow
-      />
-      <directionalLight
-        position={[-5, 3, -5]}
-        intensity={0.8}
-      />
+      <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
+      <directionalLight position={[-5, 3, -5]} intensity={0.8} />
       <spotLight
         intensity={0.8}
         angle={0.3}
@@ -49,17 +46,13 @@ export default function Canvas3D({ children, shadowConfig }: Canvas3DProps): Rea
       {children}
 
       {/* Ground plane for visual reference */}
-      <mesh 
-        rotation={[-Math.PI / 2, 0, 0]} 
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
         position={[0, shadowConfig?.position ?? -0.8, 0]}
         receiveShadow
       >
         <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial 
-          color="#f5f5f5" 
-          roughness={0.8}
-          metalness={0.1}
-        />
+        <meshStandardMaterial color="#f5f5f5" roughness={0.8} metalness={0.1} />
       </mesh>
 
       {/* Ground shadow */}
