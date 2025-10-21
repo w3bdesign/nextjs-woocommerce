@@ -5,7 +5,8 @@
   "rules": {
     "@next/next/no-img-element": "off",
     "no-useless-escape": "off",
-    "@typescript-eslint/no-unused-vars": 1
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-unused-vars": "warn"
   },
   "globals": { "JSX": true },
   "env": {

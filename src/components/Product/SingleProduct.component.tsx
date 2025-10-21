@@ -6,11 +6,6 @@ import dynamic from 'next/dynamic';
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Container } from '@/components/Layout/Container.component';
-import {
-  TypographyH1,
-  TypographyP,
-  TypographyLarge,
-} from '@/components/UI/Typography.component';
 import { PriceGroup } from '@/components/UI/Price.component';
 
 // Dynamically import 3D configurator to avoid SSR issues
@@ -30,8 +25,6 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
 
-  let DESCRIPTION_WITHOUT_HTML;
-
   useEffect(() => {
     setIsLoading(false);
     if (product.variations) {
@@ -41,14 +34,6 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   }, [product.variations]);
 
   const { description, name, onSale, price, regularPrice, salePrice } = product;
-
-  // Strip out HTML from description
-  if (process.browser) {
-    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
-      description,
-      'text/html',
-    ).body.textContent;
-  }
 
   return (
     <section className="bg-white mb-[8rem] md:mb-12">
