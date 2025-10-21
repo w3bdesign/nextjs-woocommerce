@@ -154,14 +154,16 @@ Add configurator metadata to your product data:
 ```typescript
 // In your product data (WooCommerce/GraphQL)
 {
-  name: "Custom Shoe",
+  name: "Modern Cabinet",
   // ... other product fields
   configurator: {
     enabled: true,
-    modelId: 'shoe-v1'  // Must exist in MODEL_REGISTRY
+    modelId: 'cabinet-v1'  // Must exist in MODEL_REGISTRY
   }
 }
 ```
+
+Note: The `shoe-v1` model is kept as a POC example.
 
 ### 3. Component Usage
 

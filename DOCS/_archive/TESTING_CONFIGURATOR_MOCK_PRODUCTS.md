@@ -67,7 +67,7 @@ configurator: {
 
 | Product | Configurator Status | Model |
 |---------|---------------------|-------|
-| Mock Hoodie | ❌ Disabled (shows image) | N/A |
+| Modern Oak Cabinet | ✅ Enabled | cabinet-v1 |
 | Mock Tee | ✅ Enabled | shoe-v1 |
 
 ## 🚀 To Enable for All Mock Products
@@ -77,11 +77,11 @@ If you want to test on multiple products, add the configurator field to each:
 ```typescript
 export const mockProducts = [
   {
-    name: 'Mock Hoodie',
+    name: 'Modern Oak Cabinet',
     // ...
     configurator: {
       enabled: true,
-      modelId: 'shoe-v1',
+      modelId: 'cabinet-v1',
     },
   },
   {

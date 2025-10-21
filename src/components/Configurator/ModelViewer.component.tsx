@@ -92,11 +92,6 @@ export default function ModelViewer({
     setCurrentPart(e.object.material.name);
   };
 
-  // Get list of interactive part node names for filtering
-  const interactiveNodeNames = new Set(
-    modelConfig.interactiveParts?.map(p => p.nodeName) ?? []
-  );
-
   return (
     <group
       ref={ref}

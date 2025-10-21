@@ -4,7 +4,7 @@ import { useSnapshot } from 'valtio';
 import type { Group } from 'three';
 import { Euler, Vector3 } from 'three';
 import { configuratorState } from '@/stores/configuratorStore';
-import type { InteractivePart, AnimationState } from '@/types/configurator';
+import type { InteractivePart } from '@/types/configurator';
 
 interface InteractiveMeshProps {
   part: InteractivePart;

@@ -24,7 +24,7 @@ const Navbar = () => {
             <div className="text-center">
               <Link href="/">
                 <span className="text-lg font-bold tracking-widest text-gray-900">
-                  WEBSHOP
+                  MEBL FURNITURE
                 </span>
               </Link>
             </div>
@@ -53,7 +53,7 @@ const Navbar = () => {
             </div>
             <Link href="/" className="hidden lg:block">
               <span className="text-xl font-bold tracking-widest text-gray-900 hover:text-gray-700 transition-colors">
-                NETTBUTIKK
+                MEBL FURNITURE
               </span>
             </Link>
             <div className="flex items-center space-x-3">

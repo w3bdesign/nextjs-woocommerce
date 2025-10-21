@@ -30,11 +30,11 @@ const Products: NextPage = ({
   return (
     <Layout title="Products">
       <Head>
-        <title>Products | WooCommerce Next.js</title>
+        <title>Products | Furniture Store</title>
       </Head>
 
       <div className="container mx-auto px-4 py-8">
-        <ProductList products={products} title="Men's Clothing" />
+        <ProductList products={products} title="Furniture Collection" />
       </div>
     </Layout>
   );

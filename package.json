@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-woocommerce",
+  "name": "nextjs-furniture-store",
   "version": "1.2.4",
   "private": true,
   "scripts": {
@@ -21,7 +21,9 @@
     "next.js",
     "next",
     "javascript",
-    "framer"
+    "framer",
+    "furniture",
+    "ecommerce"
   ],
   "author": "w3bdesign",
   "license": "ISC",

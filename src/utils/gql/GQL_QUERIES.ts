@@ -83,9 +83,9 @@ export const GET_SINGLE_PRODUCT = gql`
  * Fetch first 4 products from a specific category
  */
 
-export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
+export const FETCH_FIRST_PRODUCTS_FROM_SOFAS_QUERY = `
  query MyQuery {
-  products(first: 4, where: {category: "Hoodies"}) {
+  products(first: 4, where: {category: "Sofas"}) {
     nodes {
       productId
       name
@@ -108,6 +108,9 @@ export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
   }
 }
  `;
+
+// Legacy query name for backwards compatibility
+export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = FETCH_FIRST_PRODUCTS_FROM_SOFAS_QUERY;
 
 /**
  * Fetch first 200 Woocommerce products from GraphQL

@@ -79,7 +79,7 @@ export const mockLink = new ApolloLink((operation) => {
             data: {
               productCategory: {
                 id,
-                name: (products[0]?.productCategories?.nodes?.[0]?.name) || 'Kategori',
+                name: (products[0]?.productCategories?.nodes?.[0]?.name) || 'Category',
                 __typename: 'ProductCategory',
                 products: { __typename: 'ProductToProductConnection', nodes: products },
               },
