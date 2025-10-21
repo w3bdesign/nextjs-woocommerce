@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, type ReactElement } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
-import type { Mesh, Group } from 'three';
+import type { Group } from 'three';
 import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
 
 interface ModelViewerProps {

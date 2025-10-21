@@ -26,8 +26,6 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
 
-  const placeholderFallBack = 'https://via.placeholder.com/600';
-
   let DESCRIPTION_WITHOUT_HTML;
 
   useEffect(() => {
@@ -38,7 +36,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
     }
   }, [product.variations]);
 
-  let { description, image, name, onSale, price, regularPrice, salePrice } =
+  let { description, name, onSale, price, regularPrice, salePrice } =
     product;
 
   // Add padding/empty character after currency symbol here
