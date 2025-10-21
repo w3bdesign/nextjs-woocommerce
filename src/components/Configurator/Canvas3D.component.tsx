@@ -24,12 +24,21 @@ export default function Canvas3D({ children, shadowConfig }: Canvas3DProps): Rea
       }}
     >
       {/* Lighting setup */}
-      <ambientLight intensity={0.7} />
+      <ambientLight intensity={1.2} />
+      <directionalLight
+        position={[5, 5, 5]}
+        intensity={1.5}
+        castShadow
+      />
+      <directionalLight
+        position={[-5, 3, -5]}
+        intensity={0.8}
+      />
       <spotLight
-        intensity={0.5}
-        angle={0.1}
+        intensity={0.8}
+        angle={0.3}
         penumbra={1}
-        position={[10, 15, 10]}
+        position={[0, 10, 0]}
         castShadow
       />
 

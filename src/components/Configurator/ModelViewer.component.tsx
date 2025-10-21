@@ -119,6 +119,9 @@ export default function ModelViewer({
             geometry={node.geometry}
             material={material}
             material-color={snap.items[part.materialName]}
+            material-map={null}
+            material-roughness={0.6}
+            material-metalness={0.1}
           />
         );
       })}
