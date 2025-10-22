@@ -11,6 +11,10 @@
 export interface CameraConfig {
   position: [number, number, number];
   fov: number;
+  /** Near clipping plane distance (default: 0.1) */
+  near?: number;
+  /** Far clipping plane distance (default: 1000) */
+  far?: number;
 }
 
 /**
@@ -21,6 +25,51 @@ export interface AnimationConfig {
   enableBobbing?: boolean;
   rotationSpeed?: number;
   bobbingAmplitude?: number;
+}
+
+/**
+ * Room configuration for 3D scene environment
+ * Defines the background, lighting, and spatial context
+ */
+export interface RoomConfig {
+  /** Unique identifier for this room preset */
+  id: string;
+
+  /** Display name for the room preset */
+  name: string;
+
+  /** Floor color (hex or CSS color) */
+  floorColor: string;
+
+  /** Back wall color (hex or CSS color) */
+  wallColor: string;
+
+  /** Ambient light intensity (0-3) */
+  ambientLightIntensity: number;
+
+  /** Main directional light intensity (0-10) */
+  directionalLightIntensity: number;
+
+  /** Position of main directional light */
+  directionalLightPosition: [number, number, number];
+
+  /** Secondary light intensity (0-5) */
+  secondaryLightIntensity: number;
+
+  /** Secondary light position */
+  secondaryLightPosition: [number, number, number];
+
+  /** Environment preset from drei (or 'none' to disable) */
+  environmentPreset: 'apartment' | 'city' | 'park' | 'warehouse' | 'none';
+
+  /** Wall Z position (distance from center) */
+  wallDepth?: number;
+
+  /** Floor material roughness */
+  floorRoughness?: number;
+
+  /** Wall material roughness */
+  wallRoughness?: number;
 }
 
 /**

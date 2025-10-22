@@ -96,12 +96,14 @@ export const CABINET_CONFIG: ModelConfig = {
   // Scale down the model to fit in the viewport (cabinet is very large)
   scale: 0.012,
 
-  // Position the cabinet so it sits on the ground plane (adjusted for model's internal offset)
-  position: [0, -1.0, 0],
+  // Position the cabinet so its back edge touches the wall
+  // Wall is at Z = -3, so position model further back so back edge touches wall
+  // Model depth is ~45cm, scaled at 0.012 = ~0.54 units, so move center to -2.73
+  position: [0, -1.3, -2.73],
 
   camera: {
-    position: [-2.13, 0.33, 2.62], // Base camera position
-    fov: 50,
+    position: [-5, 0, 11], // Base camera position
+    fov: 17,
   },
 
   animations: {

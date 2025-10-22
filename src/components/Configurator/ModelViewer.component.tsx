@@ -1,4 +1,4 @@
-import { useRef, type ReactElement } from 'react';
+import { useRef, useCallback, type ReactElement } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
@@ -59,14 +59,14 @@ export default function ModelViewer({
   });
 
   // Handle pointer events
-  const handlePointerMissed = (): void => {
+  const handlePointerMissed = useCallback((): void => {
     setCurrentPart(null);
-  };
+  }, []);
 
-  const handleClick = (e: any): void => {
+  const handleClick = useCallback((e: any): void => {
     e.stopPropagation();
     setCurrentPart(e.object.material.name);
-  };
+  }, []);
 
   // Calculate scale from dimensions (if configured)
   const baseScale = modelConfig.scale ?? 1;
