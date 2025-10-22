@@ -46,10 +46,6 @@ export default function Canvas3D({
 }: Canvas3DProps): ReactElement {
   const defaultCamera = cameraConfig || { position: [0, 0, 4], fov: 45 };
 
-  console.log(
-    `🎥 Camera Config: position=[${defaultCamera.position.join(', ')}], fov=${defaultCamera.fov}`,
-  );
-
   return (
     <Canvas
       shadows
@@ -62,11 +58,23 @@ export default function Canvas3D({
       }}
     >
       {/* Lighting setup */}
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
+      <ambientLight intensity={2.8} />
+      <directionalLight
+        position={[2, 6, 2]}
+        intensity={5.5}
+        castShadow
+        shadow-mapSize-width={4096}
+        shadow-mapSize-height={4096}
+        shadow-camera-far={50}
+        shadow-camera-left={-15}
+        shadow-camera-right={15}
+        shadow-camera-top={15}
+        shadow-camera-bottom={-15}
+        shadow-bias={-0.0001}
+      />
       <directionalLight position={[-5, 3, -5]} intensity={0.8} />
       <spotLight
-        intensity={0.8}
+        intensity={1}
         angle={0.3}
         penumbra={1}
         position={[0, 10, 0]}
@@ -85,28 +93,20 @@ export default function Canvas3D({
       {/* Ground plane for visual reference */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, shadowConfig?.position ?? -0.8, 0]}
+        position={[0, shadowConfig?.position ?? -1.3, 0]}
         receiveShadow
       >
         <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial color="#f5f5f5" roughness={0.8} metalness={0.1} />
+        <meshStandardMaterial color="#d0d0d0" roughness={0.8} metalness={0.1} />
       </mesh>
-
-      {/* Ground shadow */}
-      <ContactShadows
-        position={[0, (shadowConfig?.position ?? -0.8) + 0.01, 0]}
-        opacity={shadowConfig?.opacity ?? 0.4}
-        scale={shadowConfig?.scale ?? 10}
-        blur={shadowConfig?.blur ?? 2}
-        far={1.5}
-      />
 
       {/* Camera controls */}
       <OrbitControls
         minPolarAngle={Math.PI / 3}
         maxPolarAngle={Math.PI / 1.8}
         enableZoom={true}
-        enablePan={false}
+        enablePan={true}
+        target={[0, 0.2, 0]}
       />
     </Canvas>
   );

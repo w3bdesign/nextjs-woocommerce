@@ -100,20 +100,13 @@ export const CABINET_CONFIG: ModelConfig = {
   position: [0, -1.0, 0],
 
   camera: {
-    position: [-1.19, 0.57, 3.62], // Precise angle from user adjustment
+    position: [-2.13, 0.33, 2.62], // Base camera position
     fov: 50,
   },
 
   animations: {
     enableRotation: false, // Disabled - no rotation for cabinet
     enableBobbing: false, // Disabled - cabinets don't float
-  },
-
-  shadow: {
-    position: -1.0, // Ground plane position (where cabinet base should be)
-    opacity: 0.5, // More visible shadow
-    scale: 8, // Shadow size
-    blur: 2.5, // Soft shadow edges
   },
 
   // Dimension constraints for cabinet (typical bar cabinet sizes)
