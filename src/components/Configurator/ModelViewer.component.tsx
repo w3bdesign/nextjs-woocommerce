@@ -1,8 +1,9 @@
-import { useRef, useCallback, type ReactElement } from 'react';
+import { useRef, useCallback, useState, type ReactElement } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { useSnapshot } from 'valtio';
 import type { Group } from 'three';
+import * as THREE from 'three';
 import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
 import { SHOE_CONFIG } from '@/config/shoeModel.config';
@@ -26,6 +27,12 @@ export default function ModelViewer({
   const ref = useRef<Group>(null);
   const snap = useSnapshot(configuratorState);
   const { nodes, materials } = useGLTF(resolvedModelPath) as any;
+
+  // State to track bounding box and calculated depth offset
+  const [boundingBoxZ, setBoundingBoxZ] = useState<{
+    min: number;
+    max: number;
+  } | null>(null);
 
   // Animate the model with gentle rotation and bobbing (if enabled)
   useFrame((state) => {
@@ -68,9 +75,28 @@ export default function ModelViewer({
     setCurrentPart(e.object.material.name);
   }, []);
 
+  // Calculate bounding box on model load to determine rear face position
+  useFrame((state) => {
+    if (!ref.current || boundingBoxZ) return; // Only calculate once
+
+    const box = new THREE.Box3().setFromObject(ref.current);
+
+    if (!box.isEmpty()) {
+      setBoundingBoxZ({
+        min: box.min.z,
+        max: box.max.z,
+      });
+
+      console.log(
+        `📦 Bounding Box Z: [${box.min.z.toFixed(3)}, ${box.max.z.toFixed(3)}] (Depth: ${(box.max.z - box.min.z).toFixed(3)})`,
+      );
+    }
+  });
+
   // Calculate scale from dimensions (if configured)
   const baseScale = modelConfig.scale ?? 1;
   let finalScale: [number, number, number] = [baseScale, baseScale, baseScale];
+  let depthZOffset = 0; // Offset to keep rear face flush with wall
 
   if (modelConfig.dimensions) {
     // Convert cm dimensions to scale factors relative to defaults
@@ -80,13 +106,36 @@ export default function ModelViewer({
     const scaleZ = snap.dimensions.depth / modelConfig.dimensions.depth.default;
 
     finalScale = [baseScale * scaleX, baseScale * scaleY, baseScale * scaleZ];
+
+    // Calculate depth offset using bounding box
+    // This keeps the rear face of the model flush with the wall
+    // while allowing depth to expand only forward (toward camera)
+    if (boundingBoxZ && scaleZ !== 1) {
+      // Original model depth in 3D space
+      const originalDepth = boundingBoxZ.max - boundingBoxZ.min;
+
+      // How much the depth changed
+      const depthChange = originalDepth * (scaleZ - 1);
+
+      // Offset position so rear face stays fixed
+      // Only move forward by half the depth increase
+      depthZOffset = depthChange / 2;
+    }
   }
+
+  // Calculate final position with depth offset applied
+  const basePosition = modelConfig.position ?? [0, 0, 0];
+  const finalPosition: [number, number, number] = [
+    basePosition[0],
+    basePosition[1],
+    basePosition[2] + depthZOffset,
+  ];
 
   return (
     <group
       ref={ref}
       scale={finalScale}
-      position={modelConfig.position ?? [0, 0, 0]}
+      position={finalPosition}
       onPointerMissed={handlePointerMissed}
       onClick={handleClick}
     >
