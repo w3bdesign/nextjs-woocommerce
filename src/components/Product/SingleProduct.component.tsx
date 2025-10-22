@@ -61,7 +61,10 @@ const SingleProduct = ({ product }: IProductRootObject) => {
           {/* Configurator takes full width */}
           <div className="mb-6 md:mb-0">
             {product.configurator?.enabled ? (
-              <ProductConfigurator modelId={product.configurator.modelId} />
+              <ProductConfigurator
+                modelId={product.configurator.modelId}
+                product={product}
+              />
             ) : (
               <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-gray-100">
                 <img

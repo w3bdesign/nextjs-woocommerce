@@ -1,14 +1,13 @@
 import { Suspense, useEffect, type ReactElement } from 'react';
 import dynamic from 'next/dynamic';
-import { Loader2, Info } from 'lucide-react';
-import { initializeConfigurator } from '@/stores/configuratorStore';
-import { getModelConfig, DEFAULT_MODEL_ID } from '@/config/models.registry';
+import { Loader2, Info, Heart, DoorOpen } from 'lucide-react';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+  initializeConfigurator,
+  toggleInteractivePart,
+} from '@/stores/configuratorStore';
+import { getModelConfig, DEFAULT_MODEL_ID } from '@/config/models.registry';
+import { FloatingButton } from './FloatingButton.component';
+import { findDoorPart, getPartStateKey } from './utils/doorHelpers';
 
 // Dynamically import 3D components to avoid SSR issues
 const Canvas3D = dynamic(() => import('./Canvas3D.component'), {
@@ -24,23 +23,23 @@ const ModelViewer = dynamic(() => import('./ModelViewer.component'), {
   ssr: false,
 });
 
-const ColorPicker = dynamic(() => import('./ColorPicker.component'), {
+const ConfiguratorTabs = dynamic(() => import('./ConfiguratorTabs.component'), {
   ssr: false,
 });
 
-const InteractiveControls = dynamic(
-  () => import('./InteractiveControls.component'),
-  { ssr: false },
-);
-
-const DimensionControls = dynamic(
-  () => import('./DimensionControls.component'),
-  { ssr: false },
-);
+const ProductInfo = dynamic(() => import('./ProductInfo.component'), {
+  ssr: false,
+});
 
 interface ProductConfiguratorProps {
   modelId?: string;
   className?: string;
+  product?: {
+    price?: string;
+    regularPrice?: string;
+    salePrice?: string;
+    onSale?: boolean;
+  };
 }
 
 /**
@@ -50,6 +49,7 @@ interface ProductConfiguratorProps {
 export default function ProductConfigurator({
   modelId = DEFAULT_MODEL_ID,
   className = '',
+  product,
 }: ProductConfiguratorProps): ReactElement {
   // Get the model configuration from the registry
   const modelConfig = getModelConfig(modelId);
@@ -76,41 +76,74 @@ export default function ProductConfigurator({
 
   return (
     <div className={`w-full ${className}`}>
-      {/* Main Configurator Container - Flex Layout */}
-      <div className="flex flex-col lg:flex-row rounded-lg shadow-lg overflow-hidden bg-white relative">
-        {/* 3D Canvas Container */}
-        <div className="flex-1 h-[400px] md:h-[500px] lg:h-[600px] bg-white relative">
+      {/* Main Configurator Container - Enhanced Layout */}
+      <div className="flex flex-col xl:flex-row rounded-xl shadow-2xl overflow-hidden bg-white relative">
+        {/* 3D Canvas Container - Left Side */}
+        <div className="flex-1 h-[500px] xl:h-[700px] bg-gradient-to-br from-gray-50 to-white relative">
           {/* Info Icon Tooltip - Top Right Corner */}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/90 hover:bg-white shadow-lg border border-gray-200 flex items-center justify-center transition-all hover:scale-110"
-                  aria-label="Customization Guide"
-                >
-                  <Info className="w-4 h-4 text-blue-600" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="left" className="max-w-xs">
-                <div className="space-y-2">
-                  <p className="font-semibold text-sm">Customization Guide</p>
-                  <ul className="text-xs space-y-1.5">
-                    <li>
-                      🎨 Click on the model to select parts and change colors
-                    </li>
-                    {modelConfig.interactiveParts &&
-                      modelConfig.interactiveParts.length > 0 && (
-                        <li>
-                          🚪 Use the controls to open/close doors and toggle
-                          parts
-                        </li>
-                      )}
-                    <li>🖱️ Drag to rotate and scroll to zoom the 3D view</li>
-                  </ul>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <FloatingButton
+            icon={<Info className="w-5 h-5 text-blue-600" />}
+            position="top-right"
+            ariaLabel="Customization Guide"
+            tooltipText={
+              modelConfig.interactiveParts &&
+              modelConfig.interactiveParts.length > 0
+                ? '🎨 Click on the model to select parts and change colors\n🚪 Use the controls to open/close doors\n🖱️ Drag to rotate and scroll to zoom'
+                : '🎨 Click on the model to select parts\n🖱️ Drag to rotate and scroll to zoom'
+            }
+          />
+
+          {/* Save Configuration - Floating Button Bottom Right */}
+          <FloatingButton
+            icon={<Heart className="w-5 h-5 text-red-500" />}
+            position="bottom-right"
+            ariaLabel="Save Configuration"
+            tooltipText="Save Configuration"
+          />
+
+          {/* Door Toggle Buttons - Left and Right Doors */}
+          {modelConfig.interactiveParts &&
+            modelConfig.interactiveParts.length > 0 && (
+              <>
+                {/* Left Door Toggle */}
+                <FloatingButton
+                  icon={
+                    <DoorOpen className="w-5 h-5 text-gray-600 scale-x-[-1]" />
+                  }
+                  position="bottom-left"
+                  ariaLabel="Toggle Left Door"
+                  tooltipText="Open/Close Left Door"
+                  tooltipSide="right"
+                  onClick={() => {
+                    const leftDoor = findDoorPart(
+                      'left',
+                      modelConfig.interactiveParts,
+                    );
+                    if (leftDoor) {
+                      toggleInteractivePart(getPartStateKey(leftDoor));
+                    }
+                  }}
+                />
+
+                {/* Right Door Toggle */}
+                <FloatingButton
+                  icon={<DoorOpen className="w-5 h-5 text-gray-600" />}
+                  position="bottom-left-2"
+                  ariaLabel="Toggle Right Door"
+                  tooltipText="Open/Close Right Door"
+                  tooltipSide="right"
+                  onClick={() => {
+                    const rightDoor = findDoorPart(
+                      'right',
+                      modelConfig.interactiveParts,
+                    );
+                    if (rightDoor) {
+                      toggleInteractivePart(getPartStateKey(rightDoor));
+                    }
+                  }}
+                />
+              </>
+            )}
 
           <Suspense
             fallback={
@@ -125,27 +158,16 @@ export default function ProductConfigurator({
           </Suspense>
         </div>
 
-        {/* Controls Sidebar */}
-        <aside
-          className="w-full lg:w-80 bg-gradient-to-b from-gray-50 to-white border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto"
-          style={{ maxHeight: '600px' }}
-          aria-label="Configurator Controls"
-        >
-          <Suspense fallback={null}>
-            <ColorPicker />
-          </Suspense>
-
-          <Suspense fallback={null}>
-            <DimensionControls modelId={modelId} />
-          </Suspense>
-
-          <Suspense fallback={null}>
-            <InteractiveControls
-              interactiveParts={modelConfig.interactiveParts}
-            />
-          </Suspense>
-        </aside>
+        {/* Tabbed Controls Panel - Right Side */}
+        <Suspense fallback={null}>
+          <ConfiguratorTabs modelConfig={modelConfig} product={product} />
+        </Suspense>
       </div>
+
+      {/* Product Information Section */}
+      <Suspense fallback={null}>
+        <ProductInfo />
+      </Suspense>
     </div>
   );
 }

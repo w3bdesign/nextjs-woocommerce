@@ -128,6 +128,17 @@ npm run playwright:ui    # Interactive test UI
 
 **Session Handling**: Apollo middleware automatically manages session tokens. No manual auth required.
 
+## Copilot Behavior Guidelines
+
+**DO NOT create analysis/summary documents** unless explicitly requested by user. This includes:
+
+- `*_ANALYSIS.md`, `*_REVIEW.md`, `*_REPORT.md` files
+- `*_SUMMARY.md`, `*_STATUS.md` files
+- Quick reference guides or checklists in markdown format
+- Any `.md` documentation files for internal tracking
+
+**Instead**: Provide brief, direct answers in conversation. Only create files if user says "create", "write", or "add" a specific file.
+
 ## Common Pitfalls
 
 1. **3D SSR**: Configurator uses dynamic imports (`next/dynamic`) with `ssr: false`

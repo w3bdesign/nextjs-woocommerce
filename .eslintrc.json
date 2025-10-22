@@ -12,5 +12,13 @@
   "env": {
     "browser": true,
     "es6": true
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*.tsx", "**/*.test.tsx", "**/*.test.ts"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
