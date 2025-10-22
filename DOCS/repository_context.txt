@@ -5403,7 +5403,7 @@ module.exports = nextConfig;
 ## File: package.json
 ```json
 {
-  "name": "nextjs-woocommerce",
+  "name": "mebl",
   "version": "1.2.3",
   "private": true,
   "scripts": {
