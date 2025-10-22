@@ -1,11 +1,38 @@
 import type { ReactElement } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, ContactShadows, Environment } from '@react-three/drei';
-import type { ShadowConfig } from '@/types/configurator';
+import type { ShadowConfig, CameraConfig } from '@/types/configurator';
+import { useEffect } from 'react';
 
 interface Canvas3DProps {
   children: ReactElement;
   shadowConfig?: ShadowConfig;
+  cameraConfig?: CameraConfig;
+}
+
+/**
+ * Debug component to log camera position on changes
+ */
+function CameraDebug(): null {
+  const { camera } = useThree();
+
+  useEffect(() => {
+    const handleChange = () => {
+      console.log(
+        `Camera Position: [${camera.position.x.toFixed(2)}, ${camera.position.y.toFixed(2)}, ${camera.position.z.toFixed(2)}]`,
+      );
+    };
+
+    // Log initial position
+    handleChange();
+
+    // Log on every frame to catch OrbitControls changes
+    const interval = setInterval(handleChange, 500);
+
+    return () => clearInterval(interval);
+  }, [camera]);
+
+  return null;
 }
 
 /**
@@ -15,11 +42,18 @@ interface Canvas3DProps {
 export default function Canvas3D({
   children,
   shadowConfig,
+  cameraConfig,
 }: Canvas3DProps): ReactElement {
+  const defaultCamera = cameraConfig || { position: [0, 0, 4], fov: 45 };
+
+  console.log(
+    `🎥 Camera Config: position=[${defaultCamera.position.join(', ')}], fov=${defaultCamera.fov}`,
+  );
+
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 0, 4], fov: 45 }}
+      camera={{ position: defaultCamera.position, fov: defaultCamera.fov }}
       style={{
         background: 'white',
         width: '100%',
@@ -41,6 +75,9 @@ export default function Canvas3D({
 
       {/* Environment for realistic reflections */}
       <Environment preset="city" />
+
+      {/* Debug camera position logging */}
+      <CameraDebug />
 
       {/* Render the 3D model */}
       {children}

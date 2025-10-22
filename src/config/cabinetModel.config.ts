@@ -100,7 +100,7 @@ export const CABINET_CONFIG: ModelConfig = {
   position: [0, -1.0, 0],
 
   camera: {
-    position: [0, 0.5, 10], // Camera angle for viewing cabinet on ground
+    position: [-1.19, 0.57, 3.62], // Precise angle from user adjustment
     fov: 50,
   },
 

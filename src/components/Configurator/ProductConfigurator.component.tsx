@@ -152,7 +152,10 @@ export default function ProductConfigurator({
               </div>
             }
           >
-            <Canvas3D shadowConfig={modelConfig.shadow}>
+            <Canvas3D
+              shadowConfig={modelConfig.shadow}
+              cameraConfig={modelConfig.camera}
+            >
               <ModelViewer modelConfig={modelConfig} />
             </Canvas3D>
           </Suspense>
