@@ -17,11 +17,11 @@ export default function ConfiguratorTabs({
   modelConfig,
   product,
 }: EnhancedControlsProps) {
-  const [activeTab, setActiveTab] = useState('design');
+  const [activeTab, setActiveTab] = useState('adjustments');
   const [expandedSections, setExpandedSections] = useState({
-    style: true,
+    style: false,
     dimensions: true,
-    colors: true,
+    colors: false,
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -33,14 +33,14 @@ export default function ConfiguratorTabs({
 
   const tabs = [
     {
-      id: 'design',
-      label: 'Design',
-      icon: Palette,
-    },
-    {
       id: 'adjustments',
       label: 'Adjustments',
       icon: Sliders,
+    },
+    {
+      id: 'design',
+      label: 'Design',
+      icon: Palette,
     },
   ];
 
