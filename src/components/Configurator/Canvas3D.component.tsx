@@ -1,12 +1,15 @@
 import type {
   CameraConfig,
+  ModelConfig,
   RoomConfig,
   ShadowConfig,
 } from '@/types/configurator';
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import type { ReactElement } from 'react';
+import { useEffect } from 'react';
 import * as THREE from 'three';
+import CameraController from './CameraController.component';
 import WallSilhouette from './WallSilhouette.component';
 
 /**
@@ -80,6 +83,8 @@ interface Canvas3DProps {
   shadowConfig?: ShadowConfig;
   cameraConfig?: CameraConfig;
   roomPreset?: keyof typeof ROOM_PRESETS;
+  /** Model configuration for camera preset generation */
+  modelConfig?: ModelConfig;
 }
 
 /**
@@ -91,6 +96,7 @@ export default function Canvas3D({
   shadowConfig,
   cameraConfig,
   roomPreset = 'modern-studio',
+  modelConfig,
 }: Canvas3DProps): ReactElement {
   const defaultCamera = cameraConfig || { position: [0, 0, 4], fov: 45 };
   const room = ROOM_PRESETS[roomPreset];
@@ -189,14 +195,25 @@ export default function Canvas3D({
         opacity={0.15}
       />
 
-      {/* Camera controls */}
-      <OrbitControls
-        minPolarAngle={Math.PI / 3}
-        maxPolarAngle={Math.PI / 1.8}
-        enableZoom={true}
-        enablePan={true}
-        target={[0, 0.2, 0]}
-      />
+      {/* Camera controls - Enhanced with preset system */}
+      {modelConfig ? (
+        <CameraController modelConfig={modelConfig} />
+      ) : (
+        <OrbitControls makeDefault enablePan={false} />
+      )}
     </Canvas>
   );
 }
+
+// Warn in development if modelConfig is missing
+function useMissingModelConfigWarning(modelConfig?: ModelConfig) {
+  useEffect(() => {
+    if (!modelConfig && process.env.NODE_ENV === 'development') {
+      console.warn(
+        'Canvas3D: modelConfig not provided. Using basic OrbitControls without camera presets.',
+      );
+    }
+  }, [modelConfig]);
+}
+
+export { useMissingModelConfigWarning };
