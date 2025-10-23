@@ -1,4 +1,4 @@
-import { SHOE_CONFIG } from '@/config/shoeModel.config';
+import { CABINET_CONFIG } from '@/config/cabinetModel.config';
 import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
 import { useGLTF } from '@react-three/drei';
@@ -20,7 +20,7 @@ interface ModelViewerProps {
  */
 export default function ModelViewer({
   modelPath,
-  modelConfig = SHOE_CONFIG,
+  modelConfig = CABINET_CONFIG,
 }: ModelViewerProps): ReactElement {
   // Use modelPath from config if not explicitly provided
   const resolvedModelPath = modelPath || modelConfig.modelPath;
@@ -194,4 +194,4 @@ export default function ModelViewer({
 }
 
 // Preload the default model for better performance
-useGLTF.preload(SHOE_CONFIG.modelPath);
+useGLTF.preload(CABINET_CONFIG.modelPath);

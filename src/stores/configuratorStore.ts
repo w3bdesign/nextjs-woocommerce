@@ -1,4 +1,4 @@
-import { SHOE_CONFIG } from '@/config/shoeModel.config';
+import { CABINET_CONFIG } from '@/config/cabinetModel.config';
 import type { ModelConfig } from '@/types/configurator';
 import { proxy } from 'valtio';
 
@@ -75,15 +75,15 @@ export const initializeConfigurator = (modelConfig: ModelConfig): void => {
   }
 };
 
-// Initialize with shoe config on module load (default behavior)
-initializeConfigurator(SHOE_CONFIG);
+// Initialize with cabinet config on module load (default behavior)
+initializeConfigurator(CABINET_CONFIG);
 
 /**
  * Reset configurator to default state
- * Uses the shoe config as the default for backwards compatibility
+ * Uses the cabinet config as the default
  */
 export const resetConfigurator = (): void => {
-  initializeConfigurator(SHOE_CONFIG);
+  initializeConfigurator(CABINET_CONFIG);
 };
 
 /**

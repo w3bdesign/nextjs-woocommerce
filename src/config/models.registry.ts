@@ -1,6 +1,5 @@
 import type { ModelConfig } from '@/types/configurator';
 import { CABINET_CONFIG } from './cabinetModel.config';
-import { SHOE_CONFIG } from './shoeModel.config';
 
 /**
  * Model Registry
@@ -9,12 +8,11 @@ import { SHOE_CONFIG } from './shoeModel.config';
  * Add new model configurations here to make them available throughout the app.
  *
  * Usage:
- * - Reference models by their ID (e.g., 'shoe-v1')
+ * - Reference models by their ID (e.g., 'cabinet-v1')
  * - Pass model ID to ProductConfigurator component
  * - Associate models with products via product.configurator.modelId
  */
 export const MODEL_REGISTRY: Record<string, ModelConfig> = {
-  'shoe-v1': SHOE_CONFIG,
   'cabinet-v1': CABINET_CONFIG,
 
   // Add more models here as they become available:
@@ -26,7 +24,7 @@ export const MODEL_REGISTRY: Record<string, ModelConfig> = {
 /**
  * Default model ID to use when none is specified
  */
-export const DEFAULT_MODEL_ID = 'shoe-v1';
+export const DEFAULT_MODEL_ID = 'cabinet-v1';
 
 /**
  * Get a model configuration by ID

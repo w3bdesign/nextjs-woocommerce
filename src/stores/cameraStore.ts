@@ -7,7 +7,7 @@ import { proxy } from 'valtio';
  * Configuration constants for camera behavior
  */
 const TARGET_HEIGHT_RATIO = 0.8; // Look at 80% of model height
-const PRESET_THETA_ANGLE = 0.28; // Horizontal angle: 0.28π rad (≈50.4°)
+const PRESET_THETA_ANGLE = 0.2; // Horizontal angle: 0.2π rad (≈36°)
 const PRESET_PHI_ANGLE = 0.47; // Vertical angle: 0.47π rad (≈84.6°)
 
 /**

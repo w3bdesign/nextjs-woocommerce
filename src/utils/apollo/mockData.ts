@@ -35,7 +35,7 @@ export const mockProducts = [
     averageRating: 4.1,
     name: 'Mock Tee',
     description:
-      'A versatile mock product with variants for testing the shoe configurator POC.',
+      'A versatile mock product with variants for testing the cabinet configurator POC.',
     onSale: true,
     slug: 'mock-tee',
     image: {
@@ -55,10 +55,10 @@ export const mockProducts = [
     },
     allPaColors: { nodes: [{ name: 'Red', slug: 'red' }] },
     allPaSizes: { nodes: [{ name: 'M' }] },
-    // Enable 3D configurator for testing (shoe POC)
+    // Enable 3D configurator for testing (cabinet POC)
     configurator: {
       enabled: true,
-      modelId: 'shoe-v1',
+      modelId: 'cabinet-v1',
     },
     variations: {
       __typename: 'ProductVariationConnection',
@@ -103,6 +103,10 @@ export const mockProducts = [
     salePrice: '$6999.00',
     stockQuantity: 8,
     productCategories: { nodes: [{ name: 'Tables', slug: 'tables' }] },
+    configurator: {
+      enabled: true,
+      modelId: 'cabinet-v1',
+    },
   },
   {
     __typename: 'SimpleProduct',
@@ -127,6 +131,10 @@ export const mockProducts = [
     salePrice: null,
     stockQuantity: 5,
     productCategories: { nodes: [{ name: 'Sofas', slug: 'sofas' }] },
+    configurator: {
+      enabled: true,
+      modelId: 'cabinet-v1',
+    },
   },
   {
     __typename: 'SimpleProduct',
@@ -152,6 +160,10 @@ export const mockProducts = [
     salePrice: '$2499.00',
     stockQuantity: 20,
     productCategories: { nodes: [{ name: 'Chairs', slug: 'chairs' }] },
+    configurator: {
+      enabled: true,
+      modelId: 'cabinet-v1',
+    },
   },
 ];
 
