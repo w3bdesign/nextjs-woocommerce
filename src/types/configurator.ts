@@ -84,6 +84,10 @@ export interface ShadowConfig {
   scale?: number;
   /** Blur amount (default: 1.5) */
   blur?: number;
+  /** Optional shadow map size for directional lights (e.g., 1024/2048) */
+  mapSize?: number;
+  /** Optional shadow bias to reduce acne (e.g., -0.0001) */
+  bias?: number;
 }
 
 /**

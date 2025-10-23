@@ -1,5 +1,9 @@
 import { CABINET_CONFIG } from '@/config/cabinetModel.config';
-import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
+import {
+  configuratorState,
+  setCurrentPart,
+  setModelBoundingBox,
+} from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
@@ -28,10 +32,10 @@ export default function ModelViewer({
   const snap = useSnapshot(configuratorState);
   const { nodes, materials } = useGLTF(resolvedModelPath) as any;
 
-  // State to track bounding box and calculated depth offset
-  const [boundingBoxZ, setBoundingBoxZ] = useState<{
-    min: number;
-    max: number;
+  // State to track bounding box (full) and calculated depth offset
+  const [boundingBox, setBoundingBox] = useState<{
+    min: { x: number; y: number; z: number };
+    max: { x: number; y: number; z: number };
   } | null>(null);
 
   // Animate the model with gentle rotation and bobbing (if enabled)
@@ -76,19 +80,46 @@ export default function ModelViewer({
   }, []);
 
   // Calculate bounding box on model load to determine rear face position
+  // and to compute a ground-snap offset so the model's lowest vertex
+  // aligns with the configured base Y (modelConfig.position[1]).
   useFrame((_state) => {
-    if (!ref.current || boundingBoxZ) return; // Only calculate once
+    if (!ref.current || boundingBox) return; // Only calculate once
 
     const box = new THREE.Box3().setFromObject(ref.current);
 
     if (!box.isEmpty()) {
-      setBoundingBoxZ({
-        min: box.min.z,
-        max: box.max.z,
-      });
+      const bbox = {
+        min: { x: box.min.x, y: box.min.y, z: box.min.z },
+        max: { x: box.max.x, y: box.max.y, z: box.max.z },
+      };
+
+      setBoundingBox(bbox);
+
+      // We keep the computed bounding box locally for Y/Z depth calculations
+      // and publish a final world-aligned version to the configurator store
+      // so other UI components (e.g., Canvas3D) can position overlays.
+      const geometryHeight = box.max.y - box.min.y;
+      const finalMinY = basePosition[1];
+      const finalMaxY = finalMinY + geometryHeight;
+
+      const geometryWidth = box.max.x - box.min.x;
+      const geometryDepth = box.max.z - box.min.z;
+
+      const finalMinX = basePosition[0] - geometryWidth / 2;
+      const finalMaxX = finalMinX + geometryWidth;
+      const finalMinZ = basePosition[2] - geometryDepth / 2;
+      const finalMaxZ = finalMinZ + geometryDepth;
+
+      setModelBoundingBox(
+        { x: finalMinX, y: finalMinY, z: finalMinZ },
+        { x: finalMaxX, y: finalMaxY, z: finalMaxZ },
+      );
 
       console.log(
         `📦 Bounding Box Z: [${box.min.z.toFixed(3)}, ${box.max.z.toFixed(3)}] (Depth: ${(box.max.z - box.min.z).toFixed(3)})`,
+      );
+      console.log(
+        `📦 Bounding Box Y: [${box.min.y.toFixed(3)}, ${box.max.y.toFixed(3)}] (Height: ${(box.max.y - box.min.y).toFixed(3)})`,
       );
     }
   });
@@ -110,9 +141,9 @@ export default function ModelViewer({
     // Calculate depth offset using bounding box
     // This keeps the rear face of the model flush with the wall
     // while allowing depth to expand only forward (toward camera)
-    if (boundingBoxZ && scaleZ !== 1) {
-      // Original model depth in 3D space
-      const originalDepth = boundingBoxZ.max - boundingBoxZ.min;
+    if (boundingBox && scaleZ !== 1) {
+      // Original model depth in 3D space (use computed bounding box Z extents)
+      const originalDepth = boundingBox.max.z - boundingBox.min.z;
 
       // How much the depth changed
       const depthChange = originalDepth * (scaleZ - 1);
@@ -125,70 +156,98 @@ export default function ModelViewer({
 
   // Calculate final position with depth offset applied
   const basePosition = modelConfig.position ?? [0, 0, 0];
+  // If we have a computed bounding box, adjust Y so the model's lowest
+  // vertex (boundingBox.min.y) aligns with the base Y specified in the
+  // model config (basePosition[1]). This makes models with differing
+  // pivots behave consistently: the model's bottom will sit at the
+  // configured base height.
+  let finalY = basePosition[1];
+  if (boundingBox) {
+    // At the time the bounding box was computed the group was positioned
+    // using the basePosition. The box.min.y therefore equals (basePosition[1] + geometryMinY).
+    // To move the geometry so geometryMinY ends up at basePosition[1], the
+    // new group position must be: 2*basePosition[1] - box.min.y
+    finalY = 2 * basePosition[1] - boundingBox.min.y;
+  }
+
   const finalPosition: [number, number, number] = [
+    basePosition[0],
+    finalY,
+    basePosition[2] + depthZOffset,
+  ];
+
+  // We wrap the actual geometry in an inner group so that the outer group's
+  // position remains equal to `modelConfig.position`. Camera presets and
+  // other systems that rely on the model position will therefore continue
+  // to work correctly. The inner group is offset to perform the ground-snap
+  // using the computed bounding box.
+  const outerPosition: [number, number, number] = [
     basePosition[0],
     basePosition[1],
     basePosition[2] + depthZOffset,
   ];
 
+  // Compute inner offset (so geometry.min.y ends up at basePosition[1])
+  const innerOffsetY = boundingBox ? basePosition[1] - boundingBox.min.y : 0;
+
   return (
     <group
-      ref={ref}
-      scale={finalScale}
-      position={finalPosition}
+      position={outerPosition}
       onPointerMissed={handlePointerMissed}
       onClick={handleClick}
     >
-      {/* Regular customizable parts */}
-      {modelConfig.parts.map((part, index) => {
-        const node = nodes[part.nodeName];
-        const material = materials[part.materialName];
+      <group ref={ref} scale={finalScale} position={[0, innerOffsetY, 0]}>
+        {/* Regular customizable parts */}
+        {modelConfig.parts.map((part, index) => {
+          const node = nodes[part.nodeName];
+          const material = materials[part.materialName];
 
-        // Skip if node or material doesn't exist
-        if (!node?.geometry || !material) {
-          console.warn(
-            `Missing node or material for part: ${part.displayName}`,
+          // Skip if node or material doesn't exist
+          if (!node?.geometry || !material) {
+            console.warn(
+              `Missing node or material for part: ${part.displayName}`,
+            );
+            return null;
+          }
+
+          return (
+            <mesh
+              key={`${part.nodeName}-${index}`}
+              receiveShadow
+              castShadow
+              geometry={node.geometry}
+              material={material}
+              material-color={snap.items[part.materialName]}
+              material-map={null}
+              material-roughness={0.6}
+              material-metalness={0.1}
+            />
           );
-          return null;
-        }
+        })}
 
-        return (
-          <mesh
-            key={`${part.nodeName}-${index}`}
-            receiveShadow
-            castShadow
-            geometry={node.geometry}
-            material={material}
-            material-color={snap.items[part.materialName]}
-            material-map={null}
-            material-roughness={0.6}
-            material-metalness={0.1}
-          />
-        );
-      })}
+        {/* Interactive parts (doors, drawers, etc.) */}
+        {modelConfig.interactiveParts?.map((part, index) => {
+          const node = nodes[part.nodeName];
+          const material = materials[part.materialName];
 
-      {/* Interactive parts (doors, drawers, etc.) */}
-      {modelConfig.interactiveParts?.map((part, index) => {
-        const node = nodes[part.nodeName];
-        const material = materials[part.materialName];
+          // Skip if node or material doesn't exist
+          if (!node?.geometry || !material) {
+            console.warn(
+              `Missing interactive node or material for part: ${part.displayName}`,
+            );
+            return null;
+          }
 
-        // Skip if node or material doesn't exist
-        if (!node?.geometry || !material) {
-          console.warn(
-            `Missing interactive node or material for part: ${part.displayName}`,
+          return (
+            <InteractiveMesh
+              key={`interactive-${part.nodeName}-${index}`}
+              part={part}
+              geometry={node.geometry}
+              material={material}
+            />
           );
-          return null;
-        }
-
-        return (
-          <InteractiveMesh
-            key={`interactive-${part.nodeName}-${index}`}
-            part={part}
-            geometry={node.geometry}
-            material={material}
-          />
-        );
-      })}
+        })}
+      </group>
     </group>
   );
 }

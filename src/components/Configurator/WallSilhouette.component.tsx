@@ -24,11 +24,11 @@ interface WallSilhouetteProps {
  */
 export default function WallSilhouette({
   imagePath,
-  positionX = 1.6,
-  positionY = 0.3,
-  positionZ = -2.99,
-  scale = 1.6,
-  opacity = 0.7,
+  positionX = 0,
+  positionY = 0,
+  positionZ = 0,
+  scale = 1,
+  opacity = 1,
 }: WallSilhouetteProps): ReactElement {
   const texture = useTexture(imagePath);
 
@@ -38,7 +38,7 @@ export default function WallSilhouette({
       scale={[scale, scale, 1]}
       receiveShadow
     >
-      <planeGeometry args={[2.5, 2.5]} /> {/* Standard portrait aspect ratio */}
+      <planeGeometry args={[1, 1]} /> {/* Standard portrait aspect ratio */}
       <meshStandardMaterial
         map={texture}
         transparent

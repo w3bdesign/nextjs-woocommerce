@@ -7,7 +7,7 @@ import { proxy } from 'valtio';
  * Configuration constants for camera behavior
  */
 const TARGET_HEIGHT_RATIO = 0.8; // Look at 80% of model height
-const PRESET_THETA_ANGLE = 0.2; // Horizontal angle: 0.2π rad (≈36°)
+const PRESET_THETA_ANGLE = 0.17; // Horizontal angle: 0.2π rad (≈36°)
 const PRESET_PHI_ANGLE = 0.47; // Vertical angle: 0.47π rad (≈84.6°)
 
 /**
@@ -70,6 +70,7 @@ interface CameraState {
 
   /** Timestamp of last snap event (for forcing re-renders on same preset) */
   lastSnapTimestamp: number;
+  // no bounding box stored here by default
 }
 
 /**
@@ -103,9 +104,9 @@ export const generateCameraPresets = (
   const configuredPosition = modelConfig.camera?.position || [0, 0, 4];
   const baseDistance = calculateBaseDistance(configuredPosition);
 
-  // Calculate target height dynamically based on model dimensions
-  // If model has dimension config, use a proportion of the height
-  // Otherwise use a simple offset from the model's base position
+  // Prefer using the actual loaded bounding box (if available) to derive
+  // a more accurate target height. Fall back to modelConfig.dimensions
+  // if the bounding box isn't available.
   let targetHeight = modelPos[1];
 
   if (modelConfig.dimensions?.height) {

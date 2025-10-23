@@ -17,6 +17,11 @@ interface ConfiguratorState {
     height: number;
     depth: number;
   };
+  /** Last computed model bounding box (world-aligned) */
+  modelBoundingBox: {
+    min: { x: number; y: number; z: number };
+    max: { x: number; y: number; z: number };
+  } | null;
 }
 
 export const configuratorState = proxy<ConfiguratorState>({
@@ -28,6 +33,7 @@ export const configuratorState = proxy<ConfiguratorState>({
     height: 0,
     depth: 0,
   },
+  modelBoundingBox: null,
 });
 
 /**
@@ -151,4 +157,16 @@ export const resetDimensions = (modelConfig: ModelConfig): void => {
       depth: modelConfig.dimensions.depth.default,
     };
   }
+};
+
+/**
+ * Publish model bounding box (world-aligned) so other UI components can
+ * consume it (e.g., silhouette placement). ModelViewer should call this
+ * after computing the final grounded bounding box.
+ */
+export const setModelBoundingBox = (
+  min: { x: number; y: number; z: number },
+  max: { x: number; y: number; z: number },
+): void => {
+  configuratorState.modelBoundingBox = { min, max };
 };

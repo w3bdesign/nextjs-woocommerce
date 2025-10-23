@@ -1,3 +1,6 @@
+'use client';
+
+import { configuratorState } from '@/stores/configuratorStore';
 import type {
   CameraConfig,
   ModelConfig,
@@ -6,9 +9,10 @@ import type {
 } from '@/types/configurator';
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import type { ReactElement } from 'react';
+import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import * as THREE from 'three';
+import { useSnapshot } from 'valtio';
 import CameraController from './CameraController.component';
 import WallSilhouette from './WallSilhouette.component';
 
@@ -79,7 +83,7 @@ const ROOM_PRESETS: Record<string, RoomConfig> = {
 };
 
 interface Canvas3DProps {
-  children: ReactElement;
+  children: ReactNode;
   shadowConfig?: ShadowConfig;
   cameraConfig?: CameraConfig;
   roomPreset?: keyof typeof ROOM_PRESETS;
@@ -97,7 +101,10 @@ export default function Canvas3D({
   cameraConfig,
   roomPreset = 'modern-studio',
   modelConfig,
-}: Canvas3DProps): ReactElement {
+}: Canvas3DProps): ReactNode {
+  // Hooks must be at top-level of the component
+  const snap = useSnapshot(configuratorState);
+
   const defaultCamera = cameraConfig || { position: [0, 0, 4], fov: 45 };
   const room = ROOM_PRESETS[roomPreset];
 
@@ -131,14 +138,14 @@ export default function Canvas3D({
         position={activeRoom.directionalLightPosition}
         intensity={activeRoom.directionalLightIntensity}
         castShadow
-        shadow-mapSize-width={4096}
-        shadow-mapSize-height={4096}
+        shadow-mapSize-width={shadowConfig?.mapSize ?? 2048}
+        shadow-mapSize-height={shadowConfig?.mapSize ?? 2048}
         shadow-camera-far={50}
         shadow-camera-left={-15}
         shadow-camera-right={15}
         shadow-camera-top={15}
         shadow-camera-bottom={-15}
-        shadow-bias={-0.0001}
+        shadow-bias={shadowConfig?.bias ?? -0.0001}
       />
       <directionalLight
         position={activeRoom.secondaryLightPosition}
@@ -163,7 +170,13 @@ export default function Canvas3D({
       {/* Ground plane for visual reference */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, shadowConfig?.position ?? -1.3, 0]}
+        // Ground plane Y: prefer explicit shadowConfig.position, fall back to
+        // the model's base position (if provided by modelConfig), finally 0.
+        position={[
+          0,
+          shadowConfig?.position ?? modelConfig?.position?.[1] ?? 0,
+          0,
+        ]}
         receiveShadow
       >
         <planeGeometry args={[50, 50]} />
@@ -189,9 +202,9 @@ export default function Canvas3D({
       <WallSilhouette
         imagePath="/silhouettes/person.png"
         positionX={1.2}
-        positionY={0.225}
+        positionY={1.45}
         positionZ={activeRoom.wallDepth ? activeRoom.wallDepth + 0.05 : -2.95}
-        scale={1.5}
+        scale={3.6}
         opacity={0.15}
       />
 

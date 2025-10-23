@@ -237,6 +237,11 @@ export default function CameraController({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // When a model bounding box becomes available, recompute the current preset
+  // and re-position the camera and controls target so the framing updates to
+  // reflect the actual model geometry.
+  // No bounding-box-triggered repositioning — initial position is set on mount
+
   // Cleanup: clear pending timeout on unmount to prevent memory leaks
   useEffect(() => {
     return () => {
@@ -255,8 +260,9 @@ export default function CameraController({
       minPolarAngle={0} // Allow looking from directly above
       maxPolarAngle={Math.PI / 2} // Only prevent looking from below (horizontal is the limit)
       // Zoom constraints - prevent zooming out beyond default
-      minDistance={calculatedBaseDistance * 0.6} // Allow 40% zoom in
-      maxDistance={calculatedBaseDistance * 1.1} // Allow slight zoom out for context
+      // Clamp minDistance to avoid extreme zoom-in and allow some zoom out
+      minDistance={Math.max(calculatedBaseDistance * 0.35, 0.8)}
+      maxDistance={calculatedBaseDistance * 1.5}
       // Azimuthal angle constraints (horizontal rotation)
       // No constraints - allow full 360° rotation
       minAzimuthAngle={-Infinity}
