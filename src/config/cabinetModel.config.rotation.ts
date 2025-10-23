@@ -99,8 +99,13 @@ export const CABINET_CONFIG: ModelConfig = {
     },
   ],
 
-  scale: 0.012,
-  position: [0, -1.0, 0],
+  /*
+   NOTE (migration): per-model `scale` and `position` removed. Keep `normalize: true`
+   if you need transitional behavior while updating the GLB to be authored 1:1.
+  */
+
+  // Transitional normalize flag for legacy models
+  normalize: true,
 
   camera: {
     position: [0, 0.5, 10],

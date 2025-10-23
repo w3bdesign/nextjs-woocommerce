@@ -6,9 +6,9 @@ import { proxy } from 'valtio';
 /**
  * Configuration constants for camera behavior
  */
-const TARGET_HEIGHT_RATIO = 0.8; // Look at 80% of model height
+const TARGET_HEIGHT_RATIO = 0.45; // Look slightly below center for better base visibility
 const PRESET_THETA_ANGLE = 0.17; // Horizontal angle: 0.2π rad (≈36°)
-const PRESET_PHI_ANGLE = 0.47; // Vertical angle: 0.47π rad (≈84.6°)
+const PRESET_PHI_ANGLE = 0.42; // Vertical angle: 0.42π rad (~75.6°) - slightly less top-down
 
 /**
  * Spherical coordinates tuple with named elements
@@ -96,20 +96,44 @@ export const cameraState = proxy<CameraState>({
  */
 export const generateCameraPresets = (
   modelConfig: ModelConfig,
+  boundingBox?: {
+    min: { x: number; y: number; z: number };
+    max: { x: number; y: number; z: number };
+  } | null,
+  baseDistanceOverride?: number,
+  fovDeg?: number,
+  aspect?: number,
+  padding = 1.08,
 ): Record<CameraPresetId, CameraPreset> => {
   // Extract model position (default to origin)
   const modelPos = modelConfig.position || [0, 0, 0];
 
-  // Calculate base distance from model's camera config
+  // Calculate base distance from model's camera config or use override
   const configuredPosition = modelConfig.camera?.position || [0, 0, 4];
-  const baseDistance = calculateBaseDistance(configuredPosition);
+  let baseDistance =
+    baseDistanceOverride ?? calculateBaseDistance(configuredPosition);
+
+  // If we have a bounding box and camera parameters, prefer the FOV-based
+  // estimator to compute a distance that fits the model precisely.
+  if (boundingBox && typeof fovDeg === 'number' && typeof aspect === 'number') {
+    baseDistance = estimateDistanceForFov(boundingBox, fovDeg, aspect, padding);
+  }
 
   // Prefer using the actual loaded bounding box (if available) to derive
-  // a more accurate target height. Fall back to modelConfig.dimensions
-  // if the bounding box isn't available.
+  // a more accurate target (center) and target height. Fall back to
+  // modelConfig.dimensions if bounding box isn't available.
   let targetHeight = modelPos[1];
+  let targetX = modelPos[0];
+  let targetZ = modelPos[2];
 
-  if (modelConfig.dimensions?.height) {
+  if (boundingBox) {
+    const min = boundingBox.min;
+    const max = boundingBox.max;
+    const height = max.y - min.y;
+    targetHeight = min.y + height * TARGET_HEIGHT_RATIO;
+    targetX = (min.x + max.x) / 2;
+    targetZ = (min.z + max.z) / 2;
+  } else if (modelConfig.dimensions?.height) {
     // For models with dimension config: look at configured ratio of the height
     // Height in cm * scale gives us the 3D units height
     const heightInUnits =
@@ -134,14 +158,14 @@ export const generateCameraPresets = (
         Math.PI * PRESET_THETA_ANGLE,
         Math.PI * PRESET_PHI_ANGLE,
       ],
-      target: [modelPos[0], targetHeight, modelPos[2]],
+      target: [targetX, targetHeight, targetZ],
     },
     front: {
       id: 'front',
       name: 'Frontal (Au Face)',
       // Dead center, 0.47π rad (≈84.6°) from top
       spherical: [baseDistance, 0, Math.PI * PRESET_PHI_ANGLE],
-      target: [modelPos[0], targetHeight, modelPos[2]],
+      target: [targetX, targetHeight, targetZ],
     },
     'front-right': {
       id: 'front-right',
@@ -152,9 +176,57 @@ export const generateCameraPresets = (
         -Math.PI * PRESET_THETA_ANGLE,
         Math.PI * PRESET_PHI_ANGLE,
       ],
-      target: [modelPos[0], targetHeight, modelPos[2]],
+      target: [targetX, targetHeight, targetZ],
     },
   };
+};
+
+/**
+ * Compute an approximate camera radius (distance) that frames the bounding box
+ * Uses bounding-sphere estimate: radius = diagonal / 2 * factor
+ */
+export const estimateRadiusFromBoundingBox = (
+  boundingBox: {
+    min: { x: number; y: number; z: number };
+    max: { x: number; y: number; z: number };
+  },
+  factor = 1.2,
+): number => {
+  const dx = boundingBox.max.x - boundingBox.min.x;
+  const dy = boundingBox.max.y - boundingBox.min.y;
+  const dz = boundingBox.max.z - boundingBox.min.z;
+  const diagonal = Math.sqrt(dx * dx + dy * dy + dz * dz);
+  return (diagonal / 2) * factor;
+};
+
+/**
+ * Estimate camera distance needed to fit the bounding box using camera FOV and aspect.
+ * Uses bounding sphere radius and computes required distance from both vertical and
+ * horizontal FOVs, returning the larger value to ensure the model fits.
+ */
+export const estimateDistanceForFov = (
+  boundingBox: {
+    min: { x: number; y: number; z: number };
+    max: { x: number; y: number; z: number };
+  },
+  fovDeg: number,
+  aspect: number,
+  padding = 1.05,
+): number => {
+  const dx = boundingBox.max.x - boundingBox.min.x;
+  const dy = boundingBox.max.y - boundingBox.min.y;
+  const dz = boundingBox.max.z - boundingBox.min.z;
+  const radius = Math.sqrt(dx * dx + dy * dy + dz * dz) / 2;
+
+  const fovY = (fovDeg * Math.PI) / 180;
+  // vertical distance to fit sphere: r / sin(fovY/2)
+  const distY = radius / Math.sin(fovY / 2);
+
+  // horizontal FOV
+  const fovX = 2 * Math.atan(Math.tan(fovY / 2) * aspect);
+  const distX = radius / Math.sin(fovX / 2);
+
+  return Math.max(distX, distY) * padding;
 };
 
 /**

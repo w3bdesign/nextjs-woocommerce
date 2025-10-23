@@ -93,13 +93,18 @@ export const CABINET_CONFIG: ModelConfig = {
     },
   ],
 
-  // Scale down the model to fit in the viewport (cabinet is very large)
-  scale: 0.012,
+  /*
+   NOTE (migration): per-model `scale` and `position` were used historically to
+   compensate for GLBs authored with non-standard units / pivots. We prefer
+   1:1 GLBs with correct pivots. The legacy fields have been removed here;
+   if you still need backward-compatibility, re-add them temporarily or set
+   `normalize: true` while you fix the source GLB.
+  */
 
-  // Position the cabinet so its back edge touches the wall
-  // Wall is at Z = -3, so position model further back so back edge touches wall
-  // Model depth is ~45cm, scaled at 0.012 = ~0.54 units, so move center to -2.73
-  position: [0, 0, -2.73],
+  // Opt-in: legacy normalization. When true the viewer will apply
+  // scale/ground-snap logic to make older models render as before.
+  // This should be removed once the GLB is authored 1:1.
+  normalize: true,
 
   camera: {
     position: [-5, 0, 11], // Base camera position

@@ -1,15 +1,18 @@
 import {
   cameraState,
   endCameraControl,
+  estimateDistanceForFov,
+  estimateRadiusFromBoundingBox,
   generateCameraPresets,
   startCameraControl,
   type CameraPreset,
 } from '@/stores/cameraStore';
+import { configuratorState } from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
 import { calculateBaseDistance } from '@/utils/camera';
 import { OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { useSnapshot } from 'valtio';
@@ -48,7 +51,7 @@ export default function CameraController({
   modelConfig,
   baseDistance,
 }: CameraControllerProps) {
-  const { camera, gl } = useThree();
+  const { camera, gl, size } = useThree();
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const snap = useSnapshot(cameraState);
 
@@ -64,51 +67,100 @@ export default function CameraController({
     target: THREE.Vector3;
   } | null>(null);
 
-  // Generate presets based on model configuration
-  const presets = useMemo(() => {
-    return generateCameraPresets(modelConfig);
-  }, [modelConfig]);
+  // Snapshot of configurator store to access bounding box when available
+  const cfgSnap = useSnapshot(configuratorState);
 
-  // Calculate base distance from model config or prop
+  // Track whether we've already animated to bbox-based framing
+  const didAnimateToBbox = useRef(false);
+
+  // Compute a bbox-aware base distance (FOV-based) if bounding box available
+  const bboxBaseDistance = useMemo(() => {
+    if (!cfgSnap.modelBoundingBox) return undefined;
+    // Use camera fov and canvas aspect (approx) - fall back to defaults if unavailable
+    let fov = modelConfig.camera?.fov ?? 45;
+    if (camera instanceof THREE.PerspectiveCamera) {
+      fov = camera.fov;
+    }
+    const aspect =
+      size && size.width && size.height ? size.width / size.height : 16 / 9;
+    return estimateDistanceForFov(cfgSnap.modelBoundingBox, fov, aspect, 1.05);
+  }, [cfgSnap.modelBoundingBox, size, modelConfig.camera?.fov, camera]);
+
+  // Generate presets based on model configuration and optional bounding box
+  const presets = useMemo(() => {
+    // derive fov and aspect to pass to preset generator
+    let fov = modelConfig.camera?.fov ?? 45;
+    if (camera instanceof THREE.PerspectiveCamera) {
+      fov = camera.fov;
+    }
+    const aspect =
+      size && size.width && size.height ? size.width / size.height : 16 / 9;
+
+    return generateCameraPresets(
+      modelConfig,
+      cfgSnap.modelBoundingBox,
+      // pass baseDistanceOverride if present (keeps prior behavior)
+      bboxBaseDistance,
+      fov,
+      aspect,
+      1.08,
+    );
+  }, [modelConfig, cfgSnap.modelBoundingBox, bboxBaseDistance, camera, size]);
+
+  // Calculate base distance from model config or prop or bounding box
   const calculatedBaseDistance = useMemo(() => {
     if (baseDistance) return baseDistance;
-
+    if (bboxBaseDistance) return bboxBaseDistance;
+    if (cfgSnap.modelBoundingBox) {
+      return estimateRadiusFromBoundingBox(cfgSnap.modelBoundingBox, 1.4);
+    }
     const configuredPosition = modelConfig.camera?.position || [0, 0, 4];
     return calculateBaseDistance(configuredPosition);
-  }, [baseDistance, modelConfig.camera?.position]);
+  }, [
+    baseDistance,
+    bboxBaseDistance,
+    cfgSnap.modelBoundingBox,
+    modelConfig.camera?.position,
+  ]);
 
   /**
    * Convert spherical coordinates to cartesian position
    */
-  const sphericalToCartesian = (preset: CameraPreset): THREE.Vector3 => {
-    const [radius, theta, phi] = preset.spherical;
-    const [tx, ty, tz] = preset.target;
+  const sphericalToCartesian = useCallback(
+    (preset: CameraPreset): THREE.Vector3 => {
+      const [radius, theta, phi] = preset.spherical;
+      const [tx, ty, tz] = preset.target;
 
-    const spherical = new THREE.Spherical(radius, phi, theta);
-    const offset = new THREE.Vector3().setFromSpherical(spherical);
+      const spherical = new THREE.Spherical(radius, phi, theta);
+      const offset = new THREE.Vector3().setFromSpherical(spherical);
 
-    return new THREE.Vector3(tx + offset.x, ty + offset.y, tz + offset.z);
-  };
+      return new THREE.Vector3(tx + offset.x, ty + offset.y, tz + offset.z);
+    },
+    [],
+  );
 
   /**
    * Animate camera to a specific preset with smooth interpolation
    * Sets the animation target which will be interpolated in useFrame
    */
-  const animateToPreset = (presetId: string) => {
-    const preset = presets[presetId as keyof typeof presets];
-    if (!preset || !controlsRef.current) return;
+  const animateToPreset = useCallback(
+    (presetId: string) => {
+      const preset = presets[presetId as keyof typeof presets];
+      if (!preset || !controlsRef.current) return;
 
-    const targetPosition = sphericalToCartesian(preset);
-    const targetTarget = new THREE.Vector3(...preset.target);
+      const targetPosition = sphericalToCartesian(preset);
+      const targetTarget = new THREE.Vector3(...preset.target);
 
-    // Set animation target for useFrame to interpolate
-    animationTarget.current = {
-      position: targetPosition,
-      target: targetTarget,
-    };
+      // Set animation target for useFrame to interpolate
+      animationTarget.current = {
+        position: targetPosition,
+        target: targetTarget,
+      };
 
-    isAnimating.current = true;
-  };
+      isAnimating.current = true;
+    },
+    [presets, sphericalToCartesian],
+  );
 
   /**
    * React to preset changes from store
@@ -132,9 +184,23 @@ export default function CameraController({
       animateToPreset(snap.activePreset);
       previousSnapTimestamp.current = snap.lastSnapTimestamp;
     }
-    // animateToPreset is stable, no need to include in deps
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snap.lastSnapTimestamp, snap.isUserControlling]);
+  }, [
+    snap.lastSnapTimestamp,
+    snap.isUserControlling,
+    animateToPreset,
+    snap.activePreset,
+  ]);
+
+  // When the bounding box becomes available for the first time, animate
+  // the camera to the newly computed preset so framing updates smoothly.
+  useEffect(() => {
+    if (cfgSnap.modelBoundingBox && !didAnimateToBbox.current) {
+      // Animate to the active preset (or nearest)
+      const presetId = snap.activePreset || 'front-left';
+      animateToPreset(presetId);
+      didAnimateToBbox.current = true;
+    }
+  }, [cfgSnap.modelBoundingBox, animateToPreset, snap.activePreset]);
 
   /**
    * Update spherical coordinates and handle smooth animation
@@ -228,7 +294,13 @@ export default function CameraController({
 
   // Set initial camera position
   useEffect(() => {
-    camera.position.copy(initialPosition);
+    // When mounting, if bbox-based distance is available, prefer it but move
+    // smoothly to avoid jarring jumps. Otherwise, set initial position directly.
+    if (bboxBaseDistance) {
+      camera.position.lerp(initialPosition, 1);
+    } else {
+      camera.position.copy(initialPosition);
+    }
     if (controlsRef.current) {
       controlsRef.current.target.copy(initialTarget);
       controlsRef.current.update();

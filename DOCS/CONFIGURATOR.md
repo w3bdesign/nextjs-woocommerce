@@ -2,6 +2,11 @@
 
 ## 📖 Main Documentation
 
+> Migration note (Oct 2025): per-model `scale` and `position` fields that compensated for
+> non-1:1 GLBs have been deprecated. Export models with correct units and pivots.
+> Use the `normalize: true` transitional flag in your model config only when
+> temporarily keeping legacy behavior during GLB migration.
+
 **For complete configurator documentation, see:**
 
 ### 👉 **[../src/components/Configurator/README.md](../src/components/Configurator/README.md)**
@@ -42,7 +47,7 @@ This comprehensive guide includes:
 
 Old documentation from before the October 2025 refactoring is archived in:
 
-- [_archive/](\_archive/) - Historical docs (outdated, kept for reference)
+- [\_archive/](_archive/) - Historical docs (outdated, kept for reference)
 
 ---
 
