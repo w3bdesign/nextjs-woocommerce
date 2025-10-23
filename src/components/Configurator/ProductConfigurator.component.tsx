@@ -79,7 +79,7 @@ export default function ProductConfigurator({
       {/* Main Configurator Container - Enhanced Layout */}
       <div className="flex flex-col xl:flex-row rounded-xl shadow-2xl overflow-hidden bg-white relative">
         {/* 3D Canvas Container - Left Side */}
-        <div className="flex-1 h-[500px] xl:h-[700px] bg-gradient-to-br from-gray-50 to-white relative">
+        <div className="flex-1 h-[400px] sm:h-[500px] xl:h-[700px] bg-gradient-to-br from-gray-50 to-white relative">
           {/* Info Icon Tooltip - Top Right Corner */}
           <FloatingButton
             icon={<Info className="w-5 h-5 text-blue-600" />}
@@ -88,8 +88,8 @@ export default function ProductConfigurator({
             tooltipText={
               modelConfig.interactiveParts &&
               modelConfig.interactiveParts.length > 0
-                ? '🎨 Click on the model to select parts and change colors\n🚪 Use the controls to open/close doors\n🖱️ Drag to rotate and scroll to zoom'
-                : '🎨 Click on the model to select parts\n🖱️ Drag to rotate and scroll to zoom'
+                ? '🎨 Colors are applied globally to all parts\n🚪 Use the controls to open/close doors\n🖱️ Drag to rotate and scroll to zoom'
+                : '🎨 Select colors from the sidebar to customize\n🖱️ Drag to rotate and scroll to zoom'
             }
           />
 

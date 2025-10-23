@@ -3,7 +3,6 @@ import { ReactNode } from 'react';
 
 // Components
 import Footer from '@/components/Footer/Footer.component';
-import Stickynav from '@/components/Footer/Stickynav.component';
 import Header from '@/components/Header/Header.component';
 import PageTitle from './PageTitle.component';
 
@@ -44,7 +43,6 @@ const Layout = ({ children, title }: ILayoutProps) => {
       )}
       <div className="mt-auto">
         <Footer />
-        <Stickynav />
       </div>
     </div>
   );

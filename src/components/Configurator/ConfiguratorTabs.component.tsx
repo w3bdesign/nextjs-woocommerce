@@ -21,7 +21,7 @@ export default function ConfiguratorTabs({
   const [expandedSections, setExpandedSections] = useState({
     style: false,
     dimensions: true,
-    colors: false,
+    colors: true,
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
@@ -47,7 +47,7 @@ export default function ConfiguratorTabs({
   return (
     <aside
       className="w-full xl:w-96 bg-white border-t xl:border-t-0 xl:border-l border-gray-200 flex flex-col overflow-hidden"
-      style={{ maxHeight: '700px' }}
+      style={{ maxHeight: 'auto' }}
     >
       {/* Pricing Section - Compact */}
       <PricingSection product={product} />

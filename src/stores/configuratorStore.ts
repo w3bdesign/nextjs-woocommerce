@@ -121,6 +121,16 @@ export const updatePartColor = (part: string, color: string): void => {
 };
 
 /**
+ * Update the color of ALL parts (global color application)
+ * This is used when the user selects a color from the global color picker
+ */
+export const updateAllPartColors = (color: string): void => {
+  Object.keys(configuratorState.items).forEach((partKey) => {
+    configuratorState.items[partKey] = color;
+  });
+};
+
+/**
  * Set dimension value (in cm)
  */
 export const setDimension = (

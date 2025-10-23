@@ -1,5 +1,9 @@
 # Copilot Instructions - Next.js Furniture E-commerce
 
+## File creation
+
+Do not create \_SUMMARY.md, \_REPORT.md, \_ANALYSIS.md, or \_REVIEW.md or any other documentation files unless explicitly requested by the user.
+
 ## Project Overview
 
 Next.js 15 furniture e-commerce with WooCommerce GraphQL backend, 3D product configurator, and Zustand/Valtio state management.
