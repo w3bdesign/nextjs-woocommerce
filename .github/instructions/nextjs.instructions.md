@@ -2,9 +2,6 @@
 applyTo: '**'
 ---
 
-Also visit reactjs.instructions.md for React guidelines.
-[React Copilot Instructions](./reactjs.instructions.md)
-
 ## 1. Project Structure & Organization
 
 This project uses the **Pages Router** architecture. Maintain this structure for consistency.
