@@ -1,11 +1,11 @@
-import Head from 'next/head';
 import Layout from '@/components/Layout/Layout.component';
 import ProductGrid from '@/components/Product/ProductGrid.component';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import client from '@/utils/apollo/ApolloClient';
 import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import type { NextPage, GetStaticProps, InferGetStaticPropsType } from 'next';
+import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import Head from 'next/head';
 
 const Products: NextPage = ({
   products,

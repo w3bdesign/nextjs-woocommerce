@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Product, ProductType } from '@/types/product';
+import { Dispatch, SetStateAction } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -46,14 +46,15 @@ const ProductFilters = ({
   // Get unique colors from all products
   const availableColors = products
     .flatMap((product: Product) => product.allPaColors?.nodes || [])
-    .filter((color, index, self) => 
-      index === self.findIndex((c) => c.slug === color.slug)
+    .filter(
+      (color, index, self) =>
+        index === self.findIndex((c) => c.slug === color.slug),
     )
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const colors = availableColors.map((color) => ({
     name: color.name,
-    class: `bg-${color.slug}-500`
+    class: `bg-${color.slug}-500`,
   }));
 
   const toggleSize = (size: string) => {
@@ -144,10 +145,7 @@ const ProductFilters = ({
           </div>
         </div>
 
-        <Button
-          onClick={resetFilters}
-          variant="reset"
-        >
+        <Button onClick={resetFilters} variant="reset">
           Reset filters
         </Button>
       </div>

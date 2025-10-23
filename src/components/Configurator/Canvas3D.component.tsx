@@ -1,13 +1,12 @@
-import type { ReactElement } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, ContactShadows, Environment } from '@react-three/drei';
-import * as THREE from 'three';
 import type {
-  ShadowConfig,
   CameraConfig,
   RoomConfig,
+  ShadowConfig,
 } from '@/types/configurator';
-import { useEffect } from 'react';
+import { Environment, OrbitControls } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import type { ReactElement } from 'react';
+import * as THREE from 'three';
 import WallSilhouette from './WallSilhouette.component';
 
 /**

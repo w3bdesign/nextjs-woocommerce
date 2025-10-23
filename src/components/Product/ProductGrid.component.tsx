@@ -1,6 +1,3 @@
-import { Product } from '@/types/product';
-import ProductCard from './ProductCard.component';
-import ProductFilters from './ProductFilters.component';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -9,13 +6,16 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown } from 'lucide-react';
 import {
   TypographyH2,
-  TypographySmall,
   TypographyLarge,
+  TypographySmall,
 } from '@/components/UI/Typography.component';
 import { useProductFilters } from '@/hooks/useProductFilters';
+import { Product } from '@/types/product';
+import { ChevronDown } from 'lucide-react';
+import ProductCard from './ProductCard.component';
+import ProductFilters from './ProductFilters.component';
 
 interface ProductGridProps {
   products: Product[];

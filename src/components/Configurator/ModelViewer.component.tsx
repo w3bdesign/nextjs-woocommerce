@@ -1,12 +1,12 @@
-import { useRef, useCallback, useState, type ReactElement } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
-import { useSnapshot } from 'valtio';
-import type { Group } from 'three';
-import * as THREE from 'three';
+import { SHOE_CONFIG } from '@/config/shoeModel.config';
 import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
-import { SHOE_CONFIG } from '@/config/shoeModel.config';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { useCallback, useRef, useState, type ReactElement } from 'react';
+import type { Group } from 'three';
+import * as THREE from 'three';
+import { useSnapshot } from 'valtio';
 import InteractiveMesh from './InteractiveMesh.component';
 
 interface ModelViewerProps {
@@ -76,7 +76,7 @@ export default function ModelViewer({
   }, []);
 
   // Calculate bounding box on model load to determine rear face position
-  useFrame((state) => {
+  useFrame((_state) => {
     if (!ref.current || boundingBoxZ) return; // Only calculate once
 
     const box = new THREE.Box3().setFromObject(ref.current);

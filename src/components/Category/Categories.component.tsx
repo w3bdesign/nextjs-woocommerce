@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@/components/ui/card';
 import { TypographyLarge } from '@/components/UI/Typography.component';
+import Link from 'next/link';
+import { v4 as uuidv4 } from 'uuid';
 
 interface ICategoriesProps {
   categories: { id: string; name: string; slug: string }[];

@@ -110,7 +110,8 @@ export const FETCH_FIRST_PRODUCTS_FROM_SOFAS_QUERY = `
  `;
 
 // Legacy query name for backwards compatibility
-export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = FETCH_FIRST_PRODUCTS_FROM_SOFAS_QUERY;
+export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY =
+  FETCH_FIRST_PRODUCTS_FROM_SOFAS_QUERY;
 
 /**
  * Fetch first 200 Woocommerce products from GraphQL

@@ -1,26 +1,26 @@
-import { useSnapshot } from 'valtio';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  ShoppingCart,
-  Heart,
-  Star,
-  Truck,
-  RotateCcw,
-  Settings,
-  Shield,
-} from 'lucide-react';
 import {
   configuratorState,
   resetDimensions,
   toggleInteractivePart,
 } from '@/stores/configuratorStore';
-import type { EnhancedControlsProps } from './types';
+import {
+  Heart,
+  RotateCcw,
+  Settings,
+  Shield,
+  ShoppingCart,
+  Star,
+  Truck,
+} from 'lucide-react';
+import { useSnapshot } from 'valtio';
+import ColorPalette from './ColorPalette.component';
+import DimensionSlider from './DimensionSlider.component';
 import PricingSection from './PricingSection.component';
 import StyleSelector from './StyleSelector.component';
-import DimensionSlider from './DimensionSlider.component';
-import ColorPalette from './ColorPalette.component';
+import type { EnhancedControlsProps } from './types';
 
 /**
  * Enhanced configurator controls - refactored for maintainability

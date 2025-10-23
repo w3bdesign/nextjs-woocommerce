@@ -1,5 +1,6 @@
-import { useQuery } from '@apollo/client';
-import { GET_CUSTOMER_ORDERS } from '../../utils/gql/GQL_QUERIES';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -8,11 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle } from 'lucide-react';
 import { TypographyH2 } from '@/components/UI/Typography.component';
+import { useQuery } from '@apollo/client';
+import { AlertCircle } from 'lucide-react';
+import { GET_CUSTOMER_ORDERS } from '../../utils/gql/GQL_QUERIES';
 
 interface Order {
   id: string;
@@ -47,10 +47,18 @@ const CustomerAccount = () => {
             <TableBody>
               {[...Array(3)].map((_, i) => (
                 <TableRow key={i}>
-                  <TableCell><Skeleton className="h-4 w-20" /></TableCell>
-                  <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-20" /></TableCell>
-                  <TableCell className="text-right"><Skeleton className="h-4 w-16 ml-auto" /></TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-20" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-20" />
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Skeleton className="h-4 w-16 ml-auto" />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -105,7 +113,9 @@ const CustomerAccount = () => {
             <TableBody>
               {orders.map((order: Order) => (
                 <TableRow key={order.id}>
-                  <TableCell className="font-medium">#{order.orderNumber}</TableCell>
+                  <TableCell className="font-medium">
+                    #{order.orderNumber}
+                  </TableCell>
                   <TableCell>
                     {new Date(order.date).toLocaleDateString()}
                   </TableCell>

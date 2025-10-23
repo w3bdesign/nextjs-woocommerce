@@ -1,6 +1,6 @@
 // Imports
+import { useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 
 // Components
@@ -14,8 +14,8 @@ import { useCartStore } from '@/stores/cartStore';
 import { getFormattedCart } from '@/utils/functions/functions';
 
 // GraphQL
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
+import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 
 interface IImage {
   __typename: string;
@@ -129,20 +129,21 @@ const AddToCart = ({
   }, [data, syncWithWooCommerce]);
 
   // Add to cart mutation
-  const [addToCart, { loading: addToCartLoading, data: mutationData }] = useMutation(ADD_TO_CART, {
-    variables: {
-      input: productQueryInput,
-    },
+  const [addToCart, { loading: addToCartLoading, data: mutationData }] =
+    useMutation(ADD_TO_CART, {
+      variables: {
+        input: productQueryInput,
+      },
 
-    onError: () => {
-      setRequestError(true);
-      toast({
-        title: 'Error',
-        description: 'Failed to add product to cart. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
+      onError: () => {
+        setRequestError(true);
+        toast({
+          title: 'Error',
+          description: 'Failed to add product to cart. Please try again.',
+          variant: 'destructive',
+        });
+      },
+    });
 
   // Handle mutation completion with useEffect instead of deprecated onCompleted
   useEffect(() => {

@@ -10,8 +10,8 @@ interface RootObject {
   totalProductsPrice: number;
 }
 
-import { ChangeEvent } from 'react';
 import { IVariationNodes } from '@/components/Product/AddToCart.component';
+import { ChangeEvent } from 'react';
 
 /* Interface for products*/
 

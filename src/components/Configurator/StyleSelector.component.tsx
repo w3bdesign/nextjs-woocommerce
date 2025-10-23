@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
 import { STYLE_OPTIONS } from './constants';
 
 export default function StyleSelector() {

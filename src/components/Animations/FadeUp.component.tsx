@@ -18,7 +18,7 @@ const FadeUp = ({ children, cssClass, delay }: IAnimateWithDelayProps) => {
     duration: 0.5,
     stiffness: 110,
   };
- 
+
   const fadeUpVariants = {
     initial: { opacity: 0, y: 20 },
     animate: {

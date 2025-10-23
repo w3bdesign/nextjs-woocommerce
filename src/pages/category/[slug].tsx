@@ -1,9 +1,9 @@
 import { withRouter } from 'next/router';
 
 // Components
+import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
 import Layout from '@/components/Layout/Layout.component';
 import ProductGrid from '@/components/Product/ProductGrid.component';
-import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
 
 import client from '@/utils/apollo/ApolloClient';
 

@@ -2,18 +2,18 @@
 import { withRouter } from 'next/router';
 
 // Components
-import SingleProduct from '@/components/Product/SingleProduct.component';
-import Layout from '@/components/Layout/Layout.component';
 import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
+import Layout from '@/components/Layout/Layout.component';
+import SingleProduct from '@/components/Product/SingleProduct.component';
 
 // Utilities
 import client from '@/utils/apollo/ApolloClient';
 
 // Types
 import type {
-  NextPage,
   GetServerSideProps,
   InferGetServerSidePropsType,
+  NextPage,
 } from 'next';
 
 // GraphQL

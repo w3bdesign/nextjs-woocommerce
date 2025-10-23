@@ -1,27 +1,30 @@
 /*eslint complexity: ["error", 20]*/
 // Imports
-import { useState, useEffect } from 'react';
-import { useQuery, useMutation, ApolloError } from '@apollo/client';
+import { ApolloError, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 // Components
-import Billing from './Billing.component';
-import CartContents from '../Cart/CartContents.component';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  TypographyH2,
+  TypographyLarge,
+} from '@/components/UI/Typography.component';
+import { useToast } from '@/hooks/use-toast';
 import { AlertCircle } from 'lucide-react';
-import { TypographyH2, TypographyLarge } from '@/components/UI/Typography.component';
+import CartContents from '../Cart/CartContents.component';
+import Billing from './Billing.component';
 
 // GraphQL
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
-import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
 import { useCartStore } from '@/stores/cartStore';
+import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
+import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 
 // Utils
 import {
-  getFormattedCart,
   createCheckoutData,
+  getFormattedCart,
   ICheckoutDataProps,
 } from '@/utils/functions/functions';
 
@@ -83,14 +86,14 @@ const CheckoutForm = () => {
   }, [data, clearWooCommerceSession, syncWithWooCommerce]);
 
   // Checkout GraphQL mutation
-  const [checkout, { loading: checkoutLoading, data: checkoutData, error: checkoutError }] = useMutation(
-    CHECKOUT_MUTATION,
-    {
-      variables: {
-        input: orderData,
-      },
+  const [
+    checkout,
+    { loading: checkoutLoading, data: checkoutData, error: checkoutError },
+  ] = useMutation(CHECKOUT_MUTATION, {
+    variables: {
+      input: orderData,
     },
-  );
+  });
 
   // Handle checkout completion with useEffect instead of deprecated onCompleted
   useEffect(() => {
@@ -115,7 +118,8 @@ const CheckoutForm = () => {
       setRequestError(checkoutError);
       toast({
         title: 'Checkout error',
-        description: 'An error occurred while processing your order. Please try again.',
+        description:
+          'An error occurred while processing your order. Please try again.',
         variant: 'destructive',
       });
       refetch();
@@ -158,7 +162,8 @@ const CheckoutForm = () => {
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>Checkout Error</AlertTitle>
                 <AlertDescription>
-                  An error occurred while processing your order. Please try again or contact support if the problem persists.
+                  An error occurred while processing your order. Please try
+                  again or contact support if the problem persists.
                 </AlertDescription>
               </Alert>
             </div>

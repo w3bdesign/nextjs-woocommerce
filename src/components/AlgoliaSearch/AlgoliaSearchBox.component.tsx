@@ -1,6 +1,6 @@
 import algoliasearch from 'algoliasearch';
-import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Hits, InstantSearch, SearchBox } from 'react-instantsearch-dom';
 
 import SearchResults from './SearchResults.component';
 

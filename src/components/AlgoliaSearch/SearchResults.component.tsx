@@ -1,6 +1,9 @@
-import Link from 'next/link';
+import {
+  TypographyLarge,
+  TypographyP,
+} from '@/components/UI/Typography.component';
 import { trimmedStringToLength } from '@/utils/functions/functions';
-import { TypographyLarge, TypographyP } from '@/components/UI/Typography.component';
+import Link from 'next/link';
 
 interface ISearchResultProps {
   hit: {
@@ -37,10 +40,7 @@ const SearchResults = ({
 }: ISearchResultProps) => {
   return (
     <article className="cursor-pointer hit">
-      <Link
-        href={`/product/${product_name.replace(/ /g, '-')}`}
-        passHref
-      >
+      <Link href={`/product/${product_name.replace(/ /g, '-')}`} passHref>
         <div className="flex p-6 bg-white">
           <header className="hit-image-container">
             <img
@@ -50,19 +50,21 @@ const SearchResults = ({
             />
           </header>
           <div className="pl-4 text-left">
-            {product_name && (
-              <TypographyLarge>{product_name}</TypographyLarge>
-            )}
+            {product_name && <TypographyLarge>{product_name}</TypographyLarge>}
             <br />
             {on_sale && (
               <>
                 <TypographyP className="inline line-through">
                   kr {regular_price}
                 </TypographyP>
-                <TypographyP className="inline ml-2">kr {sale_price}</TypographyP>
+                <TypographyP className="inline ml-2">
+                  kr {sale_price}
+                </TypographyP>
               </>
             )}
-            {!on_sale && <TypographyP className="inline">kr {regular_price}</TypographyP>}
+            {!on_sale && (
+              <TypographyP className="inline">kr {regular_price}</TypographyP>
+            )}
             <br />
             <TypographyP className="inline">
               {trimmedStringToLength(short_description, 30)}

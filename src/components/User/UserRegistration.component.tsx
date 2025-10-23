@@ -1,12 +1,5 @@
-import { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
-import { CREATE_USER } from '../../utils/gql/GQL_MUTATIONS';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -16,7 +9,17 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { TypographyH2, TypographyP } from '@/components/UI/Typography.component';
+import {
+  TypographyH2,
+  TypographyP,
+} from '@/components/UI/Typography.component';
+import { useToast } from '@/hooks/use-toast';
+import { useMutation } from '@apollo/client';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { CREATE_USER } from '../../utils/gql/GQL_MUTATIONS';
 
 interface IRegistrationData {
   username: string;
@@ -62,7 +65,10 @@ const UserRegistration = () => {
       console.error('Registration error:', error);
       toast({
         title: 'Registration failed',
-        description: error instanceof Error ? error.message : 'An error occurred during registration.',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'An error occurred during registration.',
         variant: 'destructive',
       });
     }
@@ -98,7 +104,7 @@ const UserRegistration = () => {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="email"
@@ -113,7 +119,7 @@ const UserRegistration = () => {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="password"
@@ -128,7 +134,7 @@ const UserRegistration = () => {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="firstName"
@@ -143,7 +149,7 @@ const UserRegistration = () => {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="lastName"

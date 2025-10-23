@@ -17,8 +17,14 @@ const Header = ({ title }: IHeaderProps) => (
   <>
     <Head>
       <title>{`MEBL Furniture Store ${title ? '- ' + title : ''}`}</title>
-      <meta name="description" content="Premium furniture store with customizable 3D configurator" />
-      <meta name="keywords" content="Furniture, Ecommerce, 3D Configurator, WooCommerce" />
+      <meta
+        name="description"
+        content="Premium furniture store with customizable 3D configurator"
+      />
+      <meta
+        name="keywords"
+        content="Furniture, Ecommerce, 3D Configurator, WooCommerce"
+      />
       <meta
         property="og:title"
         content="MEBL Furniture Store - Premium Furniture with 3D Customization"

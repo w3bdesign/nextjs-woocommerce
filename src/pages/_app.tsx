@@ -1,11 +1,11 @@
 // Imports
+import { ApolloProvider } from '@apollo/client';
 import Router from 'next/router';
 import NProgress from 'nprogress';
-import { ApolloProvider } from '@apollo/client';
 
-import client from '@/utils/apollo/ApolloClient';
 import CartInitializer from '@/components/Cart/CartInitializer.component';
 import { Toaster } from '@/components/ui/toaster';
+import client from '@/utils/apollo/ApolloClient';
 
 // Types
 import type { AppProps } from 'next/app';

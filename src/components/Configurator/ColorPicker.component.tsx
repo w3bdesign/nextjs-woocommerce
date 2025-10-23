@@ -1,7 +1,7 @@
+import { configuratorState, updatePartColor } from '@/stores/configuratorStore';
 import type { ReactElement } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { useSnapshot } from 'valtio';
-import { configuratorState, updatePartColor } from '@/stores/configuratorStore';
 
 /**
  * Color picker component for customizing 3D model parts

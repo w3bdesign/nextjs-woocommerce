@@ -1,9 +1,5 @@
 // Imports
-import {
-  SubmitHandler,
-  useForm,
-  useFormContext,
-} from 'react-hook-form';
+import { SubmitHandler, useForm, useFormContext } from 'react-hook-form';
 
 // Components
 import { Button } from '@/components/ui/button';
@@ -57,25 +53,33 @@ const Billing = ({ handleFormSubmit }: IBillingProps) => {
                 key={id}
                 control={form.control}
                 name={name as keyof ICheckoutDataProps}
-                rules={{ 
-                  required: customValidation.required ? `${label} is required` : false,
-                  minLength: customValidation.minlength ? {
-                    value: customValidation.minlength,
-                    message: `${label} must be at least ${customValidation.minlength} characters`
-                  } : undefined,
-                  pattern: customValidation.pattern ? {
-                    value: new RegExp(customValidation.pattern),
-                    message: `${label} format is invalid`
-                  } : undefined,
+                rules={{
+                  required: customValidation.required
+                    ? `${label} is required`
+                    : false,
+                  minLength: customValidation.minlength
+                    ? {
+                        value: customValidation.minlength,
+                        message: `${label} must be at least ${customValidation.minlength} characters`,
+                      }
+                    : undefined,
+                  pattern: customValidation.pattern
+                    ? {
+                        value: new RegExp(customValidation.pattern),
+                        message: `${label} format is invalid`,
+                      }
+                    : undefined,
                 }}
                 render={({ field }) => (
                   <FormItem className="w-1/2 p-2">
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder={label} 
-                        type={customValidation.type === 'email' ? 'email' : 'text'}
-                        {...field} 
+                      <Input
+                        placeholder={label}
+                        type={
+                          customValidation.type === 'email' ? 'email' : 'text'
+                        }
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />

@@ -1,16 +1,20 @@
-import { useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useCartStore } from '@/stores/cartStore';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Price } from '@/components/UI/Price.component';
 import { Container } from '@/components/Layout/Container.component';
-import { TypographyH2, TypographyH3, TypographyP } from '@/components/UI/Typography.component';
+import { Button } from '@/components/ui/button';
+import { Price } from '@/components/UI/Price.component';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  TypographyH2,
+  TypographyH3,
+  TypographyP,
+} from '@/components/UI/Typography.component';
+import { useCartStore } from '@/stores/cartStore';
 
 import {
   getFormattedCart,
@@ -19,8 +23,8 @@ import {
   IProductRootObject,
 } from '@/utils/functions/functions';
 
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
+import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 
 const CartContents = () => {
   const router = useRouter();
@@ -45,9 +49,8 @@ const CartContents = () => {
     }
   }, [data, clearWooCommerceSession, syncWithWooCommerce]);
 
-  const [updateCart, { loading: updateCartProcessing, data: updateCartData }] = useMutation(
-    UPDATE_CART,
-  );
+  const [updateCart, { loading: updateCartProcessing, data: updateCartData }] =
+    useMutation(UPDATE_CART);
 
   // Handle update cart completion with useEffect instead of deprecated onCompleted
   useEffect(() => {
@@ -115,9 +118,7 @@ const CartContents = () => {
                   />
                 </div>
                 <div className="flex-grow ml-4">
-                  <TypographyH3>
-                    {item.product.node.name}
-                  </TypographyH3>
+                  <TypographyH3>{item.product.node.name}</TypographyH3>
                   <TypographyP className="text-gray-600">
                     kr {getUnitPrice(item.subtotal, item.quantity)}
                   </TypographyP>
@@ -173,9 +174,7 @@ const CartContents = () => {
         </>
       ) : (
         <div className="text-center">
-          <TypographyH2 className="mb-4">
-            No products in cart
-          </TypographyH2>
+          <TypographyH2 className="mb-4">No products in cart</TypographyH2>
           <Button variant="default" asChild>
             <Link href="/products">Continue Shopping</Link>
           </Button>

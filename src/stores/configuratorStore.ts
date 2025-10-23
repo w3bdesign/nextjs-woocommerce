@@ -1,6 +1,6 @@
-import { proxy } from 'valtio';
-import type { ModelConfig } from '@/types/configurator';
 import { SHOE_CONFIG } from '@/config/shoeModel.config';
+import type { ModelConfig } from '@/types/configurator';
+import { proxy } from 'valtio';
 
 /**
  * Configurator state management using Valtio proxy

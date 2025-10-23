@@ -2,5 +2,6 @@
   "semi": true,
   "jsxBracketSameLine": false,
   "singleQuote": true,
-  "jsxSingleQuote": false
+  "jsxSingleQuote": false,
+  "plugins": ["prettier-plugin-organize-imports"]
 }

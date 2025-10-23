@@ -8,7 +8,7 @@
         "http://localhost:3000/categories"
       ],
       "port": 3000,
-      "settings": {       
+      "settings": {
         "onlyCategories": [
           "performance",
           "accessibility",

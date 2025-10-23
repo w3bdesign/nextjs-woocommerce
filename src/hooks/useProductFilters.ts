@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { Product, ProductType } from '@/types/product';
 import { getUniqueProductTypes } from '@/utils/functions/productUtils';
+import { useState } from 'react';
 
 export const useProductFilters = (products: Product[]) => {
   const [sortBy, setSortBy] = useState('popular');

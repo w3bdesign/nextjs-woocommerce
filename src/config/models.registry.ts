@@ -1,13 +1,13 @@
 import type { ModelConfig } from '@/types/configurator';
-import { SHOE_CONFIG } from './shoeModel.config';
 import { CABINET_CONFIG } from './cabinetModel.config';
+import { SHOE_CONFIG } from './shoeModel.config';
 
 /**
  * Model Registry
- * 
+ *
  * Central registry of all available 3D models for the configurator.
  * Add new model configurations here to make them available throughout the app.
- * 
+ *
  * Usage:
  * - Reference models by their ID (e.g., 'shoe-v1')
  * - Pass model ID to ProductConfigurator component
@@ -16,7 +16,7 @@ import { CABINET_CONFIG } from './cabinetModel.config';
 export const MODEL_REGISTRY: Record<string, ModelConfig> = {
   'shoe-v1': SHOE_CONFIG,
   'cabinet-v1': CABINET_CONFIG,
-  
+
   // Add more models here as they become available:
   // 'sofa-modern-v1': SOFA_CONFIG,
   // 'chair-office-v1': CHAIR_CONFIG,

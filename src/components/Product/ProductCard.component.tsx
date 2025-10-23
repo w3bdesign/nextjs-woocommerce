@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { PriceGroup } from '@/components/UI/Price.component';
 import { TypographyH4 } from '@/components/UI/Typography.component';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface ProductCardProps {
   databaseId: number;

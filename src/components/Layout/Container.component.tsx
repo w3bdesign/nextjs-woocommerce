@@ -55,7 +55,7 @@ export const Container = ({
         'container mx-auto',
         maxWidth !== 'full' && maxWidthClasses[maxWidth],
         paddingClassName || (withPadding && defaultPadding),
-        className
+        className,
       )}
     >
       {children}

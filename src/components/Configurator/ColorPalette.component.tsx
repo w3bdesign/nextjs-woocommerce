@@ -1,7 +1,7 @@
-import { useSnapshot } from 'valtio';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { configuratorState, updatePartColor } from '@/stores/configuratorStore';
+import { useSnapshot } from 'valtio';
 import { COLOR_PALETTE } from './constants';
 
 export default function ColorPalette() {

@@ -1,10 +1,10 @@
-import type { ReactElement } from 'react';
-import { useSnapshot } from 'valtio';
 import {
   configuratorState,
   toggleInteractivePart,
 } from '@/stores/configuratorStore';
 import type { InteractivePart } from '@/types/configurator';
+import type { ReactElement } from 'react';
+import { useSnapshot } from 'valtio';
 
 interface InteractiveControlsProps {
   interactiveParts?: InteractivePart[];

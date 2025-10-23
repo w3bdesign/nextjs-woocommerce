@@ -1,6 +1,11 @@
 /*eslint complexity: ["error", 8]*/
 
-import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloLink,
+  InMemoryCache,
+  createHttpLink,
+} from '@apollo/client';
 import { mockLink } from './mockLink';
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
@@ -82,8 +87,8 @@ const clientSide = typeof window === 'undefined';
 
 // Decide whether to use mock link
 const useMocks =
-  (process.env.NEXT_PUBLIC_ENABLE_MOCKS || '').toString().toLowerCase() === 'true' ||
-  !process.env.NEXT_PUBLIC_GRAPHQL_URL;
+  (process.env.NEXT_PUBLIC_ENABLE_MOCKS || '').toString().toLowerCase() ===
+    'true' || !process.env.NEXT_PUBLIC_GRAPHQL_URL;
 
 const link = useMocks
   ? mockLink
@@ -116,13 +121,17 @@ const client = new ApolloClient({
 
 // Log configuration status in development
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-  const algoliaConfigured = 
-    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID && 
+  const algoliaConfigured =
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID &&
     process.env.NEXT_PUBLIC_ALGOLIA_APP_ID !== 'changeme';
-  
+
   console.info('[MEBL] Configuration status:');
-  console.info(`  - GraphQL: ${useMocks ? '🔶 Using mocks' : '✅ Connected to ' + process.env.NEXT_PUBLIC_GRAPHQL_URL}`);
-  console.info(`  - Algolia Search: ${algoliaConfigured ? '✅ Configured' : '⚠️  Not configured (search disabled)'}`);
+  console.info(
+    `  - GraphQL: ${useMocks ? '🔶 Using mocks' : '✅ Connected to ' + process.env.NEXT_PUBLIC_GRAPHQL_URL}`,
+  );
+  console.info(
+    `  - Algolia Search: ${algoliaConfigured ? '✅ Configured' : '⚠️  Not configured (search disabled)'}`,
+  );
 }
 
 export default client;

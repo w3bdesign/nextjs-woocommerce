@@ -1,11 +1,11 @@
-import { Suspense, useEffect, type ReactElement } from 'react';
-import dynamic from 'next/dynamic';
-import { Loader2, Info, Heart, DoorOpen } from 'lucide-react';
+import { DEFAULT_MODEL_ID, getModelConfig } from '@/config/models.registry';
 import {
   initializeConfigurator,
   toggleInteractivePart,
 } from '@/stores/configuratorStore';
-import { getModelConfig, DEFAULT_MODEL_ID } from '@/config/models.registry';
+import { DoorOpen, Heart, Info, Loader2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { Suspense, useEffect, type ReactElement } from 'react';
 import { FloatingButton } from './FloatingButton.component';
 import { findDoorPart, getPartStateKey } from './utils/doorHelpers';
 

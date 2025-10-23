@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { type ReactNode, type ElementType } from 'react';
+import { type ElementType, type ReactNode } from 'react';
 
 interface TypographyProps {
   children: ReactNode;
@@ -14,7 +14,12 @@ interface TypographyProps {
 export const TypographyH1 = ({ children, className, as }: TypographyProps) => {
   const Component = as || 'h1';
   return (
-    <Component className={cn('text-4xl font-bold tracking-tight text-gray-900 lg:text-5xl', className)}>
+    <Component
+      className={cn(
+        'text-4xl font-bold tracking-tight text-gray-900 lg:text-5xl',
+        className,
+      )}
+    >
       {children}
     </Component>
   );
@@ -27,7 +32,12 @@ export const TypographyH1 = ({ children, className, as }: TypographyProps) => {
 export const TypographyH2 = ({ children, className, as }: TypographyProps) => {
   const Component = as || 'h2';
   return (
-    <Component className={cn('text-3xl font-bold tracking-tight text-gray-900 lg:text-4xl', className)}>
+    <Component
+      className={cn(
+        'text-3xl font-bold tracking-tight text-gray-900 lg:text-4xl',
+        className,
+      )}
+    >
       {children}
     </Component>
   );
@@ -40,7 +50,12 @@ export const TypographyH2 = ({ children, className, as }: TypographyProps) => {
 export const TypographyH3 = ({ children, className, as }: TypographyProps) => {
   const Component = as || 'h3';
   return (
-    <Component className={cn('text-2xl font-bold tracking-tight text-gray-900', className)}>
+    <Component
+      className={cn(
+        'text-2xl font-bold tracking-tight text-gray-900',
+        className,
+      )}
+    >
       {children}
     </Component>
   );
@@ -53,7 +68,12 @@ export const TypographyH3 = ({ children, className, as }: TypographyProps) => {
 export const TypographyH4 = ({ children, className, as }: TypographyProps) => {
   const Component = as || 'h4';
   return (
-    <Component className={cn('text-xl font-semibold tracking-tight text-gray-900', className)}>
+    <Component
+      className={cn(
+        'text-xl font-semibold tracking-tight text-gray-900',
+        className,
+      )}
+    >
       {children}
     </Component>
   );
@@ -76,7 +96,11 @@ export const TypographyP = ({ children, className, as }: TypographyProps) => {
  * Lead - Intro/lead paragraph
  * Used for introductory text with emphasis
  */
-export const TypographyLead = ({ children, className, as }: TypographyProps) => {
+export const TypographyLead = ({
+  children,
+  className,
+  as,
+}: TypographyProps) => {
   const Component = as || 'p';
   return (
     <Component className={cn('text-xl leading-8 text-gray-700', className)}>
@@ -89,7 +113,11 @@ export const TypographyLead = ({ children, className, as }: TypographyProps) => 
  * Large - Larger text
  * Used for prominent text elements
  */
-export const TypographyLarge = ({ children, className, as }: TypographyProps) => {
+export const TypographyLarge = ({
+  children,
+  className,
+  as,
+}: TypographyProps) => {
   const Component = as || 'div';
   return (
     <Component className={cn('text-lg font-semibold text-gray-900', className)}>
@@ -102,7 +130,11 @@ export const TypographyLarge = ({ children, className, as }: TypographyProps) =>
  * Small - Smaller text
  * Used for captions, labels, and secondary information
  */
-export const TypographySmall = ({ children, className, as }: TypographyProps) => {
+export const TypographySmall = ({
+  children,
+  className,
+  as,
+}: TypographyProps) => {
   const Component = as || 'small';
   return (
     <Component className={cn('text-sm leading-5 text-gray-600', className)}>
@@ -115,7 +147,11 @@ export const TypographySmall = ({ children, className, as }: TypographyProps) =>
  * Muted - De-emphasized text
  * Used for secondary or less important information
  */
-export const TypographyMuted = ({ children, className, as }: TypographyProps) => {
+export const TypographyMuted = ({
+  children,
+  className,
+  as,
+}: TypographyProps) => {
   const Component = as || 'p';
   return (
     <Component className={cn('text-sm text-gray-500', className)}>
@@ -128,9 +164,17 @@ export const TypographyMuted = ({ children, className, as }: TypographyProps) =>
  * Code - Inline code
  * Used for code snippets or technical text
  */
-export const TypographyCode = ({ children, className }: Omit<TypographyProps, 'as'>) => {
+export const TypographyCode = ({
+  children,
+  className,
+}: Omit<TypographyProps, 'as'>) => {
   return (
-    <code className={cn('relative rounded bg-gray-100 px-[0.3rem] py-[0.2rem] font-mono text-sm', className)}>
+    <code
+      className={cn(
+        'relative rounded bg-gray-100 px-[0.3rem] py-[0.2rem] font-mono text-sm',
+        className,
+      )}
+    >
       {children}
     </code>
   );
@@ -140,9 +184,17 @@ export const TypographyCode = ({ children, className }: Omit<TypographyProps, 'a
  * Blockquote - Quoted text
  * Used for quotes or emphasized blocks
  */
-export const TypographyBlockquote = ({ children, className }: Omit<TypographyProps, 'as'>) => {
+export const TypographyBlockquote = ({
+  children,
+  className,
+}: Omit<TypographyProps, 'as'>) => {
   return (
-    <blockquote className={cn('border-l-4 border-gray-300 pl-4 italic text-gray-700', className)}>
+    <blockquote
+      className={cn(
+        'border-l-4 border-gray-300 pl-4 italic text-gray-700',
+        className,
+      )}
+    >
       {children}
     </blockquote>
   );
@@ -151,7 +203,10 @@ export const TypographyBlockquote = ({ children, className }: Omit<TypographyPro
 /**
  * List - Unordered list
  */
-export const TypographyList = ({ children, className }: Omit<TypographyProps, 'as'>) => {
+export const TypographyList = ({
+  children,
+  className,
+}: Omit<TypographyProps, 'as'>) => {
   return (
     <ul className={cn('ml-6 list-disc space-y-2 text-gray-700', className)}>
       {children}
@@ -162,7 +217,10 @@ export const TypographyList = ({ children, className }: Omit<TypographyProps, 'a
 /**
  * InlineCode - For inline code without block formatting
  */
-export const TypographyInlineCode = ({ children, className }: Omit<TypographyProps, 'as'>) => {
+export const TypographyInlineCode = ({
+  children,
+  className,
+}: Omit<TypographyProps, 'as'>) => {
   return (
     <code className={cn('font-mono text-sm text-gray-800', className)}>
       {children}

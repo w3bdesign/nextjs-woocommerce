@@ -1,6 +1,6 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Star, Truck, RotateCcw, Settings, Shield } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { RotateCcw, Settings, Shield, Star, Truck } from 'lucide-react';
 
 /**
  * Product information section with reviews and benefits

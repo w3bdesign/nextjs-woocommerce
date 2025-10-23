@@ -1,13 +1,13 @@
-import type { ReactElement } from 'react';
-import { useSnapshot } from 'valtio';
-import { RotateCcw } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { getModelConfig } from '@/config/models.registry';
 import {
   configuratorState,
-  setDimension,
   resetDimensions,
+  setDimension,
 } from '@/stores/configuratorStore';
-import { getModelConfig } from '@/config/models.registry';
-import { Slider } from '@/components/ui/slider';
+import { RotateCcw } from 'lucide-react';
+import type { ReactElement } from 'react';
+import { useSnapshot } from 'valtio';
 
 interface DimensionControlsProps {
   modelId: string;

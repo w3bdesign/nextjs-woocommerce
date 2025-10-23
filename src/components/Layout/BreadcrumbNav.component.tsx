@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import { Container } from './Container.component';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,6 +6,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import Link from 'next/link';
+import { Container } from './Container.component';
 
 export interface BreadcrumbNavItem {
   label: string;

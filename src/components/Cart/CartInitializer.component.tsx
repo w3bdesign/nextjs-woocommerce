@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
+import { useEffect } from 'react';
 
 // State
 import { useCartStore } from '@/stores/cartStore';

@@ -1,4 +1,4 @@
-import { NextPage, InferGetStaticPropsType, GetStaticProps } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 
 import CategoriesComponent from '@/components/Category/Categories.component';
 import Layout from '@/components/Layout/Layout.component';

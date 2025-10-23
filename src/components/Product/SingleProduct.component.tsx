@@ -1,12 +1,12 @@
 // Imports
-import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
 // Components
-import AddToCart, { IProductRootObject } from './AddToCart.component';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Container } from '@/components/Layout/Container.component';
 import { PriceGroup } from '@/components/UI/Price.component';
+import { Skeleton } from '@/components/ui/skeleton';
+import AddToCart, { IProductRootObject } from './AddToCart.component';
 
 // Dynamically import 3D configurator to avoid SSR issues
 const ProductConfigurator = dynamic(

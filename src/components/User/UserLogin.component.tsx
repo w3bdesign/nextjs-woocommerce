@@ -1,11 +1,5 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { login } from '../../utils/auth';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -15,6 +9,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { login } from '../../utils/auth';
 
 interface ILoginData {
   username: string;
@@ -82,13 +82,17 @@ const UserLogin = () => {
                 <FormItem className="w-1/2 p-2">
                   <FormLabel>Username or email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Username or email" type="text" {...field} />
+                    <Input
+                      placeholder="Username or email"
+                      type="text"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="password"

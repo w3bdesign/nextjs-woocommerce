@@ -1,14 +1,14 @@
-import { useRouter } from 'next/router';
-import { useEffect, ComponentType, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_CURRENT_USER } from '../../utils/gql/GQL_QUERIES';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/router';
+import { ComponentType, useEffect, useState } from 'react';
+import { GET_CURRENT_USER } from '../../utils/gql/GQL_QUERIES';
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const Wrapper = (props: P) => {
     const router = useRouter();
     const [isChecking, setIsChecking] = useState(true);
-    
+
     const { data, loading, error } = useQuery(GET_CURRENT_USER, {
       errorPolicy: 'all',
       fetchPolicy: 'cache-and-network',
@@ -17,7 +17,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
     useEffect(() => {
       if (!loading) {
         setIsChecking(false);
-        
+
         // If there's an error or no customer data, user is not authenticated
         if (error || !data?.customer) {
           router.push('/login');

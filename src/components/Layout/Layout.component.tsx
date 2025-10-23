@@ -2,10 +2,10 @@
 import { ReactNode } from 'react';
 
 // Components
-import Header from '@/components/Header/Header.component';
-import PageTitle from './PageTitle.component';
 import Footer from '@/components/Footer/Footer.component';
 import Stickynav from '@/components/Footer/Stickynav.component';
+import Header from '@/components/Header/Header.component';
+import PageTitle from './PageTitle.component';
 
 interface ILayoutProps {
   children?: ReactNode;
@@ -30,10 +30,12 @@ const Layout = ({ children, title }: ILayoutProps) => {
       >
         Skip to main content
       </a>
-      
+
       <Header title={title} />
       {title === 'Home' ? (
-        <main id="main-content" className="flex-1 px-4 md:px-0">{children}</main>
+        <main id="main-content" className="flex-1 px-4 md:px-0">
+          {children}
+        </main>
       ) : (
         <div className="container mx-auto px-6 flex-1">
           <PageTitle title={title} />

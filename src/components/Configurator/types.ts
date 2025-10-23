@@ -1,5 +1,5 @@
-import type { ComponentType } from 'react';
 import type { ModelConfig } from '@/types/configurator';
+import type { ComponentType } from 'react';
 
 export interface EnhancedControlsProps {
   modelConfig: ModelConfig;

@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Palette, Sliders, ChevronDown } from 'lucide-react';
-import type { EnhancedControlsProps } from './types';
+import { ChevronDown, Palette, Sliders } from 'lucide-react';
+import { useState } from 'react';
+import ColorPalette from './ColorPalette.component';
+import DimensionSlider from './DimensionSlider.component';
 import PricingSection from './PricingSection.component';
 import StyleSelector from './StyleSelector.component';
-import DimensionSlider from './DimensionSlider.component';
-import ColorPalette from './ColorPalette.component';
+import type { EnhancedControlsProps } from './types';
 
 /**
  * Compact configurator with two tabs and collapsible sections

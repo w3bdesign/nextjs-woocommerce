@@ -6,7 +6,7 @@ export function hasCredentials() {
   if (typeof window === 'undefined') {
     return false; // Server-side, no credentials available
   }
-  
+
   // With cookie-based auth, we'll check if user is logged in through a query
   // For now, we'll return false and let components handle the check
   return false;
@@ -22,7 +22,7 @@ function getErrorMessage(error: any): string {
   if (error.graphQLErrors && error.graphQLErrors.length > 0) {
     const graphQLError = error.graphQLErrors[0];
     const message = graphQLError.message;
-    
+
     // Map GraphQL error messages to user-friendly messages
     switch (message) {
       case 'invalid_username':
@@ -41,17 +41,17 @@ function getErrorMessage(error: any): string {
         return 'Login failed. Please check your credentials and try again.';
     }
   }
-  
+
   // Check for network errors
   if (error.networkError) {
     return 'Network error. Please check your internet connection and try again.';
   }
-  
+
   // Fallback for other errors
   if (error.message) {
     return 'An error occurred during login. Please try again.';
   }
-  
+
   return 'An unknown error occurred. Please try again later.';
 }
 
@@ -71,7 +71,9 @@ export async function login(username: string, password: string) {
     const loginResult = data.loginWithCookies;
 
     if (loginResult.status !== 'SUCCESS') {
-      throw new Error('Login failed. Please check your credentials and try again.');
+      throw new Error(
+        'Login failed. Please check your credentials and try again.',
+      );
     }
 
     // On successful login, cookies are automatically set by the server

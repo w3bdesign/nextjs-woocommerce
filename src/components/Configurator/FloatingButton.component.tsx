@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import type { ReactNode } from 'react';
 
 interface FloatingButtonProps {
   icon: ReactNode;

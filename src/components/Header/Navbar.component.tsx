@@ -1,10 +1,4 @@
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { hasCredentials } from '../../utils/auth';
-import Cart from './Cart.component';
-import AlgoliaSearchBox from '../AlgoliaSearch/AlgoliaSearchBox.component';
-import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
-import { Container } from '../Layout/Container.component';
+import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -19,11 +13,17 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
+import { TypographyLarge } from '@/components/UI/Typography.component';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
-import { TypographyLarge } from '@/components/UI/Typography.component';
+import { Menu } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { hasCredentials } from '../../utils/auth';
+import AlgoliaSearchBox from '../AlgoliaSearch/AlgoliaSearchBox.component';
+import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
+import { Container } from '../Layout/Container.component';
+import Cart from './Cart.component';
 
 /**
  * Navigation for the application.
@@ -66,10 +66,10 @@ const Navbar = () => {
                       {item.title}
                     </Link>
                   ))}
-                  
+
                   {/* Divider */}
                   <div className="border-t border-gray-200 my-4" />
-                  
+
                   {/* Auth Navigation */}
                   {loggedIn ? (
                     <Link
@@ -97,7 +97,7 @@ const Navbar = () => {
                       </Link>
                     </>
                   )}
-                  
+
                   {/* Mobile Search */}
                   <div className="pt-4">
                     <MobileSearch />
@@ -105,16 +105,16 @@ const Navbar = () => {
                 </div>
               </SheetContent>
             </Sheet>
-            
+
             <Link href="/" className="flex-1 text-center">
               <span className="text-lg font-bold tracking-widest text-gray-900">
                 {siteConfig.name}
               </span>
             </Link>
-            
+
             <Cart />
           </div>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-between">
             {/* Left: Main Navigation */}
@@ -123,10 +123,12 @@ const Navbar = () => {
                 {siteConfig.mainNav.map((item) => (
                   <NavigationMenuItem key={item.href}>
                     <Link href={item.href} legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(
-                        navigationMenuTriggerStyle(),
-                        "uppercase tracking-wider text-sm"
-                      )}>
+                      <NavigationMenuLink
+                        className={cn(
+                          navigationMenuTriggerStyle(),
+                          'uppercase tracking-wider text-sm',
+                        )}
+                      >
                         {item.title}
                       </NavigationMenuLink>
                     </Link>
@@ -145,16 +147,22 @@ const Navbar = () => {
             {/* Right: Search, Auth, Cart */}
             <div className="flex items-center space-x-3">
               <AlgoliaSearchBox />
-              
+
               <NavigationMenu>
                 <NavigationMenuList>
                   {loggedIn ? (
                     <NavigationMenuItem>
-                      <Link href={siteConfig.authNav.account.href} legacyBehavior passHref>
-                        <NavigationMenuLink className={cn(
-                          navigationMenuTriggerStyle(),
-                          "uppercase tracking-wider text-sm"
-                        )}>
+                      <Link
+                        href={siteConfig.authNav.account.href}
+                        legacyBehavior
+                        passHref
+                      >
+                        <NavigationMenuLink
+                          className={cn(
+                            navigationMenuTriggerStyle(),
+                            'uppercase tracking-wider text-sm',
+                          )}
+                        >
                           {siteConfig.authNav.account.title}
                         </NavigationMenuLink>
                       </Link>
@@ -162,21 +170,33 @@ const Navbar = () => {
                   ) : (
                     <>
                       <NavigationMenuItem>
-                        <Link href={siteConfig.authNav.login.href} legacyBehavior passHref>
-                          <NavigationMenuLink className={cn(
-                            navigationMenuTriggerStyle(),
-                            "uppercase tracking-wider text-sm"
-                          )}>
+                        <Link
+                          href={siteConfig.authNav.login.href}
+                          legacyBehavior
+                          passHref
+                        >
+                          <NavigationMenuLink
+                            className={cn(
+                              navigationMenuTriggerStyle(),
+                              'uppercase tracking-wider text-sm',
+                            )}
+                          >
                             {siteConfig.authNav.login.title}
                           </NavigationMenuLink>
                         </Link>
                       </NavigationMenuItem>
                       <NavigationMenuItem>
-                        <Link href={siteConfig.authNav.register.href} legacyBehavior passHref>
-                          <NavigationMenuLink className={cn(
-                            navigationMenuTriggerStyle(),
-                            "uppercase tracking-wider text-sm"
-                          )}>
+                        <Link
+                          href={siteConfig.authNav.register.href}
+                          legacyBehavior
+                          passHref
+                        >
+                          <NavigationMenuLink
+                            className={cn(
+                              navigationMenuTriggerStyle(),
+                              'uppercase tracking-wider text-sm',
+                            )}
+                          >
                             {siteConfig.authNav.register.title}
                           </NavigationMenuLink>
                         </Link>
@@ -185,7 +205,7 @@ const Navbar = () => {
                   )}
                 </NavigationMenuList>
               </NavigationMenu>
-              
+
               <Cart />
             </div>
           </div>

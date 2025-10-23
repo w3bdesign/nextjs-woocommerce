@@ -2,10 +2,10 @@ import type { ModelConfig } from '@/types/configurator';
 
 /**
  * Shoe Model Configuration
- * 
+ *
  * This configuration defines the customizable parts of the shoe model
  * used in the product configurator POC.
- * 
+ *
  * Model: shoe-draco.glb
  * Parts: 8 customizable materials
  */
@@ -13,7 +13,7 @@ export const SHOE_CONFIG: ModelConfig = {
   id: 'shoe-v1',
   name: 'Customizable Shoe',
   modelPath: '/shoe-draco.glb',
-  
+
   parts: [
     {
       nodeName: 'shoe',
@@ -64,14 +64,14 @@ export const SHOE_CONFIG: ModelConfig = {
       defaultColor: '#ffffff',
     },
   ],
-  
+
   animations: {
     enableRotation: true,
     enableBobbing: true,
     rotationSpeed: 1,
     bobbingAmplitude: 0.1,
   },
-  
+
   metadata: {
     description: 'Demo shoe model with 8 customizable parts',
     tags: ['footwear', 'demo', 'poc'],

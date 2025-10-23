@@ -1,4 +1,4 @@
-import { Truck, RotateCcw, Settings, Shield } from 'lucide-react';
+import { RotateCcw, Settings, Shield, Truck } from 'lucide-react';
 
 export const STYLE_OPTIONS = [
   { id: 'frame', label: 'Frame' },

@@ -1,8 +1,8 @@
-import { useSnapshot } from 'valtio';
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { configuratorState, setDimension } from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
+import { useSnapshot } from 'valtio';
 
 interface DimensionSliderProps {
   type: 'width' | 'height' | 'depth';
