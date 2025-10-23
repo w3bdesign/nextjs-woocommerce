@@ -103,7 +103,7 @@ export default function Canvas3D({
   modelConfig,
 }: Canvas3DProps): ReactNode {
   // Hooks must be at top-level of the component
-  useSnapshot(configuratorState); // subscribe to configurator state changes if other components rely on it
+  const snap = useSnapshot(configuratorState);
 
   const defaultCamera = cameraConfig || { position: [0, 0, 4], fov: 45 };
   const room = ROOM_PRESETS[roomPreset];

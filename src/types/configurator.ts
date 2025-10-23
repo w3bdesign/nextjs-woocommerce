@@ -198,10 +198,6 @@ export interface ModelConfig {
   /** Optional: Position offset [x, y, z] for the model (default: [0, 0, 0]) */
   position?: [number, number, number];
 
-  /** Optional: If true, the viewer will normalize model pivots and apply
-   * dimension-based scaling/ground-snap. Defaults to false (render 1:1). */
-  normalize?: boolean;
-
   /** Optional: Dimension constraints for scaling */
   dimensions?: {
     /** Width (X axis) constraints in cm */

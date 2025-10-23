@@ -128,9 +128,8 @@ export default function ModelViewer({
   const baseScale = modelConfig.scale ?? 1;
   let finalScale: [number, number, number] = [baseScale, baseScale, baseScale];
   let depthZOffset = 0; // Offset to keep rear face flush with wall
-  // Only apply legacy/normalize behavior when explicitly requested.
-  // Default behavior is to render models 1:1 as authored in the GLB.
-  if (modelConfig.normalize && modelConfig.dimensions) {
+
+  if (modelConfig.dimensions) {
     // Convert cm dimensions to scale factors relative to defaults
     const scaleX = snap.dimensions.width / modelConfig.dimensions.width.default;
     const scaleY =
@@ -139,10 +138,18 @@ export default function ModelViewer({
 
     finalScale = [baseScale * scaleX, baseScale * scaleY, baseScale * scaleZ];
 
-    // Calculate depth offset using bounding box so the rear face stays flush
+    // Calculate depth offset using bounding box
+    // This keeps the rear face of the model flush with the wall
+    // while allowing depth to expand only forward (toward camera)
     if (boundingBox && scaleZ !== 1) {
+      // Original model depth in 3D space (use computed bounding box Z extents)
       const originalDepth = boundingBox.max.z - boundingBox.min.z;
+
+      // How much the depth changed
       const depthChange = originalDepth * (scaleZ - 1);
+
+      // Offset position so rear face stays fixed
+      // Only move forward by half the depth increase
       depthZOffset = depthChange / 2;
     }
   }
@@ -154,8 +161,20 @@ export default function ModelViewer({
   // model config (basePosition[1]). This makes models with differing
   // pivots behave consistently: the model's bottom will sit at the
   // configured base height.
-  // finalY used to be used for an outer transform; we now keep outer group
-  // equal to basePosition and only offset the inner geometry when needed.
+  let finalY = basePosition[1];
+  if (boundingBox) {
+    // At the time the bounding box was computed the group was positioned
+    // using the basePosition. The box.min.y therefore equals (basePosition[1] + geometryMinY).
+    // To move the geometry so geometryMinY ends up at basePosition[1], the
+    // new group position must be: 2*basePosition[1] - box.min.y
+    finalY = 2 * basePosition[1] - boundingBox.min.y;
+  }
+
+  const finalPosition: [number, number, number] = [
+    basePosition[0],
+    finalY,
+    basePosition[2] + depthZOffset,
+  ];
 
   // We wrap the actual geometry in an inner group so that the outer group's
   // position remains equal to `modelConfig.position`. Camera presets and
@@ -169,10 +188,7 @@ export default function ModelViewer({
   ];
 
   // Compute inner offset (so geometry.min.y ends up at basePosition[1])
-  const innerOffsetY =
-    modelConfig.normalize && boundingBox
-      ? basePosition[1] - boundingBox.min.y
-      : 0;
+  const innerOffsetY = boundingBox ? basePosition[1] - boundingBox.min.y : 0;
 
   return (
     <group
