@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import { TypographyH1 } from '@/components/UI/Typography.component';
-import Image from 'next/image';
 import Link from 'next/link';
 
 /**
@@ -11,12 +10,13 @@ import Link from 'next/link';
 const Hero = () => (
   <section className="relative w-full h-[60vh] overflow-hidden">
     <div className="absolute inset-0">
-      <Image
-        src="/images/hero.jpg"
-        alt="Hero image"
-        fill
-        priority
-        className="object-cover object-center"
+      <video
+        src="/hero.webm"
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full h-full object-cover object-center"
       />
       <div className="absolute inset-0 bg-black bg-opacity-30" />
     </div>
