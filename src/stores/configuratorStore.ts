@@ -18,10 +18,9 @@ interface ConfiguratorState {
     depth: number;
   };
   /** Last computed model bounding box (world-aligned) */
-  modelBoundingBox: {
-    min: { x: number; y: number; z: number };
-    max: { x: number; y: number; z: number };
-  } | null;
+  // NOTE: model bounding boxes are now published to the scene mediator
+  // (src/stores/sceneMediatorStore.ts). Configurator store keeps only
+  // configuration-related state (colors, interactive states, dimensions).
 }
 
 export const configuratorState = proxy<ConfiguratorState>({
@@ -33,7 +32,6 @@ export const configuratorState = proxy<ConfiguratorState>({
     height: 0,
     depth: 0,
   },
-  modelBoundingBox: null,
 });
 
 /**
@@ -80,9 +78,6 @@ export const initializeConfigurator = (modelConfig: ModelConfig): void => {
     };
   }
 };
-
-// Initialize with cabinet config on module load (default behavior)
-initializeConfigurator(CABINET_CONFIG);
 
 /**
  * Reset configurator to default state
@@ -164,9 +159,8 @@ export const resetDimensions = (modelConfig: ModelConfig): void => {
  * consume it (e.g., silhouette placement). ModelViewer should call this
  * after computing the final grounded bounding box.
  */
-export const setModelBoundingBox = (
-  min: { x: number; y: number; z: number },
-  max: { x: number; y: number; z: number },
-): void => {
-  configuratorState.modelBoundingBox = { min, max };
-};
+// Note: model bounding boxes are now published to the scene mediator
+// (src/stores/sceneMediatorStore.ts). Any code that previously called
+// `setModelBoundingBox` should be updated to call `setModelWorld` on the
+// mediator. The legacy API has been removed to avoid accidental
+// environment-facing writes from the configurator store.

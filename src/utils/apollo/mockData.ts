@@ -58,7 +58,7 @@ export const mockProducts = [
     // Enable 3D configurator for testing (cabinet POC)
     configurator: {
       enabled: true,
-      modelId: 'cabinet-v1',
+      modelId: 'shelf-v1',
     },
     variations: {
       __typename: 'ProductVariationConnection',
@@ -105,7 +105,7 @@ export const mockProducts = [
     productCategories: { nodes: [{ name: 'Tables', slug: 'tables' }] },
     configurator: {
       enabled: true,
-      modelId: 'cabinet-v1',
+      modelId: 'shelf-v1',
     },
   },
   {

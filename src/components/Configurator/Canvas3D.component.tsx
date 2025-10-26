@@ -1,18 +1,14 @@
 'use client';
-
-import { configuratorState } from '@/stores/configuratorStore';
 import type {
   CameraConfig,
   ModelConfig,
   RoomConfig,
-  ShadowConfig,
 } from '@/types/configurator';
-import { Environment, OrbitControls } from '@react-three/drei';
+import { Environment } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import * as THREE from 'three';
-import { useSnapshot } from 'valtio';
 import CameraController from './CameraController.component';
 import WallSilhouette from './WallSilhouette.component';
 
@@ -84,11 +80,13 @@ const ROOM_PRESETS: Record<string, RoomConfig> = {
 
 interface Canvas3DProps {
   children: ReactNode;
-  shadowConfig?: ShadowConfig;
+  /**
+   * Canvas receives only explicit camera configuration. Avoid passing the
+   * full model configuration into the environment component to prevent
+   * implicit model->environment coupling.
+   */
   cameraConfig?: CameraConfig;
   roomPreset?: keyof typeof ROOM_PRESETS;
-  /** Model configuration for camera preset generation */
-  modelConfig?: ModelConfig;
 }
 
 /**
@@ -97,14 +95,9 @@ interface Canvas3DProps {
  */
 export default function Canvas3D({
   children,
-  shadowConfig,
   cameraConfig,
   roomPreset = 'modern-studio',
-  modelConfig,
 }: Canvas3DProps): ReactNode {
-  // Hooks must be at top-level of the component
-  const snap = useSnapshot(configuratorState);
-
   const defaultCamera = cameraConfig || { position: [0, 0, 4], fov: 45 };
   const room = ROOM_PRESETS[roomPreset];
 
@@ -138,14 +131,14 @@ export default function Canvas3D({
         position={activeRoom.directionalLightPosition}
         intensity={activeRoom.directionalLightIntensity}
         castShadow
-        shadow-mapSize-width={shadowConfig?.mapSize ?? 2048}
-        shadow-mapSize-height={shadowConfig?.mapSize ?? 2048}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
         shadow-camera-far={50}
         shadow-camera-left={-15}
         shadow-camera-right={15}
         shadow-camera-top={15}
         shadow-camera-bottom={-15}
-        shadow-bias={shadowConfig?.bias ?? -0.0001}
+        shadow-bias={-0.0001}
       />
       <directionalLight
         position={activeRoom.secondaryLightPosition}
@@ -167,18 +160,9 @@ export default function Canvas3D({
       {/* Render the 3D model */}
       {children}
 
-      {/* Ground plane for visual reference */}
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        // Ground plane Y: prefer explicit shadowConfig.position, fall back to
-        // the model's base position (if provided by modelConfig), finally 0.
-        position={[
-          0,
-          shadowConfig?.position ?? modelConfig?.position?.[1] ?? 0,
-          0,
-        ]}
-        receiveShadow
-      >
+      {/* Ground plane for visual reference (fixed at Y = 0 to keep environment
+          independent from model/configuration changes). */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[50, 50]} />
         <meshStandardMaterial
           color={activeRoom.floorColor}
@@ -209,11 +193,7 @@ export default function Canvas3D({
       />
 
       {/* Camera controls - Enhanced with preset system */}
-      {modelConfig ? (
-        <CameraController modelConfig={modelConfig} />
-      ) : (
-        <OrbitControls makeDefault enablePan={false} />
-      )}
+      <CameraController cameraConfig={cameraConfig} />
     </Canvas>
   );
 }

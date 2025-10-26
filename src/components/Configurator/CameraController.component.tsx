@@ -1,11 +1,12 @@
 import {
   cameraState,
   endCameraControl,
-  generateCameraPresets,
+  generateCameraPresetsFromCamera,
   startCameraControl,
   type CameraPreset,
 } from '@/stores/cameraStore';
-import type { ModelConfig } from '@/types/configurator';
+import { sceneMediator } from '@/stores/sceneMediatorStore';
+import type { CameraConfig } from '@/types/configurator';
 import { calculateBaseDistance } from '@/utils/camera';
 import { OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -21,8 +22,8 @@ const ANIMATION_LERP_SPEED = 5; // Multiplier for lerp speed
 const ANIMATION_COMPLETION_THRESHOLD = 0.001; // Distance threshold for animation completion
 
 interface CameraControllerProps {
-  /** Model configuration for dynamic preset generation */
-  modelConfig: ModelConfig;
+  /** Optional camera configuration (preferred over model-driven props) */
+  cameraConfig?: CameraConfig;
   /** Override base distance calculation (optional) */
   baseDistance?: number;
 }
@@ -45,12 +46,13 @@ interface CameraControllerProps {
  * ```
  */
 export default function CameraController({
-  modelConfig,
+  cameraConfig,
   baseDistance,
 }: CameraControllerProps) {
   const { camera, gl } = useThree();
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const snap = useSnapshot(cameraState);
+  const sceneSnap = useSnapshot(sceneMediator);
 
   // Track current spherical position for snap-back calculation
   const currentSpherical = useRef(new THREE.Spherical());
@@ -64,18 +66,27 @@ export default function CameraController({
     target: THREE.Vector3;
   } | null>(null);
 
-  // Generate presets based on model configuration
+  // Generate presets based on camera configuration and, when available,
+  // runtime-computed model geometry from the mediator. This avoids
+  // passing full model configs into environment components.
   const presets = useMemo(() => {
-    return generateCameraPresets(modelConfig);
-  }, [modelConfig]);
+    const modelWorldArg = sceneSnap.modelWorld
+      ? {
+          position: sceneSnap.modelWorld.position as [number, number, number],
+          height: sceneSnap.modelWorld.height,
+        }
+      : undefined;
+
+    return generateCameraPresetsFromCamera(cameraConfig, modelWorldArg);
+  }, [cameraConfig, sceneSnap.modelWorld]);
 
   // Calculate base distance from model config or prop
   const calculatedBaseDistance = useMemo(() => {
     if (baseDistance) return baseDistance;
 
-    const configuredPosition = modelConfig.camera?.position || [0, 0, 4];
+    const configuredPosition = cameraConfig?.position || [0, 0, 4];
     return calculateBaseDistance(configuredPosition);
-  }, [baseDistance, modelConfig.camera?.position]);
+  }, [baseDistance, cameraConfig?.position]);
 
   /**
    * Convert spherical coordinates to cartesian position

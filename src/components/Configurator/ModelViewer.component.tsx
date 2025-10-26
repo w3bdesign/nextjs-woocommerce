@@ -1,9 +1,6 @@
 import { CABINET_CONFIG } from '@/config/cabinetModel.config';
-import {
-  configuratorState,
-  setCurrentPart,
-  setModelBoundingBox,
-} from '@/stores/configuratorStore';
+import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
+import { setModelWorld } from '@/stores/sceneMediatorStore';
 import type { ModelConfig } from '@/types/configurator';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
@@ -110,9 +107,18 @@ export default function ModelViewer({
       const finalMinZ = basePosition[2] - geometryDepth / 2;
       const finalMaxZ = finalMinZ + geometryDepth;
 
-      setModelBoundingBox(
-        { x: finalMinX, y: finalMinY, z: finalMinZ },
-        { x: finalMaxX, y: finalMaxY, z: finalMaxZ },
+      // Publish a world-aligned bounding box + base position to the scene
+      // mediator. This keeps environment-facing information separate from
+      // configurator-specific state (colors/dimensions) and enables camera
+      // and overlays to react without allowing configuration actions to
+      // mutate the environment.
+      setModelWorld(
+        {
+          min: { x: finalMinX, y: finalMinY, z: finalMinZ },
+          max: { x: finalMaxX, y: finalMaxY, z: finalMaxZ },
+        },
+        basePosition as [number, number, number],
+        modelConfig.scale ?? 1,
       );
 
       console.log(
@@ -161,20 +167,10 @@ export default function ModelViewer({
   // model config (basePosition[1]). This makes models with differing
   // pivots behave consistently: the model's bottom will sit at the
   // configured base height.
-  let finalY = basePosition[1];
-  if (boundingBox) {
-    // At the time the bounding box was computed the group was positioned
-    // using the basePosition. The box.min.y therefore equals (basePosition[1] + geometryMinY).
-    // To move the geometry so geometryMinY ends up at basePosition[1], the
-    // new group position must be: 2*basePosition[1] - box.min.y
-    finalY = 2 * basePosition[1] - boundingBox.min.y;
-  }
-
-  const finalPosition: [number, number, number] = [
-    basePosition[0],
-    finalY,
-    basePosition[2] + depthZOffset,
-  ];
+  // finalY previously used to compute a derived final position; the outer
+  // group intentionally keeps the basePosition as its Y so camera presets
+  // and other systems remain stable. Inner geometry offset is computed
+  // below (innerOffsetY) when a bounding box is available.
 
   // We wrap the actual geometry in an inner group so that the outer group's
   // position remains equal to `modelConfig.position`. Camera presets and
@@ -193,6 +189,7 @@ export default function ModelViewer({
   return (
     <group
       position={outerPosition}
+      rotation={modelConfig.rotation ?? [0, 0, 0]}
       onPointerMissed={handlePointerMissed}
       onClick={handleClick}
     >

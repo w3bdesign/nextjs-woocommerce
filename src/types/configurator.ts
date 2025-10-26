@@ -197,6 +197,8 @@ export interface ModelConfig {
 
   /** Optional: Position offset [x, y, z] for the model (default: [0, 0, 0]) */
   position?: [number, number, number];
+  /** Optional: Euler rotation (radians) to apply to the model [x, y, z] */
+  rotation?: [number, number, number];
 
   /** Optional: Dimension constraints for scaling */
   dimensions?: {

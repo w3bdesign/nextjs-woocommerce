@@ -1,4 +1,4 @@
-import type { ModelConfig } from '@/types/configurator';
+import type { CameraConfig, ModelConfig } from '@/types/configurator';
 import { calculateBaseDistance } from '@/utils/camera';
 import * as THREE from 'three';
 import { proxy } from 'valtio';
@@ -96,20 +96,24 @@ export const cameraState = proxy<CameraState>({
  */
 export const generateCameraPresets = (
   modelConfig: ModelConfig,
+  modelWorld?: { position: [number, number, number]; height: number },
 ): Record<CameraPresetId, CameraPreset> => {
-  // Extract model position (default to origin)
-  const modelPos = modelConfig.position || [0, 0, 0];
+  // Extract model position (default to origin). If a runtime-computed
+  // world state is available (from the scene mediator), prefer that.
+  const modelPos = modelWorld?.position || modelConfig.position || [0, 0, 0];
 
   // Calculate base distance from model's camera config
   const configuredPosition = modelConfig.camera?.position || [0, 0, 4];
   const baseDistance = calculateBaseDistance(configuredPosition);
 
-  // Prefer using the actual loaded bounding box (if available) to derive
-  // a more accurate target height. Fall back to modelConfig.dimensions
+  // Prefer using the actual loaded bounding box (if provided via modelWorld)
+  // to derive a more accurate target height. Fall back to modelConfig.dimensions
   // if the bounding box isn't available.
   let targetHeight = modelPos[1];
 
-  if (modelConfig.dimensions?.height) {
+  if (modelWorld && typeof modelWorld.height === 'number') {
+    targetHeight = modelPos[1] + modelWorld.height * TARGET_HEIGHT_RATIO;
+  } else if (modelConfig.dimensions?.height) {
     // For models with dimension config: look at configured ratio of the height
     // Height in cm * scale gives us the 3D units height
     const heightInUnits =
@@ -147,6 +151,58 @@ export const generateCameraPresets = (
       id: 'front-right',
       name: 'Elevated Three-Quarter Right',
       // 0.28π rad (≈50.4°) right, 0.47π rad (≈84.6°) from top
+      spherical: [
+        baseDistance,
+        -Math.PI * PRESET_THETA_ANGLE,
+        Math.PI * PRESET_PHI_ANGLE,
+      ],
+      target: [modelPos[0], targetHeight, modelPos[2]],
+    },
+  };
+};
+
+/**
+ * Generate camera presets using only a camera configuration and optional
+ * runtime model world state. This variant avoids depending on a full
+ * ModelConfig and is suitable for strictly separating environment logic
+ * from model configuration.
+ */
+export const generateCameraPresetsFromCamera = (
+  cameraConfig?: CameraConfig,
+  modelWorld?: { position: [number, number, number]; height: number },
+): Record<CameraPresetId, CameraPreset> => {
+  const modelPos = modelWorld?.position || [0, 0, 0];
+
+  const configuredPosition = cameraConfig?.position || [0, 0, 4];
+  const baseDistance = calculateBaseDistance(configuredPosition);
+
+  let targetHeight = modelPos[1];
+  if (modelWorld && typeof modelWorld.height === 'number') {
+    targetHeight = modelPos[1] + modelWorld.height * TARGET_HEIGHT_RATIO;
+  } else {
+    targetHeight = modelPos[1] + 0.2;
+  }
+
+  return {
+    'front-left': {
+      id: 'front-left',
+      name: 'Elevated Three-Quarter Left',
+      spherical: [
+        baseDistance,
+        Math.PI * PRESET_THETA_ANGLE,
+        Math.PI * PRESET_PHI_ANGLE,
+      ],
+      target: [modelPos[0], targetHeight, modelPos[2]],
+    },
+    front: {
+      id: 'front',
+      name: 'Frontal (Au Face)',
+      spherical: [baseDistance, 0, Math.PI * PRESET_PHI_ANGLE],
+      target: [modelPos[0], targetHeight, modelPos[2]],
+    },
+    'front-right': {
+      id: 'front-right',
+      name: 'Elevated Three-Quarter Right',
       spherical: [
         baseDistance,
         -Math.PI * PRESET_THETA_ANGLE,
