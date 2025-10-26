@@ -127,6 +127,7 @@ export default function ModelViewer({
       console.log(
         `📦 Bounding Box Y: [${box.min.y.toFixed(3)}, ${box.max.y.toFixed(3)}] (Height: ${(box.max.y - box.min.y).toFixed(3)})`,
       );
+      // Debug logs removed for production
     }
   });
 

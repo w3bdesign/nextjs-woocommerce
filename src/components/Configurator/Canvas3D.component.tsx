@@ -1,13 +1,8 @@
 'use client';
-import type {
-  CameraConfig,
-  ModelConfig,
-  RoomConfig,
-} from '@/types/configurator';
+import type { CameraConfig, RoomConfig } from '@/types/configurator';
 import { Environment } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
 import * as THREE from 'three';
 import CameraController from './CameraController.component';
 import WallSilhouette from './WallSilhouette.component';
@@ -197,16 +192,4 @@ export default function Canvas3D({
     </Canvas>
   );
 }
-
-// Warn in development if modelConfig is missing
-function useMissingModelConfigWarning(modelConfig?: ModelConfig) {
-  useEffect(() => {
-    if (!modelConfig && process.env.NODE_ENV === 'development') {
-      console.warn(
-        'Canvas3D: modelConfig not provided. Using basic OrbitControls without camera presets.',
-      );
-    }
-  }, [modelConfig]);
-}
-
-export { useMissingModelConfigWarning };
+export {};

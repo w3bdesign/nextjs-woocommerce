@@ -1,12 +1,11 @@
 import type { CameraConfig, ModelConfig } from '@/types/configurator';
-import { calculateBaseDistance } from '@/utils/camera';
+import { calculateBaseDistance, fitRadiusForFOV } from '@/utils/camera';
 import * as THREE from 'three';
 import { proxy } from 'valtio';
 
 /**
  * Configuration constants for camera behavior
  */
-const TARGET_HEIGHT_RATIO = 0.8; // Look at 80% of model height
 const PRESET_THETA_ANGLE = 0.17; // Horizontal angle: 0.2π rad (≈36°)
 const PRESET_PHI_ANGLE = 0.47; // Vertical angle: 0.47π rad (≈84.6°)
 
@@ -107,20 +106,19 @@ export const generateCameraPresets = (
   const baseDistance = calculateBaseDistance(configuredPosition);
 
   // Prefer using the actual loaded bounding box (if provided via modelWorld)
-  // to derive a more accurate target height. Fall back to modelConfig.dimensions
+  // to derive a more accurate target height. When a bounding box is available
+  // compute the center and add a small upward bias (5%) so framing looks
+  // natural for both tall and squat models. Fall back to modelConfig.dimensions
   // if the bounding box isn't available.
   let targetHeight = modelPos[1];
 
   if (modelWorld && typeof modelWorld.height === 'number') {
-    targetHeight = modelPos[1] + modelWorld.height * TARGET_HEIGHT_RATIO;
-  } else if (modelConfig.dimensions?.height) {
-    // For models with dimension config: look at configured ratio of the height
-    // Height in cm * scale gives us the 3D units height
-    const heightInUnits =
-      modelConfig.dimensions.height.default * (modelConfig.scale || 1);
-    targetHeight = modelPos[1] + heightInUnits * TARGET_HEIGHT_RATIO;
+    // If a runtime-computed position + height exists, prefer centering on
+    // the geometry's vertical center and add a small upward bias.
+    const centerY = modelPos[1] + modelWorld.height * 0.5;
+    targetHeight = centerY + modelWorld.height * 0.05; // 5% upward bias
   } else {
-    // For models without dimensions: simple offset
+    // Fallback: small offset above base position to give some vertical context
     targetHeight = modelPos[1] + 0.2;
   }
 
@@ -169,16 +167,48 @@ export const generateCameraPresets = (
  */
 export const generateCameraPresetsFromCamera = (
   cameraConfig?: CameraConfig,
-  modelWorld?: { position: [number, number, number]; height: number },
+  modelWorld?:
+    | {
+        position: [number, number, number];
+        height: number;
+        boundingBox?: {
+          min: { x: number; y: number; z: number };
+          max: { x: number; y: number; z: number };
+        };
+      }
+    | undefined,
+  aspect = 16 / 10,
 ): Record<CameraPresetId, CameraPreset> => {
   const modelPos = modelWorld?.position || [0, 0, 0];
 
-  const configuredPosition = cameraConfig?.position || [0, 0, 4];
-  const baseDistance = calculateBaseDistance(configuredPosition);
+  // Prefer to compute baseDistance from the bounding box when available
+  let baseDistance: number;
+  if (modelWorld?.boundingBox) {
+    const min = modelWorld.boundingBox.min;
+    const max = modelWorld.boundingBox.max;
+    const sizeX = Math.abs(max.x - min.x);
+    const sizeY = Math.abs(max.y - min.y);
+    const sizeZ = Math.abs(max.z - min.z);
 
+    // Use the bounding box width/height to compute a fitting radius
+    // Use the camera fov from config if provided, otherwise fall back to 45deg
+    const fov = cameraConfig?.fov ?? 45;
+    // Use the provided aspect (from CameraController) or default above
+    // Use fit helper to compute radius that fits the box
+    baseDistance = fitRadiusForFOV([sizeX, sizeY, sizeZ], fov, aspect);
+  } else {
+    const configuredPosition = cameraConfig?.position || [0, 0, 4];
+    baseDistance = calculateBaseDistance(
+      configuredPosition as [number, number, number],
+    );
+  }
+
+  // Compute a target height: prefer centering on the bbox and add a small
+  // upward bias (5%) for pleasing framing. Fall back to a small offset.
   let targetHeight = modelPos[1];
   if (modelWorld && typeof modelWorld.height === 'number') {
-    targetHeight = modelPos[1] + modelWorld.height * TARGET_HEIGHT_RATIO;
+    const centerY = modelPos[1] + modelWorld.height * 0.5;
+    targetHeight = centerY + modelWorld.height * 0.05; // 5% upward bias
   } else {
     targetHeight = modelPos[1] + 0.2;
   }

@@ -20,6 +20,10 @@ import { useSnapshot } from 'valtio';
  */
 const ANIMATION_LERP_SPEED = 5; // Multiplier for lerp speed
 const ANIMATION_COMPLETION_THRESHOLD = 0.001; // Distance threshold for animation completion
+// Debounce & snap configuration
+const MEDIATOR_DEBOUNCE_MS = 250; // ms to debounce mediator updates
+const CENTER_SHIFT_THRESHOLD = 0.05; // relative (5%) change in center before snapping
+const SIZE_CHANGE_THRESHOLD = 0.05; // relative (5%) change in size before snapping
 
 interface CameraControllerProps {
   /** Optional camera configuration (preferred over model-driven props) */
@@ -49,7 +53,7 @@ export default function CameraController({
   cameraConfig,
   baseDistance,
 }: CameraControllerProps) {
-  const { camera, gl } = useThree();
+  const { camera, gl, size } = useThree();
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const snap = useSnapshot(cameraState);
   const sceneSnap = useSnapshot(sceneMediator);
@@ -77,8 +81,119 @@ export default function CameraController({
         }
       : undefined;
 
-    return generateCameraPresetsFromCamera(cameraConfig, modelWorldArg);
-  }, [cameraConfig, sceneSnap.modelWorld]);
+    // Pass actual canvas aspect ratio so fitting math is accurate per viewport
+    const aspect =
+      size?.width && size?.height ? size.width / size.height : undefined;
+    return generateCameraPresetsFromCamera(cameraConfig, modelWorldArg, aspect);
+  }, [cameraConfig, sceneSnap.modelWorld, size.width, size.height]);
+
+  // Debounced reaction to mediator modelWorld updates.
+  // Only auto-snap when changes exceed configured thresholds and user is not interacting.
+  const lastModelWorldRef = useRef<typeof sceneSnap.modelWorld | null>(null);
+  const mediatorDebounceRef = useRef<number | null>(null);
+
+  const computeBoxCenterAndSize = (
+    mw: NonNullable<typeof sceneSnap.modelWorld>,
+  ) => {
+    const min = mw.boundingBox.min;
+    const max = mw.boundingBox.max;
+    const center = new THREE.Vector3(
+      (min.x + max.x) / 2,
+      (min.y + max.y) / 2,
+      (min.z + max.z) / 2,
+    );
+    const size = new THREE.Vector3(max.x - min.x, max.y - min.y, max.z - min.z);
+    const diag = size.length();
+    return { center, size, diag };
+  };
+
+  // Pick nearest preset id by comparing camera distance to preset positions
+  const pickNearestPresetId = (): string => {
+    const cameraPos = camera.position.clone();
+    let bestId = 'front';
+    let bestDist = Infinity;
+    (Object.keys(presets) as Array<keyof typeof presets>).forEach((id) => {
+      const p = presets[id];
+      const pos = sphericalToCartesian(p as CameraPreset);
+      const d = cameraPos.distanceTo(pos);
+      if (d < bestDist) {
+        bestDist = d;
+        bestId = id as string;
+      }
+    });
+    return bestId;
+  };
+
+  useEffect(() => {
+    const mw = sceneSnap.modelWorld;
+    // Clear any previous debounce
+    if (mediatorDebounceRef.current !== null) {
+      clearTimeout(mediatorDebounceRef.current);
+      mediatorDebounceRef.current = null;
+    }
+
+    if (!mw) {
+      // nothing to do, but update lastModelWorldRef
+      lastModelWorldRef.current = null;
+      return;
+    }
+
+    // Schedule debounced handling
+    mediatorDebounceRef.current = window.setTimeout(() => {
+      // If user is currently controlling the camera, skip auto-snapping for now
+      if (snap.isUserControlling) {
+        // leave lastModelWorldRef as-is so we compare against the previous once user stops
+        mediatorDebounceRef.current = null;
+        return;
+      }
+
+      const prev = lastModelWorldRef.current;
+      const next = mw;
+
+      // First-time availability -> animate to a sensible preset
+      if (!prev) {
+        lastModelWorldRef.current = next;
+        // choose nearest preset (keeps user's current orientation sensible)
+        const id = pickNearestPresetId();
+        animateToPreset(id);
+        mediatorDebounceRef.current = null;
+        return;
+      }
+
+      // Compute centers and sizes to decide whether to snap
+      const prevMetrics = computeBoxCenterAndSize(prev);
+      const nextMetrics = computeBoxCenterAndSize(next);
+
+      const centerShift = prevMetrics.center.distanceTo(nextMetrics.center);
+      const centerRel =
+        prevMetrics.diag > 0 ? centerShift / prevMetrics.diag : centerShift;
+
+      const sizeRelChange =
+        Math.abs(nextMetrics.diag - prevMetrics.diag) /
+        Math.max(prevMetrics.diag, 1e-6);
+
+      const shouldSnap =
+        centerRel > CENTER_SHIFT_THRESHOLD ||
+        sizeRelChange > SIZE_CHANGE_THRESHOLD;
+
+      if (shouldSnap && !isAnimating.current) {
+        const id = pickNearestPresetId();
+        animateToPreset(id);
+      }
+
+      lastModelWorldRef.current = next;
+      mediatorDebounceRef.current = null;
+    }, MEDIATOR_DEBOUNCE_MS);
+
+    return () => {
+      if (mediatorDebounceRef.current !== null) {
+        clearTimeout(mediatorDebounceRef.current);
+        mediatorDebounceRef.current = null;
+      }
+    };
+    // Intentionally depend on sceneSnap.modelWorld and snap.isUserControlling
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sceneSnap.modelWorld, snap.isUserControlling]);
 
   // Calculate base distance from model config or prop
   const calculatedBaseDistance = useMemo(() => {
