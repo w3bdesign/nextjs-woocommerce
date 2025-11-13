@@ -1,3 +1,4 @@
+import { CAMERA_CONFIG } from '@/config/camera.config';
 import {
   cameraState,
   endCameraControl,
@@ -18,16 +19,6 @@ import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { useSnapshot } from 'valtio';
-
-/**
- * Animation configuration constants
- */
-const ANIMATION_LERP_SPEED = 5; // Multiplier for lerp speed
-const ANIMATION_COMPLETION_THRESHOLD = 0.001; // Distance threshold for animation completion
-// Debounce & snap configuration
-const MEDIATOR_DEBOUNCE_MS = 250; // ms to debounce mediator updates
-const CENTER_SHIFT_THRESHOLD = 0.05; // relative (5%) change in center before snapping
-const SIZE_CHANGE_THRESHOLD = 0.05; // relative (5%) change in size before snapping
 
 interface CameraControllerProps {
   /** Optional camera configuration (preferred over model-driven props) */
@@ -173,8 +164,8 @@ export default function CameraController({
         Math.max(prevMetrics.diag, 1e-6);
 
       const shouldSnap =
-        centerRel > CENTER_SHIFT_THRESHOLD ||
-        sizeRelChange > SIZE_CHANGE_THRESHOLD;
+        centerRel > CAMERA_CONFIG.snapBack.CENTER_SHIFT_THRESHOLD ||
+        sizeRelChange > CAMERA_CONFIG.snapBack.SIZE_CHANGE_THRESHOLD;
 
       if (shouldSnap && !isAnimating.current) {
         const id = pickNearestPresetId();
@@ -183,7 +174,7 @@ export default function CameraController({
 
       lastModelWorldRef.current = next;
       mediatorDebounceRef.current = null;
-    }, MEDIATOR_DEBOUNCE_MS);
+    }, CAMERA_CONFIG.snapBack.MEDIATOR_DEBOUNCE_MS);
 
     return () => {
       if (mediatorDebounceRef.current !== null) {
@@ -277,7 +268,7 @@ export default function CameraController({
       !snap.isUserControlling
     ) {
       const lerpFactor = Math.min(
-        (delta / snap.transitionDuration) * ANIMATION_LERP_SPEED,
+        (delta / snap.transitionDuration) * CAMERA_CONFIG.animation.LERP_SPEED,
         1,
       );
 
@@ -300,8 +291,8 @@ export default function CameraController({
       );
 
       if (
-        positionDistance < ANIMATION_COMPLETION_THRESHOLD &&
-        targetDistance < ANIMATION_COMPLETION_THRESHOLD
+        positionDistance < CAMERA_CONFIG.animation.COMPLETION_THRESHOLD &&
+        targetDistance < CAMERA_CONFIG.animation.COMPLETION_THRESHOLD
       ) {
         // Animation complete
         isAnimating.current = false;
@@ -382,23 +373,26 @@ export default function CameraController({
     <OrbitControls
       ref={controlsRef}
       makeDefault
-      // Polar angle constraints (vertical rotation) - very loose for maximum freedom
-      minPolarAngle={0} // Allow looking from directly above
-      maxPolarAngle={Math.PI / 2} // Only prevent looking from below (horizontal is the limit)
-      // Zoom constraints - prevent zooming out beyond default
-      // Clamp minDistance to avoid extreme zoom-in and allow some zoom out
-      minDistance={Math.max(calculatedBaseDistance * 0.35, 0.8)}
-      maxDistance={calculatedBaseDistance * 1.5}
+      // Polar angle constraints (vertical rotation)
+      minPolarAngle={CAMERA_CONFIG.rotation.MIN_POLAR_ANGLE}
+      maxPolarAngle={CAMERA_CONFIG.rotation.MAX_POLAR_ANGLE}
+      // Zoom constraints
+      minDistance={Math.max(
+        calculatedBaseDistance * CAMERA_CONFIG.zoom.MIN_DISTANCE_MULTIPLIER,
+        CAMERA_CONFIG.zoom.MIN_ABSOLUTE_DISTANCE,
+      )}
+      maxDistance={
+        calculatedBaseDistance * CAMERA_CONFIG.zoom.MAX_DISTANCE_MULTIPLIER
+      }
       // Azimuthal angle constraints (horizontal rotation)
-      // No constraints - allow full 360° rotation
-      minAzimuthAngle={-Infinity}
-      maxAzimuthAngle={Infinity}
+      minAzimuthAngle={CAMERA_CONFIG.rotation.MIN_AZIMUTH_ANGLE}
+      maxAzimuthAngle={CAMERA_CONFIG.rotation.MAX_AZIMUTH_ANGLE}
       // Interaction settings
       enableZoom={true}
-      enablePan={false} // Disable panning to keep object centered
-      enableDamping={false} // Disable damping for immediate response
-      zoomSpeed={0.8} // Zoom speed
-      rotateSpeed={1.0} // Full rotation speed for smooth control
+      enablePan={CAMERA_CONFIG.controls.ENABLE_PAN}
+      enableDamping={CAMERA_CONFIG.controls.ENABLE_DAMPING}
+      zoomSpeed={CAMERA_CONFIG.controls.ZOOM_SPEED}
+      rotateSpeed={CAMERA_CONFIG.controls.ROTATE_SPEED}
       // Event handlers for snap-back behavior
       onStart={handleStart}
       onEnd={handleEnd}

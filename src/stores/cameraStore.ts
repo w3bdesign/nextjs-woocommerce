@@ -1,14 +1,9 @@
+import { CAMERA_CONFIG } from '@/config/camera.config';
 import type { CameraConfig, ModelConfig } from '@/types/configurator';
 import { calculateBoundingBoxSize } from '@/utils/boundingBox';
 import { calculateBaseDistance, fitRadiusForFOV } from '@/utils/camera';
 import * as THREE from 'three';
 import { proxy } from 'valtio';
-
-/**
- * Configuration constants for camera behavior
- */
-const PRESET_THETA_ANGLE = 0.17; // Horizontal angle: 0.2π rad (≈36°)
-const PRESET_PHI_ANGLE = 0.47; // Vertical angle: 0.47π rad (≈84.6°)
 
 /**
  * Spherical coordinates tuple with named elements
@@ -82,7 +77,7 @@ export const cameraState = proxy<CameraState>({
   isUserControlling: false,
   autoSnapEnabled: true,
   snapTimeout: null,
-  snapDelay: 500, // Wait 500ms after user stops moving
+  snapDelay: CAMERA_CONFIG.snapBack.DELAY_MS,
   transitionDuration: 1.0, // 1s for smooth transitions
   lastSnapTimestamp: 0, // Timestamp of last snap event
 });
@@ -134,8 +129,8 @@ export const generateCameraPresets = (
       // 0.28π rad (≈50.4°) left, 0.47π rad (≈84.6°) from top
       spherical: [
         baseDistance,
-        Math.PI * PRESET_THETA_ANGLE,
-        Math.PI * PRESET_PHI_ANGLE,
+        Math.PI * CAMERA_CONFIG.angles.THETA,
+        Math.PI * CAMERA_CONFIG.angles.PHI,
       ],
       target: [modelPos[0], targetHeight, modelPos[2]],
     },
@@ -143,7 +138,7 @@ export const generateCameraPresets = (
       id: 'front',
       name: 'Frontal (Au Face)',
       // Dead center, 0.47π rad (≈84.6°) from top
-      spherical: [baseDistance, 0, Math.PI * PRESET_PHI_ANGLE],
+      spherical: [baseDistance, 0, Math.PI * CAMERA_CONFIG.angles.PHI],
       target: [modelPos[0], targetHeight, modelPos[2]],
     },
     'front-right': {
@@ -152,8 +147,8 @@ export const generateCameraPresets = (
       // 0.28π rad (≈50.4°) right, 0.47π rad (≈84.6°) from top
       spherical: [
         baseDistance,
-        -Math.PI * PRESET_THETA_ANGLE,
-        Math.PI * PRESET_PHI_ANGLE,
+        -Math.PI * CAMERA_CONFIG.angles.THETA,
+        Math.PI * CAMERA_CONFIG.angles.PHI,
       ],
       target: [modelPos[0], targetHeight, modelPos[2]],
     },
@@ -220,15 +215,15 @@ export const generateCameraPresetsFromCamera = (
       name: 'Elevated Three-Quarter Left',
       spherical: [
         baseDistance,
-        Math.PI * PRESET_THETA_ANGLE,
-        Math.PI * PRESET_PHI_ANGLE,
+        Math.PI * CAMERA_CONFIG.angles.THETA,
+        Math.PI * CAMERA_CONFIG.angles.PHI,
       ],
       target: [modelPos[0], targetHeight, modelPos[2]],
     },
     front: {
       id: 'front',
       name: 'Frontal (Au Face)',
-      spherical: [baseDistance, 0, Math.PI * PRESET_PHI_ANGLE],
+      spherical: [baseDistance, 0, Math.PI * CAMERA_CONFIG.angles.PHI],
       target: [modelPos[0], targetHeight, modelPos[2]],
     },
     'front-right': {
@@ -236,8 +231,8 @@ export const generateCameraPresetsFromCamera = (
       name: 'Elevated Three-Quarter Right',
       spherical: [
         baseDistance,
-        -Math.PI * PRESET_THETA_ANGLE,
-        Math.PI * PRESET_PHI_ANGLE,
+        -Math.PI * CAMERA_CONFIG.angles.THETA,
+        Math.PI * CAMERA_CONFIG.angles.PHI,
       ],
       target: [modelPos[0], targetHeight, modelPos[2]],
     },

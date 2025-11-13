@@ -30,66 +30,48 @@ export const CABINET_CONFIG: ModelConfig = {
     },
   ],
 
-  // Interactive parts that can be toggled
+  // Interactive parts - simplified to visibility-only toggling
   // Each door has 2 meshes (closed and open) that share a stateKey
-  // When state is FALSE (closed): show closed mesh, hide open mesh
-  // When state is TRUE (open): hide closed mesh, show open mesh
   interactiveParts: [
-    // Left door - closed mesh (visible when state = false/closed)
+    // Left door - closed mesh (visible when door is closed)
     {
       nodeName: 'Door_Closed_Left_m_cabinet_0',
       materialName: 'm_cabinet',
-      displayName: 'Left Door',
-      stateKey: 'leftDoor', // Shared state key
+      displayName: 'Left Door Closed',
+      stateKey: 'leftDoor',
       group: 'doors',
-      defaultState: false, // FALSE = closed (show this mesh)
-      visibilityToggle: true,
-      invertVisibility: true, // Show when INACTIVE (closed)
-      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      animationDuration: 300,
+      defaultState: false, // Start closed
+      visibleWhenActive: false, // Show when state is false (closed)
     },
-    // Left door - open mesh (visible when state = true/open)
+    // Left door - open mesh (visible when door is open)
     {
       nodeName: 'Door_Left_m_cabinet_0',
       materialName: 'm_cabinet',
-      displayName: 'Left Door',
-      stateKey: 'leftDoor', // Same state key as closed mesh
+      displayName: 'Left Door Open',
+      stateKey: 'leftDoor',
       group: 'doors',
-      defaultState: false, // FALSE = closed (hide this mesh)
-      visibilityToggle: true,
-      invertVisibility: false, // Show when ACTIVE (open)
-      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      animationDuration: 300,
+      defaultState: false, // Start closed
+      visibleWhenActive: true, // Show when state is true (open)
     },
-    // Right door - closed mesh
+    // Right door - closed mesh (visible when door is closed)
     {
       nodeName: 'Door_Closed_Right_m_cabinet_0',
       materialName: 'm_cabinet',
-      displayName: 'Right Door',
+      displayName: 'Right Door Closed',
       stateKey: 'rightDoor',
       group: 'doors',
-      defaultState: false, // FALSE = closed
-      visibilityToggle: true,
-      invertVisibility: true, // Show when closed
-      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      animationDuration: 300,
+      defaultState: false, // Start closed
+      visibleWhenActive: false, // Show when state is false (closed)
     },
-    // Right door - open mesh
+    // Right door - open mesh (visible when door is open)
     {
       nodeName: 'Door_Right_m_cabinet_0',
       materialName: 'm_cabinet',
-      displayName: 'Right Door',
+      displayName: 'Right Door Open',
       stateKey: 'rightDoor',
       group: 'doors',
-      defaultState: false, // FALSE = closed
-      visibilityToggle: true,
-      invertVisibility: false, // Show when open
-      inactiveState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      activeState: { rotation: [0, 0, 0], position: [0, 0, 0] },
-      animationDuration: 300,
+      defaultState: false, // Start closed
+      visibleWhenActive: true, // Show when state is true (open)
     },
   ],
 

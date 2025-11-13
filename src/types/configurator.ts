@@ -114,20 +114,8 @@ export interface ModelPart {
 }
 
 /**
- * Animation state definition for interactive parts (e.g., door open/close)
- */
-export interface AnimationState {
-  /** Rotation in radians [x, y, z] */
-  rotation?: [number, number, number];
-  /** Position offset [x, y, z] */
-  position?: [number, number, number];
-  /** Scale [x, y, z] or uniform scale */
-  scale?: number | [number, number, number];
-}
-
-/**
- * Defines an interactive part that can be toggled or animated
- * Examples: doors that open/close, drawers that slide out, lids that lift
+ * Defines an interactive part that can be toggled (e.g., doors, drawers)
+ * Simplified to visibility-only toggling - no complex animations
  */
 export interface InteractivePart {
   /** The node name in the GLTF/GLB file */
@@ -139,7 +127,7 @@ export interface InteractivePart {
   /** User-friendly display name shown in the UI */
   displayName: string;
 
-  /** Group/category for the interactive part (e.g., "left-door", "right-door") */
+  /** Group/category for the interactive part (e.g., "doors") */
   group?: string;
 
   /** State key to use (defaults to nodeName). Share key between parts to link them */
@@ -148,20 +136,12 @@ export interface InteractivePart {
   /** Default state (true = active/open, false = inactive/closed) */
   defaultState: boolean;
 
-  /** Animation/transform when in "active" state (e.g., door open) */
-  activeState: AnimationState;
-
-  /** Animation/transform when in "inactive" state (e.g., door closed) */
-  inactiveState: AnimationState;
-
-  /** Animation duration in milliseconds (default: 500ms) */
-  animationDuration?: number;
-
-  /** Whether this part should be visible in the given state */
-  visibilityToggle?: boolean;
-
-  /** If true, inverts visibility logic (show when inactive, hide when active) */
-  invertVisibility?: boolean;
+  /**
+   * Whether this part should be visible when state is ACTIVE (true)
+   * - true = show when open/active
+   * - false = show when closed/inactive
+   */
+  visibleWhenActive: boolean;
 }
 
 /**
