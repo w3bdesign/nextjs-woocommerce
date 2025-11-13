@@ -1,17 +1,14 @@
 import { CAMERA_CONFIG } from '@/config/camera.config';
 import {
-  cameraState,
-  endCameraControl,
-  generateCameraPresetsFromCamera,
-  startCameraControl,
-  type CameraPreset,
-} from '@/stores/cameraStore';
+  calculateLerpFactor,
+  isAnimationComplete,
+  useCameraAnimation,
+} from '@/hooks/useCameraAnimation';
+import { useCameraPresets } from '@/hooks/useCameraPresets';
+import { useCameraSnapBack } from '@/hooks/useCameraSnapBack';
+import { cameraState } from '@/stores/cameraStore';
 import { sceneMediator } from '@/stores/sceneMediatorStore';
 import type { CameraConfig } from '@/types/configurator';
-import {
-  calculateBoundingBoxCenter,
-  calculateBoundingBoxSize,
-} from '@/utils/boundingBox';
 import { calculateBaseDistance } from '@/utils/camera';
 import { OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -56,135 +53,53 @@ export default function CameraController({
   // Track current spherical position for snap-back calculation
   const currentSpherical = useRef(new THREE.Spherical());
 
-  // Track if animation is in progress to prevent control conflicts
-  const isAnimating = useRef(false);
+  // Calculate aspect ratio, fallback to default if size not available yet
+  const aspect = useMemo(
+    () => (size?.width && size?.height ? size.width / size.height : 16 / 10),
+    [size.width, size.height],
+  );
 
-  // Animation state - stores target position and target for smooth interpolation
-  const animationTarget = useRef<{
-    position: THREE.Vector3;
-    target: THREE.Vector3;
-  } | null>(null);
-
-  // Generate presets based on camera configuration and, when available,
-  // runtime-computed model geometry from the mediator. This avoids
-  // passing full model configs into environment components.
-  const presets = useMemo(() => {
-    const modelWorldArg = sceneSnap.modelWorld
-      ? {
-          position: sceneSnap.modelWorld.position as [number, number, number],
-          height: sceneSnap.modelWorld.height,
-        }
-      : undefined;
-
-    // Pass actual canvas aspect ratio so fitting math is accurate per viewport
-    const aspect =
-      size?.width && size?.height ? size.width / size.height : undefined;
-    return generateCameraPresetsFromCamera(cameraConfig, modelWorldArg, aspect);
-  }, [cameraConfig, sceneSnap.modelWorld, size.width, size.height]);
-
-  // Debounced reaction to mediator modelWorld updates.
-  // Only auto-snap when changes exceed configured thresholds and user is not interacting.
-  const lastModelWorldRef = useRef<typeof sceneSnap.modelWorld | null>(null);
-  const mediatorDebounceRef = useRef<number | null>(null);
-
-  const computeBoxCenterAndSize = (
-    mw: NonNullable<typeof sceneSnap.modelWorld>,
-  ) => {
-    const center = calculateBoundingBoxCenter(mw.boundingBox);
-    const size = calculateBoundingBoxSize(mw.boundingBox);
-    const centerVec = new THREE.Vector3(center.x, center.y, center.z);
-    const sizeVec = new THREE.Vector3(size.width, size.height, size.depth);
-    const diag = sizeVec.length();
-    return { center: centerVec, size: sizeVec, diag };
-  };
-
-  // Pick nearest preset id by comparing camera distance to preset positions
-  const pickNearestPresetId = (): string => {
-    const cameraPos = camera.position.clone();
-    let bestId = 'front';
-    let bestDist = Infinity;
-    (Object.keys(presets) as Array<keyof typeof presets>).forEach((id) => {
-      const p = presets[id];
-      const pos = sphericalToCartesian(p as CameraPreset);
-      const d = cameraPos.distanceTo(pos);
-      if (d < bestDist) {
-        bestDist = d;
-        bestId = id as string;
-      }
-    });
-    return bestId;
-  };
-
-  useEffect(() => {
-    const mw = sceneSnap.modelWorld;
-    // Clear any previous debounce
-    if (mediatorDebounceRef.current !== null) {
-      clearTimeout(mediatorDebounceRef.current);
-      mediatorDebounceRef.current = null;
-    }
-
-    if (!mw) {
-      // nothing to do, but update lastModelWorldRef
-      lastModelWorldRef.current = null;
-      return;
-    }
-
-    // Schedule debounced handling
-    mediatorDebounceRef.current = window.setTimeout(() => {
-      // If user is currently controlling the camera, skip auto-snapping for now
-      if (snap.isUserControlling) {
-        // leave lastModelWorldRef as-is so we compare against the previous once user stops
-        mediatorDebounceRef.current = null;
-        return;
-      }
-
-      const prev = lastModelWorldRef.current;
-      const next = mw;
-
-      // First-time availability -> animate to a sensible preset
-      if (!prev) {
-        lastModelWorldRef.current = next;
-        // choose nearest preset (keeps user's current orientation sensible)
-        const id = pickNearestPresetId();
-        animateToPreset(id);
-        mediatorDebounceRef.current = null;
-        return;
-      }
-
-      // Compute centers and sizes to decide whether to snap
-      const prevMetrics = computeBoxCenterAndSize(prev);
-      const nextMetrics = computeBoxCenterAndSize(next);
-
-      const centerShift = prevMetrics.center.distanceTo(nextMetrics.center);
-      const centerRel =
-        prevMetrics.diag > 0 ? centerShift / prevMetrics.diag : centerShift;
-
-      const sizeRelChange =
-        Math.abs(nextMetrics.diag - prevMetrics.diag) /
-        Math.max(prevMetrics.diag, 1e-6);
-
-      const shouldSnap =
-        centerRel > CAMERA_CONFIG.snapBack.CENTER_SHIFT_THRESHOLD ||
-        sizeRelChange > CAMERA_CONFIG.snapBack.SIZE_CHANGE_THRESHOLD;
-
-      if (shouldSnap && !isAnimating.current) {
-        const id = pickNearestPresetId();
-        animateToPreset(id);
-      }
-
-      lastModelWorldRef.current = next;
-      mediatorDebounceRef.current = null;
-    }, CAMERA_CONFIG.snapBack.MEDIATOR_DEBOUNCE_MS);
-
-    return () => {
-      if (mediatorDebounceRef.current !== null) {
-        clearTimeout(mediatorDebounceRef.current);
-        mediatorDebounceRef.current = null;
-      }
+  // Prepare modelWorld argument - exclude boundingBox to avoid fitRadiusForFOV calculation
+  // This matches the original behavior before the refactor
+  const modelWorldArg = useMemo(() => {
+    if (!sceneSnap.modelWorld) return null;
+    return {
+      position: sceneSnap.modelWorld.position,
+      height: sceneSnap.modelWorld.height,
+      // boundingBox intentionally excluded - see git history (reverted in a5b1a83e)
     };
-    // Intentionally depend on sceneSnap.modelWorld and snap.isUserControlling
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sceneSnap.modelWorld, snap.isUserControlling]);
+  }, [sceneSnap.modelWorld]);
+
+  // Use camera presets hook for preset generation and coordinate conversion
+  const { presets, sphericalToCartesian } = useCameraPresets(
+    cameraConfig,
+    modelWorldArg,
+    aspect,
+  );
+
+  // Use camera animation hook for managing animation state
+  const { animationTarget, isAnimating, animateToPreset, cancelAnimation } =
+    useCameraAnimation({
+      presets,
+      sphericalToCartesian,
+      activePreset: snap.activePreset,
+      lastSnapTimestamp: snap.lastSnapTimestamp,
+      isUserControlling: snap.isUserControlling,
+      transitionDuration: snap.transitionDuration,
+    });
+
+  // Use snap-back hook for handling user interaction and model changes
+  const { handleStart, handleEnd } = useCameraSnapBack({
+    presets,
+    sphericalToCartesian,
+    cameraPosition: camera.position,
+    currentSpherical,
+    modelWorld: sceneSnap.modelWorld,
+    isUserControlling: snap.isUserControlling,
+    isAnimating,
+    animateToPreset,
+    cancelAnimation,
+  });
 
   // Calculate base distance from model config or prop
   const calculatedBaseDistance = useMemo(() => {
@@ -193,65 +108,6 @@ export default function CameraController({
     const configuredPosition = cameraConfig?.position || [0, 0, 4];
     return calculateBaseDistance(configuredPosition);
   }, [baseDistance, cameraConfig?.position]);
-
-  /**
-   * Convert spherical coordinates to cartesian position
-   */
-  const sphericalToCartesian = (preset: CameraPreset): THREE.Vector3 => {
-    const [radius, theta, phi] = preset.spherical;
-    const [tx, ty, tz] = preset.target;
-
-    const spherical = new THREE.Spherical(radius, phi, theta);
-    const offset = new THREE.Vector3().setFromSpherical(spherical);
-
-    return new THREE.Vector3(tx + offset.x, ty + offset.y, tz + offset.z);
-  };
-
-  /**
-   * Animate camera to a specific preset with smooth interpolation
-   * Sets the animation target which will be interpolated in useFrame
-   */
-  const animateToPreset = (presetId: string) => {
-    const preset = presets[presetId as keyof typeof presets];
-    if (!preset || !controlsRef.current) return;
-
-    const targetPosition = sphericalToCartesian(preset);
-    const targetTarget = new THREE.Vector3(...preset.target);
-
-    // Set animation target for useFrame to interpolate
-    animationTarget.current = {
-      position: targetPosition,
-      target: targetTarget,
-    };
-
-    isAnimating.current = true;
-  };
-
-  /**
-   * React to preset changes from store
-   * Animates to nearest preset after user stops dragging (snap-back)
-   */
-  const previousSnapTimestamp = useRef(snap.lastSnapTimestamp);
-
-  useEffect(() => {
-    // Animate when:
-    // 1. lastSnapTimestamp changed (a snap event just happened)
-    // 2. User is not currently controlling the camera (finished dragging)
-    // 3. Not already animating
-    // We use lastSnapTimestamp instead of activePreset comparison to handle
-    // the case where we snap to the same preset twice in a row
-    if (
-      snap.activePreset &&
-      snap.lastSnapTimestamp !== previousSnapTimestamp.current &&
-      !snap.isUserControlling &&
-      !isAnimating.current
-    ) {
-      animateToPreset(snap.activePreset);
-      previousSnapTimestamp.current = snap.lastSnapTimestamp;
-    }
-    // animateToPreset is stable, no need to include in deps
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snap.lastSnapTimestamp, snap.isUserControlling]);
 
   /**
    * Update spherical coordinates and handle smooth animation
@@ -267,10 +123,7 @@ export default function CameraController({
       animationTarget.current &&
       !snap.isUserControlling
     ) {
-      const lerpFactor = Math.min(
-        (delta / snap.transitionDuration) * CAMERA_CONFIG.animation.LERP_SPEED,
-        1,
-      );
+      const lerpFactor = calculateLerpFactor(delta, snap.transitionDuration);
 
       // Interpolate camera position
       camera.position.lerp(animationTarget.current.position, lerpFactor);
@@ -290,13 +143,9 @@ export default function CameraController({
         animationTarget.current.target,
       );
 
-      if (
-        positionDistance < CAMERA_CONFIG.animation.COMPLETION_THRESHOLD &&
-        targetDistance < CAMERA_CONFIG.animation.COMPLETION_THRESHOLD
-      ) {
+      if (isAnimationComplete(positionDistance, targetDistance)) {
         // Animation complete
-        isAnimating.current = false;
-        animationTarget.current = null;
+        cancelAnimation();
       }
 
       return; // Skip spherical calculation during animation
@@ -304,8 +153,7 @@ export default function CameraController({
 
     // If user is controlling, cancel any ongoing animation
     if (snap.isUserControlling && isAnimating.current) {
-      isAnimating.current = false;
-      animationTarget.current = null;
+      cancelAnimation();
     }
 
     // Update spherical coordinates for snap-back calculation
@@ -316,27 +164,6 @@ export default function CameraController({
       currentSpherical.current.setFromVector3(offset);
     }
   });
-
-  /**
-   * Event handlers for user interaction
-   */
-  const handleStart = () => {
-    // ALWAYS start user control, even if animating
-    // This will cancel any ongoing animation via useFrame check
-    startCameraControl();
-
-    // Force cancel animation immediately
-    if (isAnimating.current) {
-      isAnimating.current = false;
-      animationTarget.current = null;
-    }
-  };
-
-  const handleEnd = () => {
-    // ALWAYS trigger snap-back when user releases
-    // The endCameraControl function will handle the timeout properly
-    endCameraControl(currentSpherical.current, presets);
-  };
 
   // Get initial preset position
   const initialPreset = presets[snap.activePreset || 'front-left'];
