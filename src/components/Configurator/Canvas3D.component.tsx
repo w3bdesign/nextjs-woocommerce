@@ -1,5 +1,5 @@
 'use client';
-import type { CameraConfig, RoomConfig } from '@/types/configurator';
+import type { CameraConfig } from '@/types/configurator';
 import { Environment } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import type { ReactNode } from 'react';
@@ -8,69 +8,21 @@ import CameraController from './CameraController.component';
 import WallSilhouette from './WallSilhouette.component';
 
 /**
- * Default room presets for different aesthetic styles
+ * Default room configuration for the 3D scene
+ * Modern studio aesthetic with neutral colors and balanced lighting
  */
-const ROOM_PRESETS: Record<string, RoomConfig> = {
-  'modern-studio': {
-    id: 'modern-studio',
-    name: 'Modern Studio',
-    floorColor: '#e0ddd8',
-    wallColor: '#e8e8e8',
-    ambientLightIntensity: 2.8,
-    directionalLightIntensity: 5.5,
-    directionalLightPosition: [2, 6, 2],
-    secondaryLightIntensity: 0.8,
-    secondaryLightPosition: [-5, 3, -5],
-    environmentPreset: 'none',
-    wallDepth: -3,
-    floorRoughness: 0.8,
-    wallRoughness: 0.9,
-  },
-  'bright-minimal': {
-    id: 'bright-minimal',
-    name: 'Bright Minimal',
-    floorColor: '#f5f5f5',
-    wallColor: '#fafafa',
-    ambientLightIntensity: 3.2,
-    directionalLightIntensity: 4.5,
-    directionalLightPosition: [3, 7, 3],
-    secondaryLightIntensity: 1.2,
-    secondaryLightPosition: [-4, 4, -4],
-    environmentPreset: 'apartment',
-    wallDepth: -3.5,
-    floorRoughness: 0.7,
-    wallRoughness: 0.85,
-  },
-  'warm-ambient': {
-    id: 'warm-ambient',
-    name: 'Warm Ambient',
-    floorColor: '#d4c9c1',
-    wallColor: '#ede8e3',
-    ambientLightIntensity: 2.5,
-    directionalLightIntensity: 6,
-    directionalLightPosition: [2.5, 6.5, 2.5],
-    secondaryLightIntensity: 1,
-    secondaryLightPosition: [-5, 3, -5],
-    environmentPreset: 'warehouse',
-    wallDepth: -3,
-    floorRoughness: 0.85,
-    wallRoughness: 0.88,
-  },
-  professional: {
-    id: 'professional',
-    name: 'Professional',
-    floorColor: '#cccccc',
-    wallColor: '#e0e0e0',
-    ambientLightIntensity: 3,
-    directionalLightIntensity: 5,
-    directionalLightPosition: [2, 6, 2],
-    secondaryLightIntensity: 1.2,
-    secondaryLightPosition: [-5, 3, -5],
-    environmentPreset: 'city',
-    wallDepth: -3.2,
-    floorRoughness: 0.75,
-    wallRoughness: 0.82,
-  },
+const DEFAULT_ROOM_CONFIG = {
+  floorColor: '#e0ddd8',
+  wallColor: '#e8e8e8',
+  ambientLightIntensity: 2.8,
+  directionalLightIntensity: 5.5,
+  directionalLightPosition: [2, 6, 2] as [number, number, number],
+  secondaryLightIntensity: 0.8,
+  secondaryLightPosition: [-5, 3, -5] as [number, number, number],
+  environmentPreset: 'none' as const,
+  wallDepth: -3,
+  floorRoughness: 0.8,
+  wallRoughness: 0.9,
 };
 
 interface Canvas3DProps {
@@ -81,7 +33,6 @@ interface Canvas3DProps {
    * implicit model->environment coupling.
    */
   cameraConfig?: CameraConfig;
-  roomPreset?: keyof typeof ROOM_PRESETS;
 }
 
 /**
@@ -91,18 +42,9 @@ interface Canvas3DProps {
 export default function Canvas3D({
   children,
   cameraConfig,
-  roomPreset = 'modern-studio',
 }: Canvas3DProps): ReactNode {
   const defaultCamera = cameraConfig || { position: [0, 0, 4], fov: 45 };
-  const room = ROOM_PRESETS[roomPreset];
-
-  if (!room) {
-    console.warn(
-      `Room preset "${roomPreset}" not found. Using "modern-studio" as default.`,
-    );
-  }
-
-  const activeRoom = room || ROOM_PRESETS['modern-studio'];
+  const room = DEFAULT_ROOM_CONFIG;
 
   return (
     <Canvas
@@ -114,17 +56,17 @@ export default function Canvas3D({
         far: defaultCamera.far ?? 1000,
       }}
       style={{
-        background: activeRoom.wallColor,
+        background: room.wallColor,
         width: '100%',
         height: '100%',
         cursor: 'pointer',
       }}
     >
       {/* Lighting setup */}
-      <ambientLight intensity={activeRoom.ambientLightIntensity} />
+      <ambientLight intensity={room.ambientLightIntensity} />
       <directionalLight
-        position={activeRoom.directionalLightPosition}
-        intensity={activeRoom.directionalLightIntensity}
+        position={room.directionalLightPosition}
+        intensity={room.directionalLightIntensity}
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
@@ -136,8 +78,8 @@ export default function Canvas3D({
         shadow-bias={-0.0001}
       />
       <directionalLight
-        position={activeRoom.secondaryLightPosition}
-        intensity={activeRoom.secondaryLightIntensity}
+        position={room.secondaryLightPosition}
+        intensity={room.secondaryLightIntensity}
       />
       <spotLight
         intensity={1}
@@ -148,8 +90,8 @@ export default function Canvas3D({
       />
 
       {/* Environment for realistic reflections */}
-      {activeRoom.environmentPreset !== 'none' && (
-        <Environment preset={activeRoom.environmentPreset} />
+      {room.environmentPreset !== 'none' && (
+        <Environment preset={room.environmentPreset} />
       )}
 
       {/* Render the 3D model */}
@@ -160,18 +102,18 @@ export default function Canvas3D({
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[50, 50]} />
         <meshStandardMaterial
-          color={activeRoom.floorColor}
-          roughness={activeRoom.floorRoughness}
+          color={room.floorColor}
+          roughness={room.floorRoughness}
           metalness={0.1}
         />
       </mesh>
 
       {/* Back wall for visual context */}
-      <mesh position={[0, 1.5, activeRoom.wallDepth ?? -3]} receiveShadow>
+      <mesh position={[0, 1.5, room.wallDepth ?? -3]} receiveShadow>
         <planeGeometry args={[50, 50]} />
         <meshStandardMaterial
-          color={activeRoom.wallColor}
-          roughness={activeRoom.wallRoughness}
+          color={room.wallColor}
+          roughness={room.wallRoughness}
           metalness={0}
           side={THREE.FrontSide}
         />
@@ -182,7 +124,7 @@ export default function Canvas3D({
         imagePath="/silhouettes/person.png"
         positionX={1.2}
         positionY={1.45}
-        positionZ={activeRoom.wallDepth ? activeRoom.wallDepth + 0.05 : -2.95}
+        positionZ={room.wallDepth ? room.wallDepth + 0.05 : -2.95}
         scale={3.6}
         opacity={0.15}
       />

@@ -3,6 +3,7 @@ import {
   initializeConfigurator,
   toggleInteractivePart,
 } from '@/stores/configuratorStore';
+import debug from '@/utils/debug';
 import { DoorOpen, Heart, Info, Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { Suspense, useEffect, type ReactElement } from 'react';
@@ -30,6 +31,11 @@ const ConfiguratorTabs = dynamic(() => import('./ConfiguratorTabs.component'), {
 const ProductInfo = dynamic(() => import('./ProductInfo.component'), {
   ssr: false,
 });
+
+const Canvas3DErrorBoundary = dynamic(
+  () => import('./Canvas3DErrorBoundary.component'),
+  { ssr: false },
+);
 
 interface ProductConfiguratorProps {
   modelId?: string;
@@ -59,7 +65,7 @@ export default function ProductConfigurator({
     if (modelConfig) {
       initializeConfigurator(modelConfig);
     } else {
-      console.warn(`Model ID "${modelId}" not found in registry`);
+      debug.warn(`Model ID "${modelId}" not found in registry`);
     }
   }, [modelId, modelConfig]);
 
@@ -152,9 +158,11 @@ export default function ProductConfigurator({
               </div>
             }
           >
-            <Canvas3D cameraConfig={modelConfig.camera}>
-              <ModelViewer modelConfig={modelConfig} />
-            </Canvas3D>
+            <Canvas3DErrorBoundary>
+              <Canvas3D cameraConfig={modelConfig.camera}>
+                <ModelViewer modelConfig={modelConfig} />
+              </Canvas3D>
+            </Canvas3DErrorBoundary>
           </Suspense>
         </div>
 

@@ -7,6 +7,10 @@ import {
 } from '@/stores/cameraStore';
 import { sceneMediator } from '@/stores/sceneMediatorStore';
 import type { CameraConfig } from '@/types/configurator';
+import {
+  calculateBoundingBoxCenter,
+  calculateBoundingBoxSize,
+} from '@/utils/boundingBox';
 import { calculateBaseDistance } from '@/utils/camera';
 import { OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -95,16 +99,12 @@ export default function CameraController({
   const computeBoxCenterAndSize = (
     mw: NonNullable<typeof sceneSnap.modelWorld>,
   ) => {
-    const min = mw.boundingBox.min;
-    const max = mw.boundingBox.max;
-    const center = new THREE.Vector3(
-      (min.x + max.x) / 2,
-      (min.y + max.y) / 2,
-      (min.z + max.z) / 2,
-    );
-    const size = new THREE.Vector3(max.x - min.x, max.y - min.y, max.z - min.z);
-    const diag = size.length();
-    return { center, size, diag };
+    const center = calculateBoundingBoxCenter(mw.boundingBox);
+    const size = calculateBoundingBoxSize(mw.boundingBox);
+    const centerVec = new THREE.Vector3(center.x, center.y, center.z);
+    const sizeVec = new THREE.Vector3(size.width, size.height, size.depth);
+    const diag = sizeVec.length();
+    return { center: centerVec, size: sizeVec, diag };
   };
 
   // Pick nearest preset id by comparing camera distance to preset positions

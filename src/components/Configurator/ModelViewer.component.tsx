@@ -2,8 +2,9 @@ import { CABINET_CONFIG } from '@/config/cabinetModel.config';
 import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
 import { setModelWorld } from '@/stores/sceneMediatorStore';
 import type { ModelConfig } from '@/types/configurator';
+import debug from '@/utils/debug';
 import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { ThreeEvent, useFrame } from '@react-three/fiber';
 import { useCallback, useRef, useState, type ReactElement } from 'react';
 import type { Group } from 'three';
 import * as THREE from 'three';
@@ -71,9 +72,15 @@ export default function ModelViewer({
     setCurrentPart(null);
   }, []);
 
-  const handleClick = useCallback((e: any): void => {
+  const handleClick = useCallback((e: ThreeEvent<MouseEvent>): void => {
     e.stopPropagation();
-    setCurrentPart(e.object.material.name);
+    // Type guard to ensure object is a Mesh with material
+    if ('material' in e.object && e.object.material) {
+      const material = e.object.material as THREE.Material;
+      if ('name' in material) {
+        setCurrentPart(material.name);
+      }
+    }
   }, []);
 
   // Calculate bounding box on model load to determine rear face position
@@ -121,13 +128,14 @@ export default function ModelViewer({
         modelConfig.scale ?? 1,
       );
 
-      console.log(
+      debug.category(
+        '3D',
         `📦 Bounding Box Z: [${box.min.z.toFixed(3)}, ${box.max.z.toFixed(3)}] (Depth: ${(box.max.z - box.min.z).toFixed(3)})`,
       );
-      console.log(
+      debug.category(
+        '3D',
         `📦 Bounding Box Y: [${box.min.y.toFixed(3)}, ${box.max.y.toFixed(3)}] (Height: ${(box.max.y - box.min.y).toFixed(3)})`,
       );
-      // Debug logs removed for production
     }
   });
 
@@ -202,7 +210,7 @@ export default function ModelViewer({
 
           // Skip if node or material doesn't exist
           if (!node?.geometry || !material) {
-            console.warn(
+            debug.warn(
               `Missing node or material for part: ${part.displayName}`,
             );
             return null;
@@ -230,7 +238,7 @@ export default function ModelViewer({
 
           // Skip if node or material doesn't exist
           if (!node?.geometry || !material) {
-            console.warn(
+            debug.warn(
               `Missing interactive node or material for part: ${part.displayName}`,
             );
             return null;

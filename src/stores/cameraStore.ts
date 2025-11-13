@@ -1,4 +1,5 @@
 import type { CameraConfig, ModelConfig } from '@/types/configurator';
+import { calculateBoundingBoxSize } from '@/utils/boundingBox';
 import { calculateBaseDistance, fitRadiusForFOV } from '@/utils/camera';
 import * as THREE from 'three';
 import { proxy } from 'valtio';
@@ -184,18 +185,18 @@ export const generateCameraPresetsFromCamera = (
   // Prefer to compute baseDistance from the bounding box when available
   let baseDistance: number;
   if (modelWorld?.boundingBox) {
-    const min = modelWorld.boundingBox.min;
-    const max = modelWorld.boundingBox.max;
-    const sizeX = Math.abs(max.x - min.x);
-    const sizeY = Math.abs(max.y - min.y);
-    const sizeZ = Math.abs(max.z - min.z);
+    const size = calculateBoundingBoxSize(modelWorld.boundingBox);
 
     // Use the bounding box width/height to compute a fitting radius
     // Use the camera fov from config if provided, otherwise fall back to 45deg
     const fov = cameraConfig?.fov ?? 45;
     // Use the provided aspect (from CameraController) or default above
     // Use fit helper to compute radius that fits the box
-    baseDistance = fitRadiusForFOV([sizeX, sizeY, sizeZ], fov, aspect);
+    baseDistance = fitRadiusForFOV(
+      [size.width, size.height, size.depth],
+      fov,
+      aspect,
+    );
   } else {
     const configuredPosition = cameraConfig?.position || [0, 0, 4];
     baseDistance = calculateBaseDistance(
