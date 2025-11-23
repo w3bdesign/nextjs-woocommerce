@@ -44,3 +44,25 @@ export const fitRadiusForFOV = (
   const radius = Math.max(distX, distY) * safetyFactor;
   return radius;
 };
+
+/**
+ * Calculate the minimum allowed camera Z position to prevent going behind the wall
+ *
+ * This function computes the boundary that keeps the camera in front of the scene's
+ * back wall, preventing visual artifacts from seeing the wall's back face.
+ *
+ * @param wallZ - Z position of the back wall in world units (typically negative)
+ * @param safetyMargin - Minimum distance to maintain from wall (world units)
+ * @returns Minimum Z position the camera is allowed to occupy
+ *
+ * @example
+ * // Wall at Z = -3, safety margin of 0.5 units
+ * const minZ = calculateMinCameraZ(-3, 0.5);
+ * // Returns: -2.5 (camera cannot go beyond this point)
+ */
+export const calculateMinCameraZ = (
+  wallZ: number,
+  safetyMargin: number,
+): number => {
+  return wallZ + safetyMargin;
+};

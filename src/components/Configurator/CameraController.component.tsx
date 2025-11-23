@@ -1,4 +1,5 @@
 import { CAMERA_CONFIG } from '@/config/camera.config';
+import { SCENE_BOUNDARIES } from '@/config/scene.config';
 import {
   calculateLerpFactor,
   isAnimationComplete,
@@ -9,7 +10,7 @@ import { useCameraSnapBack } from '@/hooks/useCameraSnapBack';
 import { cameraState } from '@/stores/cameraStore';
 import { sceneMediator } from '@/stores/sceneMediatorStore';
 import type { CameraConfig } from '@/types/configurator';
-import { calculateBaseDistance } from '@/utils/camera';
+import { calculateBaseDistance, calculateMinCameraZ } from '@/utils/camera';
 import { OrbitControls } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
@@ -154,6 +155,21 @@ export default function CameraController({
     // If user is controlling, cancel any ongoing animation
     if (snap.isUserControlling && isAnimating.current) {
       cancelAnimation();
+    }
+
+    // Enforce Z-axis boundary constraint
+    // Prevents camera from going behind the scene's back wall
+    if (CAMERA_CONFIG.boundaries.Z_AXIS_ENABLED && !isAnimating.current) {
+      const minAllowedZ = calculateMinCameraZ(
+        SCENE_BOUNDARIES.WALL_Z_POSITION,
+        SCENE_BOUNDARIES.CAMERA_SAFETY_MARGIN,
+      );
+
+      // Clamp camera Z position if it exceeds the boundary
+      if (camera.position.z < minAllowedZ) {
+        camera.position.z = minAllowedZ;
+        controlsRef.current.update();
+      }
     }
 
     // Update spherical coordinates for snap-back calculation

@@ -18,6 +18,32 @@ export interface CameraConfig {
 }
 
 /**
+ * Scene boundary configuration
+ * Defines spatial limits for camera movement and model positioning
+ */
+export interface SceneBoundaries {
+  /**
+   * Back wall Z position in world units
+   * Negative values indicate distance away from camera
+   * @example -3 // Wall is 3 units behind the origin
+   */
+  wallZPosition: number;
+
+  /**
+   * Safety margin to keep camera in front of wall (world units)
+   * Camera's minimum Z position = wallZPosition + cameraSafetyMargin
+   * @example 0.5 // Camera stays at least 0.5 units from wall
+   */
+  cameraSafetyMargin: number;
+
+  /**
+   * Floor Y position in world units (optional, for future use)
+   * @default 0
+   */
+  floorYPosition?: number;
+}
+
+/**
  * Animation configuration for model display
  */
 export interface AnimationConfig {

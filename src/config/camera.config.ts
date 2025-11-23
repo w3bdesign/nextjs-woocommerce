@@ -172,6 +172,38 @@ export const CAMERA_CONTROLS = {
 } as const;
 
 /**
+ * Camera boundary constraints
+ * Prevents camera from moving into invalid scene positions
+ */
+export const CAMERA_BOUNDARIES = {
+  /**
+   * Enable Z-axis boundary enforcement
+   * true = camera cannot move behind the scene's back wall
+   *
+   * When enabled, the camera's Z position is clamped during useFrame
+   * to prevent it from passing through or behind the wall mesh.
+   * This maintains visual coherence and prevents disorienting views.
+   */
+  Z_AXIS_ENABLED: true,
+
+  /**
+   * Enable X-axis boundary enforcement
+   * false = no horizontal constraints (360° rotation allowed)
+   *
+   * Reserved for future use if enclosed room presets are added.
+   */
+  X_AXIS_ENABLED: false,
+
+  /**
+   * Enable Y-axis boundary enforcement
+   * false = no vertical constraints (can view from above)
+   *
+   * Reserved for future use if ceiling constraints are needed.
+   */
+  Y_AXIS_ENABLED: false,
+} as const;
+
+/**
  * Combined configuration export for convenience
  */
 export const CAMERA_CONFIG = {
@@ -181,6 +213,7 @@ export const CAMERA_CONFIG = {
   zoom: CAMERA_ZOOM,
   rotation: CAMERA_ROTATION,
   controls: CAMERA_CONTROLS,
+  boundaries: CAMERA_BOUNDARIES,
 } as const;
 
 export default CAMERA_CONFIG;
