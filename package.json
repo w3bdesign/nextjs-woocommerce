@@ -27,7 +27,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.14.0",
-    "@types/react": "^19.2.6",
+    "@types/react": "^19.2.7",
     "algoliasearch": "^4.25.3",
     "autoprefixer": "^10.4.22",
     "graphql": "^16.12.0",
