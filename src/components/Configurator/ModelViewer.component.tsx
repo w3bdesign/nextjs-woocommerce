@@ -146,10 +146,12 @@ export default function ModelViewer({
 
   if (modelConfig.dimensions) {
     // Convert cm dimensions to scale factors relative to defaults
+    // WooCommerce standard: length (Z/depth), width (X/side-to-side), height (Y/vertical)
     const scaleX = snap.dimensions.width / modelConfig.dimensions.width.default;
     const scaleY =
       snap.dimensions.height / modelConfig.dimensions.height.default;
-    const scaleZ = snap.dimensions.depth / modelConfig.dimensions.depth.default;
+    const scaleZ =
+      snap.dimensions.length / modelConfig.dimensions.length.default;
 
     finalScale = [baseScale * scaleX, baseScale * scaleY, baseScale * scaleZ];
 

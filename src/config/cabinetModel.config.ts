@@ -94,24 +94,25 @@ export const CABINET_CONFIG: ModelConfig = {
   },
 
   // Dimension constraints for cabinet (typical bar cabinet sizes)
+  // Using WooCommerce standard: length (depth), width (side-to-side), height (vertical)
   dimensions: {
+    length: {
+      min: 35, // Minimum 35cm deep (front-to-back)
+      max: 60, // Maximum 60cm deep
+      default: 45, // Default 45cm (standard depth)
+      step: 5, // Adjust in 5cm increments
+    },
     width: {
-      min: 80, // Minimum 80cm wide
+      min: 80, // Minimum 80cm wide (side-to-side)
       max: 180, // Maximum 180cm wide
       default: 120, // Default 120cm (standard size)
       step: 10, // Adjust in 10cm increments
     },
     height: {
-      min: 100, // Minimum 100cm tall
+      min: 100, // Minimum 100cm tall (vertical)
       max: 200, // Maximum 200cm tall
       default: 150, // Default 150cm (standard height)
       step: 10, // Adjust in 10cm increments
-    },
-    depth: {
-      min: 35, // Minimum 35cm deep
-      max: 60, // Maximum 60cm deep
-      default: 45, // Default 45cm (standard depth)
-      step: 5, // Adjust in 5cm increments
     },
   },
 

@@ -84,6 +84,11 @@ export default function EnhancedControls({
 
             <div className="space-y-4">
               <DimensionSlider
+                type="length"
+                modelConfig={modelConfig}
+                label="Length (Depth)"
+              />
+              <DimensionSlider
                 type="width"
                 modelConfig={modelConfig}
                 label="Width"
@@ -92,11 +97,6 @@ export default function EnhancedControls({
                 type="height"
                 modelConfig={modelConfig}
                 label="Height"
-              />
-              <DimensionSlider
-                type="depth"
-                modelConfig={modelConfig}
-                label="Depth"
               />
             </div>
           </CardContent>

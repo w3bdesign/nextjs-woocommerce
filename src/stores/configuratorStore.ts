@@ -11,11 +11,11 @@ interface ConfiguratorState {
   items: Record<string, string>;
   /** Interactive parts state (true = active/open, false = inactive/closed) */
   interactiveStates: Record<string, boolean>;
-  /** Dimensions in cm [width, height, depth] */
+  /** Dimensions in cm [length, width, height] - WooCommerce standard */
   dimensions: {
+    length: number;
     width: number;
     height: number;
-    depth: number;
   };
   /** Last computed model bounding box (world-aligned) */
   // NOTE: model bounding boxes are now published to the scene mediator
@@ -28,9 +28,9 @@ export const configuratorState = proxy<ConfiguratorState>({
   items: {},
   interactiveStates: {},
   dimensions: {
+    length: 0,
     width: 0,
     height: 0,
-    depth: 0,
   },
 });
 
@@ -65,16 +65,16 @@ export const initializeConfigurator = (modelConfig: ModelConfig): void => {
   // Initialize dimensions from config or defaults
   if (modelConfig.dimensions) {
     configuratorState.dimensions = {
+      length: modelConfig.dimensions.length.default,
       width: modelConfig.dimensions.width.default,
       height: modelConfig.dimensions.height.default,
-      depth: modelConfig.dimensions.depth.default,
     };
   } else {
     // Fallback for models without dimension constraints
     configuratorState.dimensions = {
+      length: 100,
       width: 100,
       height: 100,
-      depth: 100,
     };
   }
 };
@@ -135,7 +135,7 @@ export const updateAllPartColors = (color: string): void => {
  * Set dimension value (in cm)
  */
 export const setDimension = (
-  axis: 'width' | 'height' | 'depth',
+  axis: 'length' | 'width' | 'height',
   value: number,
 ): void => {
   configuratorState.dimensions[axis] = value;
@@ -147,9 +147,9 @@ export const setDimension = (
 export const resetDimensions = (modelConfig: ModelConfig): void => {
   if (modelConfig.dimensions) {
     configuratorState.dimensions = {
+      length: modelConfig.dimensions.length.default,
       width: modelConfig.dimensions.width.default,
       height: modelConfig.dimensions.height.default,
-      depth: modelConfig.dimensions.depth.default,
     };
   }
 };

@@ -208,22 +208,22 @@ export interface ModelConfig {
 
   /** Optional: Dimension constraints for scaling */
   dimensions?: {
-    /** Width (X axis) constraints in cm */
+    /** Length (Z axis - depth/front-to-back) constraints in cm */
+    length: {
+      min: number;
+      max: number;
+      default: number;
+      step: number;
+    };
+    /** Width (X axis - side-to-side) constraints in cm */
     width: {
       min: number;
       max: number;
       default: number;
       step: number;
     };
-    /** Height (Y axis) constraints in cm */
+    /** Height (Y axis - vertical) constraints in cm */
     height: {
-      min: number;
-      max: number;
-      default: number;
-      step: number;
-    };
-    /** Depth (Z axis) constraints in cm */
-    depth: {
       min: number;
       max: number;
       default: number;

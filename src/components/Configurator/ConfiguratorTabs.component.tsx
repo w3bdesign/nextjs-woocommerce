@@ -125,6 +125,11 @@ export default function ConfiguratorTabs({
                 {expandedSections.dimensions && (
                   <div className="px-4 pb-4 bg-gray-50 space-y-4">
                     <DimensionSlider
+                      type="length"
+                      modelConfig={modelConfig}
+                      label="Length (Depth)"
+                    />
+                    <DimensionSlider
                       type="width"
                       modelConfig={modelConfig}
                       label="Width"
@@ -133,11 +138,6 @@ export default function ConfiguratorTabs({
                       type="height"
                       modelConfig={modelConfig}
                       label="Height"
-                    />
-                    <DimensionSlider
-                      type="depth"
-                      modelConfig={modelConfig}
-                      label="Depth"
                     />
                   </div>
                 )}

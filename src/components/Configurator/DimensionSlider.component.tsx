@@ -5,15 +5,15 @@ import type { ModelConfig } from '@/types/configurator';
 import { useSnapshot } from 'valtio';
 
 interface DimensionSliderProps {
-  type: 'width' | 'height' | 'depth';
+  type: 'length' | 'width' | 'height';
   modelConfig: ModelConfig;
   label: string;
 }
 
 const DIMENSION_COLORS = {
+  length: { label: 'text-red-600', badge: 'bg-red-50 text-red-700' },
   width: { label: 'text-blue-600', badge: 'bg-blue-50 text-blue-700' },
   height: { label: 'text-green-600', badge: 'bg-green-50 text-green-700' },
-  depth: { label: 'text-red-600', badge: 'bg-red-50 text-red-700' },
 } as const;
 
 export default function DimensionSlider({

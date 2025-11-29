@@ -31,7 +31,7 @@ export default function DimensionControls({
   const { dimensions } = modelConfig;
 
   const handleDimensionChange = (
-    axis: 'width' | 'height' | 'depth',
+    axis: 'length' | 'width' | 'height',
     value: number[],
   ): void => {
     setDimension(axis, value[0]);
@@ -75,7 +75,37 @@ export default function DimensionControls({
       </div>
 
       <div className="space-y-4">
-        {/* Width Slider */}
+        {/* Length Slider (Depth/Z axis) - WooCommerce standard */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label
+              htmlFor="dimension-length"
+              className="text-sm font-medium text-red-600 flex items-center gap-1"
+            >
+              <span>Length</span>
+              <span className="text-xs text-gray-400">(Depth/Z)</span>
+            </label>
+            <span className="text-sm font-mono text-gray-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+              {snap.dimensions.length} cm
+            </span>
+          </div>
+          <Slider
+            id="dimension-length"
+            min={dimensions.length.min}
+            max={dimensions.length.max}
+            step={dimensions.length.step}
+            value={[snap.dimensions.length]}
+            onValueChange={(value) => handleDimensionChange('length', value)}
+            className="w-full"
+            aria-label="Length (depth) in centimeters"
+          />
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>{dimensions.length.min} cm</span>
+            <span>{dimensions.length.max} cm</span>
+          </div>
+        </div>
+
+        {/* Width Slider (X axis) */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label
@@ -132,36 +162,6 @@ export default function DimensionControls({
           <div className="flex justify-between text-xs text-gray-500">
             <span>{dimensions.height.min} cm</span>
             <span>{dimensions.height.max} cm</span>
-          </div>
-        </div>
-
-        {/* Depth Slider */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <label
-              htmlFor="dimension-depth"
-              className="text-sm font-medium text-red-600 flex items-center gap-1"
-            >
-              <span>Depth</span>
-              <span className="text-xs text-gray-400">(Z)</span>
-            </label>
-            <span className="text-sm font-mono text-gray-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">
-              {snap.dimensions.depth} cm
-            </span>
-          </div>
-          <Slider
-            id="dimension-depth"
-            min={dimensions.depth.min}
-            max={dimensions.depth.max}
-            step={dimensions.depth.step}
-            value={[snap.dimensions.depth]}
-            onValueChange={(value) => handleDimensionChange('depth', value)}
-            className="w-full"
-            aria-label="Depth in centimeters"
-          />
-          <div className="flex justify-between text-xs text-gray-500">
-            <span>{dimensions.depth.min} cm</span>
-            <span>{dimensions.depth.max} cm</span>
           </div>
         </div>
       </div>
