@@ -10,6 +10,8 @@ services:
       # Core storefront variables
       - key: NEXT_PUBLIC_GRAPHQL_URL
         value: https://wordpress2533583.home.pl/graphql
+      - key: NEXT_PUBLIC_ENABLE_MOCKS
+        value: 'false'
       - key: NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
         value: https://via.placeholder.com/300
       - key: NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL
