@@ -122,16 +122,17 @@ const Navbar = () => {
               <NavigationMenuList>
                 {siteConfig.mainNav.map((item) => (
                   <NavigationMenuItem key={item.href}>
-                    <Link href={item.href} legacyBehavior passHref>
-                      <NavigationMenuLink
+                    <NavigationMenuLink asChild>
+                      <Link
+                        href={item.href}
                         className={cn(
                           navigationMenuTriggerStyle(),
                           'uppercase tracking-wider text-sm',
                         )}
                       >
                         {item.title}
-                      </NavigationMenuLink>
-                    </Link>
+                      </Link>
+                    </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
               </NavigationMenuList>
@@ -152,54 +153,45 @@ const Navbar = () => {
                 <NavigationMenuList>
                   {loggedIn ? (
                     <NavigationMenuItem>
-                      <Link
-                        href={siteConfig.authNav.account.href}
-                        legacyBehavior
-                        passHref
-                      >
-                        <NavigationMenuLink
+                      <NavigationMenuLink asChild>
+                        <Link
+                          href={siteConfig.authNav.account.href}
                           className={cn(
                             navigationMenuTriggerStyle(),
                             'uppercase tracking-wider text-sm',
                           )}
                         >
                           {siteConfig.authNav.account.title}
-                        </NavigationMenuLink>
-                      </Link>
+                        </Link>
+                      </NavigationMenuLink>
                     </NavigationMenuItem>
                   ) : (
                     <>
                       <NavigationMenuItem>
-                        <Link
-                          href={siteConfig.authNav.login.href}
-                          legacyBehavior
-                          passHref
-                        >
-                          <NavigationMenuLink
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={siteConfig.authNav.login.href}
                             className={cn(
                               navigationMenuTriggerStyle(),
                               'uppercase tracking-wider text-sm',
                             )}
                           >
                             {siteConfig.authNav.login.title}
-                          </NavigationMenuLink>
-                        </Link>
+                          </Link>
+                        </NavigationMenuLink>
                       </NavigationMenuItem>
                       <NavigationMenuItem>
-                        <Link
-                          href={siteConfig.authNav.register.href}
-                          legacyBehavior
-                          passHref
-                        >
-                          <NavigationMenuLink
+                        <NavigationMenuLink asChild>
+                          <Link
+                            href={siteConfig.authNav.register.href}
                             className={cn(
                               navigationMenuTriggerStyle(),
                               'uppercase tracking-wider text-sm',
                             )}
                           >
                             {siteConfig.authNav.register.title}
-                          </NavigationMenuLink>
-                        </Link>
+                          </Link>
+                        </NavigationMenuLink>
                       </NavigationMenuItem>
                     </>
                   )}
