@@ -13,7 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { TypographyLarge } from '@/components/UI/Typography.component';
+import { TypographyLarge } from '@/components/ui/Typography.component';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { Menu } from 'lucide-react';

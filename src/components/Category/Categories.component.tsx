@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { TypographyLarge } from '@/components/UI/Typography.component';
+import { TypographyLarge } from '@/components/ui/Typography.component';
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 

@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import {
   TypographyH2,
   TypographyLarge,
-} from '@/components/UI/Typography.component';
+} from '@/components/ui/Typography.component';
 import { useToast } from '@/hooks/use-toast';
 import { AlertCircle } from 'lucide-react';
 import CartContents from '../Cart/CartContents.component';

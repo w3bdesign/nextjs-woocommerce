@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { PriceGroup } from '@/components/UI/Price.component';
-import { TypographyH4 } from '@/components/UI/Typography.component';
+import { PriceGroup } from '@/components/ui/Price.component';
+import { TypographyH4 } from '@/components/ui/Typography.component';
 import Image from 'next/image';
 import Link from 'next/link';
 

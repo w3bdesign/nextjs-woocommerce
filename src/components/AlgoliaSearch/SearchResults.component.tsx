@@ -1,7 +1,7 @@
 import {
   TypographyLarge,
   TypographyP,
-} from '@/components/UI/Typography.component';
+} from '@/components/ui/Typography.component';
 import { trimmedStringToLength } from '@/utils/functions/functions';
 import Link from 'next/link';
 

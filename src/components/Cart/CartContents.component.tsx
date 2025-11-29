@@ -7,13 +7,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Container } from '@/components/Layout/Container.component';
 import { Button } from '@/components/ui/button';
-import { Price } from '@/components/UI/Price.component';
+import { Price } from '@/components/ui/Price.component';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   TypographyH2,
   TypographyH3,
   TypographyP,
-} from '@/components/UI/Typography.component';
+} from '@/components/ui/Typography.component';
 import { useCartStore } from '@/stores/cartStore';
 
 import {

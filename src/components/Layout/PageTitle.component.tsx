@@ -1,4 +1,4 @@
-import { TypographyH2 } from '@/components/UI/Typography.component';
+import { TypographyH2 } from '@/components/ui/Typography.component';
 
 interface IPageTitleProps {
   title: string;

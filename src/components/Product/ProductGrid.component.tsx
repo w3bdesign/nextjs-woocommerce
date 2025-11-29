@@ -10,7 +10,7 @@ import {
   TypographyH2,
   TypographyLarge,
   TypographySmall,
-} from '@/components/UI/Typography.component';
+} from '@/components/ui/Typography.component';
 import { useProductFilters } from '@/hooks/useProductFilters';
 import { Product } from '@/types/product';
 import { ChevronDown } from 'lucide-react';

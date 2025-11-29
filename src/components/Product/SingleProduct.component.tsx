@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 // Components
 import { Container } from '@/components/Layout/Container.component';
-import { PriceGroup } from '@/components/UI/Price.component';
+import { PriceGroup } from '@/components/ui/Price.component';
 import { Skeleton } from '@/components/ui/skeleton';
 import AddToCart, { IProductRootObject } from './AddToCart.component';
 

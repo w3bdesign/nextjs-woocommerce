@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import {
   TypographyH2,
   TypographyP,
-} from '@/components/UI/Typography.component';
+} from '@/components/ui/Typography.component';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation } from '@apollo/client';
 import { AlertCircle, Loader2 } from 'lucide-react';

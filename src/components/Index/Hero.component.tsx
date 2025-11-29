@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { TypographyH1 } from '@/components/UI/Typography.component';
+import { TypographyH1 } from '@/components/ui/Typography.component';
 import Link from 'next/link';
 
 /**

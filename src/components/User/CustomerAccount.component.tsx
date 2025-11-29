@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { TypographyH2 } from '@/components/UI/Typography.component';
+import { TypographyH2 } from '@/components/ui/Typography.component';
 import { useQuery } from '@apollo/client';
 import { AlertCircle } from 'lucide-react';
 import { GET_CUSTOMER_ORDERS } from '../../utils/gql/GQL_QUERIES';
