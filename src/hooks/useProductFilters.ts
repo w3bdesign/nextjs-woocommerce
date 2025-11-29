@@ -52,7 +52,9 @@ export const useProductFilters = (products: Product[]) => {
       // Filter by size
       if (selectedSizes.length > 0) {
         const productSizes =
-          product.allPaSizes?.nodes.map((node) => node.name) || [];
+          product.attributes?.nodes.find(
+            (attr) => attr.name.toLowerCase() === 'size',
+          )?.options || [];
         if (!selectedSizes.some((size) => productSizes.includes(size)))
           return false;
       }
@@ -60,7 +62,9 @@ export const useProductFilters = (products: Product[]) => {
       // Filter by color
       if (selectedColors.length > 0) {
         const productColors =
-          product.allPaColors?.nodes.map((node) => node.name) || [];
+          product.attributes?.nodes.find(
+            (attr) => attr.name.toLowerCase() === 'color',
+          )?.options || [];
         if (!selectedColors.some((color) => productColors.includes(color)))
           return false;
       }

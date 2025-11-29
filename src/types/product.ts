@@ -42,11 +42,12 @@ export interface Product {
   productCategories?: {
     nodes: ProductCategory[];
   };
-  allPaColors?: {
-    nodes: ColorNode[];
-  };
-  allPaSizes?: {
-    nodes: SizeNode[];
+  attributes?: {
+    nodes: Array<{
+      id: string;
+      name: string;
+      options: string[];
+    }>;
   };
   variations: {
     nodes: Array<{

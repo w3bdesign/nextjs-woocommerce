@@ -36,25 +36,28 @@ const ProductFilters = ({
     new Set(
       products.flatMap(
         (product: Product) =>
-          product.allPaSizes?.nodes.map(
-            (node: { name: string }) => node.name,
-          ) || [],
+          product.attributes?.nodes.find(
+            (attr) => attr.name.toLowerCase() === 'size',
+          )?.options || [],
       ),
     ),
   ).sort((a, b) => a.localeCompare(b));
 
   // Get unique colors from all products
-  const availableColors = products
-    .flatMap((product: Product) => product.allPaColors?.nodes || [])
-    .filter(
-      (color, index, self) =>
-        index === self.findIndex((c) => c.slug === color.slug),
-    )
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const availableColors = Array.from(
+    new Set(
+      products.flatMap(
+        (product: Product) =>
+          product.attributes?.nodes.find(
+            (attr) => attr.name.toLowerCase() === 'color',
+          )?.options || [],
+      ),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
 
   const colors = availableColors.map((color) => ({
-    name: color.name,
-    class: `bg-${color.slug}-500`,
+    name: color,
+    class: `bg-${color.toLowerCase()}-500`,
   }));
 
   const toggleSize = (size: string) => {

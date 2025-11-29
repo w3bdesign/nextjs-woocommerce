@@ -53,12 +53,16 @@ export const mockProducts = [
     productCategories: {
       nodes: [{ name: 'Accessories', slug: 'accessories' }],
     },
-    allPaColors: { nodes: [{ name: 'Red', slug: 'red' }] },
-    allPaSizes: { nodes: [{ name: 'M' }] },
+    attributes: {
+      nodes: [
+        { id: 'attr-1', name: 'Color', options: ['Red', 'Blue', 'Green'] },
+        { id: 'attr-2', name: 'Size', options: ['S', 'M', 'L'] },
+      ],
+    },
     // Enable 3D configurator for testing (cabinet POC)
     configurator: {
       enabled: true,
-      modelId: 'shelf-v1',
+      modelId: 'dresser-v1',
     },
     variations: {
       __typename: 'ProductVariationConnection',
@@ -105,7 +109,7 @@ export const mockProducts = [
     productCategories: { nodes: [{ name: 'Tables', slug: 'tables' }] },
     configurator: {
       enabled: true,
-      modelId: 'shelf-v1',
+      modelId: 'dresser-v1',
     },
   },
   {

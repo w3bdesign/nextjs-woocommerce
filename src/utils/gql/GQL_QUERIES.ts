@@ -23,20 +23,21 @@ export const GET_SINGLE_PRODUCT = gql`
         price
         id
         stockQuantity
+        configurator {
+          enabled
+          modelId
+        }
       }
       ... on VariableProduct {
         salePrice
         regularPrice
         price
         id
-        allPaColors {
+        attributes {
           nodes {
+            id
             name
-          }
-        }
-        allPaSizes {
-          nodes {
-            name
+            options
           }
         }
         variations {
@@ -52,11 +53,19 @@ export const GET_SINGLE_PRODUCT = gql`
             regularPrice
           }
         }
+        configurator {
+          enabled
+          modelId
+        }
       }
       ... on ExternalProduct {
         price
         id
         externalUrl
+        configurator {
+          enabled
+          modelId
+        }
       }
       ... on GroupProduct {
         products {
@@ -68,12 +77,10 @@ export const GET_SINGLE_PRODUCT = gql`
           }
         }
         id
-      }
-      configurator {
-        enabled
-        modelId
-        customPricing
-        defaultConfiguration
+        configurator {
+          enabled
+          modelId
+        }
       }
     }
   }
@@ -150,15 +157,11 @@ export const FETCH_ALL_PRODUCTS_QUERY = gql`
               slug
             }
           }
-          allPaColors {
+          attributes {
             nodes {
+              id
               name
-              slug
-            }
-          }
-          allPaSizes {
-            nodes {
-              name
+              options
             }
           }
           variations {
