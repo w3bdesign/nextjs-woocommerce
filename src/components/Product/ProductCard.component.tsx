@@ -71,7 +71,7 @@ const ProductCard = ({
           regularPrice={regularPrice}
           onSale={onSale}
           size="lg"
-          currency="kr"
+          currency="pln"
         />
       </CardFooter>
     </Card>

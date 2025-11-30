@@ -94,7 +94,7 @@ import { Button } from '@/components/ui/button';
 - `<Price>` - Individual price display with auto-formatting (adds space after currency)
 - `<PriceGroup>` - Smart component handling sale/regular prices
 - Auto-formats currency (e.g., "kr1000" → "kr 1000")
-- Usage: `<PriceGroup price={price} salePrice={salePrice} regularPrice={regularPrice} onSale={onSale} currency="kr" />`
+- Usage: `<PriceGroup price={price} salePrice={salePrice} regularPrice={regularPrice} onSale={onSale} currency="pln" />`
 
 **Typography** (`src/components/UI/Typography.component.tsx`):
 

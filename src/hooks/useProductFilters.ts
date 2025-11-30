@@ -1,15 +1,37 @@
 import { Product, ProductType } from '@/types/product';
-import { getUniqueProductTypes } from '@/utils/functions/productUtils';
-import { useState } from 'react';
+import {
+  calculatePriceRange,
+  extractNumericPrice,
+  getUniqueProductTypes,
+} from '@/utils/functions/productUtils';
+import { useMemo, useState } from 'react';
 
 export const useProductFilters = (products: Product[]) => {
   const [sortBy, setSortBy] = useState('popular');
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+
+  // Calculate initial price bounds from products
+  const initialPriceBounds = useMemo(() => {
+    const bounds = calculatePriceRange(products);
+    return [bounds.min, bounds.max] as [number, number];
+  }, [products]);
+
+  const priceRangeConfig = useMemo(
+    () => calculatePriceRange(products),
+    [products],
+  );
+
+  const [priceRange, setPriceRange] =
+    useState<[number, number]>(initialPriceBounds);
   const [productTypes, setProductTypes] = useState<ProductType[]>(() =>
     products ? getUniqueProductTypes(products) : [],
   );
+
+  // Track if we're still calculating range (products loading)
+  // Using 10000 as default max from DEFAULT_PRICE_BOUNDS
+  const isCalculatingRange =
+    !products || products.length === 0 || priceRangeConfig.max === 10000;
 
   const toggleProductType = (id: string) => {
     setProductTypes((prev) =>
@@ -22,7 +44,7 @@ export const useProductFilters = (products: Product[]) => {
   const resetFilters = () => {
     setSelectedSizes([]);
     setSelectedColors([]);
-    setPriceRange([0, 1000]);
+    setPriceRange(initialPriceBounds);
     setProductTypes((prev) =>
       prev.map((type) => ({ ...type, checked: false })),
     );
@@ -31,7 +53,7 @@ export const useProductFilters = (products: Product[]) => {
   const filterProducts = (products: Product[]) => {
     const filtered = products?.filter((product: Product) => {
       // Filter by price
-      const productPrice = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+      const productPrice = extractNumericPrice(product.price);
       const withinPriceRange =
         productPrice >= priceRange[0] && productPrice <= priceRange[1];
       if (!withinPriceRange) return false;
@@ -74,8 +96,8 @@ export const useProductFilters = (products: Product[]) => {
 
     // Sort products
     return [...(filtered || [])].sort((a, b) => {
-      const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
-      const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
+      const priceA = extractNumericPrice(a.price);
+      const priceB = extractNumericPrice(b.price);
 
       switch (sortBy) {
         case 'price-low':
@@ -103,5 +125,9 @@ export const useProductFilters = (products: Product[]) => {
     toggleProductType,
     resetFilters,
     filterProducts,
+    minPrice: priceRangeConfig.min,
+    maxPrice: priceRangeConfig.max,
+    priceStep: priceRangeConfig.step,
+    isCalculatingRange,
   };
 };

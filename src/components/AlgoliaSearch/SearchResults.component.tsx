@@ -1,3 +1,4 @@
+import { Price } from '@/components/ui/Price.component';
 import {
   TypographyLarge,
   TypographyP,
@@ -52,19 +53,21 @@ const SearchResults = ({
           <div className="pl-4 text-left">
             {product_name && <TypographyLarge>{product_name}</TypographyLarge>}
             <br />
-            {on_sale && (
-              <>
-                <TypographyP className="inline line-through">
-                  kr {regular_price}
-                </TypographyP>
-                <TypographyP className="inline ml-2">
-                  kr {sale_price}
-                </TypographyP>
-              </>
-            )}
-            {!on_sale && (
-              <TypographyP className="inline">kr {regular_price}</TypographyP>
-            )}
+            <div className="flex items-center gap-2">
+              {on_sale ? (
+                <>
+                  <Price value={sale_price} isSale size="md" currency="pln" />
+                  <Price
+                    value={regular_price}
+                    isOriginal
+                    size="sm"
+                    currency="pln"
+                  />
+                </>
+              ) : (
+                <Price value={regular_price} size="md" currency="pln" />
+              )}
+            </div>
             <br />
             <TypographyP className="inline">
               {trimmedStringToLength(short_description, 30)}

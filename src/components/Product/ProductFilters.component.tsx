@@ -17,6 +17,10 @@ interface ProductFiltersProps {
   toggleProductType: (id: string) => void;
   products: Product[];
   resetFilters: () => void;
+  minPrice: number;
+  maxPrice: number;
+  priceStep: number;
+  isCalculatingRange: boolean;
 }
 
 const ProductFilters = ({
@@ -30,6 +34,10 @@ const ProductFilters = ({
   toggleProductType,
   products,
   resetFilters,
+  minPrice,
+  maxPrice,
+  priceStep,
+  isCalculatingRange,
 }: ProductFiltersProps) => {
   // Get unique sizes from all products
   const sizes = Array.from(
@@ -99,16 +107,17 @@ const ProductFilters = ({
         <div className="mb-8">
           <h3 className="font-semibold mb-4">PRICE</h3>
           <Slider
-            min={0}
-            max={1000}
-            step={10}
+            min={minPrice}
+            max={maxPrice}
+            step={priceStep}
             value={[priceRange[0], priceRange[1]]}
             onValueChange={(value) => setPriceRange([value[0], value[1]])}
             className="w-full"
+            disabled={isCalculatingRange}
           />
           <div className="flex justify-between mt-2">
-            <span className="text-sm">kr {priceRange[0]}</span>
-            <span className="text-sm">kr {priceRange[1]}</span>
+            <span className="text-sm">PLN {priceRange[0]}</span>
+            <span className="text-sm">PLN {priceRange[1]}</span>
           </div>
         </div>
 

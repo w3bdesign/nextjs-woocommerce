@@ -88,6 +88,10 @@ const ProductGrid = ({
           toggleProductType={filters.toggleProductType}
           products={products}
           resetFilters={filters.resetFilters}
+          minPrice={filters.minPrice}
+          maxPrice={filters.maxPrice}
+          priceStep={filters.priceStep}
+          isCalculatingRange={filters.isCalculatingRange}
         />
       )}
 

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { decodeHtmlEntities } from '@/utils/functions/productUtils';
 
 interface PriceProps {
   /**
@@ -31,6 +32,7 @@ interface PriceProps {
  * Price component for consistent price display across the furniture store
  * Handles sale prices, original prices, and different size variants
  * Automatically formats currency by adding space after symbol
+ * Decodes HTML entities from WooCommerce/WordPress data
  */
 export const Price = ({
   value,
@@ -42,10 +44,13 @@ export const Price = ({
 }: PriceProps) => {
   if (!value) return null;
 
+  // Decode HTML entities first (e.g., &nbsp; → space)
+  const decodedValue = decodeHtmlEntities(value);
+
   // Auto-format: Add space after currency if not present
-  const formattedValue = value.includes(currency)
-    ? value.split(currency).join(`${currency} `)
-    : value;
+  const formattedValue = decodedValue.includes(currency)
+    ? decodedValue.split(currency).join(`${currency} `)
+    : decodedValue;
 
   const sizeClasses = {
     sm: 'text-sm',

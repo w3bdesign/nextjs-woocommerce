@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { decodeHtmlEntities } from '@/utils/functions/productUtils';
 import { PRICING_DATA } from './constants';
 
 interface PricingProduct {
@@ -9,7 +10,6 @@ interface PricingProduct {
   regularPrice?: string | null;
   salePrice?: string | null;
   onSale?: boolean;
-  [key: string]: any;
 }
 
 interface PricingSectionProps {
@@ -77,15 +77,17 @@ export default function PricingSection({ product }: PricingSectionProps) {
     );
   }
 
-  // Extract price data directly from product
-  const currentPrice = product.price || '';
-  const regularPrice = product.regularPrice || '';
-  const salePrice = product.salePrice || null;
+  // Extract and decode price data once (DRY principle)
+  const decodedCurrentPrice = decodeHtmlEntities(product.price || '');
+  const decodedRegularPrice = decodeHtmlEntities(product.regularPrice || '');
+  const decodedSalePrice = decodeHtmlEntities(product.salePrice || null);
   const onSale = product.onSale ?? false;
 
-  // Determine display prices
-  const displayPrice = salePrice && onSale ? salePrice : currentPrice;
-  const displayOriginal = regularPrice || currentPrice;
+  // Determine display prices from decoded values
+  const displayPrice =
+    onSale && decodedSalePrice ? decodedSalePrice : decodedCurrentPrice;
+  const displayOriginal = decodedRegularPrice || decodedCurrentPrice;
+  const displaySavings = decodedRegularPrice;
 
   return (
     <Card className="m-0 rounded-none border-0 border-b">
@@ -112,9 +114,9 @@ export default function PricingSection({ product }: PricingSectionProps) {
               <span className="text-xs font-medium text-success">Save</span>
               <span
                 className="text-sm font-bold text-success"
-                aria-label={`Savings ${regularPrice}`}
+                aria-label={`Savings ${displaySavings}`}
               >
-                {regularPrice}
+                {displaySavings}
               </span>
             </div>
           )}
