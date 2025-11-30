@@ -2,42 +2,46 @@
 
 **Realistic 10-Week MVP Plan with Parallel Work Tracks**
 
-**Document Version:** 7.0 – Production Ready  
-**Date:** November 23, 2025  
+**Document Version:** 8.0 – Updated to Current State  
+**Date:** November 30, 2025  
 **Authors:** Senior Product Owner & Tech Lead  
-**Status:** Ready for Implementation
+**Status:** Phase 1 Track A Complete - In Progress
 
 ---
 
 ## Executive Summary
 
-This POC roadmap delivers a **fully functional 3D furniture configurator e-commerce platform** within 10 weeks. The plan accounts for the current state (configurator exists, WooCommerce not deployed) and structures work into **parallel tracks** to maximize team productivity while WooCommerce backend is being set up.
+This POC roadmap delivers a **fully functional 3D furniture configurator e-commerce platform** within 10 weeks. **Track A (WooCommerce Backend) is complete** - the backend is deployed at `wordpress2533583.home.pl` and serving live data. Focus now shifts to frontend optimization (Track B) and e-commerce integration (Track C).
 
 ### Current State Analysis (Verified via Codebase)
 
 ✅ **Production Ready:**
 
 - Next.js 15.5.6 on Render.com with Pages Router
+- **WooCommerce backend deployed** at `wordpress2533583.home.pl/graphql`
+- **Live GraphQL API** (mocks disabled in production)
+- **WordPress plugin installed** (`mebl-configurator-bridge`) with `modelId` field
 - 3D Configurator (React Three Fiber) integrated on ProductPage
-- Apollo Client 3.14.0 with mock/live mode switching
+- Apollo Client 3.14.0 querying live WooCommerce data
 - Zustand state management (cart with localStorage persistence)
 - Valtio state management (configurator - **memory only, no persistence**)
-- Two 3D models: Cabinet (with dimensions) & Shelf (colors only)
+- Three 3D models: Cabinet, Shelf, Dresser (with dimension controls)
 - Authentication system (login, protected routes with `withAuth` HOC)
 - Cart system with WooCommerce session management
 - Basic checkout flow (COD payment only)
+- Currency handling configured for PLN
 
 ❌ **Missing/Incomplete:**
 
-- **WooCommerce backend not deployed** (blocking: cart persistence, real orders, payments)
-- **Configurator state not persisted** (dimensions/colors lost on refresh)
-- **No dynamic pricing** (price doesn't update with dimension changes)
-- **Configurator state not saved to cart** (custom config not attached to orders)
+- **Configurator state not persisted** (dimensions/colors lost on refresh) ⚠️ PRIORITY
+- **No dynamic pricing** (price doesn't update with dimension changes) ⚠️ PRIORITY
+- **Configurator state not saved to cart** (custom config not attached to orders) ⚠️ PRIORITY
 - **No payment gateway** (only COD placeholder in code)
 - **No analytics tracking** (no GA4, conversion funnels, or performance metrics)
 - **Limited mobile optimization** (touch gestures, responsive controls)
 - **No product reviews system** (types exist but no UI/mutations)
 - **No shipping options** (hardcoded text, no real shipping methods)
+- **No pricing formulas in WooCommerce** (need custom meta fields for dimension-based pricing)
 
 ### E-commerce Maturity Assessment
 
@@ -67,29 +71,48 @@ Based on industry maturity model:
 
 To avoid blocking on WooCommerce setup, work is organized into **3 parallel tracks**:
 
-### 🔴 **Track A: Backend Foundation** (Critical Path)
+### ✅ **Track A: Backend Foundation** (COMPLETED)
 
-WooCommerce deployment and API integration. **Blocks Track C tasks.**
+WooCommerce deployment and API integration.
 
 **Owner:** DevOps + Backend Dev  
 **Duration:** Days 1-5 (Week 1)  
-**Dependencies:** None
+**Status:** ✅ COMPLETE - Backend live at `wordpress2533583.home.pl`  
+**Achievements:**
 
-### 🟢 **Track B: Frontend Optimization** (Independent)
+- WordPress + WooCommerce deployed with SSL
+- GraphQL endpoint active and tested
+- WordPress plugin (`mebl-configurator-bridge`) installed
+- Products queryable via GraphQL with `modelId` field
+- CORS configured for Next.js domain
+- Mocks disabled in production (`render.yaml`)
 
-Configurator improvements, performance, mobile UX. **Can start immediately.**
+### 🟢 **Track B: Frontend Optimization** (ACTIVE - START HERE)
+
+Configurator improvements, performance, mobile UX.
 
 **Owner:** Frontend Team  
-**Duration:** Weeks 1-3 (parallel with Track A)  
-**Dependencies:** None
+**Duration:** Weeks 1-3  
+**Status:** 🔄 IN PROGRESS - Top priority tasks identified  
+**Current Focus:**
 
-### 🟡 **Track C: Integration & E-commerce** (Dependent)
+1. EPIC 1.C: Configurator State Persistence (localStorage)
+2. EPIC 1.D: Dynamic Pricing Calculation
+3. EPIC 1.E: Mobile Touch Gestures
+4. EPIC 1.F: Performance Optimization
 
-Cart integration, payments, analytics. **Starts after Track A completes.**
+### 🟡 **Track C: Integration & E-commerce** (READY TO START)
+
+Cart integration, payments, analytics. **Backend ready - can start immediately.**
 
 **Owner:** Full-stack Team  
 **Duration:** Weeks 2-7  
-**Dependencies:** Track A completion
+**Status:** ✅ UNBLOCKED - Track A complete, can proceed  
+**Next Steps:**
+
+- EPIC 2.A: Save Configuration to Cart (backend supports meta fields)
+- EPIC 2.B: Checkout Flow Enhancement
+- EPIC 2.C: Payment Gateway Integration (Przelewy24)
 
 ---
 
@@ -99,13 +122,13 @@ Cart integration, payments, analytics. **Starts after Track A completes.**
 
 ### Tasks
 
-- [ ] **Confirm WooCommerce hosting plan** (managed WordPress vs VPS)
-- [ ] **Domain/subdomain for WordPress** (e.g., `api.mebl.com` or `admin.mebl.com`)
-- [ ] **SSL certificate for WordPress domain**
-- [ ] **Algolia account credentials** (for product search)
+- [x] **Confirm WooCommerce hosting plan** ✅ Using `wordpress2533583.home.pl`
+- [x] **Domain/subdomain for WordPress** ✅ Live at `wordpress2533583.home.pl`
+- [x] **SSL certificate for WordPress domain** ✅ HTTPS enabled
+- [ ] **Algolia account credentials** (for product search) - Config exists but needs real credentials
 - [ ] **Przelewy24 merchant account** (for payment gateway)
 - [ ] **GA4 property setup** (for analytics tracking)
-- [ ] **Staging environment on Render.com** (for testing integrations)
+- [x] **Production environment on Render.com** ✅ Deployed with mocks disabled
 
 **Deliverables:**
 

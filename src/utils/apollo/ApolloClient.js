@@ -11,40 +11,50 @@ import { mockLink } from './mockLink';
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
 /**
+ * Get session headers if valid session exists
+ */
+const getSessionHeaders = () => {
+  if (!process.browser) return {};
+
+  const sessionData = JSON.parse(localStorage.getItem('woo-session'));
+  if (!sessionData?.token || !sessionData?.createdTime) return {};
+
+  const { token, createdTime } = sessionData;
+
+  // Check if the token is older than 7 days
+  if (Date.now() - createdTime > SEVEN_DAYS) {
+    localStorage.removeItem('woo-session');
+    localStorage.setItem('woocommerce-cart', JSON.stringify({}));
+    return {};
+  }
+
+  return { 'woocommerce-session': `Session ${token}` };
+};
+
+/**
+ * Get JWT authentication headers if available
+ */
+const getAuthHeaders = () => {
+  if (!process.browser) return {};
+
+  const authToken = sessionStorage.getItem(
+    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY || 'auth-token',
+  );
+
+  return authToken ? { Authorization: `Bearer ${authToken}` } : {};
+};
+
+/**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
  */
 export const middleware = new ApolloLink(async (operation, forward) => {
-  /**
-   * If session data exist in local storage, set value as session header.
-   * Here we also delete the session if it is older than 7 days
-   */
-  const sessionData = process.browser
-    ? JSON.parse(localStorage.getItem('woo-session'))
-    : null;
+  const headers = {
+    ...getSessionHeaders(),
+    ...getAuthHeaders(),
+  };
 
-  const headers = {};
-
-  if (sessionData && sessionData.token && sessionData.createdTime) {
-    const { token, createdTime } = sessionData;
-
-    // Check if the token is older than 7 days
-    if (Date.now() - createdTime > SEVEN_DAYS) {
-      // If it is, delete it
-      localStorage.removeItem('woo-session');
-      localStorage.setItem('woocommerce-cart', JSON.stringify({}));
-    } else {
-      // If it's not, use the token
-      headers['woocommerce-session'] = `Session ${token}`;
-    }
-  }
-
-  // Cookie-based authentication - no JWT tokens needed
-  // Cookies are automatically included with credentials: 'include'
-
-  operation.setContext({
-    headers,
-  });
+  operation.setContext({ headers });
 
   return forward(operation);
 });

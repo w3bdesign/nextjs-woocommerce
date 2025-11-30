@@ -1,20 +1,99 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { LOGIN_USER } from './gql/GQL_MUTATIONS';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { LOGIN_USER, REFRESH_AUTH_TOKEN } from './gql/GQL_MUTATIONS';
 
-// Cookie-based authentication - no token storage needed
-export function hasCredentials() {
-  if (typeof window === 'undefined') {
-    return false; // Server-side, no credentials available
+const AUTH_TOKEN_KEY =
+  process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY || 'auth-token';
+const REFRESH_TOKEN_KEY =
+  process.env.NEXT_PUBLIC_REFRESH_TOKEN_LS_KEY || 'refresh-token';
+
+const GET_VIEWER_QUERY = gql`
+  query GetViewer {
+    viewer {
+      id
+      name
+      email
+    }
   }
+`;
 
-  // With cookie-based auth, we'll check if user is logged in through a query
-  // For now, we'll return false and let components handle the check
-  return false;
+export interface LoginResponse {
+  authToken: string;
+  refreshToken: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }
 
-export async function getAuthToken() {
-  // Cookie-based auth doesn't need JWT tokens
-  return null;
+// Check if user has valid credentials
+export async function hasCredentials(): Promise<boolean> {
+  const token = getAuthToken();
+
+  if (!token) {
+    // Try to refresh token
+    const newToken = await refreshAuthToken();
+    return !!newToken;
+  }
+
+  // Verify token is valid
+  const client = new ApolloClient({
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+    cache: new InMemoryCache(),
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  try {
+    const { data } = await client.query({
+      query: GET_VIEWER_QUERY,
+      fetchPolicy: 'network-only',
+    });
+
+    return !!data?.viewer?.id;
+  } catch {
+    // Token invalid, try refresh
+    const newToken = await refreshAuthToken();
+    return !!newToken;
+  }
+}
+
+export function getAuthToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  return sessionStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+export async function refreshAuthToken(): Promise<string | null> {
+  if (typeof window === 'undefined') return null;
+
+  const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+  if (!refreshToken) return null;
+
+  const client = new ApolloClient({
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+    cache: new InMemoryCache(),
+  });
+
+  try {
+    const { data } = await client.mutate({
+      mutation: REFRESH_AUTH_TOKEN,
+      variables: { refreshToken },
+    });
+
+    const newAuthToken = data?.refreshJwtAuthToken?.authToken;
+    if (newAuthToken) {
+      sessionStorage.setItem(AUTH_TOKEN_KEY, newAuthToken);
+      return newAuthToken;
+    }
+    return null;
+  } catch (error) {
+    console.error('Token refresh error:', error);
+    // Clear invalid tokens
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    sessionStorage.removeItem(AUTH_TOKEN_KEY);
+    return null;
+  }
 }
 
 function getErrorMessage(error: any): string {
@@ -55,40 +134,52 @@ function getErrorMessage(error: any): string {
   return 'An unknown error occurred. Please try again later.';
 }
 
-export async function login(username: string, password: string) {
-  try {
-    const client = new ApolloClient({
-      uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-      cache: new InMemoryCache(),
-      credentials: 'include', // Include cookies in requests
-    });
+export async function login(
+  username: string,
+  password: string,
+): Promise<LoginResponse> {
+  const client = new ApolloClient({
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+    cache: new InMemoryCache(),
+  });
 
-    const { data } = await client.mutate({
+  try {
+    const { data, errors } = await client.mutate({
       mutation: LOGIN_USER,
       variables: { username, password },
     });
 
-    const loginResult = data.loginWithCookies;
-
-    if (loginResult.status !== 'SUCCESS') {
-      throw new Error(
-        'Login failed. Please check your credentials and try again.',
-      );
+    if (errors) {
+      throw new Error(errors[0]?.message || 'Login failed');
     }
 
-    // On successful login, cookies are automatically set by the server
-    return { success: true, status: loginResult.status };
+    if (!data?.login?.authToken) {
+      throw new Error('Invalid credentials');
+    }
+
+    // Store tokens
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(AUTH_TOKEN_KEY, data.login.authToken);
+      localStorage.setItem(REFRESH_TOKEN_KEY, data.login.refreshToken);
+    }
+
+    return data.login;
   } catch (error: unknown) {
     const userFriendlyMessage = getErrorMessage(error);
     throw new Error(userFriendlyMessage);
   }
 }
 
-export async function logout() {
-  // For cookie-based auth, we might need a logout mutation
-  // For now, we can clear any client-side state
-  if (typeof window !== 'undefined') {
-    // Redirect to login or home page after logout
-    window.location.href = '/';
-  }
+export async function logout(): Promise<void> {
+  if (typeof window === 'undefined') return;
+
+  // Clear tokens
+  sessionStorage.removeItem(AUTH_TOKEN_KEY);
+  localStorage.removeItem(REFRESH_TOKEN_KEY);
+  localStorage.removeItem(
+    process.env.NEXT_PUBLIC_SESSION_TOKEN_LS_KEY || 'session-token',
+  );
+
+  // Redirect to home page
+  window.location.href = '/';
 }
