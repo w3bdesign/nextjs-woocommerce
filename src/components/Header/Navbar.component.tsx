@@ -1,5 +1,13 @@
 import { Button } from '@/components/ui/button';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -16,13 +24,14 @@ import {
 import { TypographyLarge } from '@/components/ui/Typography.component';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
-import { Menu } from 'lucide-react';
+import { Menu, User } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { hasCredentials } from '../../utils/auth';
 import AlgoliaSearchBox from '../AlgoliaSearch/AlgoliaSearchBox.component';
 import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
 import { Container } from '../Layout/Container.component';
+import LogoutButton from '../User/LogoutButton.component';
 import Cart from './Cart.component';
 
 /**
@@ -76,30 +85,31 @@ const Navbar = () => {
 
                   {/* Auth Navigation */}
                   {loggedIn ? (
+                    <>
+                      <Link
+                        href={siteConfig.authNav.account.href}
+                        onClick={() => setIsOpen(false)}
+                        className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
+                      >
+                        {siteConfig.authNav.account.title}
+                      </Link>
+                      <LogoutButton
+                        variant="ghost"
+                        className="justify-start text-lg font-medium uppercase tracking-wider hover:text-gray-600"
+                        onLogoutSuccess={() => {
+                          setLoggedIn(false);
+                          setIsOpen(false);
+                        }}
+                      />
+                    </>
+                  ) : (
                     <Link
-                      href={siteConfig.authNav.account.href}
+                      href={siteConfig.authNav.login.href}
                       onClick={() => setIsOpen(false)}
                       className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
                     >
-                      {siteConfig.authNav.account.title}
+                      {siteConfig.authNav.login.title}
                     </Link>
-                  ) : (
-                    <>
-                      <Link
-                        href={siteConfig.authNav.login.href}
-                        onClick={() => setIsOpen(false)}
-                        className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
-                      >
-                        {siteConfig.authNav.login.title}
-                      </Link>
-                      <Link
-                        href={siteConfig.authNav.register.href}
-                        onClick={() => setIsOpen(false)}
-                        className="text-lg font-medium uppercase tracking-wider hover:text-gray-600 transition-colors"
-                      >
-                        {siteConfig.authNav.register.title}
-                      </Link>
-                    </>
                   )}
 
                   {/* Mobile Search */}
@@ -157,47 +167,54 @@ const Navbar = () => {
                 <NavigationMenuList>
                   {loggedIn ? (
                     <NavigationMenuItem>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="uppercase tracking-wider text-sm"
+                          >
+                            <User className="mr-2 h-4 w-4" />
+                            Account
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-56">
+                          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href={siteConfig.authNav.account.href}
+                              className="cursor-pointer"
+                            >
+                              View Orders
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem asChild>
+                            <LogoutButton
+                              variant="ghost"
+                              className="w-full justify-start px-2 py-1.5 h-auto font-normal"
+                              showIcon={true}
+                              asChild={false}
+                              onLogoutSuccess={() => setLoggedIn(false)}
+                            />
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </NavigationMenuItem>
+                  ) : (
+                    <NavigationMenuItem>
                       <NavigationMenuLink asChild>
                         <Link
-                          href={siteConfig.authNav.account.href}
+                          href={siteConfig.authNav.login.href}
                           className={cn(
                             navigationMenuTriggerStyle(),
                             'uppercase tracking-wider text-sm',
                           )}
                         >
-                          {siteConfig.authNav.account.title}
+                          {siteConfig.authNav.login.title}
                         </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
-                  ) : (
-                    <>
-                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href={siteConfig.authNav.login.href}
-                            className={cn(
-                              navigationMenuTriggerStyle(),
-                              'uppercase tracking-wider text-sm',
-                            )}
-                          >
-                            {siteConfig.authNav.login.title}
-                          </Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                      <NavigationMenuItem>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href={siteConfig.authNav.register.href}
-                            className={cn(
-                              navigationMenuTriggerStyle(),
-                              'uppercase tracking-wider text-sm',
-                            )}
-                          >
-                            {siteConfig.authNav.register.title}
-                          </Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    </>
                   )}
                 </NavigationMenuList>
               </NavigationMenu>

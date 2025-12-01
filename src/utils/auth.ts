@@ -16,6 +16,24 @@ const GET_VIEWER_QUERY = gql`
   }
 `;
 
+/**
+ * Custom error class for authentication failures
+ * Includes optional field metadata to identify which form field caused the error
+ */
+export class AuthenticationError extends Error {
+  field?: 'username' | 'password';
+
+  constructor(message: string, field?: 'username' | 'password') {
+    super(message);
+    this.name = 'AuthenticationError';
+    this.field = field;
+    // Maintains proper stack trace for where our error was thrown
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, AuthenticationError);
+    }
+  }
+}
+
 export interface LoginResponse {
   authToken: string;
   refreshToken: string;
@@ -96,42 +114,64 @@ export async function refreshAuthToken(): Promise<string | null> {
   }
 }
 
-function getErrorMessage(error: any): string {
+function getErrorMessage(error: any): AuthenticationError {
   // Check for GraphQL errors
   if (error.graphQLErrors && error.graphQLErrors.length > 0) {
     const graphQLError = error.graphQLErrors[0];
     const message = graphQLError.message;
 
-    // Map GraphQL error messages to user-friendly messages
+    // Map GraphQL error messages to user-friendly messages with field metadata
     switch (message) {
       case 'invalid_username':
-        return 'Invalid username or email address. Please check and try again.';
+        return new AuthenticationError(
+          'Invalid username or email address. Please check and try again.',
+          'username',
+        );
       case 'incorrect_password':
-        return 'Incorrect password. Please check your password and try again.';
+        return new AuthenticationError(
+          'Incorrect password. Please check your password and try again.',
+          'password',
+        );
       case 'invalid_email':
-        return 'Invalid email address. Please enter a valid email address.';
+        return new AuthenticationError(
+          'Invalid email address. Please enter a valid email address.',
+          'username',
+        );
       case 'empty_username':
-        return 'Please enter a username or email address.';
+        return new AuthenticationError(
+          'Please enter a username or email address.',
+          'username',
+        );
       case 'empty_password':
-        return 'Please enter a password.';
+        return new AuthenticationError('Please enter a password.', 'password');
       case 'too_many_retries':
-        return 'Too many failed attempts. Please wait a moment before trying again.';
+        return new AuthenticationError(
+          'Too many failed attempts. Please wait a moment before trying again.',
+        );
       default:
-        return 'Login failed. Please check your credentials and try again.';
+        return new AuthenticationError(
+          'Login failed. Please check your credentials and try again.',
+        );
     }
   }
 
   // Check for network errors
   if (error.networkError) {
-    return 'Network error. Please check your internet connection and try again.';
+    return new AuthenticationError(
+      'Network error. Please check your internet connection and try again.',
+    );
   }
 
   // Fallback for other errors
   if (error.message) {
-    return 'An error occurred during login. Please try again.';
+    return new AuthenticationError(
+      'An error occurred during login. Please try again.',
+    );
   }
 
-  return 'An unknown error occurred. Please try again later.';
+  return new AuthenticationError(
+    'An unknown error occurred. Please try again later.',
+  );
 }
 
 export async function login(
@@ -165,21 +205,34 @@ export async function login(
 
     return data.login;
   } catch (error: unknown) {
-    const userFriendlyMessage = getErrorMessage(error);
-    throw new Error(userFriendlyMessage);
+    const authError = getErrorMessage(error);
+    throw authError;
   }
 }
 
-export async function logout(): Promise<void> {
+export async function logout(onSuccess?: () => void): Promise<void> {
   if (typeof window === 'undefined') return;
 
-  // Clear tokens
-  sessionStorage.removeItem(AUTH_TOKEN_KEY);
-  localStorage.removeItem(REFRESH_TOKEN_KEY);
-  localStorage.removeItem(
-    process.env.NEXT_PUBLIC_SESSION_TOKEN_LS_KEY || 'session-token',
-  );
+  try {
+    // Clear tokens
+    sessionStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    localStorage.removeItem(
+      process.env.NEXT_PUBLIC_SESSION_TOKEN_LS_KEY || 'session-token',
+    );
 
-  // Redirect to home page
-  window.location.href = '/';
+    // Call success callback if provided (for toast notifications, state updates)
+    if (onSuccess) {
+      onSuccess();
+    }
+
+    // Small delay to allow toast to show before redirect
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 500);
+  } catch (error) {
+    console.error('Logout error:', error);
+    // Force redirect even on error
+    window.location.href = '/';
+  }
 }
