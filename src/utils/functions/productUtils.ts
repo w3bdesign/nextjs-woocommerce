@@ -34,28 +34,38 @@ export const getUniqueProductTypes = (products: Product[]): ProductType[] => {
 /**
  * Decode HTML entities from WooCommerce/WordPress strings
  * Handles common entities like &nbsp;, &amp;, &lt;, &gt;, &quot;, etc.
+ * Uses consistent server-side compatible approach to prevent hydration mismatches
  * @param str - String potentially containing HTML entities
  * @returns Decoded string
  */
 export const decodeHtmlEntities = (str: string | null | undefined): string => {
   if (!str || typeof str !== 'string') return '';
 
-  // Create a temporary textarea element to leverage browser's HTML decoding
-  if (typeof document !== 'undefined') {
-    const textarea = document.createElement('textarea');
-    textarea.innerHTML = str;
-    return textarea.value;
-  }
-
-  // Server-side fallback: decode common entities manually
+  // Always use server-side compatible decoding to prevent hydration mismatches
+  // DO NOT use document.createElement as it produces different results on server vs client
   return str
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#039;/g, "'")
-    .replace(/&apos;/g, "'");
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0?39;/gi, "'")
+    .replace(/&apos;/gi, "'")
+    .replace(/&lsquo;/gi, "'")
+    .replace(/&rsquo;/gi, "'")
+    .replace(/&ldquo;/gi, '"')
+    .replace(/&rdquo;/gi, '"')
+    .replace(/&hellip;/gi, '...')
+    .replace(/&ndash;/gi, '-')
+    .replace(/&mdash;/gi, '-')
+    .replace(/&euro;/gi, '€')
+    .replace(/&pound;/gi, '£')
+    .replace(/&yen;/gi, '¥')
+    .replace(/&cent;/gi, '¢')
+    .replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec))
+    .replace(/&#x([0-9a-f]+);/gi, (match, hex) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    );
 };
 
 /**

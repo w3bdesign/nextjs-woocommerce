@@ -34,7 +34,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setLoggedIn(hasCredentials());
+    const checkAuth = async () => {
+      const hasAuth = await hasCredentials();
+      setLoggedIn(hasAuth);
+    };
+    checkAuth();
   }, []);
 
   return (

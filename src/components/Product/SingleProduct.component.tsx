@@ -21,7 +21,7 @@ const ProductConfigurator = dynamic(
 );
 
 const SingleProduct = ({ product }: IProductRootObject) => {
-  const [selectedVariation, setSelectedVariation] = useState<number>();
+  const [_selectedVariation, setSelectedVariation] = useState<number>();
 
   useEffect(() => {
     if (product.variations) {

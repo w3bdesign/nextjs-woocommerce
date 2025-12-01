@@ -11,37 +11,72 @@ import { mockLink } from './mockLink';
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
 /**
+ * Safely parse and validate session data
+ */
+const parseSessionData = (sessionData) => {
+  try {
+    const parsed = JSON.parse(sessionData);
+    if (!parsed?.token || !parsed?.createdTime) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Check if session token has expired (older than 7 days)
+ */
+const isSessionExpired = (createdTime) => {
+  return Date.now() - createdTime > SEVEN_DAYS;
+};
+
+/**
  * Get session headers if valid session exists
+ * SSR-safe: returns empty object on server
  */
 const getSessionHeaders = () => {
-  if (!process.browser) return {};
+  if (typeof window === 'undefined') return {};
 
-  const sessionData = JSON.parse(localStorage.getItem('woo-session'));
-  if (!sessionData?.token || !sessionData?.createdTime) return {};
+  try {
+    const sessionData = localStorage.getItem('woo-session');
+    if (!sessionData) return {};
 
-  const { token, createdTime } = sessionData;
+    const parsed = parseSessionData(sessionData);
+    if (!parsed) return {};
 
-  // Check if the token is older than 7 days
-  if (Date.now() - createdTime > SEVEN_DAYS) {
-    localStorage.removeItem('woo-session');
-    localStorage.setItem('woocommerce-cart', JSON.stringify({}));
+    const { token, createdTime } = parsed;
+
+    // Check if the token is older than 7 days
+    if (isSessionExpired(createdTime)) {
+      localStorage.removeItem('woo-session');
+      localStorage.setItem('woocommerce-cart', JSON.stringify({}));
+      return {};
+    }
+
+    return { 'woocommerce-session': `Session ${token}` };
+  } catch (error) {
+    console.error('Error reading session from localStorage:', error);
     return {};
   }
-
-  return { 'woocommerce-session': `Session ${token}` };
 };
 
 /**
  * Get JWT authentication headers if available
+ * SSR-safe: returns empty object on server
  */
 const getAuthHeaders = () => {
-  if (!process.browser) return {};
+  if (typeof window === 'undefined') return {};
 
-  const authToken = sessionStorage.getItem(
-    process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY || 'auth-token',
-  );
+  try {
+    const authToken = sessionStorage.getItem(
+      process.env.NEXT_PUBLIC_AUTH_TOKEN_SS_KEY || 'auth-token',
+    );
 
-  return authToken ? { Authorization: `Bearer ${authToken}` } : {};
+    return authToken ? { Authorization: `Bearer ${authToken}` } : {};
+  } catch (error) {
+    console.error('Error reading auth token from sessionStorage:', error);
+    return {};
+  }
 };
 
 /**
@@ -76,16 +111,20 @@ export const afterware = new ApolloLink((operation, forward) =>
 
     const session = headers.get('woocommerce-session');
 
-    if (session && process.browser) {
-      if ('false' === session) {
-        // Remove session data if session destroyed.
-        localStorage.removeItem('woo-session');
-        // Update session new data if changed.
-      } else if (!localStorage.getItem('woo-session')) {
-        localStorage.setItem(
-          'woo-session',
-          JSON.stringify({ token: session, createdTime: Date.now() }),
-        );
+    if (session && typeof window !== 'undefined') {
+      try {
+        if ('false' === session) {
+          // Remove session data if session destroyed.
+          localStorage.removeItem('woo-session');
+          // Update session new data if changed.
+        } else if (!localStorage.getItem('woo-session')) {
+          localStorage.setItem(
+            'woo-session',
+            JSON.stringify({ token: session, createdTime: Date.now() }),
+          );
+        }
+      } catch (error) {
+        console.error('Error saving session to localStorage:', error);
       }
     }
 

@@ -38,7 +38,7 @@ const UserLogin = () => {
     setError(null);
     try {
       const result = await login(data.username, data.password);
-      if (result.success && result.status === 'SUCCESS') {
+      if (result.authToken && result.user) {
         toast({
           title: 'Login successful',
           description: 'Welcome back!',

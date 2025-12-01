@@ -117,7 +117,11 @@ const CustomerAccount = () => {
                     #{order.orderNumber}
                   </TableCell>
                   <TableCell>
-                    {new Date(order.date).toLocaleDateString()}
+                    {new Date(order.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                    })}
                   </TableCell>
                   <TableCell>
                     <Badge variant={getStatusVariant(order.status)}>
