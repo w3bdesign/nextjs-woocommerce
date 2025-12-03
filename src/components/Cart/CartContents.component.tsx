@@ -15,6 +15,7 @@ import {
   TypographyP,
 } from '@/components/ui/Typography.component';
 import { useCartStore } from '@/stores/cartStore';
+import { ConfigurationDisplay } from './ConfigurationDisplay.component';
 
 import {
   getFormattedCart,
@@ -120,8 +121,12 @@ const CartContents = () => {
                 <div className="flex-grow ml-4">
                   <TypographyH3>{item.product.node.name}</TypographyH3>
                   <TypographyP className="text-gray-600">
-                    kr {getUnitPrice(item.subtotal, item.quantity)}
+                    <Price
+                      value={`${getUnitPrice(item.subtotal, item.quantity)}`}
+                      size="sm"
+                    />
                   </TypographyP>
+                  <ConfigurationDisplay extraData={item.extraData} />
                 </div>
                 <div className="flex items-center">
                   <input

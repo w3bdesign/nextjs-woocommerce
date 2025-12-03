@@ -63,10 +63,10 @@ export const BENEFIT_CARDS = [
 ] as const;
 
 export const PRICING_DATA = {
-  originalPrice: '3067 kr',
-  currentPrice: '1963 kr',
-  savings: '1104 kr',
-  lowestPrice: '1806 kr',
+  originalPrice: '3067 zł',
+  currentPrice: '1963 zł',
+  savings: '1104 zł',
+  lowestPrice: '1806 zł',
   onSale: true,
 } as const;
 

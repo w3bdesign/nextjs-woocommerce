@@ -38,6 +38,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
           {product.configurator?.enabled ? (
             <ProductConfigurator
               modelId={product.configurator.modelId}
+              productId={product.databaseId}
               product={product}
             />
           ) : (

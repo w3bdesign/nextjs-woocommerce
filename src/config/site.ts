@@ -36,3 +36,9 @@ export const siteConfig = {
 } as const;
 
 export type SiteConfig = typeof siteConfig;
+
+/**
+ * Default currency symbol for the Polish market
+ * Used as fallback when currency cannot be detected from WooCommerce prices
+ */
+export const DEFAULT_CURRENCY = 'zł';

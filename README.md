@@ -12,6 +12,8 @@
 
 # Next.js Furniture Ecommerce with WooCommerce backend
 
+**Polish Market Edition** - Currency auto-detection with PLN (zł) default
+
 ## Live URL: <https://next-woocommerce.dfweb.no>
 
 ## Table Of Contents (TOC)
@@ -55,18 +57,20 @@ The current release has been tested and is confirmed working with the following 
 
 4.  Clone or fork the repo. For local development, copy `.env.example` to `.env.local` and adjust values.
 
-  Key variables:
-  - `NEXT_PUBLIC_GRAPHQL_URL` – Your WPGraphQL endpoint (e.g. https://yourwp.site/graphql)
-  - `NEXT_PUBLIC_ENABLE_MOCKS` – Set to `true` to run without a backend using in-app mocks
-  - Algolia (optional): `NEXT_PUBLIC_ALGOLIA_APP_ID`, `NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY`, `NEXT_PUBLIC_ALGOLIA_INDEX_NAME`
+Key variables:
 
-  This boilerplate also includes a `render.yaml` for Render.com deployment. On Render, set the above env vars in the service settings or rely on `render.yaml` prompts for secrets.
+- `NEXT_PUBLIC_GRAPHQL_URL` – Your WPGraphQL endpoint (e.g. https://yourwp.site/graphql)
+- `NEXT_PUBLIC_ENABLE_MOCKS` – Set to `true` to run without a backend using in-app mocks
+- Algolia (optional): `NEXT_PUBLIC_ALGOLIA_APP_ID`, `NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY`, `NEXT_PUBLIC_ALGOLIA_INDEX_NAME`
+
+This boilerplate also includes a `render.yaml` for Render.com deployment. On Render, set the above env vars in the service settings or rely on `render.yaml` prompts for secrets.
 
 5.  Modify the values according to your setup
 
 6.  Install dependencies and start the server
-  - `npm install`
-  - `npm run dev`
+
+- `npm install`
+- `npm run dev`
 
 7.  Enable COD (Cash On Demand) payment method in WooCommerce
 
@@ -154,16 +158,18 @@ Located in `/src/components/ui/`:
 ### Component Usage Examples
 
 #### Button with Next.js Link
+
 ```tsx
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 <Button variant="default" asChild>
   <Link href="/products">Shop Now</Link>
-</Button>
+</Button>;
 ```
 
 #### Form with Shadcn Components
+
 ```tsx
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -173,40 +179,53 @@ import { Button } from '@/components/ui/button';
   <Label htmlFor="email">Email</Label>
   <Input id="email" type="email" placeholder="you@example.com" />
   <Button type="submit">Submit</Button>
-</div>
+</div>;
 ```
 
 #### Toast Notifications
+
 ```tsx
 import { useToast } from '@/components/ui/use-toast';
 
 const { toast } = useToast();
 
 toast({
-  title: "Success!",
-  description: "Product added to cart",
+  title: 'Success!',
+  description: 'Product added to cart',
 });
 ```
 
 #### Table with Loading State
+
 ```tsx
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 
-{loading ? (
-  <TableBody>
-    {[...Array(3)].map((_, i) => (
-      <TableRow key={i}>
-        <TableCell><Skeleton className="h-4 w-20" /></TableCell>
-        <TableCell><Skeleton className="h-4 w-24" /></TableCell>
-      </TableRow>
-    ))}
-  </TableBody>
-) : (
-  <TableBody>
-    {/* Actual data */}
-  </TableBody>
-)}
+{
+  loading ? (
+    <TableBody>
+      {[...Array(3)].map((_, i) => (
+        <TableRow key={i}>
+          <TableCell>
+            <Skeleton className="h-4 w-20" />
+          </TableCell>
+          <TableCell>
+            <Skeleton className="h-4 w-24" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  ) : (
+    <TableBody>{/* Actual data */}</TableBody>
+  );
+}
 ```
 
 ### Customization
@@ -281,12 +300,14 @@ This repo includes a `render.yaml` Blueprint to deploy as a Node Web Service on 
 - Optional: Algolia keys and index name
 
 Steps:
+
 1. Push your repo to GitHub/GitLab/Bitbucket.
 2. In Render Dashboard: New > Blueprint > select your repo containing `render.yaml`.
 3. When prompted, provide secret values for variables marked with `sync: false` (e.g., `NEXT_PUBLIC_GRAPHQL_URL`).
 4. Finish creation; Render will build and run the service at an `onrender.com` URL.
 
 Notes:
+
 - SSR and API routes run on Render’s Node runtime. The app binds to the default `PORT` provided by Render automatically via `next start`.
 - If your WooCommerce/WordPress is behind auth or firewalls, allow Render to access it or proxy accordingly.
 - For preview environments or temporary lack of backend, set `NEXT_PUBLIC_ENABLE_MOCKS=true` to serve mock catalog data.

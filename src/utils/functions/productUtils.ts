@@ -140,6 +140,46 @@ export const extractNumericPrice = (priceString: string): number => {
 };
 
 /**
+ * Extract currency symbol from price string
+ * Handles various WooCommerce price formats and normalizes PLN to zł
+ *
+ * @param priceString - Price string like "800,00 zł", "PLN 1234", "kr 4999"
+ * @returns Currency symbol or empty string if not detected
+ *
+ * @example
+ * extractCurrencySymbol("800,00 zł") // Returns: "zł"
+ * extractCurrencySymbol("PLN 1234.56") // Returns: "zł"
+ * extractCurrencySymbol("kr 4999") // Returns: "kr"
+ * extractCurrencySymbol("1234") // Returns: ""
+ */
+export const extractCurrencySymbol = (priceString: string): string => {
+  if (!priceString || typeof priceString !== 'string') return '';
+
+  // Decode HTML entities first
+  const decodedString = decodeHtmlEntities(priceString);
+
+  // Handle range prices - take first price
+  const cleanString = decodedString.includes(' - ')
+    ? decodedString.split(' - ')[0].trim()
+    : decodedString;
+
+  // Remove all digits, spaces, commas, periods, and common separators
+  // Keep only currency symbols and letters
+  const currencyMatch = cleanString.replace(/[\d\s,.-]+/g, '').trim();
+
+  if (!currencyMatch) return '';
+
+  // Normalize PLN variations to zł
+  const normalized = currencyMatch.toUpperCase();
+  if (normalized === 'PLN' || normalized === 'PL') {
+    return 'zł';
+  }
+
+  // Return the extracted currency symbol
+  return currencyMatch;
+};
+
+/**
  * Calculate dynamic price range bounds from product array
  * Returns smart defaults when no products available
  *

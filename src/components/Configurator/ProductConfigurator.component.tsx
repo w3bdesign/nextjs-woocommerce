@@ -40,6 +40,7 @@ const Canvas3DErrorBoundary = dynamic(
 interface ProductConfiguratorProps {
   modelId?: string;
   className?: string;
+  productId?: number;
   product?: {
     price?: string;
     regularPrice?: string;
@@ -55,6 +56,7 @@ interface ProductConfiguratorProps {
 export default function ProductConfigurator({
   modelId = DEFAULT_MODEL_ID,
   className = '',
+  productId,
   product,
 }: ProductConfiguratorProps): ReactElement {
   // Get the model configuration from the registry
@@ -63,11 +65,11 @@ export default function ProductConfigurator({
   // Initialize the configurator store with the model config
   useEffect(() => {
     if (modelConfig) {
-      initializeConfigurator(modelConfig);
+      initializeConfigurator(modelConfig, productId, modelId);
     } else {
       debug.warn(`Model ID "${modelId}" not found in registry`);
     }
-  }, [modelId, modelConfig]);
+  }, [modelId, modelConfig, productId]);
 
   // Don't render if model config doesn't exist
   if (!modelConfig) {

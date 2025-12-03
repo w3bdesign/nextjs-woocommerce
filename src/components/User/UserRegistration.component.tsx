@@ -96,9 +96,9 @@ const UserRegistration = () => {
               rules={{ required: 'Username is required' }}
               render={({ field }) => (
                 <FormItem className="w-1/2 p-2">
-                  <FormLabel>Brukernavn</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Brukernavn" type="text" {...field} />
+                    <Input placeholder="Username" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -111,9 +111,9 @@ const UserRegistration = () => {
               rules={{ required: 'Email is required' }}
               render={({ field }) => (
                 <FormItem className="w-1/2 p-2">
-                  <FormLabel>E-post</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="E-post" type="email" {...field} />
+                    <Input placeholder="Email" type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -126,9 +126,9 @@ const UserRegistration = () => {
               rules={{ required: 'Password is required' }}
               render={({ field }) => (
                 <FormItem className="w-1/2 p-2">
-                  <FormLabel>Passord</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Passord" type="password" {...field} />
+                    <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,9 +141,9 @@ const UserRegistration = () => {
               rules={{ required: 'First name is required' }}
               render={({ field }) => (
                 <FormItem className="w-1/2 p-2">
-                  <FormLabel>Fornavn</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Fornavn" type="text" {...field} />
+                    <Input placeholder="First Name" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -156,9 +156,9 @@ const UserRegistration = () => {
               rules={{ required: 'Last name is required' }}
               render={({ field }) => (
                 <FormItem className="w-1/2 p-2">
-                  <FormLabel>Etternavn</FormLabel>
+                  <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Etternavn" type="text" {...field} />
+                    <Input placeholder="Last Name" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -180,10 +180,10 @@ const UserRegistration = () => {
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Registrerer...
+                      Registering...
                     </>
                   ) : (
-                    'Registrer'
+                    'Register'
                   )}
                 </Button>
               </div>

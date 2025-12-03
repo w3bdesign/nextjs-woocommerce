@@ -212,13 +212,74 @@ export const mockCategories = {
 export const mockCart = {
   cart: {
     contents: {
-      nodes: [],
+      nodes: [
+        {
+          key: 'cart-item-1',
+          product: {
+            node: {
+              id: 'prod-1',
+              databaseId: 1,
+              name: 'Modern Cabinet',
+              description: 'A configurable modern cabinet',
+              type: 'SIMPLE',
+              onSale: false,
+              slug: 'modern-cabinet',
+              averageRating: 4.5,
+              reviewCount: 12,
+              image: {
+                id: 'img-1',
+                sourceUrl: '/images/cabinet.jpg',
+                srcSet: '/images/cabinet.jpg 1x',
+                altText: 'Modern Cabinet',
+                title: 'Modern Cabinet',
+                __typename: 'MediaItem',
+              },
+              galleryImages: {
+                nodes: [],
+                __typename: 'MediaItemConnection',
+              },
+              __typename: 'SimpleProduct',
+            },
+            __typename: 'CartItemProduct',
+          },
+          variation: null,
+          quantity: 1,
+          total: '1200.00',
+          subtotal: '1200.00',
+          subtotalTax: '0',
+          extraData: [
+            {
+              key: 'configurator_state',
+              value: JSON.stringify({
+                modelId: 'cabinet-model-v1',
+                timestamp: '2024-12-01T10:00:00Z',
+                items: [
+                  { name: 'Door', color: 'White' },
+                  { name: 'Frame', color: 'Oak' },
+                  { name: 'Handles', color: 'Chrome' },
+                ],
+                dimensions: {
+                  width: '120cm',
+                  height: '200cm',
+                  depth: '60cm',
+                },
+                interactiveStates: {
+                  doorOpen: false,
+                  drawerOpen: false,
+                },
+              }),
+              __typename: 'MetaData',
+            },
+          ],
+          __typename: 'CartItem',
+        },
+      ],
     },
-    subtotal: '0',
+    subtotal: '1200.00',
     subtotalTax: '0',
     shippingTax: '0',
     shippingTotal: '0',
-    total: '0',
+    total: '1200.00',
     totalTax: '0',
     feeTax: '0',
     feeTotal: '0',

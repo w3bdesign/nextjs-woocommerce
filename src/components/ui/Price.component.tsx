@@ -1,5 +1,9 @@
+import { DEFAULT_CURRENCY } from '@/config/site';
 import { cn } from '@/lib/utils';
-import { decodeHtmlEntities } from '@/utils/functions/productUtils';
+import {
+  decodeHtmlEntities,
+  extractCurrencySymbol,
+} from '@/utils/functions/productUtils';
 
 interface PriceProps {
   /**
@@ -31,7 +35,7 @@ interface PriceProps {
 /**
  * Price component for consistent price display across the furniture store
  * Handles sale prices, original prices, and different size variants
- * Automatically formats currency by adding space after symbol
+ * Automatically detects currency from WooCommerce prices or uses Polish zł as default
  * Decodes HTML entities from WooCommerce/WordPress data
  */
 export const Price = ({
@@ -39,7 +43,7 @@ export const Price = ({
   isSale = false,
   isOriginal = false,
   size = 'lg',
-  currency = 'kr',
+  currency,
   className,
 }: PriceProps) => {
   if (!value) return null;
@@ -47,9 +51,13 @@ export const Price = ({
   // Decode HTML entities first (e.g., &nbsp; → space)
   const decodedValue = decodeHtmlEntities(value);
 
+  // Auto-detect currency from price string, or use provided currency, or default to PLN
+  const detectedCurrency =
+    currency || extractCurrencySymbol(value) || DEFAULT_CURRENCY;
+
   // Auto-format: Add space after currency if not present
-  const formattedValue = decodedValue.includes(currency)
-    ? decodedValue.split(currency).join(`${currency} `)
+  const formattedValue = decodedValue.includes(detectedCurrency)
+    ? decodedValue.split(detectedCurrency).join(`${detectedCurrency} `)
     : decodedValue;
 
   const sizeClasses = {
@@ -109,7 +117,7 @@ interface PriceGroupProps {
 
 /**
  * Smart price group that handles all WooCommerce price scenarios
- * Automatically formats prices and handles sale/regular display
+ * Automatically detects currency and formats prices with sale/regular display
  */
 export const PriceGroup = ({
   price,
@@ -117,7 +125,7 @@ export const PriceGroup = ({
   regularPrice,
   onSale = false,
   size = 'lg',
-  currency = 'kr',
+  currency,
   className,
 }: PriceGroupProps) => {
   // Handle different WooCommerce price scenarios

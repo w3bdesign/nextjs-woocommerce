@@ -28,8 +28,9 @@ This POC roadmap delivers a **fully functional 3D furniture configurator e-comme
 - Three 3D models: Cabinet, Shelf, Dresser (with dimension controls)
 - Authentication system (login, protected routes with `withAuth` HOC)
 - Cart system with WooCommerce session management
-- Basic checkout flow (COD payment only)
-- Currency handling configured for PLN
+- Basic checkout flow (COD payment enabled and working)
+- Currency auto-detection from WooCommerce (PLN/zł default for Polish market)
+- All user-facing text translated to English
 
 ❌ **Missing/Incomplete:**
 

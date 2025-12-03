@@ -91,10 +91,12 @@ import { Button } from '@/components/ui/button';
 
 **Price Components** (`src/components/UI/Price.component.tsx`):
 
-- `<Price>` - Individual price display with auto-formatting (adds space after currency)
-- `<PriceGroup>` - Smart component handling sale/regular prices
-- Auto-formats currency (e.g., "kr1000" → "kr 1000")
-- Usage: `<PriceGroup price={price} salePrice={salePrice} regularPrice={regularPrice} onSale={onSale} currency="pln" />`
+- `<Price>` - Individual price display with auto-detected currency from WooCommerce (defaults to PLN zł for Polish market)
+- `<PriceGroup>` - Smart component handling sale/regular prices with auto-detection
+- Auto-detects currency symbol from price string (e.g., "800,00 zł", "PLN 1234", "kr 4999")
+- Auto-formats currency spacing (e.g., "zł1000" → "zł 1000")
+- Usage: `<Price value={price} />` or `<PriceGroup price={price} salePrice={salePrice} regularPrice={regularPrice} onSale={onSale} />`
+- Optional: Override with explicit `currency` prop if needed
 
 **Typography** (`src/components/UI/Typography.component.tsx`):
 

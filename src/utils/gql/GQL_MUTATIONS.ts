@@ -184,6 +184,10 @@ export const UPDATE_CART = gql`
         total
         subtotal
         subtotalTax
+        extraData {
+          key
+          value
+        }
       }
       removed {
         key

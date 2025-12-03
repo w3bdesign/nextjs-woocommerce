@@ -6,17 +6,10 @@ import {
   resetDimensions,
   toggleInteractivePart,
 } from '@/stores/configuratorStore';
-import {
-  Heart,
-  RotateCcw,
-  Settings,
-  Shield,
-  ShoppingCart,
-  Star,
-  Truck,
-} from 'lucide-react';
+import { Heart, RotateCcw, Settings, Shield, Star, Truck } from 'lucide-react';
 import { useSnapshot } from 'valtio';
 import ColorPalette from './ColorPalette.component';
+import ConfiguratorAddToCart from './ConfiguratorAddToCart.component';
 import DimensionSlider from './DimensionSlider.component';
 import PricingSection from './PricingSection.component';
 import StyleSelector from './StyleSelector.component';
@@ -156,10 +149,7 @@ export default function EnhancedControls({
       {/* Action Buttons */}
       <Card className="m-0 rounded-none border-0 border-b">
         <CardContent className="p-6 space-y-3">
-          <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-6 h-auto">
-            <ShoppingCart className="w-5 h-5 mr-2" />
-            Add to Cart
-          </Button>
+          <ConfiguratorAddToCart fullWidth />
 
           <Button
             variant="outline"

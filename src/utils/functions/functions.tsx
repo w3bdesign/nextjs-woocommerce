@@ -59,6 +59,10 @@ export interface IProductRootObject {
   total: string;
   subtotal: string;
   subtotalTax: string;
+  extraData?: Array<{
+    key: string;
+    value: string;
+  }>;
 }
 
 type TUpdatedItems = { key: string; quantity: number }[];
@@ -323,4 +327,26 @@ export const handleQuantityChange = (
       });
     }
   }
+};
+
+/**
+ * Serializes the configurator state to a JSON string for cart storage
+ * @param configuratorState - The current configurator state from Valtio
+ * @returns JSON string containing configuration data
+ */
+export const serializeConfiguratorState = (configuratorState: {
+  items: Record<string, string>;
+  dimensions: { length: number; width: number; height: number };
+  interactiveStates: Record<string, boolean>;
+  modelId: string | null;
+  productId: number | null;
+}): string => {
+  return JSON.stringify({
+    items: configuratorState.items,
+    dimensions: configuratorState.dimensions,
+    interactiveStates: configuratorState.interactiveStates,
+    modelId: configuratorState.modelId,
+    timestamp: new Date().toISOString(),
+    version: '1.0',
+  });
 };

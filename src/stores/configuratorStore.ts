@@ -17,6 +17,10 @@ interface ConfiguratorState {
     width: number;
     height: number;
   };
+  /** Product database ID for cart operations */
+  productId: number | null;
+  /** Model ID from the registry */
+  modelId: string | null;
   /** Last computed model bounding box (world-aligned) */
   // NOTE: model bounding boxes are now published to the scene mediator
   // (src/stores/sceneMediatorStore.ts). Configurator store keeps only
@@ -32,6 +36,8 @@ export const configuratorState = proxy<ConfiguratorState>({
     width: 0,
     height: 0,
   },
+  productId: null,
+  modelId: null,
 });
 
 /**
@@ -39,7 +45,11 @@ export const configuratorState = proxy<ConfiguratorState>({
  * Populates the items state with default colors from the model config
  * and interactive states with their default values
  */
-export const initializeConfigurator = (modelConfig: ModelConfig): void => {
+export const initializeConfigurator = (
+  modelConfig: ModelConfig,
+  productId?: number,
+  modelId?: string,
+): void => {
   const items: Record<string, string> = {};
   const interactiveStates: Record<string, boolean> = {};
 
@@ -61,6 +71,8 @@ export const initializeConfigurator = (modelConfig: ModelConfig): void => {
   configuratorState.current = null;
   configuratorState.items = items;
   configuratorState.interactiveStates = interactiveStates;
+  configuratorState.productId = productId ?? null;
+  configuratorState.modelId = modelId ?? null;
 
   // Initialize dimensions from config or defaults
   if (modelConfig.dimensions) {

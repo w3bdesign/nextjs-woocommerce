@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChevronDown, Palette, Sliders } from 'lucide-react';
 import { useState } from 'react';
 import ColorPalette from './ColorPalette.component';
+import ConfiguratorAddToCart from './ConfiguratorAddToCart.component';
 import DimensionSlider from './DimensionSlider.component';
 import PricingSection from './PricingSection.component';
 import StyleSelector from './StyleSelector.component';
@@ -171,9 +171,7 @@ export default function ConfiguratorTabs({
 
       {/* Action Button - Only Add to Cart, Save button is floating */}
       <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
-        <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-4 h-auto rounded-lg">
-          Add to Cart
-        </Button>
+        <ConfiguratorAddToCart />
       </div>
     </aside>
   );

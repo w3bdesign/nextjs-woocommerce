@@ -56,16 +56,11 @@ const SearchResults = ({
             <div className="flex items-center gap-2">
               {on_sale ? (
                 <>
-                  <Price value={sale_price} isSale size="md" currency="pln" />
-                  <Price
-                    value={regular_price}
-                    isOriginal
-                    size="sm"
-                    currency="pln"
-                  />
+                  <Price value={sale_price} isSale size="md" />
+                  <Price value={regular_price} isOriginal size="sm" />
                 </>
               ) : (
-                <Price value={regular_price} size="md" currency="pln" />
+                <Price value={regular_price} size="md" />
               )}
             </div>
             <br />
