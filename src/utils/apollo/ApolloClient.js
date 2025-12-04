@@ -3,8 +3,9 @@
 import {
   ApolloClient,
   ApolloLink,
-  InMemoryCache,
   createHttpLink,
+  InMemoryCache,
+  Observable,
 } from '@apollo/client';
 import { mockLink } from './mockLink';
 
@@ -141,15 +142,116 @@ const useMocks =
 
 const link = useMocks
   ? mockLink
-  : middleware.concat(
-      afterware.concat(
-        createHttpLink({
-          uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-          fetch,
-          credentials: 'include', // Include cookies for authentication
-        }),
-      ),
-    );
+  : (() => {
+      // Logging link for Apollo (development only)
+      const loggerLink = new ApolloLink((operation, forward) => {
+        // Helper to safely stringify objects (handles circular refs)
+        const safeStringify = (obj) => {
+          try {
+            const seen = new WeakSet();
+            return JSON.stringify(
+              obj,
+              function (key, value) {
+                if (typeof value === 'function') {
+                  return value.toString();
+                }
+                if (typeof value === 'object' && value !== null) {
+                  if (seen.has(value)) return '[Circular]';
+                  seen.add(value);
+                }
+                return value;
+              },
+              2,
+            );
+          } catch (e) {
+            try {
+              return String(obj);
+            } catch (e2) {
+              return '[unserializable]';
+            }
+          }
+        };
+        if (
+          process.env.NODE_ENV === 'development' &&
+          typeof window !== 'undefined'
+        ) {
+          try {
+            console.groupCollapsed('[MEBL][apollo] ' + operation.operationName);
+            console.log('Operation:', operation.operationName);
+            console.log('Variables:', safeStringify(operation.variables));
+            console.log(
+              'Context Headers:',
+              safeStringify(operation.getContext().headers),
+            );
+            console.groupEnd();
+          } catch (err) {
+            if (
+              process.env.NODE_ENV === 'development' &&
+              typeof window !== 'undefined'
+            ) {
+              console.warn('[MEBL][apollo] logger preflight error', err);
+            }
+          }
+        }
+
+        // forward(operation) may return an Observable-like or a Promise; normalize to Observable
+        try {
+          const forwarded = forward ? forward(operation) : null;
+
+          if (!forwarded || typeof forwarded.subscribe !== 'function') {
+            // If it's not subscribable, just return as-is
+            return forwarded;
+          }
+
+          return new Observable((observer) => {
+            const subscription = forwarded.subscribe({
+              next: (response) => {
+                if (
+                  process.env.NODE_ENV === 'development' &&
+                  typeof window !== 'undefined'
+                ) {
+                  try {
+                    console.log(
+                      '[MEBL][apollo] Response for',
+                      operation.operationName,
+                      safeStringify(response),
+                    );
+                  } catch (err) {
+                    console.warn('[MEBL][apollo] logger response error', err);
+                  }
+                }
+                observer.next(response);
+              },
+              error: (err) => observer.error(err),
+              complete: () => observer.complete(),
+            });
+
+            return () => {
+              if (
+                subscription &&
+                typeof subscription.unsubscribe === 'function'
+              ) {
+                subscription.unsubscribe();
+              }
+            };
+          });
+        } catch (e) {
+          return forward ? forward(operation) : null;
+        }
+      });
+
+      return loggerLink.concat(
+        middleware.concat(
+          afterware.concat(
+            createHttpLink({
+              uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+              fetch,
+              credentials: 'include', // Include cookies for authentication
+            }),
+          ),
+        ),
+      );
+    })();
 
 // Apollo GraphQL client.
 const client = new ApolloClient({

@@ -26,7 +26,6 @@ export const ConfigurationDisplay: React.FC<ConfigurationDisplayProps> = ({
     // Parse the data
     const items = itemsEntry ? JSON.parse(itemsEntry.value) : {};
     const dimensions = dimensionsEntry ? JSON.parse(dimensionsEntry.value) : {};
-    const modelId = modelIdEntry ? modelIdEntry.value : null;
 
     return (
       <div className="mt-2 p-3 bg-gray-50 rounded-md text-sm">
