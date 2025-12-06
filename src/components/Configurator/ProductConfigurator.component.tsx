@@ -1,12 +1,16 @@
+import { getModelFamily } from '@/config/families.registry';
 import { DEFAULT_MODEL_ID, getModelConfig } from '@/config/models.registry';
 import {
+  configuratorState,
   initializeConfigurator,
   toggleInteractivePart,
 } from '@/stores/configuratorStore';
 import debug from '@/utils/debug';
+import { preloadFamilyModels } from '@/utils/variantResolver';
 import { DoorOpen, Heart, Info, Loader2 } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { Suspense, useEffect, type ReactElement } from 'react';
+import { Suspense, useEffect, useState, type ReactElement } from 'react';
+import { useSnapshot } from 'valtio';
 import { FloatingButton } from './FloatingButton.component';
 import { findDoorPart, getPartStateKey } from './utils/doorHelpers';
 
@@ -38,7 +42,8 @@ const Canvas3DErrorBoundary = dynamic(
 );
 
 interface ProductConfiguratorProps {
-  modelId?: string;
+  modelId?: string; // Legacy: Single model configuration (backward compatibility)
+  familyId?: string; // Family-based configuration (preferred)
   className?: string;
   productId?: number;
   product?: {
@@ -52,24 +57,156 @@ interface ProductConfiguratorProps {
 /**
  * Main 3D Product Configurator component
  * Orchestrates Canvas, Model, and Color Picker
+ *
+ * Supports both family-based (preferred) and legacy single-model configuration
  */
 export default function ProductConfigurator({
   modelId = DEFAULT_MODEL_ID,
+  familyId,
   className = '',
   productId,
   product,
 }: ProductConfiguratorProps): ReactElement {
-  // Get the model configuration from the registry
-  const modelConfig = getModelConfig(modelId);
+  // Loading state for family preloading
+  const [isPreloading, setIsPreloading] = useState(false);
+  const [preloadError, setPreloadError] = useState<string | null>(null);
 
-  // Initialize the configurator store with the model config
+  // Get reactive snapshot from configurator store
+  const snap = useSnapshot(configuratorState);
+
+  // Determine configuration mode: family-based or legacy single-model
+  const family = familyId ? getModelFamily(familyId) : undefined;
+
+  // For family-based: Get the active variant's modelId from store
+  // For legacy: use provided modelId
+  const activeModelId =
+    family && snap.activeVariantId
+      ? family.variants.find((v) => v.id === snap.activeVariantId)?.modelId ||
+        family.variants[0]?.modelId
+      : modelId;
+
+  // Get the model configuration from the registry (reactive to activeVariantId changes)
+  const modelConfig = getModelConfig(activeModelId);
+
+  // Initialize configurator with preloading for family-based products
   useEffect(() => {
-    if (modelConfig) {
-      initializeConfigurator(modelConfig, productId, modelId);
-    } else {
-      debug.warn(`Model ID "${modelId}" not found in registry`);
+    if (!modelConfig) {
+      debug.warn(
+        `Model ID "${activeModelId}" not found in registry. ` +
+          `FamilyId: ${familyId || 'none'}, ModelId: ${modelId}`,
+      );
+      return;
     }
-  }, [modelId, modelConfig, productId]);
+
+    if (family) {
+      // Family-based initialization with preloading
+      const initializeFamilyConfigurator = async () => {
+        setIsPreloading(true);
+        setPreloadError(null);
+
+        try {
+          debug.log(`[ProductConfigurator] Preloading family: ${familyId}`);
+
+          // Preload all variants
+          const loadedCount = await preloadFamilyModels(family);
+
+          debug.log(
+            `[ProductConfigurator] Preloaded ${loadedCount}/${family.variants.length} variants`,
+          );
+
+          // Determine initial variant
+          const defaultVariantId =
+            family.metadata?.defaultVariantId || family.variants[0]?.id;
+          const defaultVariant =
+            family.variants.find((v) => v.id === defaultVariantId) ||
+            family.variants[0];
+
+          if (!defaultVariant) {
+            throw new Error(`No variants found in family: ${familyId}`);
+          }
+
+          // Set family and variant in store
+          configuratorState.familyId = familyId;
+          configuratorState.activeVariantId = defaultVariant.id;
+
+          // Get the model config for the default variant
+          const defaultModelConfig = getModelConfig(defaultVariant.modelId);
+
+          if (!defaultModelConfig) {
+            throw new Error(
+              `Model config not found for variant: ${defaultVariant.modelId}`,
+            );
+          }
+
+          // Initialize configurator with default variant's model
+          initializeConfigurator(
+            defaultModelConfig,
+            productId,
+            defaultVariant.modelId,
+          );
+
+          debug.log(
+            `[ProductConfigurator] Initialized with variant: ${defaultVariant.id} (${defaultVariant.displayName})`,
+          );
+
+          setIsPreloading(false);
+        } catch (error) {
+          debug.error(
+            '[ProductConfigurator] Failed to initialize family configurator:',
+            error,
+          );
+          setPreloadError(
+            error instanceof Error ? error.message : 'Failed to load 3D models',
+          );
+          setIsPreloading(false);
+        }
+      };
+
+      initializeFamilyConfigurator();
+    } else {
+      // Legacy single-model initialization (no preloading needed)
+      debug.log(
+        `[ProductConfigurator] Initializing legacy configurator: ${modelId}`,
+      );
+      initializeConfigurator(modelConfig, productId, modelId);
+    }
+  }, [modelId, familyId, family, activeModelId, modelConfig, productId]);
+
+  // Show loading skeleton while preloading family models
+  if (isPreloading) {
+    return (
+      <div className={`relative w-full ${className}`}>
+        <div className="w-full h-[600px] bg-gradient-to-br from-gray-50 to-white rounded-lg shadow-lg flex flex-col items-center justify-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <div className="text-center">
+            <p className="text-lg font-medium text-gray-800">
+              Loading 3D models...
+            </p>
+            <p className="text-sm text-gray-500 mt-1">
+              Preparing {family?.variants.length || 0} variants for
+              customization
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if preloading failed
+  if (preloadError) {
+    return (
+      <div className={`relative w-full ${className}`}>
+        <div className="w-full h-[600px] bg-gray-100 rounded-lg shadow-lg flex items-center justify-center">
+          <div className="text-center px-4">
+            <p className="text-gray-800 font-semibold mb-2">
+              Failed to Load 3D Models
+            </p>
+            <p className="text-gray-600 text-sm">{preloadError}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Don't render if model config doesn't exist
   if (!modelConfig) {

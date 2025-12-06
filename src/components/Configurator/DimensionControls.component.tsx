@@ -1,11 +1,14 @@
 import { Slider } from '@/components/ui/slider';
+import { getModelFamily } from '@/config/families.registry';
 import { getModelConfig } from '@/config/models.registry';
 import {
   configuratorState,
   resetDimensions,
   setDimension,
 } from '@/stores/configuratorStore';
-import { RotateCcw } from 'lucide-react';
+import type { ModelFamily } from '@/types/configurator';
+import { isValidDimension } from '@/utils/variantResolver';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
 import type { ReactElement } from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -23,12 +26,47 @@ export default function DimensionControls({
   const snap = useSnapshot(configuratorState);
   const modelConfig = getModelConfig(modelId);
 
+  // Try to get family config if familyId is set
+  const family: ModelFamily | undefined = snap.familyId
+    ? getModelFamily(snap.familyId)
+    : undefined;
+
   // Don't render if model doesn't have dimension constraints
   if (!modelConfig?.dimensions) {
     return null;
   }
 
   const { dimensions } = modelConfig;
+
+  // Calculate aggregate dimension ranges from family variants
+  // If no family, fall back to single model dimensions
+  let widthMin = dimensions.width.min;
+  let widthMax = dimensions.width.max;
+  let heightMin = dimensions.height.min;
+  let heightMax = dimensions.height.max;
+
+  if (family && family.variants.length > 0) {
+    widthMin = Math.min(...family.variants.map((v) => v.constraints.width[0]));
+    widthMax = Math.max(...family.variants.map((v) => v.constraints.width[1]));
+    heightMin = Math.min(
+      ...family.variants.map((v) => v.constraints.height[0]),
+    );
+    heightMax = Math.max(
+      ...family.variants.map((v) => v.constraints.height[1]),
+    );
+  }
+
+  // Depth ranges remain per-variant (depth doesn't affect variant switching)
+  const depthMin = dimensions.length.min;
+  const depthMax = dimensions.length.max;
+
+  // Check if current dimensions are valid (not in gap between variants)
+  const isDimensionValid =
+    !family ||
+    isValidDimension(
+      { width: snap.dimensions.width, height: snap.dimensions.height },
+      family,
+    );
 
   const handleDimensionChange = (
     axis: 'length' | 'width' | 'height',
@@ -91,8 +129,8 @@ export default function DimensionControls({
           </div>
           <Slider
             id="dimension-length"
-            min={dimensions.length.min}
-            max={dimensions.length.max}
+            min={depthMin}
+            max={depthMax}
             step={dimensions.length.step}
             value={[snap.dimensions.length]}
             onValueChange={(value) => handleDimensionChange('length', value)}
@@ -100,8 +138,8 @@ export default function DimensionControls({
             aria-label="Length (depth) in centimeters"
           />
           <div className="flex justify-between text-xs text-gray-500">
-            <span>{dimensions.length.min} cm</span>
-            <span>{dimensions.length.max} cm</span>
+            <span>{depthMin} cm</span>
+            <span>{depthMax} cm</span>
           </div>
         </div>
 
@@ -121,8 +159,8 @@ export default function DimensionControls({
           </div>
           <Slider
             id="dimension-width"
-            min={dimensions.width.min}
-            max={dimensions.width.max}
+            min={widthMin}
+            max={widthMax}
             step={dimensions.width.step}
             value={[snap.dimensions.width]}
             onValueChange={(value) => handleDimensionChange('width', value)}
@@ -130,8 +168,8 @@ export default function DimensionControls({
             aria-label="Width in centimeters"
           />
           <div className="flex justify-between text-xs text-gray-500">
-            <span>{dimensions.width.min} cm</span>
-            <span>{dimensions.width.max} cm</span>
+            <span>{widthMin} cm</span>
+            <span>{widthMax} cm</span>
           </div>
         </div>
 
@@ -151,8 +189,8 @@ export default function DimensionControls({
           </div>
           <Slider
             id="dimension-height"
-            min={dimensions.height.min}
-            max={dimensions.height.max}
+            min={heightMin}
+            max={heightMax}
             step={dimensions.height.step}
             value={[snap.dimensions.height]}
             onValueChange={(value) => handleDimensionChange('height', value)}
@@ -160,11 +198,38 @@ export default function DimensionControls({
             aria-label="Height in centimeters"
           />
           <div className="flex justify-between text-xs text-gray-500">
-            <span>{dimensions.height.min} cm</span>
-            <span>{dimensions.height.max} cm</span>
+            <span>{heightMin} cm</span>
+            <span>{heightMax} cm</span>
           </div>
         </div>
       </div>
+
+      {/* Variant display name indicator */}
+      {family && snap.activeVariantId && (
+        <div className="mt-3 text-center">
+          <p className="text-sm text-gray-500">
+            {(() => {
+              const activeVariant = family.variants.find(
+                (v) => v.id === snap.activeVariantId,
+              );
+              return activeVariant
+                ? activeVariant.displayName
+                : 'Unknown variant';
+            })()}
+          </p>
+        </div>
+      )}
+
+      {/* Invalid dimension warning - shown when dimensions fall in gap */}
+      {family && !isDimensionValid && (
+        <div className="mt-3 p-2 bg-amber-50 border border-amber-200 rounded-md flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+          <p className="text-xs text-amber-800">
+            These dimensions don&apos;t match available sizes. Please adjust to
+            continue.
+          </p>
+        </div>
+      )}
 
       <p className="mt-3 text-xs text-gray-500 text-center">
         Adjust dimensions to customize your furniture

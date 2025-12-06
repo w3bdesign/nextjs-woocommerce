@@ -60,6 +60,8 @@ class Mebl_Configurator_Order_Meta {
         $keys = array(
             self::META_KEY,
             '_mebl_configurator_modelId',
+            '_mebl_configurator_familyId',
+            '_mebl_configurator_activeVariantId',
             '_mebl_configurator_dimensions',
             '_mebl_configurator_items'
         );
@@ -212,15 +214,36 @@ class Mebl_Configurator_Order_Meta {
         // $this->write_log('[MEBL] Added meta ' . self::META_KEY . ' for cart_key=' . $cart_item_key . ' value=' . $json);
 
         // --- Hybrid persistence: also store atomic meta keys for easy querying ---
-        // modelId as plain text (if present)
-        if (!empty($payload['modelId'])) {
-            $model_id = sanitize_text_field((string) $payload['modelId']);
-            $order_item->add_meta_data('_mebl_configurator_modelId', $model_id, true);
+        
+        // Detect configuration version (2.0 = family-based, 1.0 or missing = legacy single-model)
+        $version = isset($payload['version']) ? $payload['version'] : '1.0';
+        
+        // VERSION 2.0: Family-based configuration
+        if ($version === '2.0' && !empty($payload['familyId'])) {
+            // Store familyId
+            $family_id = sanitize_text_field((string) $payload['familyId']);
+            $order_item->add_meta_data('_mebl_configurator_familyId', $family_id, true);
+            
+            // Store activeVariantId
+            if (!empty($payload['activeVariantId'])) {
+                $variant_id = sanitize_text_field((string) $payload['activeVariantId']);
+                $order_item->add_meta_data('_mebl_configurator_activeVariantId', $variant_id, true);
+            }
+            
             // informational: suppressed by default
-            // $this->write_log('[MEBL] Added meta _mebl_configurator_modelId=' . $model_id . ' for cart_key=' . $cart_item_key);
+            // $this->write_log('[MEBL] Added family-based meta (v2.0) familyId=' . $family_id . ' for cart_key=' . $cart_item_key);
+        } else {
+            // VERSION 1.0: Legacy single-model configuration
+            // modelId as plain text (if present)
+            if (!empty($payload['modelId'])) {
+                $model_id = sanitize_text_field((string) $payload['modelId']);
+                $order_item->add_meta_data('_mebl_configurator_modelId', $model_id, true);
+                // informational: suppressed by default
+                // $this->write_log('[MEBL] Added meta _mebl_configurator_modelId=' . $model_id . ' for cart_key=' . $cart_item_key);
+            }
         }
 
-        // dimensions as JSON (if present)
+        // dimensions as JSON (if present) - common to both versions
         if (!empty($payload['dimensions']) && is_array($payload['dimensions'])) {
             $dim_json = wp_json_encode($payload['dimensions']);
             if ($dim_json !== false) {
@@ -230,7 +253,7 @@ class Mebl_Configurator_Order_Meta {
             }
         }
 
-        // items (colors / parts) as JSON (if present)
+        // items (colors / parts) as JSON (if present) - common to both versions
         if (!empty($payload['items']) && is_array($payload['items'])) {
             $items_json = wp_json_encode($payload['items']);
             if ($items_json !== false) {
@@ -272,11 +295,61 @@ class Mebl_Configurator_Order_Meta {
         }
 
         $this->write_log('[MEBL] Decoded meta for item_id=' . $item_id . ': ' . print_r($data, true));
+        
+        // Detect configuration version
+        $version = isset($data['version']) ? $data['version'] : '1.0';
+        
         // Prepare a compact summary showing colors/items and dimensions if present
         echo '<div class="mebl-configurator-meta" style="margin-top:6px;">';
         echo '<strong style="display:block;margin-bottom:4px;">🎨 Configurator</strong>';
 
-        // Colors / items
+        // VERSION 2.0: Family-based configuration
+        if ($version === '2.0') {
+            // Display family ID
+            if (!empty($data['familyId'])) {
+                echo '<div style="margin-bottom:4px;"><em>Family:</em> ' . esc_html((string) $data['familyId']) . '</div>';
+            }
+            
+            // Display variant name (human-readable)
+            if (!empty($data['variantDisplayName'])) {
+                echo '<div style="margin-bottom:4px;"><em>Variant:</em> ' . esc_html((string) $data['variantDisplayName']) . '</div>';
+            } elseif (!empty($data['activeVariantId'])) {
+                // Fallback to variant ID if display name not available
+                echo '<div style="margin-bottom:4px;"><em>Variant ID:</em> ' . esc_html((string) $data['activeVariantId']) . '</div>';
+            }
+        } else {
+            // VERSION 1.0: Legacy single-model configuration
+            // Display ModelId
+            if (!empty($data['modelId'])) {
+                echo '<div style="margin-bottom:4px;"><em>Model:</em> ' . esc_html((string) $data['modelId']) . '</div>';
+            }
+        }
+
+        // Dimensions (common to both versions) - Format as "XXcm × YYcm × ZZcm"
+        if (!empty($data['dimensions']) && is_array($data['dimensions'])) {
+            echo '<div style="margin-bottom:4px;"><em>Dimensions:</em> ';
+            
+            // Extract width, height, depth/length
+            $width = isset($data['dimensions']['width']) ? $data['dimensions']['width'] : null;
+            $height = isset($data['dimensions']['height']) ? $data['dimensions']['height'] : null;
+            $depth = isset($data['dimensions']['length']) ? $data['dimensions']['length'] : 
+                     (isset($data['dimensions']['depth']) ? $data['dimensions']['depth'] : null);
+            
+            // Format as "W × H × D" with proper multiplication sign
+            if ($width !== null && $height !== null && $depth !== null) {
+                echo esc_html(round($width, 1) . 'cm × ' . round($height, 1) . 'cm × ' . round($depth, 1) . 'cm');
+            } else {
+                // Fallback to key-value pairs if structure differs
+                $parts = array();
+                foreach ($data['dimensions'] as $k => $v) {
+                    $parts[] = esc_html($k) . ': ' . esc_html(round((float) $v, 1)) . 'cm';
+                }
+                echo esc_html(implode(', ', $parts));
+            }
+            echo '</div>';
+        }
+
+        // Colors / items (common to both versions)
         if (!empty($data['items']) && is_array($data['items'])) {
             echo '<div style="margin-bottom:4px;"><em>Colors:</em> ';
             $parts = array();
@@ -285,22 +358,6 @@ class Mebl_Configurator_Order_Meta {
             }
             echo esc_html(implode(', ', $parts));
             echo '</div>';
-        }
-
-        // Dimensions
-        if (!empty($data['dimensions']) && is_array($data['dimensions'])) {
-            echo '<div style="margin-bottom:4px;"><em>Dimensions:</em> ';
-            $parts = array();
-            foreach ($data['dimensions'] as $k => $v) {
-                $parts[] = esc_html($k) . ': ' . esc_html((string) $v);
-            }
-            echo esc_html(implode(', ', $parts));
-            echo '</div>';
-        }
-
-        // ModelId
-        if (!empty($data['modelId'])) {
-            echo '<div><em>Model:</em> ' . esc_html((string) $data['modelId']) . '</div>';
         }
 
         echo '</div>';

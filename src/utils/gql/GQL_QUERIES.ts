@@ -26,6 +26,7 @@ export const GET_SINGLE_PRODUCT = gql`
         configurator {
           enabled
           modelId
+          familyId
         }
       }
       ... on VariableProduct {
@@ -56,6 +57,7 @@ export const GET_SINGLE_PRODUCT = gql`
         configurator {
           enabled
           modelId
+          familyId
         }
       }
       ... on ExternalProduct {
@@ -65,6 +67,7 @@ export const GET_SINGLE_PRODUCT = gql`
         configurator {
           enabled
           modelId
+          familyId
         }
       }
       ... on GroupProduct {
@@ -80,6 +83,7 @@ export const GET_SINGLE_PRODUCT = gql`
         configurator {
           enabled
           modelId
+          familyId
         }
       }
     }

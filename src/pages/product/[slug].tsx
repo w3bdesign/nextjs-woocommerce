@@ -75,6 +75,27 @@ export const getServerSideProps: GetServerSideProps = async ({
     variables: { slug: params?.slug },
   });
 
+  // Debug logging: Log raw GraphQL response for configurator data
+  if (data?.product?.configurator) {
+    console.log('[NETWORK] GraphQL Response for product:', params?.slug);
+    console.log(
+      '[NETWORK] Configurator data:',
+      JSON.stringify(data.product.configurator, null, 2),
+    );
+    console.log(
+      '[NETWORK] Full product data:',
+      JSON.stringify(
+        {
+          databaseId: data.product.databaseId,
+          name: data.product.name,
+          configurator: data.product.configurator,
+        },
+        null,
+        2,
+      ),
+    );
+  }
+
   return {
     props: { product: data.product, loading, networkStatus },
   };

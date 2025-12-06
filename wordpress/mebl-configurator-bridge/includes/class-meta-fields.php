@@ -11,25 +11,32 @@ if (!defined('ABSPATH')) {
 class MEBL_Configurator_Meta_Fields {
     
     /**
-     * Available 3D models
+     * Available 3D model families
      * 
-     * ⚠️ IMPORTANT: Update this array when you add new models to your Next.js app!
+     * ⚠️ IMPORTANT: Update this array when you add new model families to your Next.js app!
      * 
-     * How to add a new model:
-     * 1. Add model config to your Next.js app (e.g., src/config/sofaModel.config.ts)
-     * 2. Register it in src/config/models.registry.ts
-     * 3. Add a line below with the EXACT same model ID
+     * NEW (v2.0): Family-based variant system
+     * - Each family contains multiple model variants that automatically switch based on dimensions
+     * - Width/height changes trigger variant switching (depth does not)
      * 
-     * Format: 'model-id-from-nextjs' => 'Display Name for WordPress Admin'
+     * How to add a new family:
+     * 1. Create family config in Next.js app (e.g., src/config/families/sofaFamily.config.ts)
+     * 2. Register it in src/config/families.registry.ts
+     * 3. Add a line below with the EXACT same familyId
+     * 
+     * Format: 'family-id-from-nextjs' => 'Display Name for WordPress Admin'
+     * 
+     * MIGRATION NOTE: Products using old '_configurator_model_id' field (cabinet-v1, dresser-v1) 
+     * will continue to work during transition period. New products should use families.
      */
-    private static $available_models = [
-        'cabinet-v1' => '🗄️ Bar Cabinet (v1)',
-        'dresser-v1' => '🪑 Bedroom Dresser (v1)',
+    private static $available_families = [
+        'cabinet-family-01' => '🗄️ Cabinet Series A (Multi-variant)',
+        'dresser-family-01' => '🪑 Dresser Series A (Multi-variant)',
         
-        // 📝 ADD YOUR NEW MODELS HERE:
-        // 'sofa-modern-v1' => '🛋️ Modern Sofa',
-        // 'chair-office-v1' => '💺 Office Chair',
-        // 'table-dining-v1' => '🪑 Dining Table',
+        // 📝 ADD YOUR NEW FAMILIES HERE:
+        // 'sofa-family-modern' => '🛋️ Modern Sofa Collection',
+        // 'chair-family-office' => '💺 Office Chair Collection',
+        // 'table-family-dining' => '🪑 Dining Table Collection',
     ];
     
     /**
@@ -73,10 +80,15 @@ class MEBL_Configurator_Meta_Fields {
         
         // Get current saved values
         $enabled = get_post_meta($post->ID, '_configurator_enabled', true);
-        $model_id = get_post_meta($post->ID, '_configurator_model_id', true);
+        $family_id = get_post_meta($post->ID, '_configurator_family_id', true);
         
-        // Check if model ID is still valid (in case it was removed from the list)
-        $model_exists = empty($model_id) || array_key_exists($model_id, self::$available_models);
+        // Backward compatibility: Check for old model_id field
+        if (empty($family_id)) {
+            $family_id = get_post_meta($post->ID, '_configurator_model_id', true);
+        }
+        
+        // Check if family ID is still valid (in case it was removed from the list)
+        $family_exists = empty($family_id) || array_key_exists($family_id, self::$available_families);
         
         ?>
         <div class="mebl-configurator-metabox">
@@ -102,38 +114,38 @@ class MEBL_Configurator_Meta_Fields {
             
             <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
             
-            <!-- Model Selector -->
+            <!-- Model Family Selector -->
             <div class="mebl-setting">
-                <label for="mebl_configurator_model_id">
-                    <strong>Select 3D Model:</strong>
+                <label for="mebl_configurator_family_id">
+                    <strong>Select 3D Model Family:</strong>
                 </label>
                 <select 
-                    name="mebl_configurator_model_id" 
-                    id="mebl_configurator_model_id"
+                    name="mebl_configurator_family_id" 
+                    id="mebl_configurator_family_id"
                     class="widefat"
                 >
-                    <option value="">— Choose a model —</option>
-                    <?php foreach (self::$available_models as $id => $name): ?>
-                        <option value="<?php echo esc_attr($id); ?>" <?php selected($model_id, $id); ?>>
+                    <option value="">— Choose a model family —</option>
+                    <?php foreach (self::$available_families as $id => $name): ?>
+                        <option value="<?php echo esc_attr($id); ?>" <?php selected($family_id, $id); ?>>
                             <?php echo esc_html($name); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
                 <p class="description">
-                    This ID must match exactly with your Next.js MODEL_REGISTRY.
+                    This ID must match exactly with your Next.js FAMILY_REGISTRY. Families support automatic variant switching based on customer-selected dimensions.
                 </p>
             </div>
             
             <!-- Warnings/Errors -->
-            <?php if ($enabled === '1' && empty($model_id)): ?>
+            <?php if ($enabled === '1' && empty($family_id)): ?>
                 <div class="mebl-warning">
-                    ⚠️ <strong>Warning:</strong> Configurator is enabled but no model is selected. Customers won't see the 3D view.
+                    ⚠️ <strong>Warning:</strong> Configurator is enabled but no model family is selected. Customers won't see the 3D view.
                 </div>
             <?php endif; ?>
             
-            <?php if (!empty($model_id) && !$model_exists): ?>
+            <?php if (!empty($family_id) && !$family_exists): ?>
                 <div class="mebl-error">
-                    ❌ <strong>Error:</strong> The selected model "<?php echo esc_html($model_id); ?>" no longer exists in the plugin. Please select a valid model.
+                    ❌ <strong>Error:</strong> The selected model family "<?php echo esc_html($family_id); ?>" no longer exists in the plugin. Please select a valid model family.
                 </div>
             <?php endif; ?>
             
@@ -150,7 +162,7 @@ class MEBL_Configurator_Meta_Fields {
                 </div>
             <?php else: ?>
                 <div class="mebl-success">
-                    ✅ Configurator is active! Model: <strong><?php echo esc_html(self::$available_models[$model_id] ?? $model_id); ?></strong>
+                    ✅ Configurator is active! Model Family: <strong><?php echo esc_html(self::$available_families[$family_id] ?? $family_id); ?></strong>
                 </div>
             <?php endif; ?>
             
@@ -206,16 +218,16 @@ class MEBL_Configurator_Meta_Fields {
         $enabled = isset($_POST['mebl_configurator_enabled']) ? '1' : '0';
         update_post_meta($post_id, '_configurator_enabled', $enabled);
         
-        // Save model ID (with validation)
-        if (isset($_POST['mebl_configurator_model_id'])) {
-            $model_id = sanitize_text_field($_POST['mebl_configurator_model_id']);
+        // Save family ID (with validation)
+        if (isset($_POST['mebl_configurator_family_id'])) {
+            $family_id = sanitize_text_field($_POST['mebl_configurator_family_id']);
             
-            // Validate: Only save if empty or exists in available models
-            if (empty($model_id) || array_key_exists($model_id, self::$available_models)) {
-                update_post_meta($post_id, '_configurator_model_id', $model_id);
+            // Validate: Only save if empty or exists in available families
+            if (empty($family_id) || array_key_exists($family_id, self::$available_families)) {
+                update_post_meta($post_id, '_configurator_family_id', $family_id);
             } else {
-                // Invalid model ID - log error
-                error_log('MEBL Configurator: Invalid model ID attempted: ' . $model_id);
+                // Invalid family ID - log error
+                error_log('MEBL Configurator: Invalid family ID attempted: ' . $family_id);
             }
         }
     }
@@ -241,11 +253,16 @@ class MEBL_Configurator_Meta_Fields {
     public static function render_column($column, $post_id) {
         if ($column === 'mebl_configurator') {
             $enabled = get_post_meta($post_id, '_configurator_enabled', true);
-            $model_id = get_post_meta($post_id, '_configurator_model_id', true);
+            $family_id = get_post_meta($post_id, '_configurator_family_id', true);
             
-            if ($enabled === '1' && !empty($model_id)) {
-                $model_name = self::$available_models[$model_id] ?? $model_id;
-                echo '<span style="color: #2271b1;">✓ ' . esc_html($model_name) . '</span>';
+            // Backward compatibility: Check for old model_id field
+            if (empty($family_id)) {
+                $family_id = get_post_meta($post_id, '_configurator_model_id', true);
+            }
+            
+            if ($enabled === '1' && !empty($family_id)) {
+                $family_name = self::$available_families[$family_id] ?? $family_id;
+                echo '<span style="color: #2271b1;">✓ ' . esc_html($family_name) . '</span>';
             } else {
                 echo '<span style="color: #dba617;">—</span>';
             }
@@ -313,9 +330,27 @@ class MEBL_Configurator_Meta_Fields {
     }
     
     /**
-     * Get available models (public API for potential future use)
+     * Get available families (public API for GraphQL and other integrations)
      */
-    public static function get_available_models() {
-        return self::$available_models;
+    public static function get_available_families() {
+        return self::$available_families;
+    }
+    
+    /**
+     * Get family ID for a product (with backward compatibility)
+     * 
+     * @param int $product_id WooCommerce product ID
+     * @return string|null Family ID or null if not set
+     */
+    public static function get_product_family_id($product_id) {
+        // Try new family_id field first
+        $family_id = get_post_meta($product_id, '_configurator_family_id', true);
+        
+        // Fallback to old model_id field for backward compatibility
+        if (empty($family_id)) {
+            $family_id = get_post_meta($product_id, '_configurator_model_id', true);
+        }
+        
+        return !empty($family_id) ? $family_id : null;
     }
 }

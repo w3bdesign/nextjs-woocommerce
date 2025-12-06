@@ -62,7 +62,8 @@ export interface Product {
   /** Optional: 3D Configurator metadata */
   configurator?: {
     enabled: boolean;
-    modelId: string;
+    modelId: string; // Deprecated: Use familyId for family-based products
+    familyId?: string; // NEW: Model family ID for variant switching system
     customPricing?: Record<string, number>;
     defaultConfiguration?: Record<string, string>;
   };

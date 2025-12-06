@@ -31,7 +31,12 @@ class MEBL_Configurator_GraphQL {
                 ],
                 'modelId' => [
                     'type' => 'String',
-                    'description' => 'ID of the 3D model to use (matches MODEL_REGISTRY key in Next.js)',
+                    'description' => 'DEPRECATED: Use familyId instead. This field will be removed after 2025-12-18. ID of the 3D model (backward compatibility only)',
+                    'deprecationReason' => 'Use familyId field instead. The family-based variant system replaces single model references.',
+                ],
+                'familyId' => [
+                    'type' => 'String',
+                    'description' => 'ID of the 3D model family (matches FAMILY_REGISTRY key in Next.js). Families support automatic variant switching based on dimensions.',
                 ],
             ],
         ]);
@@ -53,19 +58,41 @@ class MEBL_Configurator_GraphQL {
                     
                     // Get meta values from WordPress
                     $enabled = get_post_meta($product_id, '_configurator_enabled', true) === '1';
-                    $model_id = get_post_meta($product_id, '_configurator_model_id', true);
                     
-                    // Return null if configurator is not enabled or no model selected
+                    // Try new familyId field first, fallback to old modelId for backward compatibility
+                    $family_id = get_post_meta($product_id, '_configurator_family_id', true);
+                    $old_model_id = get_post_meta($product_id, '_configurator_model_id', true);
+                    
+                    // Debug logging: Log what WordPress has stored
+                    error_log('[MEBL][GraphQL] Product ID: ' . $product_id);
+                    error_log('[MEBL][GraphQL] _configurator_enabled: ' . ($enabled ? 'true' : 'false'));
+                    error_log('[MEBL][GraphQL] _configurator_family_id: ' . ($family_id ?: 'empty'));
+                    error_log('[MEBL][GraphQL] _configurator_model_id: ' . ($old_model_id ?: 'empty'));
+                    
+                    // Use familyId if set, otherwise fallback to old modelId
+                    if (empty($family_id)) {
+                        $family_id = $old_model_id;
+                        error_log('[MEBL][GraphQL] Using fallback modelId as familyId: ' . $family_id);
+                    }
+                    
+                    // Return null if configurator is not enabled or no family/model selected
                     // This follows GraphQL best practices (null for missing/disabled data)
-                    if (!$enabled || empty($model_id)) {
+                    if (!$enabled || empty($family_id)) {
+                        error_log('[MEBL][GraphQL] Returning null (enabled=' . ($enabled ? 'true' : 'false') . ', family_id=' . ($family_id ?: 'empty') . ')');
                         return null;
                     }
                     
-                    // Return configurator data
-                    return [
+                    // Return configurator data with both fields for backward compatibility
+                    // Frontend can use familyId preferentially, falling back to modelId during migration
+                    $result = [
                         'enabled' => true,
-                        'modelId' => $model_id,
+                        'familyId' => $family_id,
+                        'modelId' => $family_id,  // Backward compatibility: populate both fields
                     ];
+                    
+                    error_log('[MEBL][GraphQL] Returning configurator data: ' . json_encode($result));
+                    
+                    return $result;
                 }
             ]);
         }

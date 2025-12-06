@@ -333,6 +333,15 @@ export const handleQuantityChange = (
  * Serializes the configurator state to a JSON string for cart storage
  * @param configuratorState - The current configurator state from Valtio
  * @returns JSON string containing configuration data
+ *
+ * Version 2.0 includes family-based variant system fields:
+ * - familyId: Product family identifier
+ * - activeVariantId: Current variant within the family
+ * - variantDisplayName: Human-readable variant name for display
+ * - modelName: Model display name (from ModelConfig)
+ *
+ * Backend can reconstruct full variant metadata from variantId.
+ * Omits constraints/modelPath to minimize cart storage overhead.
  */
 export const serializeConfiguratorState = (configuratorState: {
   items: Record<string, string>;
@@ -340,13 +349,55 @@ export const serializeConfiguratorState = (configuratorState: {
   interactiveStates: Record<string, boolean>;
   modelId: string | null;
   productId: number | null;
+  familyId?: string | null;
+  activeVariantId?: string;
 }): string => {
-  return JSON.stringify({
+  // Determine version based on family system usage
+  const version = configuratorState.familyId ? '2.0' : '1.0';
+
+  // Base configuration data (compatible with v1.0)
+  const configData: any = {
     items: configuratorState.items,
     dimensions: configuratorState.dimensions,
     interactiveStates: configuratorState.interactiveStates,
     modelId: configuratorState.modelId,
     timestamp: new Date().toISOString(),
-    version: '1.0',
-  });
+    version,
+  };
+
+  // Add family-based fields for version 2.0
+  if (version === '2.0' && configuratorState.familyId) {
+    configData.familyId = configuratorState.familyId;
+    configData.activeVariantId = configuratorState.activeVariantId || '';
+
+    // Get variant display name and model name from registry
+    try {
+      const { getModelFamily } = require('@/config/families.registry');
+      const { getModelConfig } = require('@/config/models.registry');
+
+      const family = getModelFamily(configuratorState.familyId);
+      if (family && configuratorState.activeVariantId) {
+        const variant = family.variants.find(
+          (v: any) => v.id === configuratorState.activeVariantId,
+        );
+        if (variant) {
+          configData.variantDisplayName = variant.displayName;
+
+          // Get model name from ModelConfig for order display
+          const modelConfig = getModelConfig(variant.modelId);
+          if (modelConfig) {
+            configData.modelName = modelConfig.name;
+          }
+        }
+      }
+    } catch (error) {
+      // Graceful fallback if registry access fails
+      console.warn(
+        '[serializeConfiguratorState] Failed to load variant metadata:',
+        error,
+      );
+    }
+  }
+
+  return JSON.stringify(configData);
 };

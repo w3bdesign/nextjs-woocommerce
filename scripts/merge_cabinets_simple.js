@@ -2,7 +2,13 @@ const fs = require('fs');
 const path = require('path');
 
 const INPUT = path.join(__dirname, '..', 'public', 'cabinet.glb');
-const OUTPUT = path.join(__dirname, '..', 'public', 'cabinets_merged.glb');
+const OUTPUT = path.join(
+  __dirname,
+  '..',
+  'public',
+  '3d-models',
+  'cabinets-1.glb',
+);
 
 // CLI args
 const argv = require('minimist')(process.argv.slice(2));
@@ -37,6 +43,30 @@ function readGLB(buffer) {
 }
 
 function writeGLB(jsonObj, binChunk, outPath) {
+  // CRITICAL FIX: Remove all texture references from materials to prevent WebGL binding issues
+  // The duplicate cabinet model shares texture references which causes "Illegal invocation" errors
+  if (jsonObj.materials) {
+    jsonObj.materials.forEach((material) => {
+      if (material.pbrMetallicRoughness) {
+        delete material.pbrMetallicRoughness.baseColorTexture;
+        delete material.pbrMetallicRoughness.metallicRoughnessTexture;
+      }
+      delete material.normalTexture;
+      delete material.occlusionTexture;
+      delete material.emissiveTexture;
+    });
+    console.log(
+      'Stripped textures from',
+      jsonObj.materials.length,
+      'materials',
+    );
+  }
+
+  // Remove texture and image arrays entirely since we're not using them
+  delete jsonObj.textures;
+  delete jsonObj.images;
+  delete jsonObj.samplers;
+
   const jsonText = JSON.stringify(jsonObj);
   let jsonBuf = Buffer.from(jsonText, 'utf8');
   const jsonPad = (4 - (jsonBuf.length % 4)) % 4;
@@ -233,7 +263,7 @@ function computeWorldAABB(json) {
   return { min: globalMin, max: globalMax };
 }
 
-function findFirstMeshIndexUsedByNodes(json) {
+function _findFirstMeshIndexUsedByNodes(json) {
   if (!json.nodes) return null;
   for (let i = 0; i < json.nodes.length; i++) {
     const n = json.nodes[i];

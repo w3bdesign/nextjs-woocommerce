@@ -1,8 +1,11 @@
 'use client';
+import { toast } from '@/hooks/use-toast';
+import { configuratorState } from '@/stores/configuratorStore';
 import type { CameraConfig } from '@/types/configurator';
+import { debug } from '@/utils/debug';
 import { Environment } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import type { ReactNode } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { useEffect, type ReactNode } from 'react';
 import * as THREE from 'three';
 import CameraController from './CameraController.component';
 import WallSilhouette from './WallSilhouette.component';
@@ -33,6 +36,48 @@ interface Canvas3DProps {
    * implicit model->environment coupling.
    */
   cameraConfig?: CameraConfig;
+}
+
+/**
+ * WebGL context lost handler component
+ * Renders inside Canvas to access the WebGL context
+ */
+function WebGLContextLostHandler(): null {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    const canvas = gl.domElement;
+
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      debug.error(
+        '🔴 WebGL context lost - GPU memory exhausted or driver issue',
+      );
+
+      // Clear preloaded models to free up references
+      configuratorState.preloadedModels = {};
+
+      // Show user notification
+      toast({
+        title: 'Graphics memory limit reached',
+        description: 'The 3D viewer will reload in 2 seconds to recover.',
+        variant: 'destructive',
+      });
+
+      // Reload page after delay to recover
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    };
+
+    canvas.addEventListener('webglcontextlost', handleContextLost);
+
+    return () => {
+      canvas.removeEventListener('webglcontextlost', handleContextLost);
+    };
+  }, [gl]);
+
+  return null;
 }
 
 /**
@@ -93,6 +138,9 @@ export default function Canvas3D({
       {room.environmentPreset !== 'none' && (
         <Environment preset={room.environmentPreset} />
       )}
+
+      {/* WebGL context lost handler for memory exhaustion recovery */}
+      <WebGLContextLostHandler />
 
       {/* Render the 3D model */}
       {children}

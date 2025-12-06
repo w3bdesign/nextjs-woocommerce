@@ -240,6 +240,87 @@ export interface ModelConfig {
 }
 
 /**
+ * Dimension constraints for a variant
+ * All dimensions in centimeters
+ */
+export interface DimensionConstraints {
+  /** Width range [min, max] in cm (X-axis, side-to-side) */
+  width: [number, number];
+
+  /** Height range [min, max] in cm (Y-axis, vertical) */
+  height: [number, number];
+
+  /** Depth range [min, max] in cm (Z-axis, front-to-back) */
+  depth: [number, number];
+}
+
+/**
+ * A single variant within a model family
+ * Represents one specific model configuration with dimension constraints
+ */
+export interface FamilyVariant {
+  /** Unique identifier within the family */
+  id: string;
+
+  /** User-friendly display name (e.g., "Small (2 Drawers)", "Medium (3 Drawers)") */
+  displayName: string;
+
+  /** Reference to MODEL_REGISTRY key (e.g., 'cabinet-v1', 'cabinet-v2') */
+  modelId: string;
+
+  /** Dimension constraints that define when this variant is active */
+  constraints: DimensionConstraints;
+
+  /**
+   * Optional: Axes that can be scaled dynamically
+   * Default: ['x', 'y', 'z'] (all axes scalable)
+   * Example: ['x', 'y'] locks Z-axis scaling
+   */
+  scalableAxes?: ('x' | 'y' | 'z')[];
+}
+
+/**
+ * Model family configuration
+ * Groups related model variants with dimension-based switching
+ */
+export interface ModelFamily {
+  /** Unique identifier for the family (e.g., 'cabinet-family-01') */
+  familyId: string;
+
+  /** User-friendly display name (e.g., "Cabinet Series A") */
+  displayName: string;
+
+  /** Optional description */
+  description?: string;
+
+  /** Array of variants in this family */
+  variants: FamilyVariant[];
+
+  /** Optional metadata */
+  metadata?: {
+    /** Default variant to use on load */
+    defaultVariantId?: string;
+
+    /** Tags for categorization */
+    tags?: string[];
+  };
+}
+
+/**
+ * Validation result for family configuration
+ */
+export interface FamilyValidationResult {
+  /** Whether the family configuration is valid */
+  valid: boolean;
+
+  /** Array of error messages */
+  errors: string[];
+
+  /** Array of warning messages */
+  warnings?: string[];
+}
+
+/**
  * Product configurator metadata
  * To be added to the Product type for associating models with products
  */
