@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { hasCredentials } from '../../utils/auth';
 import Cart from './Cart.component';
 import AlgoliaSearchBox from '../AlgoliaSearch/AlgoliaSearchBox.component';
 import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
@@ -10,12 +8,6 @@ import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
  * Includes mobile menu.
  */
 const Navbar = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setLoggedIn(hasCredentials());
-  }, []);
-
   return (
     <header className="border-b border-gray-200">
       <nav id="header" className="top-0 z-50 w-full bg-white">
@@ -58,38 +50,6 @@ const Navbar = () => {
             </Link>
             <div className="flex items-center space-x-3">
               <AlgoliaSearchBox />
-              {loggedIn ? (
-                <Link href="/min-konto">
-                  <span className="text-base uppercase tracking-wider group relative">
-                    <span className="relative inline-block">
-                      <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                      Min konto
-                    </span>
-                  </span>
-                </Link>
-              ) : null}
-              {/* Temporarily hidden - Logg inn and Registrer links
-              ) : (
-                <>
-                  <Link href="/logg-inn">
-                    <span className="text-base uppercase tracking-wider group relative">
-                      <span className="relative inline-block">
-                        <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                        Logg inn
-                      </span>
-                    </span>
-                  </Link>
-                  <Link href="/registrer">
-                    <span className="text-base uppercase tracking-wider group relative">
-                      <span className="relative inline-block">
-                        <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
-                        Registrer
-                      </span>
-                    </span>
-                  </Link>
-                </>
-              )}
-              */}
               <Cart />
             </div>
           </div>
