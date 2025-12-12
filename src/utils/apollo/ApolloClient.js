@@ -144,6 +144,7 @@ const link = useMocks
   ? mockLink
   : (() => {
       // Logging link for Apollo (development only)
+      // eslint-disable-next-line complexity
       const loggerLink = new ApolloLink((operation, forward) => {
         // Helper to safely stringify objects (handles circular refs)
         const safeStringify = (obj) => {
@@ -163,10 +164,10 @@ const link = useMocks
               },
               2,
             );
-          } catch (e) {
+          } catch {
             try {
               return String(obj);
-            } catch (e2) {
+            } catch {
               return '[unserializable]';
             }
           }
@@ -235,7 +236,7 @@ const link = useMocks
               }
             };
           });
-        } catch (e) {
+        } catch {
           return forward ? forward(operation) : null;
         }
       });

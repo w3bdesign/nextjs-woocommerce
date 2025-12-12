@@ -86,7 +86,7 @@ export function transferCustomizations(
  * Stores successfully loaded models in configuratorStore.preloadedModels.
  *
  * @param family - The ModelFamily to preload variants for
- * @returns Promise resolving to count of successfully loaded variants
+ * @returns Promise resolving to preload results with succeeded/failed/total counts
  * @throws Error if ALL variants fail to load
  *
  * Error Handling Strategy:
@@ -96,15 +96,17 @@ export function transferCustomizations(
  *
  * @example
  * try {
- *   const loadedCount = await preloadFamilyModels(CABINET_FAMILY);
- *   console.log(`Loaded ${loadedCount} of ${CABINET_FAMILY.variants.length} variants`);
+ *   const result = await preloadFamilyModels(CABINET_FAMILY);
+ *   console.log(`Loaded ${result.succeeded} of ${result.total} variants`);
  * } catch (error) {
  *   // Handle complete failure - show error UI
  * }
  */
-export async function preloadFamilyModels(
-  family: ModelFamily,
-): Promise<number> {
+export async function preloadFamilyModels(family: ModelFamily): Promise<{
+  succeeded: number;
+  failed: Array<{ variantId: string; modelId: string; error: any }>;
+  total: number;
+}> {
   const { useGLTF } = await import('@react-three/drei');
   const { MODEL_REGISTRY } = await import('@/config/models.registry');
 

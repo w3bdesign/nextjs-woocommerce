@@ -177,6 +177,13 @@ export default function ProductConfigurator({
             throw new Error(`No variants found in family: ${familyId}`);
           }
 
+          // Validate familyId is defined
+          if (!familyId) {
+            throw new Error(
+              'Family ID is required for family-based configuration',
+            );
+          }
+
           // Set family and variant in store
           configuratorState.familyId = familyId;
           configuratorState.activeVariantId = defaultVariant.id;

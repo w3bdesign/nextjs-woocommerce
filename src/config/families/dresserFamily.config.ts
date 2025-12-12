@@ -10,7 +10,7 @@ import type { ModelFamily } from '@/types/configurator';
 
 export const DRESSER_FAMILY: ModelFamily = {
   familyId: 'dresser-family-01',
-  name: 'Bedroom Dresser',
+  displayName: 'Bedroom Dresser',
   description: 'Bedroom storage dresser with customizable colors',
 
   variants: [
@@ -24,7 +24,6 @@ export const DRESSER_FAMILY: ModelFamily = {
 
   metadata: {
     defaultVariantId: 'dresser-standard',
-    category: 'furniture',
-    tags: ['bedroom', 'storage', 'dresser'],
+    tags: ['bedroom', 'storage', 'dresser', 'furniture'],
   },
 };

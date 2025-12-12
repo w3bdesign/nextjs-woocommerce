@@ -44,8 +44,8 @@ const SingleProduct = ({ product }: IProductRootObject) => {
           {product.configurator?.enabled ? (
             (() => {
               // Determine whether to use family-based or legacy model-based configuration
-              const familyId = product.configurator.familyId;
-              const modelId = product.configurator.modelId;
+              const familyId = product.configurator?.familyId;
+              const modelId = product.configurator?.modelId;
 
               // Debug logging: Show parsed configurator data
               debug.log(

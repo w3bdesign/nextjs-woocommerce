@@ -69,7 +69,8 @@ export interface IProduct {
   /** Optional: 3D Configurator metadata */
   configurator?: {
     enabled: boolean;
-    modelId: string;
+    modelId?: string;
+    familyId?: string;
     customPricing?: Record<string, number>;
     defaultConfiguration?: Record<string, string>;
   };
