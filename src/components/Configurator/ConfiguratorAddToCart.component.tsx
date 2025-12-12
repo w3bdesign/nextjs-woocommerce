@@ -12,6 +12,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { configuratorState } from '@/stores/configuratorStore';
 
 // Utils
+import type { GetCartQuery } from '@/types/cart';
 import {
   getFormattedCart,
   serializeConfiguratorState,
@@ -46,7 +47,7 @@ const ConfiguratorAddToCart = ({
 
   useEffect(() => {
     if (!data) return;
-    const updatedCart = getFormattedCart(data as any);
+    const updatedCart = getFormattedCart(data as GetCartQuery);
     if (updatedCart) {
       syncWithWooCommerce(updatedCart);
     }

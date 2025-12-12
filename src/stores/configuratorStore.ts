@@ -32,8 +32,6 @@ interface ConfiguratorState {
   };
   /** Product database ID for cart operations */
   productId: number | null;
-  /** Model ID from the registry (backward compatibility - derived from activeVariantId) */
-  modelId: string | null;
 
   // Family-based variant system
   /** Product family this configuration belongs to */
@@ -54,7 +52,6 @@ export const configuratorState = proxy<ConfiguratorState>({
     height: 0,
   },
   productId: null,
-  modelId: null,
   // Family-based variant system initial values
   familyId: null,
   activeVariantId: '',
@@ -69,7 +66,6 @@ export const configuratorState = proxy<ConfiguratorState>({
 export const initializeConfigurator = (
   modelConfig: ModelConfig,
   productId?: number,
-  modelId?: string,
 ): void => {
   const items: Record<string, string> = {};
   const interactiveStates: Record<string, boolean> = {};
@@ -93,7 +89,6 @@ export const initializeConfigurator = (
   configuratorState.items = items;
   configuratorState.interactiveStates = interactiveStates;
   configuratorState.productId = productId ?? null;
-  configuratorState.modelId = modelId ?? null;
 
   // Initialize dimensions from config or defaults
   if (modelConfig.dimensions) {
@@ -333,7 +328,6 @@ export const switchVariant = (newVariantId: string): void => {
   configuratorState.interactiveStates = newStates;
 
   // Update modelId for backward compatibility
-  configuratorState.modelId = newVariant.modelId;
 
   // Development-mode logging
   if (process.env.NODE_ENV === 'development') {

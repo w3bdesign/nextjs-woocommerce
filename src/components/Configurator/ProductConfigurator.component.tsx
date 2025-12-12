@@ -1,5 +1,5 @@
 import { getModelFamily } from '@/config/families.registry';
-import { DEFAULT_MODEL_ID, getModelConfig } from '@/config/models.registry';
+import { getModelConfig } from '@/config/models.registry';
 import { useToast } from '@/hooks/use-toast';
 import {
   configuratorState,
@@ -43,7 +43,6 @@ const Canvas3DErrorBoundary = dynamic(
 );
 
 interface ProductConfiguratorProps {
-  modelId?: string; // Legacy: Single model configuration (backward compatibility)
   familyId?: string; // Family-based configuration (preferred)
   className?: string;
   productId?: number;
@@ -62,7 +61,6 @@ interface ProductConfiguratorProps {
  * Supports both family-based (preferred) and legacy single-model configuration
  */
 export default function ProductConfigurator({
-  modelId = DEFAULT_MODEL_ID,
   familyId,
   className = '',
   productId,
@@ -87,7 +85,6 @@ export default function ProductConfigurator({
         'family loaded': !!family,
         'snap.familyId': snap.familyId,
         'snap.activeVariantId': snap.activeVariantId,
-        'modelId prop': modelId,
       },
       null,
       2,
@@ -95,12 +92,11 @@ export default function ProductConfigurator({
   );
 
   // For family-based: Get the active variant's modelId from store
-  // For legacy: use provided modelId
   const activeModelId =
     family && snap.activeVariantId
       ? family.variants.find((v) => v.id === snap.activeVariantId)?.modelId ||
         family.variants[0]?.modelId
-      : modelId;
+      : undefined;
 
   console.log(
     '[ProductConfigurator] Active model resolution:',
@@ -115,19 +111,20 @@ export default function ProductConfigurator({
   );
 
   // Get the model configuration from the registry (reactive to activeVariantId changes)
-  const modelConfig = getModelConfig(activeModelId);
+  // Guard the call since `activeModelId` may be undefined during initialization
+  const modelConfig = activeModelId ? getModelConfig(activeModelId) : undefined;
 
   // Initialize configurator with preloading for family-based products
   useEffect(() => {
-    if (!modelConfig) {
-      debug.warn(
-        `Model ID "${activeModelId}" not found in registry. ` +
-          `FamilyId: ${familyId || 'none'}, ModelId: ${modelId}`,
-      );
-      return;
-    }
-
     if (family) {
+      // If there's an activeVariantId but its model config is missing, warn
+      if (snap.activeVariantId && !modelConfig) {
+        debug.warn(
+          `Model ID "${activeModelId}" not found in registry. ` +
+            `FamilyId: ${familyId || 'none'}`,
+        );
+      }
+
       // Family-based initialization with preloading
       const initializeFamilyConfigurator = async () => {
         // Skip if family is already initialized (prevents re-initialization during variant switches)
@@ -198,11 +195,7 @@ export default function ProductConfigurator({
           }
 
           // Initialize configurator with default variant's model
-          initializeConfigurator(
-            defaultModelConfig,
-            productId,
-            defaultVariant.modelId,
-          );
+          initializeConfigurator(defaultModelConfig, productId);
 
           debug.log(
             `[ProductConfigurator] Initialized with variant: ${defaultVariant.id} (${defaultVariant.displayName})`,
@@ -223,14 +216,13 @@ export default function ProductConfigurator({
 
       initializeFamilyConfigurator();
     } else {
-      // Legacy single-model initialization (no preloading needed)
-      debug.log(
-        `[ProductConfigurator] Initializing legacy configurator: ${modelId}`,
+      // If no family provided, show clear error UI (we removed legacy `modelId` support)
+      throw new Error(
+        'Legacy single-model `modelId` support removed. Use `familyId` on products to enable the configurator.',
       );
-      initializeConfigurator(modelConfig, productId, modelId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modelId, familyId, family, activeModelId, modelConfig, productId]);
+  }, [familyId, family, activeModelId, modelConfig, productId]);
 
   // Show loading skeleton while preloading family models
   if (isPreloading) {

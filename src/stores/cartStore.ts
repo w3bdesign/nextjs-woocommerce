@@ -1,25 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface Image {
-  sourceUrl?: string;
-  srcSet?: string;
-  title: string;
-}
-
-export interface Product {
-  cartKey: string;
-  name: string;
-  qty: number;
-  price: number;
-  totalPrice: string;
-  image: Image;
-  productId: number;
-}
+import { CartItem } from '@/types/cart';
 
 interface CartState {
   cart: {
-    products: Product[];
+    products: CartItem[];
     totalProductsCount: number;
     totalProductsPrice: number;
   } | null;

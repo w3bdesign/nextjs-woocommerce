@@ -51,6 +51,9 @@ export interface Product {
   };
   variations: {
     nodes: Array<{
+      id?: string;
+      databaseId?: number;
+      name?: string;
       price: string;
       regularPrice: string;
       salePrice?: string;
@@ -59,10 +62,9 @@ export interface Product {
       };
     }>;
   };
-  /** Optional: 3D Configurator metadata */
+  /** Optional: 3D Configurator metadata (family-based only) */
   configurator?: {
     enabled: boolean;
-    modelId?: string; // Deprecated: Use familyId for family-based products
     familyId?: string; // Model family ID for variant switching system
     customPricing?: Record<string, number>;
     defaultConfiguration?: Record<string, string>;

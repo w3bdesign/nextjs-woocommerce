@@ -1,68 +1,14 @@
 /*eslint complexity: ["error", 20]*/
 
+import type { CartContentNode, CartItem, GetCartQuery } from '@/types/cart';
+import type { FamilyVariant, ModelFamily } from '@/types/configurator';
+import { ChangeEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { Product } from '@/stores/cartStore';
-
 interface RootObject {
-  products: Product[];
+  products: CartItem[];
   totalProductsCount: number;
   totalProductsPrice: number;
-}
-
-import { IVariationNodes } from '@/components/Product/AddToCart.component';
-import { ChangeEvent } from 'react';
-
-/* Interface for products*/
-
-export interface IImage {
-  __typename: string;
-  id: string;
-  sourceUrl?: string;
-  srcSet?: string;
-  altText: string;
-  title: string;
-}
-
-export interface IGalleryImages {
-  __typename: string;
-  nodes: IImage[];
-}
-
-interface IProductNode {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  name: string;
-  description: string;
-  type: string;
-  onSale: boolean;
-  slug: string;
-  averageRating: number;
-  reviewCount: number;
-  image: IImage;
-  galleryImages: IGalleryImages;
-  productId: number;
-}
-
-interface IProduct {
-  __typename: string;
-  node: IProductNode;
-}
-
-export interface IProductRootObject {
-  __typename: string;
-  key: string;
-  product: IProduct;
-  variation?: IVariationNodes;
-  quantity: number;
-  total: string;
-  subtotal: string;
-  subtotalTax: string;
-  extraData?: Array<{
-    key: string;
-    value: string;
-  }>;
 }
 
 type TUpdatedItems = { key: string; quantity: number }[];
@@ -87,9 +33,7 @@ export interface IUpdateCartRootObject {
 
 /* Interface for props */
 
-interface IFormattedCartProps {
-  cart: { contents: { nodes: IProductRootObject[] }; total: number };
-}
+// Removed IFormattedCartProps; callers use `GetCartQuery` / `CartContentNode` types.
 
 export interface ICheckoutDataProps {
   firstName: string;
@@ -146,7 +90,7 @@ export const filteredVariantPrice = (price: string, side: string) => {
  * @param {String} data Cart data
  */
 
-export const getFormattedCart = (data: IFormattedCartProps) => {
+export const getFormattedCart = (data?: GetCartQuery) => {
   const formattedCart: RootObject = {
     products: [],
     totalProductsCount: 0,
@@ -156,67 +100,55 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
   if (!data) {
     return;
   }
-  // Guard against missing cart/contents
-  const givenProducts = (data as any)?.cart?.contents?.nodes ?? [];
 
-  // Create an empty object.
+  const givenProducts: CartContentNode[] = data.cart?.contents?.nodes ?? [];
+
   formattedCart.products = [];
 
-  const product: Product = {
-    productId: 0,
-    cartKey: '',
-    name: '',
-    qty: 0,
-    price: 0,
-    totalPrice: '0',
-    image: { sourceUrl: '', srcSet: '', title: '' },
-  };
-
   let totalProductsCount = 0;
-  let i = 0;
 
   if (!givenProducts.length) {
     return;
   }
 
-  givenProducts.forEach(() => {
-    const givenProduct = givenProducts[Number(i)].product.node;
+  givenProducts.forEach((node) => {
+    const givenProduct = node.product?.node;
 
     // Convert price to a float value
-    const convertedCurrency = givenProducts[Number(i)].total.replace(
+    const convertedCurrency = String(node.total ?? '0').replace(
       /[^0-9.-]+/g,
       '',
     );
 
-    product.productId = givenProduct.productId;
-    product.cartKey = givenProducts[Number(i)].key;
-    product.name = givenProduct.name;
-    product.qty = givenProducts[Number(i)].quantity;
-    product.price = Number(convertedCurrency) / product.qty;
-    product.totalPrice = givenProducts[Number(i)].total;
+    const qty = Number(node.quantity) || 1;
+    const price = qty ? Number(convertedCurrency) / qty : 0;
+    const totalPrice = Number(convertedCurrency) || 0;
 
-    // Ensure we can add products without images to the cart
+    const cartItem: CartItem = {
+      cartKey: node.key ?? `${givenProduct?.databaseId ?? '0'}-${uuidv4()}`,
+      name: givenProduct?.name ?? 'Product',
+      qty,
+      price,
+      totalPrice,
+      image: givenProduct?.image?.sourceUrl
+        ? {
+            sourceUrl: givenProduct.image.sourceUrl,
+            srcSet: givenProduct.image.srcSet,
+            title: givenProduct.image.title,
+          }
+        : {
+            sourceUrl: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
+            title: givenProduct?.name ?? 'Product',
+          },
+      productId: givenProduct?.databaseId ?? 0,
+    } as CartItem;
 
-    product.image = givenProduct.image.sourceUrl
-      ? {
-          sourceUrl: givenProduct.image.sourceUrl,
-          srcSet: givenProduct.image.srcSet,
-          title: givenProduct.image.title,
-        }
-      : {
-          sourceUrl: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
-          srcSet: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
-          title: givenProduct.name,
-        };
-
-    totalProductsCount += givenProducts[Number(i)].quantity;
-
-    // Push each item into the products array.
-    formattedCart.products.push(product);
-    i++;
+    totalProductsCount += qty;
+    formattedCart.products.push(cartItem);
   });
+
   formattedCart.totalProductsCount = totalProductsCount;
-  formattedCart.totalProductsPrice = (data as any)?.cart?.total ?? 0;
+  formattedCart.totalProductsPrice = Number(data.cart?.total ?? 0);
 
   return formattedCart;
 };
@@ -262,33 +194,26 @@ export const createCheckoutData = (order: ICheckoutDataProps) => ({
  *
  */
 export const getUpdatedItems = (
-  products: IProductRootObject[],
+  products: CartContentNode[],
   newQty: number,
   cartKey: string,
 ) => {
   // Create an empty array.
-
   const updatedItems: TUpdatedItems = [];
 
-  // Loop through the product array.
+  // Loop through the product array and only include nodes that have a valid key
   products.forEach((cartItem) => {
-    // If you find the cart key of the product user is trying to update, push the key and new qty.
-    if (cartItem.key === cartKey) {
-      updatedItems.push({
-        key: cartItem.key,
-        quantity: newQty,
-      });
+    if (!cartItem || !cartItem.key) return;
 
-      // Otherwise just push the existing qty without updating.
+    const existingQty = Number(cartItem.quantity ?? 1);
+
+    if (cartItem.key === cartKey) {
+      updatedItems.push({ key: cartItem.key, quantity: Number(newQty) });
     } else {
-      updatedItems.push({
-        key: cartItem.key,
-        quantity: cartItem.quantity,
-      });
+      updatedItems.push({ key: cartItem.key, quantity: existingQty });
     }
   });
 
-  // Return the updatedItems array with new Qtys.
   return updatedItems;
 };
 
@@ -299,7 +224,7 @@ export const getUpdatedItems = (
 export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
-  cart: IProductRootObject[],
+  cart: CartContentNode[],
   updateCart: (variables: IUpdateCartRootObject) => void,
   updateCartProcessing: boolean,
 ) => {
@@ -343,12 +268,23 @@ export const handleQuantityChange = (
  * Backend can reconstruct full variant metadata from variantId.
  * Omits constraints/modelPath to minimize cart storage overhead.
  */
+export interface SerializedConfiguratorState {
+  items: Record<string, string>;
+  dimensions: { length: number; width: number; height: number };
+  interactiveStates: Record<string, boolean>;
+  timestamp: string;
+  version: string;
+  familyId?: string;
+  activeVariantId?: string;
+  variantDisplayName?: string;
+  modelName?: string;
+}
+
 export const serializeConfiguratorState = (configuratorState: {
   items: Record<string, string>;
   dimensions: { length: number; width: number; height: number };
   interactiveStates: Record<string, boolean>;
-  modelId: string | null;
-  productId: number | null;
+  productId?: number | null;
   familyId?: string | null;
   activeVariantId?: string;
 }): string => {
@@ -356,11 +292,10 @@ export const serializeConfiguratorState = (configuratorState: {
   const version = configuratorState.familyId ? '2.0' : '1.0';
 
   // Base configuration data (compatible with v1.0)
-  const configData: any = {
+  const configData: SerializedConfiguratorState = {
     items: configuratorState.items,
     dimensions: configuratorState.dimensions,
     interactiveStates: configuratorState.interactiveStates,
-    modelId: configuratorState.modelId,
     timestamp: new Date().toISOString(),
     version,
   };
@@ -375,10 +310,12 @@ export const serializeConfiguratorState = (configuratorState: {
       const { getModelFamily } = require('@/config/families.registry');
       const { getModelConfig } = require('@/config/models.registry');
 
-      const family = getModelFamily(configuratorState.familyId);
+      const family: ModelFamily | undefined = getModelFamily(
+        configuratorState.familyId,
+      );
       if (family && configuratorState.activeVariantId) {
-        const variant = family.variants.find(
-          (v: any) => v.id === configuratorState.activeVariantId,
+        const variant: FamilyVariant | undefined = family.variants.find(
+          (v) => v.id === configuratorState.activeVariantId,
         );
         if (variant) {
           configData.variantDisplayName = variant.displayName;

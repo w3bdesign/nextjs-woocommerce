@@ -21,9 +21,9 @@ import {
   getFormattedCart,
   getUpdatedItems,
   handleQuantityChange,
-  IProductRootObject,
 } from '@/utils/functions/functions';
 
+import type { CartContentNode, GetCartQuery } from '@/types/cart';
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 
@@ -40,7 +40,7 @@ const CartContents = () => {
   useEffect(() => {
     if (!data) return;
     if (!(data as any)?.cart?.contents?.nodes) return;
-    const updatedCart = getFormattedCart(data as any);
+    const updatedCart = getFormattedCart(data as GetCartQuery);
     if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
       clearWooCommerceSession();
       return;
@@ -65,7 +65,7 @@ const CartContents = () => {
 
   const handleRemoveProductClick = (
     cartKey: string,
-    products: IProductRootObject[],
+    products: CartContentNode[],
   ) => {
     if (products?.length) {
       const updatedItems = getUpdatedItems(products, 0, cartKey);
@@ -102,66 +102,73 @@ const CartContents = () => {
       {data?.cart?.contents?.nodes?.length ? (
         <>
           <div className="bg-white rounded-lg p-6 mb-8 md:w-full">
-            {data.cart.contents.nodes.map((item: IProductRootObject) => (
-              <div
-                key={item.key}
-                className="flex items-center border-b border-gray-200 py-4"
-              >
-                <div className="flex-shrink-0 w-24 h-24 relative hidden md:block">
-                  <Image
-                    src={
-                      item.product.node.image?.sourceUrl || '/placeholder.png'
-                    }
-                    alt={item.product.node.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded"
-                  />
-                </div>
-                <div className="flex-grow ml-4">
-                  <TypographyH3>{item.product.node.name}</TypographyH3>
-                  <TypographyP className="text-gray-600">
-                    <Price
-                      value={`${getUnitPrice(item.subtotal, item.quantity)}`}
-                      size="sm"
+            {data.cart.contents.nodes.map(
+              (item: CartContentNode, idx: number) => (
+                <div
+                  key={item.key ?? `cart-${idx}`}
+                  className="flex items-center border-b border-gray-200 py-4"
+                >
+                  <div className="flex-shrink-0 w-24 h-24 relative hidden md:block">
+                    <Image
+                      src={
+                        item.product?.node?.image?.sourceUrl ||
+                        '/placeholder.png'
+                      }
+                      alt={item.product?.node?.name ?? 'Product'}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded"
                     />
-                  </TypographyP>
-                  <ConfigurationDisplay extraData={item.extraData} />
+                  </div>
+                  <div className="flex-grow ml-4">
+                    <TypographyH3>
+                      {item.product?.node?.name ?? 'Product'}
+                    </TypographyH3>
+                    <TypographyP className="text-gray-600">
+                      <Price
+                        value={`${getUnitPrice(item.subtotal ?? '0', Number(item.quantity ?? 1))}`}
+                        size="sm"
+                      />
+                    </TypographyP>
+                    <ConfigurationDisplay extraData={item.extraData} />
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      min="1"
+                      value={item.quantity ?? 1}
+                      onChange={(event) => {
+                        if (!item.key) return;
+                        handleQuantityChange(
+                          event,
+                          item.key,
+                          data.cart.contents.nodes,
+                          updateCart,
+                          updateCartProcessing,
+                        );
+                      }}
+                      className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
+                    />
+                    <Button
+                      onClick={() => {
+                        if (!item.key) return;
+                        handleRemoveProductClick(
+                          item.key,
+                          data.cart.contents.nodes,
+                        );
+                      }}
+                      variant="destructive"
+                      disabled={updateCartProcessing}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                  <div className="ml-4">
+                    <Price value={item.subtotal ?? '0'} size="lg" />
+                  </div>
                 </div>
-                <div className="flex items-center">
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(event) => {
-                      handleQuantityChange(
-                        event,
-                        item.key,
-                        data.cart.contents.nodes,
-                        updateCart,
-                        updateCartProcessing,
-                      );
-                    }}
-                    className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
-                  />
-                  <Button
-                    onClick={() =>
-                      handleRemoveProductClick(
-                        item.key,
-                        data.cart.contents.nodes,
-                      )
-                    }
-                    variant="destructive"
-                    disabled={updateCartProcessing}
-                  >
-                    Remove
-                  </Button>
-                </div>
-                <div className="ml-4">
-                  <Price value={item.subtotal} size="lg" />
-                </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
           <div className="bg-white rounded-lg p-6 md:w-full">
             <div className="flex justify-end mb-4">

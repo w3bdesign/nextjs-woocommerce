@@ -11,73 +11,16 @@ import { useToast } from '@/hooks/use-toast';
 import { useCartStore } from '@/stores/cartStore';
 
 // Utils
+import type { GetCartQuery } from '@/types/cart';
 import { getFormattedCart } from '@/utils/functions/functions';
 
 // GraphQL
+import { Product } from '@/types/product';
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 
-interface IImage {
-  __typename: string;
-  id: string;
-  uri: string;
-  title: string;
-  srcSet: string;
-  sourceUrl: string;
-}
-
-export interface IVariationNodes {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  name: string;
-  stockStatus: string;
-  stockQuantity: number;
-  purchasable: boolean;
-  onSale: boolean;
-  salePrice?: string;
-  regularPrice: string;
-}
-
-interface IVariations {
-  __typename: string;
-  nodes: IVariationNodes[];
-}
-
-export interface IProduct {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  averageRating: number;
-  slug: string;
-  description: string;
-  onSale: boolean;
-  image: IImage;
-  name: string;
-  salePrice?: string;
-  regularPrice: string;
-  price: string;
-  stockQuantity: number;
-  attributes?: {
-    nodes: Array<{
-      id: string;
-      name: string;
-      options: string[];
-    }>;
-  };
-  variations?: IVariations;
-  /** Optional: 3D Configurator metadata */
-  configurator?: {
-    enabled: boolean;
-    modelId?: string;
-    familyId?: string;
-    customPricing?: Record<string, number>;
-    defaultConfiguration?: Record<string, string>;
-  };
-}
-
-export interface IProductRootObject {
-  product: IProduct;
+interface IProductRootObject {
+  product: Product;
   variationId?: number;
   fullWidth?: boolean;
 }
@@ -113,7 +56,7 @@ const AddToCart = ({
 
   useEffect(() => {
     if (!data) return;
-    const updatedCart = getFormattedCart(data as any);
+    const updatedCart = getFormattedCart(data as GetCartQuery);
     if (updatedCart) {
       syncWithWooCommerce(updatedCart);
     }
@@ -141,12 +84,15 @@ const AddToCart = ({
     if (mutationData) {
       // Update the cart with new values in React context.
       refetch();
+
+      // Note: WooCommerce is the source of truth; no local optimistic update applied here.
+
       toast({
         title: 'Added to cart',
         description: `${product.name} has been added to your cart.`,
       });
     }
-  }, [mutationData, refetch, product.name, toast]);
+  }, [mutationData, refetch, product.name, toast, product, variationId]);
 
   const handleAddToCart = () => {
     addToCart();

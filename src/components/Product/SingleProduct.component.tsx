@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 // Components
 import { Container } from '@/components/Layout/Container.component';
 import { Skeleton } from '@/components/ui/skeleton';
-import { IProductRootObject } from './AddToCart.component';
+import { Product } from '@/types/product';
 
 // Config
 import { FAMILY_REGISTRY, getModelFamily } from '@/config/families.registry';
@@ -26,7 +26,7 @@ const ProductConfigurator = dynamic(
   },
 );
 
-const SingleProduct = ({ product }: IProductRootObject) => {
+const SingleProduct = ({ product }: { product: Product }) => {
   const [_selectedVariation, setSelectedVariation] = useState<number>();
 
   useEffect(() => {
@@ -43,15 +43,13 @@ const SingleProduct = ({ product }: IProductRootObject) => {
         <div className="mb-6 md:mb-0">
           {product.configurator?.enabled ? (
             (() => {
-              // Determine whether to use family-based or legacy model-based configuration
+              // Determine whether to use family-based configuration
               const familyId = product.configurator?.familyId;
-              const modelId = product.configurator?.modelId;
 
               // Debug logging: Show parsed configurator data
               debug.log(
                 `[SingleProduct] Configurator data parsed:\n` +
                   `  familyId: ${familyId}\n` +
-                  `  modelId: ${modelId}\n` +
                   `  Product: ${product.name} (ID: ${product.databaseId})`,
               );
 
@@ -100,31 +98,24 @@ const SingleProduct = ({ product }: IProductRootObject) => {
                 );
               }
 
-              // Fallback to legacy modelId-based configuration
-              if (modelId) {
-                debug.log(
-                  `Using legacy modelId for product: ${product.name}. ` +
-                    `Consider migrating to family-based configuration.`,
-                );
-
-                return (
-                  <ProductConfigurator
-                    modelId={modelId}
-                    productId={product.databaseId}
-                    product={product}
-                  />
-                );
-              }
-
-              // Neither familyId nor modelId specified
+              // If familyId missing or family not found, show configuration unavailable
               debug.error(
-                `Product configurator enabled but no familyId or modelId specified. ` +
+                `Product configurator enabled but no valid familyId specified. ` +
                   `Product: ${product.name} (ID: ${product.databaseId})`,
               );
 
               return (
                 <div className="w-full h-[600px] bg-gray-100 rounded-lg shadow-lg flex items-center justify-center">
-                  <p className="text-gray-600">Configuration error</p>
+                  <div className="text-center px-4">
+                    <p className="text-gray-800 font-semibold mb-2">
+                      Configuration Unavailable
+                    </p>
+                    <p className="text-gray-600 text-sm">
+                      This product uses an unsupported legacy configuration.
+                      Please update the product to use a family-based
+                      configuration.
+                    </p>
+                  </div>
                 </div>
               );
             })()

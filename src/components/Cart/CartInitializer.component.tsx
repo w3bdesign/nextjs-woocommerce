@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 // State
 import { useCartStore } from '@/stores/cartStore';
+import type { GetCartQuery } from '@/types/cart';
 
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
@@ -28,8 +29,8 @@ const CartInitializer = () => {
   useEffect(() => {
     if (!data) return;
     // If cart shape is missing, do nothing
-    if (!(data as any)?.cart?.contents?.nodes) return;
-    const updatedCart = getFormattedCart(data as any);
+    if (!data?.cart?.contents?.nodes) return;
+    const updatedCart = getFormattedCart(data as GetCartQuery);
     if (updatedCart) {
       syncWithWooCommerce(updatedCart);
     }
