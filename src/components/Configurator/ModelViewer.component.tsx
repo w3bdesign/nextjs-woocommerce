@@ -5,6 +5,7 @@ import { configuratorState, setCurrentPart } from '@/stores/configuratorStore';
 import { setModelWorld } from '@/stores/sceneMediatorStore';
 import type { ModelConfig } from '@/types/configurator';
 import debug from '@/utils/debug';
+import { calculateDepthOffset } from '@/utils/modelPositioning';
 import { useGLTF } from '@react-three/drei';
 import { ThreeEvent, useFrame } from '@react-three/fiber';
 import {
@@ -86,6 +87,12 @@ export default function ModelViewer({
     min: { x: number; y: number; z: number };
     max: { x: number; y: number; z: number };
   } | null>(null);
+
+  // NOTE: We intentionally DO NOT reset boundingBox to null on variant change.
+  // Keeping the old bounding box prevents camera snap-back from using fallback
+  // distance calculations during the recalculation period. The bounding box
+  // will be naturally overwritten once the new variant's geometry is computed.
+  // This maintains consistent camera distance during variant transitions.
 
   // Animate the model with gentle rotation and bobbing (if enabled)
   useFrame((state) => {
@@ -196,10 +203,82 @@ export default function ModelViewer({
   useEffect(() => {
     if (!ref.current || !snap.activeVariantId) return;
 
-    // Recompute bounding box for new variant
-    const box = new THREE.Box3().setFromObject(ref.current);
+    console.log(
+      '[ModelViewer] 📦 BBOX CALCULATION START:',
+      JSON.stringify(
+        {
+          'snap.activeVariantId': snap.activeVariantId,
+          'effectiveModelConfig.id': effectiveModelConfig.id,
+          'effectiveModelConfig.scale (baseScale)': effectiveModelConfig.scale,
+          'effectiveModelConfig.position': effectiveModelConfig.position,
+        },
+        null,
+        2,
+      ),
+    );
+
+    // CRITICAL: Calculate bbox in NEUTRAL state (only base scale, no dimension scaling, no positioning)
+    // We need geometry-space coordinates at baseScale for depth positioning calculations
+
+    const baseScale = effectiveModelConfig.scale ?? 1;
+    const innerGroup = ref.current;
+    const outerGroup = innerGroup.parent;
+
+    if (!outerGroup) {
+      console.error('[ModelViewer] ❌ Inner group has no parent!');
+      return;
+    }
+
+    // Store original transforms
+    const originalInnerScale = innerGroup.scale.clone();
+    const originalInnerPosition = innerGroup.position.clone();
+
+    // Temporarily detach from parent to avoid parent position offset
+    const originalParent = innerGroup.parent;
+    innerGroup.removeFromParent();
+
+    // Reset to base scale only (remove dimension scaling and positioning)
+    innerGroup.scale.set(baseScale, baseScale, baseScale);
+    innerGroup.position.set(0, 0, 0);
+    innerGroup.updateMatrix();
+    innerGroup.updateMatrixWorld(true);
+
+    // Update all children matrices
+    innerGroup.traverse((obj) => {
+      obj.updateMatrix();
+      obj.updateMatrixWorld(true);
+    });
+
+    // Calculate bbox at base scale in geometry space (no parent offset!)
+    const box = new THREE.Box3().setFromObject(innerGroup);
+
+    // Restore to parent and original transforms
+    if (originalParent) {
+      originalParent.add(innerGroup);
+    }
+    innerGroup.position.copy(originalInnerPosition);
+    innerGroup.scale.copy(originalInnerScale);
+    innerGroup.updateMatrix();
+    innerGroup.updateMatrixWorld(true);
 
     if (!box.isEmpty()) {
+      console.log(
+        '[ModelViewer] 📦 RAW Three.js Box3:',
+        JSON.stringify(
+          {
+            'box.min': { x: box.min.x, y: box.min.y, z: box.min.z },
+            'box.max': { x: box.max.x, y: box.max.y, z: box.max.z },
+            'box dimensions': {
+              width: box.max.x - box.min.x,
+              height: box.max.y - box.min.y,
+              depth: box.max.z - box.min.z,
+            },
+          },
+          null,
+          2,
+        ),
+      );
+
       // Update local bounding box state
       const bbox = {
         min: { x: box.min.x, y: box.min.y, z: box.min.z },
@@ -207,17 +286,26 @@ export default function ModelViewer({
       };
       setBoundingBox(bbox);
 
+      console.log(
+        '[ModelViewer] 📦 BBOX SAVED to state:',
+        JSON.stringify(bbox, null, 2),
+      );
+
+      // Get current position and scale from effectiveModelConfig
+      const currentPosition = effectiveModelConfig.position ?? [0, 0, 0];
+      const currentScale = effectiveModelConfig.scale ?? 1;
+
       // Publish world-aligned bounding box to scene mediator
       const geometryHeight = box.max.y - box.min.y;
-      const finalMinY = basePosition[1];
+      const finalMinY = currentPosition[1];
       const finalMaxY = finalMinY + geometryHeight;
 
       const geometryWidth = box.max.x - box.min.x;
       const geometryDepth = box.max.z - box.min.z;
 
-      const finalMinX = basePosition[0] - geometryWidth / 2;
+      const finalMinX = currentPosition[0] - geometryWidth / 2;
       const finalMaxX = finalMinX + geometryWidth;
-      const finalMinZ = basePosition[2] - geometryDepth / 2;
+      const finalMinZ = currentPosition[2] - geometryDepth / 2;
       const finalMaxZ = finalMinZ + geometryDepth;
 
       setModelWorld(
@@ -225,18 +313,58 @@ export default function ModelViewer({
           min: { x: finalMinX, y: finalMinY, z: finalMinZ },
           max: { x: finalMaxX, y: finalMaxY, z: finalMaxZ },
         },
-        basePosition as [number, number, number],
-        finalScale[0],
+        currentPosition as [number, number, number],
+        currentScale,
       );
 
       debug.category(
         '3D',
         `🔄 Variant switched - Bounding box recalculated for variant: ${snap.activeVariantId}`,
       );
+
+      console.log(
+        '[ModelViewer] 🌍 World-aligned bbox published to scene mediator:',
+        JSON.stringify(
+          {
+            worldMin: { x: finalMinX, y: finalMinY, z: finalMinZ },
+            worldMax: { x: finalMaxX, y: finalMaxY, z: finalMaxZ },
+            currentPosition,
+            currentScale,
+          },
+          null,
+          2,
+        ),
+      );
     }
-    // basePosition and finalScale are calculated later but used in rendering
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [snap.activeVariantId]);
+  }, [snap.activeVariantId, effectiveModelConfig]);
+
+  // Calculate final position (needed for depth offset calculation)
+  const basePosition = effectiveModelConfig.position ?? [0, 0, 0];
+
+  console.log(
+    '[ModelViewer] 🎬 Scale/Position calculation:',
+    JSON.stringify(
+      {
+        'effectiveModelConfig.id': effectiveModelConfig.id,
+        'effectiveModelConfig.scale': effectiveModelConfig.scale,
+        basePosition,
+        'snap.dimensions': snap.dimensions,
+        'effectiveModelConfig.dimensions.defaults':
+          effectiveModelConfig.dimensions
+            ? {
+                width: effectiveModelConfig.dimensions.width.default,
+                height: effectiveModelConfig.dimensions.height.default,
+                length: effectiveModelConfig.dimensions.length.default,
+              }
+            : 'NO DIMENSIONS',
+        'boundingBox available': !!boundingBox,
+        'positioning.type': effectiveModelConfig.positioning?.type,
+      },
+      null,
+      2,
+    ),
+  );
 
   // Calculate scale from dimensions (if configured)
   const baseScale = effectiveModelConfig.scale ?? 1;
@@ -253,6 +381,20 @@ export default function ModelViewer({
     const scaleZ =
       snap.dimensions.length / effectiveModelConfig.dimensions.length.default;
 
+    console.log(
+      '[ModelViewer] 📏 Scale factors:',
+      JSON.stringify(
+        {
+          scaleX,
+          scaleY,
+          scaleZ,
+          scalableAxes,
+        },
+        null,
+        2,
+      ),
+    );
+
     // Apply scale only to axes specified in scalableAxes
     // If axis not in scalableAxes array, use baseScale (no scaling)
     finalScale = [
@@ -261,24 +403,47 @@ export default function ModelViewer({
       scalableAxes.includes('z') ? baseScale * scaleZ : baseScale,
     ];
 
+    console.log(
+      '[ModelViewer] 🎯 Final scale:',
+      JSON.stringify(
+        {
+          finalScale,
+          'finalScale[2]/baseScale (relative scaleZ)':
+            finalScale[2] / baseScale,
+        },
+        null,
+        2,
+      ),
+    );
+
     // Calculate depth offset using bounding box
     // This keeps the rear face of the model flush with the wall
     // while allowing depth to expand only forward (toward camera)
-    if (boundingBox && scaleZ !== 1) {
-      // Original model depth in 3D space (use computed bounding box Z extents)
-      const originalDepth = boundingBox.max.z - boundingBox.min.z;
-
-      // How much the depth changed
-      const depthChange = originalDepth * (scaleZ - 1);
-
-      // Offset position so rear face stays fixed
-      // Only move forward by half the depth increase
-      depthZOffset = depthChange / 2;
+    if (boundingBox) {
+      depthZOffset = calculateDepthOffset(
+        basePosition[2],
+        boundingBox,
+        finalScale[2] / baseScale,
+        effectiveModelConfig.positioning,
+      );
+    } else {
+      console.log('[ModelViewer] ⚠️  NO BOUNDING BOX - depthZOffset will be 0');
     }
   }
 
-  // Calculate final position with depth offset applied
-  const basePosition = effectiveModelConfig.position ?? [0, 0, 0];
+  console.log(
+    '[ModelViewer] 🏁 Final positioning:',
+    JSON.stringify(
+      {
+        depthZOffset,
+        'outerPosition[2]': basePosition[2] + depthZOffset,
+        finalScale,
+      },
+      null,
+      2,
+    ),
+  );
+
   // If we have a computed bounding box, adjust Y so the model's lowest
   // vertex (boundingBox.min.y) aligns with the base Y specified in the
   // model config (basePosition[1]). This makes models with differing

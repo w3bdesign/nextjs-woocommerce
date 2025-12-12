@@ -5,12 +5,8 @@
  * and catch configuration errors early in development.
  */
 
-import { hasModel } from '@/config/models.registry';
-import type {
-  FamilyValidationResult,
-  FamilyVariant,
-  ModelFamily,
-} from '@/types/configurator';
+import { getModelConfig, hasModel } from '@/config/models.registry';
+import type { FamilyValidationResult, ModelFamily } from '@/types/configurator';
 import debug from '@/utils/debug';
 
 /**
@@ -19,8 +15,8 @@ import debug from '@/utils/debug';
  * Checks:
  * - All variant modelIds reference existing models in MODEL_REGISTRY
  * - Variant IDs are unique within the family
- * - Dimension constraints are valid (min < max)
- * - Warns about overlapping variant constraints
+ * - ModelConfig dimensions are valid (min < max)
+ * - ScalableAxes configuration is valid
  *
  * @param family - The model family to validate
  * @returns Validation result with errors and warnings
@@ -45,7 +41,7 @@ export function validateFamily(family: ModelFamily): FamilyValidationResult {
   const variantIds = new Set<string>();
 
   // Validate each variant
-  family.variants.forEach((variant, _index) => {
+  family.variants.forEach((variant) => {
     // Check variant ID uniqueness
     if (variantIds.has(variant.id)) {
       errors.push(
@@ -59,41 +55,42 @@ export function validateFamily(family: ModelFamily): FamilyValidationResult {
       errors.push(
         `Variant '${variant.id}' references non-existent model: '${variant.modelId}'`,
       );
+      return; // Skip further checks if model doesn't exist
     }
 
-    // Validate dimension constraints
-    if (!variant.constraints) {
-      errors.push(`Variant '${variant.id}' missing constraints`);
+    // Get the actual model config to validate dimensions
+    const modelConfig = getModelConfig(variant.modelId);
+    if (!modelConfig) {
+      errors.push(
+        `Variant '${variant.id}' model config not found: '${variant.modelId}'`,
+      );
       return;
     }
 
-    const { width, height, depth } = variant.constraints;
+    // Validate dimension constraints in ModelConfig
+    if (modelConfig.dimensions) {
+      const { width, height, length } = modelConfig.dimensions;
 
-    // Validate width constraints
-    if (!width || width.length !== 2) {
-      errors.push(`Variant '${variant.id}' has invalid width constraints`);
-    } else if (width[0] >= width[1]) {
-      errors.push(
-        `Variant '${variant.id}' width min (${width[0]}) must be less than max (${width[1]})`,
-      );
-    }
+      // Validate width constraints
+      if (width.min >= width.max) {
+        errors.push(
+          `Variant '${variant.id}' width min (${width.min}) must be less than max (${width.max})`,
+        );
+      }
 
-    // Validate height constraints
-    if (!height || height.length !== 2) {
-      errors.push(`Variant '${variant.id}' has invalid height constraints`);
-    } else if (height[0] >= height[1]) {
-      errors.push(
-        `Variant '${variant.id}' height min (${height[0]}) must be less than max (${height[1]})`,
-      );
-    }
+      // Validate height constraints
+      if (height.min >= height.max) {
+        errors.push(
+          `Variant '${variant.id}' height min (${height.min}) must be less than max (${height.max})`,
+        );
+      }
 
-    // Validate depth constraints
-    if (!depth || depth.length !== 2) {
-      errors.push(`Variant '${variant.id}' has invalid depth constraints`);
-    } else if (depth[0] >= depth[1]) {
-      errors.push(
-        `Variant '${variant.id}' depth min (${depth[0]}) must be less than max (${depth[1]})`,
-      );
+      // Validate depth/length constraints
+      if (length.min >= length.max) {
+        errors.push(
+          `Variant '${variant.id}' length min (${length.min}) must be less than max (${length.max})`,
+        );
+      }
     }
 
     // Validate scalableAxes if present
@@ -110,20 +107,6 @@ export function validateFamily(family: ModelFamily): FamilyValidationResult {
     }
   });
 
-  // Check for overlapping variant constraints (warning only)
-  for (let i = 0; i < family.variants.length; i++) {
-    for (let j = i + 1; j < family.variants.length; j++) {
-      const variantA = family.variants[i];
-      const variantB = family.variants[j];
-
-      if (hasOverlappingConstraints(variantA, variantB)) {
-        warnings.push(
-          `Variants '${variantA.id}' and '${variantB.id}' have overlapping dimension constraints`,
-        );
-      }
-    }
-  }
-
   // Log warnings in development
   if (warnings.length > 0) {
     warnings.forEach((warning) => debug.warn(`[Family Validation] ${warning}`));
@@ -134,34 +117,4 @@ export function validateFamily(family: ModelFamily): FamilyValidationResult {
     errors,
     warnings,
   };
-}
-
-/**
- * Checks if two variants have overlapping width/height constraints
- *
- * CRITICAL: Only checks width and height for overlap.
- * Depth is intentionally excluded as it never triggers variant switching.
- *
- * @param variantA - First variant
- * @param variantB - Second variant
- * @returns True if constraints overlap
- */
-function hasOverlappingConstraints(
-  variantA: FamilyVariant,
-  variantB: FamilyVariant,
-): boolean {
-  // Check if width ranges overlap
-  const widthOverlap = !(
-    variantA.constraints.width[1] < variantB.constraints.width[0] ||
-    variantB.constraints.width[1] < variantA.constraints.width[0]
-  );
-
-  // Check if height ranges overlap
-  const heightOverlap = !(
-    variantA.constraints.height[1] < variantB.constraints.height[0] ||
-    variantB.constraints.height[1] < variantA.constraints.height[0]
-  );
-
-  // Overlap occurs if BOTH width AND height overlap
-  return widthOverlap && heightOverlap;
 }

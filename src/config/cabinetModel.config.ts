@@ -83,6 +83,12 @@ export const CABINET_CONFIG: ModelConfig = {
   // Model depth is ~45cm, scaled at 0.012 = ~0.54 units, so move center to -2.73
   position: [0, 0, -2.73],
 
+  // Positioning behavior: keep back face pinned to wall
+  positioning: {
+    type: 'wall-pinned' as const,
+    wallOffset: 0,
+  },
+
   camera: {
     position: [-5, 0, 11], // Base camera position
     fov: 17,

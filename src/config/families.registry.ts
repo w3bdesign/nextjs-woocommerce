@@ -19,6 +19,7 @@ import type { ModelFamily } from '@/types/configurator';
 import debug from '@/utils/debug';
 import { validateFamily } from '@/utils/familyValidation';
 import { CABINET_FAMILY } from './families/cabinetFamily.config';
+import { DRESSER_FAMILY } from './families/dresserFamily.config';
 
 /**
  * Family Registry
@@ -28,9 +29,9 @@ import { CABINET_FAMILY } from './families/cabinetFamily.config';
  */
 export const FAMILY_REGISTRY: Record<string, ModelFamily> = {
   'cabinet-family-01': CABINET_FAMILY,
+  'dresser-family-01': DRESSER_FAMILY,
 
   // Add more families here as they become available:
-  // 'dresser-family-01': DRESSER_FAMILY,
   // 'sofa-family-01': SOFA_FAMILY,
   // etc.
 };
@@ -103,8 +104,8 @@ export function getAvailableModelFamilies(): string[] {
  * Validates:
  * - All variant modelIds reference existing models in MODEL_REGISTRY
  * - Variant IDs are unique within each family
- * - Dimension constraints are valid (min < max)
- * - Warns about overlapping variant constraints
+ * - ModelConfig dimension constraints are valid (min < max)
+ * - ScalableAxes configuration is valid
  */
 if (process.env.NODE_ENV === 'development') {
   // Validate all families on startup

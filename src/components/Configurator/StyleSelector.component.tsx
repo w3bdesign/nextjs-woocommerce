@@ -1,33 +1,56 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { useState } from 'react';
-import { STYLE_OPTIONS } from './constants';
+import { getModelFamily } from '@/config/families.registry';
+import {
+  configuratorState,
+  switchVariantManually,
+} from '@/stores/configuratorStore';
+import { useSnapshot } from 'valtio';
 
+/**
+ * Style Selector Component
+ *
+ * Displays family variants as selectable style buttons.
+ * Replaces hardcoded style options with dynamic family variant configuration.
+ * Manual variant selection triggers dimension reset to new variant's defaults.
+ */
 export default function StyleSelector() {
-  const [selectedStyle, setSelectedStyle] = useState<string>(
-    STYLE_OPTIONS[0].id,
-  );
+  const snap = useSnapshot(configuratorState);
+
+  // Get family configuration from store
+  const family = snap.familyId ? getModelFamily(snap.familyId) : undefined;
+
+  // If no family is configured, don't render anything
+  if (!family || family.variants.length === 0) {
+    return null;
+  }
+
+  const handleVariantSelect = (variantId: string) => {
+    switchVariantManually(variantId);
+  };
 
   return (
     <Card className="m-0 rounded-none border-0 border-b">
       <CardContent className="p-6">
         <CardTitle className="text-sm font-semibold text-gray-900 mb-4">
-          Style
+          Variant
         </CardTitle>
-        <div className="grid grid-cols-5 gap-2">
-          {STYLE_OPTIONS.map((style) => (
+        <div className="grid grid-cols-2 gap-2">
+          {family.variants.map((variant) => (
             <Button
-              key={style.id}
-              variant={selectedStyle === style.id ? 'default' : 'outline'}
+              key={variant.id}
+              variant={
+                snap.activeVariantId === variant.id ? 'default' : 'outline'
+              }
               size="sm"
-              onClick={() => setSelectedStyle(style.id)}
+              onClick={() => handleVariantSelect(variant.id)}
               className={`p-3 h-auto ${
-                selectedStyle === style.id
+                snap.activeVariantId === variant.id
                   ? 'bg-orange-500 hover:bg-orange-600 text-white border-orange-500'
                   : 'border-gray-200 hover:border-gray-300 text-gray-600'
               }`}
             >
-              <div className="text-xs font-medium">{style.label}</div>
+              <div className="text-xs font-medium">{variant.displayName}</div>
             </Button>
           ))}
         </div>

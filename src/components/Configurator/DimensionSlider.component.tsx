@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
-import { configuratorState, setDimension } from '@/stores/configuratorStore';
+import { configuratorState, setDimensions } from '@/stores/configuratorStore';
 import type { ModelConfig } from '@/types/configurator';
 import { useSnapshot } from 'valtio';
 
@@ -27,7 +27,14 @@ export default function DimensionSlider({
   if (!dimensions) return null;
 
   const handleChange = (value: number[]) => {
-    setDimension(type, value[0]);
+    // Read from configuratorState directly (not snap) to avoid stale values
+    // This ensures dimensions remain independent during rapid updates
+    setDimensions({
+      width: type === 'width' ? value[0] : configuratorState.dimensions.width,
+      height:
+        type === 'height' ? value[0] : configuratorState.dimensions.height,
+      depth: type === 'length' ? value[0] : configuratorState.dimensions.length,
+    });
   };
 
   const colorClasses = DIMENSION_COLORS[type];

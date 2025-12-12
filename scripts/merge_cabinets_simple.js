@@ -43,8 +43,27 @@ function readGLB(buffer) {
 }
 
 function writeGLB(jsonObj, binChunk, outPath) {
-  // CRITICAL FIX: Remove all texture references from materials to prevent WebGL binding issues
-  // The duplicate cabinet model shares texture references which causes "Illegal invocation" errors
+  /**
+   * TEXTURE STRIPPING: Material texture references removed to prevent WebGL binding issues
+   *
+   * WHY: Duplicate cabinet models share texture references, causing "Illegal invocation" errors
+   * when both variants are loaded in memory. WebGL cannot bind the same texture to multiple
+   * contexts/instances simultaneously.
+   *
+   * IMPACT: Generated cabinets-1.glb has NO TEXTURES (flat colors only). This creates visual
+   * inconsistency when switching between variants:
+   *   - cabinet.glb (cabinet-small): Textured materials with normal maps, roughness, etc.
+   *   - cabinets-1.glb (cabinet-medium): Flat base colors only
+   *
+   * ALTERNATIVES:
+   *   1. Blender merge: Use Blender to duplicate geometry with UV offset, preserving textures
+   *   2. Separate textures: Clone texture data for each variant (increases file size 2x)
+   *   3. Runtime cloning: Clone materials at runtime in Three.js (adds complexity)
+   *   4. Accept tradeoff: Current MVP approach - simple, works, but visual difference noticeable
+   *
+   * DECISION: MVP ships with texture stripping (Option 4). Document in family config JSDoc.
+   * Future: Implement Option 1 (Blender merge with UV offset) for production quality.
+   */
   if (jsonObj.materials) {
     jsonObj.materials.forEach((material) => {
       if (material.pbrMetallicRoughness) {
@@ -261,17 +280,6 @@ function computeWorldAABB(json) {
 
   if (!isFinite(globalMin[0])) return null;
   return { min: globalMin, max: globalMax };
-}
-
-function _findFirstMeshIndexUsedByNodes(json) {
-  if (!json.nodes) return null;
-  for (let i = 0; i < json.nodes.length; i++) {
-    const n = json.nodes[i];
-    if (n && typeof n.mesh === 'number') return n.mesh;
-  }
-  // fallback to first mesh
-  if (json.meshes && json.meshes.length) return 0;
-  return null;
 }
 
 function main() {

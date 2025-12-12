@@ -3,10 +3,7 @@ import { getModelFamily } from '@/config/families.registry';
 import { MODEL_REGISTRY } from '@/config/models.registry';
 import type { ModelConfig } from '@/types/configurator';
 import { debug } from '@/utils/debug';
-import {
-  resolveVariantForDimensions,
-  transferCustomizations,
-} from '@/utils/variantResolver';
+import { transferCustomizations } from '@/utils/variantResolver';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 import { proxy } from 'valtio';
 
@@ -16,7 +13,7 @@ import { proxy } from 'valtio';
  * - Selected materials and colors for each part
  * - Interactive part states (doors open/closed, etc.)
  * - Dimensions (width, height, depth)
- * - Family/variant system for dimension-driven model switching
+ * - Family/variant system for manual model variant selection
  *
  * NOTE: model bounding boxes are now published to the scene mediator
  * (src/stores/sceneMediatorStore.ts). Configurator store keeps only
@@ -45,10 +42,6 @@ interface ConfiguratorState {
   activeVariantId: string;
   /** Cache of preloaded 3D models keyed by variantId (Record used instead of Map for Valtio compatibility) */
   preloadedModels: Record<string, GLTF>;
-  /** Prevents concurrent variant resolution */
-  isResolvingVariant: boolean;
-  /** Request tracking for race condition prevention */
-  variantResolutionId: number;
 }
 
 export const configuratorState = proxy<ConfiguratorState>({
@@ -66,8 +59,6 @@ export const configuratorState = proxy<ConfiguratorState>({
   familyId: null,
   activeVariantId: '',
   preloadedModels: {},
-  isResolvingVariant: false,
-  variantResolutionId: 0,
 });
 
 /**
@@ -174,25 +165,8 @@ export const updateAllPartColors = (color: string): void => {
 };
 
 /**
- * Set dimension value (in cm)
- * @deprecated Use setDimensions instead for proper variant resolution
- */
-export const setDimension = (
-  axis: 'length' | 'width' | 'height',
-  value: number,
-): void => {
-  configuratorState.dimensions[axis] = value;
-};
-
-// Debounce timer for variant resolution
-let variantResolutionTimer: number | null = null;
-const VARIANT_RESOLUTION_DEBOUNCE_MS = 150;
-
-/**
- * Set dimensions with depth isolation and debounced variant resolution
- *
- * CRITICAL: Depth changes NEVER trigger variant switching.
- * Only width and height changes can trigger variant resolution.
+ * Set dimensions directly without triggering variant switching
+ * Variant switching is now manual via switchVariantManually()
  *
  * @param dimensions - New dimensions in cm { width, height, depth }
  */
@@ -201,125 +175,87 @@ export const setDimensions = (dimensions: {
   height: number;
   depth: number;
 }): void => {
-  // Update depth immediately (no variant check per requirement)
   configuratorState.dimensions.length = dimensions.depth;
   configuratorState.dimensions.width = dimensions.width;
   configuratorState.dimensions.height = dimensions.height;
-
-  // Increment request ID for race condition tracking
-  configuratorState.variantResolutionId += 1;
-  const requestId = configuratorState.variantResolutionId;
-
-  // Clear existing debounce timer
-  if (variantResolutionTimer !== null) {
-    clearTimeout(variantResolutionTimer);
-    variantResolutionTimer = null;
-  }
-
-  // Skip variant resolution if no family assigned
-  if (!configuratorState.familyId) {
-    return;
-  }
-
-  // Debounced variant resolution (only width/height, NEVER depth)
-  variantResolutionTimer = window.setTimeout(() => {
-    variantResolutionTimer = null;
-    resolveAndSwitch(
-      dimensions.width,
-      dimensions.height,
-      configuratorState.familyId!,
-      requestId,
-    );
-  }, VARIANT_RESOLUTION_DEBOUNCE_MS);
 };
 
 /**
- * Async variant resolution with race condition guards
+ * Manually switch to a new variant (user-initiated via UI button)
+ * Transfers customizations and resets dimensions to new variant's defaults
  *
- * @param width - Width dimension in cm
- * @param height - Height dimension in cm
- * @param familyId - Family ID for variant lookup
- * @param requestId - Request tracking ID for race condition prevention
+ * @param newVariantId - The ID of the variant to switch to
  */
-async function resolveAndSwitch(
-  width: number,
-  height: number,
-  familyId: string,
-  requestId: number,
-): Promise<void> {
-  try {
-    // Guard: Check if this request is stale (newer request has started)
-    if (requestId !== configuratorState.variantResolutionId) {
-      if (process.env.NODE_ENV === 'development') {
-        debug.log(
-          `[Variant Resolution] Request ${requestId} aborted (stale). Current: ${configuratorState.variantResolutionId}`,
-        );
-      }
-      return;
-    }
+export const switchVariantManually = (newVariantId: string): void => {
+  const { familyId, activeVariantId } = configuratorState;
 
-    // Prevent concurrent variant resolution
-    if (configuratorState.isResolvingVariant) {
-      if (process.env.NODE_ENV === 'development') {
-        debug.log(
-          `[Variant Resolution] Request ${requestId} blocked (resolution in progress)`,
-        );
-      }
-      return;
-    }
-
-    // Set resolution flag
-    configuratorState.isResolvingVariant = true;
-
-    // Get family configuration
-    const family = getModelFamily(familyId);
-    if (!family) {
-      debug.error(`[Variant Resolution] Family not found: ${familyId}`);
-      configuratorState.isResolvingVariant = false;
-      return;
-    }
-
-    // Resolve variant based on width/height ONLY (depth never triggers)
-    const newVariant = resolveVariantForDimensions({ width, height }, family);
-
-    // Guard: Check again if request is still valid after async operation
-    if (requestId !== configuratorState.variantResolutionId) {
-      if (process.env.NODE_ENV === 'development') {
-        debug.log(
-          `[Variant Resolution] Request ${requestId} aborted after resolution (newer request started)`,
-        );
-      }
-      configuratorState.isResolvingVariant = false;
-      return;
-    }
-
-    // If variant resolved and differs from current, switch
-    if (newVariant && newVariant.id !== configuratorState.activeVariantId) {
-      if (process.env.NODE_ENV === 'development') {
-        debug.log(
-          `[Variant Resolution] Switching from ${configuratorState.activeVariantId} to ${newVariant.id}`,
-        );
-      }
-      // switchVariant will be implemented in next todo
-      // switchVariant(newVariant.id);
-    } else if (!newVariant) {
-      if (process.env.NODE_ENV === 'development') {
-        debug.warn(
-          `[Variant Resolution] No matching variant for dimensions: width=${width}cm, height=${height}cm`,
-        );
-      }
-    }
-
-    configuratorState.isResolvingVariant = false;
-  } catch (error) {
-    configuratorState.isResolvingVariant = false;
-    debug.error('[Variant Resolution] Error during variant resolution:', error);
+  // Don't switch if already on this variant
+  if (activeVariantId === newVariantId) {
+    return;
   }
-}
+
+  // Validate family is set
+  if (!familyId) {
+    debug.error('[Variant Switch] Cannot switch variant: familyId not set');
+    return;
+  }
+
+  // Get family configuration
+  const family = getModelFamily(familyId);
+  if (!family) {
+    debug.error(`[Variant Switch] Family not found: ${familyId}`);
+    return;
+  }
+
+  // Get new variant config
+  const newVariant = family.variants.find((v) => v.id === newVariantId);
+  if (!newVariant) {
+    debug.error(
+      `[Variant Switch] Variant not found in family: ${newVariantId}`,
+    );
+    return;
+  }
+
+  // Get new model config
+  const newModelConfig = MODEL_REGISTRY[newVariant.modelId];
+  if (!newModelConfig) {
+    debug.error(
+      `[Variant Switch] Model not found in registry: ${newVariant.modelId}`,
+    );
+    return;
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    debug.log(
+      `[Manual Switch] Switching from '${activeVariantId}' to '${newVariantId}'`,
+    );
+  }
+
+  // Reset dimensions to new variant's defaults BEFORE switching
+  // This prevents ModelViewer from rendering with mismatched variant+dimensions
+  if (newModelConfig.dimensions) {
+    configuratorState.dimensions = {
+      length: newModelConfig.dimensions.length.default,
+      width: newModelConfig.dimensions.width.default,
+      height: newModelConfig.dimensions.height.default,
+    };
+
+    if (process.env.NODE_ENV === 'development') {
+      debug.log(
+        `[Manual Switch] Reset dimensions to defaults: ${newModelConfig.dimensions.width.default}×${newModelConfig.dimensions.height.default}×${newModelConfig.dimensions.length.default}cm`,
+      );
+    }
+  }
+
+  // Switch variant (transfers customizations)
+  switchVariant(newVariantId);
+};
 
 /**
  * Switches to a new variant, transferring user customizations from the current variant.
  * Updates activeVariantId, items, interactiveStates, and modelId (for backward compatibility).
+ *
+ * Internal helper function - use switchVariantManually() for user-initiated switches.
  *
  * @param newVariantId - The ID of the variant to switch to
  *

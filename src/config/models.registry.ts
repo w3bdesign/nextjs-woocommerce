@@ -1,4 +1,5 @@
 import type { ModelConfig } from '@/types/configurator';
+import { CABINET_1_CONFIG } from './cabinet-1Model.config';
 import { CABINET_CONFIG } from './cabinetModel.config';
 import DRESSER_CONFIG from './dresserModel.config';
 
@@ -15,6 +16,7 @@ import DRESSER_CONFIG from './dresserModel.config';
  */
 export const MODEL_REGISTRY: Record<string, ModelConfig> = {
   'cabinet-v1': CABINET_CONFIG,
+  'cabinet-v2': CABINET_1_CONFIG,
   'dresser-v1': DRESSER_CONFIG,
 
   // Add more models here as they become available:

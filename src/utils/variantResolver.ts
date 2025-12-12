@@ -1,105 +1,5 @@
-import type {
-  FamilyVariant,
-  ModelConfig,
-  ModelFamily,
-} from '@/types/configurator';
+import type { ModelConfig, ModelFamily } from '@/types/configurator';
 import { debug } from './debug';
-
-/**
- * Resolves which variant in a family matches the given dimensions.
- *
- * CRITICAL CONSTRAINT: Only width and height trigger variant resolution.
- * Depth NEVER influences variant selection per product requirements.
- *
- * @param dimensions - Object containing width and height in cm
- * @param family - The ModelFamily to search within
- * @returns The matching FamilyVariant or null if no match found
- *
- * @example
- * const variant = resolveVariantForDimensions(
- *   { width: 100, height: 150 },
- *   CABINET_FAMILY
- * );
- * if (variant) {
- *   console.log(`Matched variant: ${variant.displayName}`);
- * }
- */
-export function resolveVariantForDimensions(
-  dimensions: { width: number; height: number },
-  family: ModelFamily,
-): FamilyVariant | null {
-  const { width, height } = dimensions;
-
-  // Filter variants where dimensions fall within constraints
-  const matches = family.variants.filter((variant) => {
-    const [widthMin, widthMax] = variant.constraints.width;
-    const [heightMin, heightMax] = variant.constraints.height;
-
-    return (
-      width >= widthMin &&
-      width <= widthMax &&
-      height >= heightMin &&
-      height <= heightMax
-    );
-  });
-
-  // No matching variant found
-  if (matches.length === 0) {
-    return null;
-  }
-
-  // Single match - return immediately
-  if (matches.length === 1) {
-    return matches[0];
-  }
-
-  // Multiple matches - sort by range size (prefer smallest/most specific)
-  // Use array index as tie-breaker for stable ordering
-  matches.sort((a, b) => {
-    const aWidthRange = a.constraints.width[1] - a.constraints.width[0];
-    const aHeightRange = a.constraints.height[1] - a.constraints.height[0];
-    const aTotalRange = aWidthRange + aHeightRange;
-
-    const bWidthRange = b.constraints.width[1] - b.constraints.width[0];
-    const bHeightRange = b.constraints.height[1] - b.constraints.height[0];
-    const bTotalRange = bWidthRange + bHeightRange;
-
-    // Primary sort: smallest total range wins
-    if (aTotalRange !== bTotalRange) {
-      return aTotalRange - bTotalRange;
-    }
-
-    // Tie-breaker: earlier variant in definition order wins
-    return family.variants.indexOf(a) - family.variants.indexOf(b);
-  });
-
-  return matches[0];
-}
-
-/**
- * Validates whether given dimensions fall within any variant's constraints in the family.
- * Used for gap detection and add-to-cart validation.
- *
- * CRITICAL CONSTRAINT: Only width and height are validated.
- * Depth is never checked as it doesn't influence variant selection.
- *
- * @param dimensions - Object containing width and height in cm
- * @param family - The ModelFamily to check against
- * @returns true if dimensions are valid (match any variant), false if in gap
- *
- * @example
- * // Family with variants: [60-90cm] and [100-120cm] - gap at 90-100cm
- * isValidDimension({ width: 95, height: 150 }, family); // false - in gap
- * isValidDimension({ width: 80, height: 150 }, family); // true - matches first variant
- */
-export function isValidDimension(
-  dimensions: { width: number; height: number },
-  family: ModelFamily,
-): boolean {
-  // Simply check if any variant matches - reuse existing resolution logic
-  const matchedVariant = resolveVariantForDimensions(dimensions, family);
-  return matchedVariant !== null;
-}
 
 /**
  * Transfers user customizations from old variant to new variant during variant switching.
@@ -312,5 +212,13 @@ export async function preloadFamilyModels(
     );
   }
 
-  return succeeded.length;
+  return {
+    succeeded: succeeded.length,
+    failed: failed.map(({ variantId, modelId, error }) => ({
+      variantId,
+      modelId,
+      error,
+    })),
+    total: family.variants.length,
+  };
 }

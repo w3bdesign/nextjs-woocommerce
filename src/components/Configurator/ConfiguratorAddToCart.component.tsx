@@ -7,20 +7,15 @@ import { useSnapshot } from 'valtio';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
-// Config
-import { getModelFamily } from '@/config/families.registry';
-
 // State
 import { useCartStore } from '@/stores/cartStore';
 import { configuratorState } from '@/stores/configuratorStore';
 
 // Utils
-import { debug } from '@/utils/debug';
 import {
   getFormattedCart,
   serializeConfiguratorState,
 } from '@/utils/functions/functions';
-import { resolveVariantForDimensions } from '@/utils/variantResolver';
 
 // GraphQL
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
@@ -93,41 +88,6 @@ const ConfiguratorAddToCart = ({
         variant: 'destructive',
       });
       return;
-    }
-
-    // Validate dimensions for family-based products
-    if (snap.familyId) {
-      const family = getModelFamily(snap.familyId);
-
-      if (family) {
-        const currentVariant = resolveVariantForDimensions(
-          {
-            width: snap.dimensions.width,
-            height: snap.dimensions.height,
-          },
-          family,
-        );
-
-        if (!currentVariant) {
-          debug.warn(
-            `[Add to Cart] Dimension validation failed: width=${snap.dimensions.width}cm, height=${snap.dimensions.height}cm do not match any variant in family ${snap.familyId}`,
-          );
-
-          toast({
-            title: 'Invalid Dimensions',
-            description:
-              'Please adjust dimensions to a valid size before adding to cart.',
-            variant: 'destructive',
-          });
-          return;
-        }
-
-        if (process.env.NODE_ENV === 'development') {
-          debug.log(
-            `[Add to Cart] Dimension validation passed: matched variant ${currentVariant.id} (${currentVariant.displayName})`,
-          );
-        }
-      }
     }
 
     // Serialize the configurator state

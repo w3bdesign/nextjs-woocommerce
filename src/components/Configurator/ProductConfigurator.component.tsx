@@ -1,5 +1,6 @@
 import { getModelFamily } from '@/config/families.registry';
 import { DEFAULT_MODEL_ID, getModelConfig } from '@/config/models.registry';
+import { useToast } from '@/hooks/use-toast';
 import {
   configuratorState,
   initializeConfigurator,
@@ -70,12 +71,28 @@ export default function ProductConfigurator({
   // Loading state for family preloading
   const [isPreloading, setIsPreloading] = useState(false);
   const [preloadError, setPreloadError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   // Get reactive snapshot from configurator store
   const snap = useSnapshot(configuratorState);
 
   // Determine configuration mode: family-based or legacy single-model
   const family = familyId ? getModelFamily(familyId) : undefined;
+
+  console.log(
+    '[ProductConfigurator] Configuration mode:',
+    JSON.stringify(
+      {
+        'familyId prop': familyId,
+        'family loaded': !!family,
+        'snap.familyId': snap.familyId,
+        'snap.activeVariantId': snap.activeVariantId,
+        'modelId prop': modelId,
+      },
+      null,
+      2,
+    ),
+  );
 
   // For family-based: Get the active variant's modelId from store
   // For legacy: use provided modelId
@@ -84,6 +101,18 @@ export default function ProductConfigurator({
       ? family.variants.find((v) => v.id === snap.activeVariantId)?.modelId ||
         family.variants[0]?.modelId
       : modelId;
+
+  console.log(
+    '[ProductConfigurator] Active model resolution:',
+    JSON.stringify(
+      {
+        activeModelId,
+        'is family mode': !!family,
+      },
+      null,
+      2,
+    ),
+  );
 
   // Get the model configuration from the registry (reactive to activeVariantId changes)
   const modelConfig = getModelConfig(activeModelId);
@@ -101,6 +130,14 @@ export default function ProductConfigurator({
     if (family) {
       // Family-based initialization with preloading
       const initializeFamilyConfigurator = async () => {
+        // Skip if family is already initialized (prevents re-initialization during variant switches)
+        if (snap.familyId === familyId && snap.activeVariantId) {
+          debug.log(
+            `[ProductConfigurator] Family already initialized, skipping: ${familyId}`,
+          );
+          return;
+        }
+
         setIsPreloading(true);
         setPreloadError(null);
 
@@ -108,11 +145,26 @@ export default function ProductConfigurator({
           debug.log(`[ProductConfigurator] Preloading family: ${familyId}`);
 
           // Preload all variants
-          const loadedCount = await preloadFamilyModels(family);
+          const result = await preloadFamilyModels(family);
 
           debug.log(
-            `[ProductConfigurator] Preloaded ${loadedCount}/${family.variants.length} variants`,
+            `[ProductConfigurator] Preloaded ${result.succeeded}/${result.total} variants`,
           );
+
+          // Show warning notification if some variants failed to load
+          if (result.failed.length > 0) {
+            const failedNames = result.failed
+              .map((f) => f.variantId)
+              .join(', ');
+            toast({
+              variant: 'destructive',
+              title: 'Some size options unavailable',
+              description: `Failed to load ${result.failed.length} variant(s): ${failedNames}. You can still use other available sizes.`,
+            });
+            debug.warn(
+              `[ProductConfigurator] Partial load: ${result.failed.length} variants failed`,
+            );
+          }
 
           // Determine initial variant
           const defaultVariantId =
@@ -170,6 +222,7 @@ export default function ProductConfigurator({
       );
       initializeConfigurator(modelConfig, productId, modelId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modelId, familyId, family, activeModelId, modelConfig, productId]);
 
   // Show loading skeleton while preloading family models

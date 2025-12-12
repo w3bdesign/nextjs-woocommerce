@@ -206,6 +206,17 @@ export interface ModelConfig {
   /** Optional: Euler rotation (radians) to apply to the model [x, y, z] */
   rotation?: [number, number, number];
 
+  /**
+   * Optional: Positioning behavior for the model
+   * - wall-pinned: Back face stays flush with wall, depth expands forward only
+   * - centered: Symmetric scaling around model center (default)
+   * - custom: Reserved for future use
+   */
+  positioning?: {
+    type: 'wall-pinned' | 'centered' | 'custom';
+    wallOffset?: number; // Additional offset from wall in world units (default 0)
+  };
+
   /** Optional: Dimension constraints for scaling */
   dimensions?: {
     /** Length (Z axis - depth/front-to-back) constraints in cm */
@@ -240,23 +251,8 @@ export interface ModelConfig {
 }
 
 /**
- * Dimension constraints for a variant
- * All dimensions in centimeters
- */
-export interface DimensionConstraints {
-  /** Width range [min, max] in cm (X-axis, side-to-side) */
-  width: [number, number];
-
-  /** Height range [min, max] in cm (Y-axis, vertical) */
-  height: [number, number];
-
-  /** Depth range [min, max] in cm (Z-axis, front-to-back) */
-  depth: [number, number];
-}
-
-/**
  * A single variant within a model family
- * Represents one specific model configuration with dimension constraints
+ * Represents one specific model configuration
  */
 export interface FamilyVariant {
   /** Unique identifier within the family */
@@ -268,9 +264,6 @@ export interface FamilyVariant {
   /** Reference to MODEL_REGISTRY key (e.g., 'cabinet-v1', 'cabinet-v2') */
   modelId: string;
 
-  /** Dimension constraints that define when this variant is active */
-  constraints: DimensionConstraints;
-
   /**
    * Optional: Axes that can be scaled dynamically
    * Default: ['x', 'y', 'z'] (all axes scalable)
@@ -281,7 +274,7 @@ export interface FamilyVariant {
 
 /**
  * Model family configuration
- * Groups related model variants with dimension-based switching
+ * Groups related model variants for manual selection via UI
  */
 export interface ModelFamily {
   /** Unique identifier for the family (e.g., 'cabinet-family-01') */
