@@ -67,6 +67,8 @@ const Navbar = () => {
                     </span>
                   </span>
                 </Link>
+              ) : null}
+              {/* Temporarily hidden - Logg inn and Registrer links
               ) : (
                 <>
                   <Link href="/logg-inn">
@@ -87,6 +89,7 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
+              */}
               <Cart />
             </div>
           </div>
