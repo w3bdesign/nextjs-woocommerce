@@ -17,9 +17,9 @@ import WallSilhouette from './WallSilhouette.component';
 const DEFAULT_ROOM_CONFIG = {
   floorColor: '#e0ddd8',
   wallColor: '#e8e8e8',
-  ambientLightIntensity: 2.8,
-  directionalLightIntensity: 5.5,
-  directionalLightPosition: [2, 6, 2] as [number, number, number],
+  ambientLightIntensity: 3.8,
+  directionalLightIntensity: 10.5,
+  directionalLightPosition: [1, 1.5, 2] as [number, number, number],
   secondaryLightIntensity: 0.8,
   secondaryLightPosition: [-5, 3, -5] as [number, number, number],
   environmentPreset: 'none' as const,
@@ -152,7 +152,7 @@ export default function Canvas3D({
         <meshStandardMaterial
           color={room.floorColor}
           roughness={room.floorRoughness}
-          metalness={0.1}
+          metalness={0.15}
         />
       </mesh>
 
@@ -162,7 +162,7 @@ export default function Canvas3D({
         <meshStandardMaterial
           color={room.wallColor}
           roughness={room.wallRoughness}
-          metalness={0}
+          metalness={0.5}
           side={THREE.FrontSide}
         />
       </mesh>
