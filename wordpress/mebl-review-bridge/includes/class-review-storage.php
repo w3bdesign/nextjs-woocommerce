@@ -73,6 +73,55 @@ class MEBL_Review_Storage {
             );
         }
         
+        // Check for duplicate review (approved OR pending only)
+        // Skip check if user is admin
+        if (!current_user_can('manage_woocommerce')) {
+            $existing = get_comments([
+                'post_id' => $args['product_id'],
+                'user_id' => $args['user_id'],
+                'type'    => 'review',
+                'status'  => ['approve', 'hold'], // 'approve' = approved, 'hold' = pending
+                'count'   => true,
+            ]);
+            
+            if ($existing > 0) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log(sprintf(
+                        'MEBL Review Bridge: Duplicate review blocked - User %d already reviewed product %d',
+                        $args['user_id'],
+                        $args['product_id']
+                    ));
+                }
+                
+                return new WP_Error(
+                    'duplicate_review',
+                    __('You have already reviewed this product.', 'mebl-review-bridge')
+                );
+            }
+        }
+        
+        // Rate limiting (max 5 reviews per hour)
+        // Skip check if user is admin
+        if (!current_user_can('manage_woocommerce')) {
+            $transient_key = 'mebl_rate_limit_user_' . $args['user_id'];
+            $review_count = get_transient($transient_key);
+            
+            if ($review_count !== false && (int) $review_count >= 5) {
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    error_log(sprintf(
+                        'MEBL Review Bridge: Rate limit exceeded - User %d has submitted %d reviews in the last hour',
+                        $args['user_id'],
+                        $review_count
+                    ));
+                }
+                
+                return new WP_Error(
+                    'rate_limit_exceeded',
+                    __('You are submitting reviews too quickly. Please try again later.', 'mebl-review-bridge')
+                );
+            }
+        }
+        
         // Prepare comment data
         $comment_data = array(
             'comment_post_ID'      => (int) $args['product_id'],
@@ -121,6 +170,10 @@ class MEBL_Review_Storage {
             // Critical: Metadata failed - rollback comment to maintain data integrity
             wp_delete_comment($comment_id, true); // Force delete (bypass trash)
             
+            // Note: Rate limit counter is NOT decremented on rollback.
+            // This is intentional - transient will expire naturally after 1 hour.
+            // Failed insertions due to system errors should not permanently block users.
+            
             error_log(sprintf(
                 'MEBL Review Bridge: Failed to add metadata for comment %d. Comment deleted. Error: %s',
                 $comment_id,
@@ -132,6 +185,28 @@ class MEBL_Review_Storage {
                 __('Failed to create review: metadata insertion failed.', 'mebl-review-bridge'),
                 array('comment_id' => $comment_id)
             );
+        }
+        
+        // Increment rate limit counter AFTER successful metadata addition
+        // This prevents counter pollution if metadata fails and comment is rolled back
+        // Skip for admins (they bypass rate limiting)
+        if (!current_user_can('manage_woocommerce')) {
+            $transient_key = 'mebl_rate_limit_user_' . $args['user_id'];
+            $review_count = get_transient($transient_key);
+            
+            if ($review_count === false) {
+                set_transient($transient_key, 1, HOUR_IN_SECONDS);
+            } else {
+                set_transient($transient_key, (int) $review_count + 1, HOUR_IN_SECONDS);
+            }
+            
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(sprintf(
+                    'MEBL Review Bridge: Rate limit counter incremented for user %d. Count: %d',
+                    $args['user_id'],
+                    $review_count === false ? 1 : (int) $review_count + 1
+                ));
+            }
         }
         
         return $comment_id;
@@ -264,6 +339,12 @@ class MEBL_Review_Storage {
     
     /**
      * Get reviews by a specific user
+     * 
+     * NOTE: This method returns ALL review statuses by default (approved, pending, spam, trash).
+     * Callers MUST implement proper authentication and authorization checks to ensure:
+     * - Authenticated user can only see their own pending/spam/trash reviews
+     * - Unauthenticated users should only see approved reviews
+     * This will be properly enforced in Phase 3 (GraphQL Read API) with resolver-level checks.
      * 
      * @param int   $user_id User ID
      * @param array $args    Optional query args (same as get_reviews_by_product)

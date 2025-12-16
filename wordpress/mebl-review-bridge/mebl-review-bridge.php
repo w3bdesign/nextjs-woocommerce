@@ -205,6 +205,7 @@ function mebl_review_init() {
         'class-review-storage.php',
         'class-rating-aggregator.php',
         'class-review-hooks.php',
+        'class-review-validation.php',
     ];
     
     foreach ($class_files as $file) {
@@ -220,7 +221,7 @@ function mebl_review_init() {
     }
     
     // Verify classes exist after loading
-    $required_classes = ['MEBL_Review_Storage', 'MEBL_Rating_Aggregator', 'MEBL_Review_Hooks'];
+    $required_classes = ['MEBL_Review_Storage', 'MEBL_Rating_Aggregator', 'MEBL_Review_Hooks', 'MEBL_Review_Validation'];
     foreach ($required_classes as $class) {
         if (!class_exists($class)) {
             error_log(sprintf(

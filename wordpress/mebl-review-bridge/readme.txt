@@ -28,11 +28,47 @@ Headless API bridge for WooCommerce product reviews. Stores reviews in WordPress
 
 This plugin is part of a multi-phase implementation:
 
-* **Phase 1 (Current)**: Data model, storage, and aggregation
-* **Phase 2**: Moderation and state management
+* **Phase 1 (Complete)**: Data model, storage, and aggregation
+* **Phase 2 (Complete)**: Moderation and state management
 * **Phase 3**: GraphQL schema and queries
 * **Phase 4**: Review submission mutations
 * **Phase 5**: Next.js frontend integration
+
+= Moderation & Review Lifecycle (Phase 2) =
+
+**Moderation States:**
+
+* **Pending** (`comment_approved='0'`): Default state after submission, awaiting admin approval
+* **Approved** (`comment_approved='1'`): Visible to public via GraphQL and frontend
+* **Spam** (`comment_approved='spam'`): Marked as spam, hidden from all queries
+* **Trash** (`comment_approved='trash'`): Soft-deleted, excluded from aggregates
+
+**Visibility Rules:**
+
+* Only approved reviews (`'1'`) are visible to unauthenticated users via GraphQL
+* Users can see their own pending reviews when authenticated
+* Spam and trashed reviews are never exposed via GraphQL
+* Only approved reviews included in rating calculations
+
+**Duplicate Prevention:**
+
+* One review per product per user (for approved/pending reviews only)
+* Users can resubmit if previous review was trashed or marked as spam
+* Admin users (with `manage_woocommerce` capability) bypass duplicate checks
+
+**Rate Limiting:**
+
+* Maximum 5 reviews per hour per user
+* Uses WordPress transients with automatic 1-hour expiration
+* Admin users (with `manage_woocommerce` capability) bypass rate limits
+* Prevents review spam without affecting legitimate users
+
+**Admin Workflow:**
+
+1. Navigate to **Comments** in WordPress admin dashboard
+2. Filter by "Product Reviews" to show only `comment_type='review'`
+3. Approve, spam, or trash reviews using standard WordPress moderation tools
+4. Rating aggregates automatically update on status changes
 
 = System Requirements =
 
@@ -116,8 +152,13 @@ No. The plugin creates optimized database indexes on activation and caches ratin
 = 1.0.0 =
 * Initial release
 * Phase 1: Data model and storage implementation
+* Phase 2: Moderation and state management
 * Review CRUD operations via MEBL_Review_Storage class
 * Rating aggregation via MEBL_Rating_Aggregator class
+* Review validation via MEBL_Review_Validation class
+* Duplicate review prevention (one per product per user)
+* Rate limiting (max 5 reviews per hour per user)
+* Admin bypass for duplicate and rate limit checks
 * WordPress hooks for automatic cache invalidation
 * Database indexes for query optimization
 * Verified purchase calculation
@@ -134,9 +175,10 @@ Initial release. Phase 1 of multi-phase review system implementation.
 
 **Classes:**
 
-* `MEBL_Review_Storage` - Review CRUD operations
+* `MEBL_Review_Storage` - Review CRUD operations, duplicate checking, rate limiting
 * `MEBL_Rating_Aggregator` - Rating calculations and caching
 * `MEBL_Review_Hooks` - WordPress action/filter hooks
+* `MEBL_Review_Validation` - Review submission validation (Phase 2)
 
 **Hooks:**
 
@@ -155,9 +197,14 @@ Initial release. Phase 1 of multi-phase review system implementation.
 
 * `rating` (commentmeta) - Integer 1-5
 * `verified` (commentmeta) - '0' or '1'
+* `moderation_state` (commentmeta) - Cached moderation state
 * `_wc_average_rating` (postmeta) - Float, cached average
 * `_wc_review_count` (postmeta) - Integer, cached count
 * `_wc_rating_histogram` (postmeta) - JSON, rating distribution
+
+**Transients (Rate Limiting):**
+
+* `mebl_rate_limit_user_{$user_id}` - Review submission counter (1-hour TTL)
 
 == Privacy Policy ==
 
