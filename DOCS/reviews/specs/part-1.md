@@ -114,7 +114,7 @@
 - Content sanitization via `wp_kses_post()` to prevent XSS
 - Rate limiting: 1 review per product per user (enforced in mutation resolver)
 - SQL injection prevention via WordPress prepared statements (built-in)
-- Spam detection via Akismet (WordPress plugin, optional)
+- Spam detection via Antispam Bee (WordPress plugin, optional)
 
 **Scalability:**
 

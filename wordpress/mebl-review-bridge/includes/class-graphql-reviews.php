@@ -224,13 +224,7 @@ class MEBL_Review_GraphQL {
                 ],
             ],
             'mutateAndGetPayload' => function($input, $context, $info) {
-                // Phase 4 will implement this
-                return [
-                    'success' => false,
-                    'message' => __('Review submission not yet implemented (Phase 4)', 'mebl-review-bridge'),
-                    'review' => null,
-                    'clientMutationId' => $input['clientMutationId'] ?? null,
-                ];
+                return self::submit_review_mutation($input, $context);
             },
         ]);
         
@@ -311,6 +305,108 @@ class MEBL_Review_GraphQL {
                 'endCursor' => !empty($edges) ? end($edges)['cursor'] : null,
             ],
             'totalCount' => $total_count,
+        ];
+    }
+    
+    /**
+     * Submit review mutation handler (Phase 4)
+     * 
+     * Handles review submission with comprehensive validation,
+     * verified purchase check, and metadata storage.
+     * 
+     * Note: This implementation always returns clientMutationId in the response
+     * (even on errors) to improve request tracking. This is an intentional
+     * enhancement over the canonical spec for better client-side error handling.
+     * 
+     * @param array  $input   Mutation input
+     * @param object $context GraphQL context
+     * @return array Mutation payload
+     */
+    private static function submit_review_mutation($input, $context) {
+        // Validation
+        $validation = MEBL_Review_Validation::validate_submission($input, $context);
+        
+        if (!$validation['valid']) {
+            return [
+                'success' => false,
+                'message' => $validation['message'],
+                'review' => null,
+                'clientMutationId' => $input['clientMutationId'] ?? null,
+            ];
+        }
+        
+        $user = wp_get_current_user();
+        $product_id = $input['productId'];
+        
+        // Check verified purchase
+        $verified = wc_customer_bought_product(
+            $user->user_email,
+            $user->ID,
+            $product_id
+        );
+        
+        // Sanitize content
+        $content = wp_kses_post($input['content']);
+        
+        // Insert comment
+        $comment_data = [
+            'comment_post_ID' => $product_id,
+            'comment_author' => $user->display_name,
+            'comment_author_email' => $user->user_email,
+            'comment_content' => $content,
+            'user_id' => $user->ID,
+            'comment_type' => 'review',
+            'comment_approved' => 0, // Pending moderation
+            'comment_date' => current_time('mysql'),
+            'comment_date_gmt' => current_time('mysql', 1),
+            'comment_author_IP' => !empty($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '',
+            'comment_agent' => !empty($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT'])) : '',
+        ];
+        
+        $comment_id = wp_insert_comment($comment_data);
+        
+        if (!$comment_id || is_wp_error($comment_id)) {
+            // Log detailed error for debugging
+            $error_message = is_wp_error($comment_id) ? $comment_id->get_error_message() : 'Unknown error';
+            error_log(sprintf(
+                'MEBL Review Bridge: Failed to insert review comment. Product ID: %d, User ID: %d, Error: %s',
+                $product_id,
+                $user->ID,
+                $error_message
+            ));
+            
+            return [
+                'success' => false,
+                'message' => __('Failed to submit review. Please try again.', 'mebl-review-bridge'),
+                'review' => null,
+                'clientMutationId' => $input['clientMutationId'] ?? null,
+            ];
+        }
+        
+        // Store metadata
+        $rating_updated = update_comment_meta($comment_id, 'rating', (int) $input['rating']);
+        $verified_updated = update_comment_meta($comment_id, 'verified', $verified ? '1' : '0');
+        $helpful_updated = update_comment_meta($comment_id, 'helpful', 0);
+        
+        // Log metadata update failures for debugging
+        if ($rating_updated === false || $verified_updated === false || $helpful_updated === false) {
+            error_log(sprintf(
+                'MEBL Review Bridge: Metadata update failed for review %d. Rating: %s, Verified: %s, Helpful: %s',
+                $comment_id,
+                $rating_updated === false ? 'FAILED' : 'OK',
+                $verified_updated === false ? 'FAILED' : 'OK',
+                $helpful_updated === false ? 'FAILED' : 'OK'
+            ));
+        }
+        
+        // Trigger action hook for extensibility
+        do_action('mebl_review_submitted', $comment_id, $product_id);
+        
+        return [
+            'success' => true,
+            'message' => __('Review submitted successfully and is awaiting moderation.', 'mebl-review-bridge'),
+            'review' => null, // Don't return review until approved
+            'clientMutationId' => $input['clientMutationId'] ?? null,
         ];
     }
 }

@@ -71,6 +71,14 @@ class MEBL_Review_Validation {
             ];
         }
         
+        // Check if reviews are enabled for this product
+        if (!comments_open($product_id)) {
+            return [
+                'valid' => false,
+                'message' => __('Reviews are not enabled for this product.', 'mebl-review-bridge'),
+            ];
+        }
+        
         // Validate rating range (1-5)
         $rating = isset($input['rating']) ? (int) $input['rating'] : 0;
         
@@ -162,26 +170,25 @@ class MEBL_Review_Validation {
     /**
      * Check rate limiting
      * 
-     * Enforces maximum 5 reviews per hour per user using transients.
-     * Transients auto-expire after 1 hour, no manual cleanup needed.
+     * Enforces maximum 5 reviews per hour per user.
+     * Uses get_comments() with date_query as per Phase 4 spec.
      * 
      * @param int $user_id User ID
      * @return array Validation result
      */
     public static function check_rate_limit($user_id) {
-        $transient_key = 'mebl_rate_limit_user_' . $user_id;
-        $review_count = get_transient($transient_key);
+        // Query reviews submitted in last hour
+        $recent_reviews = get_comments([
+            'user_id' => $user_id,
+            'type' => 'review',
+            'date_query' => [
+                'after' => '1 hour ago',
+            ],
+            'count' => true,
+        ]);
         
-        // If transient doesn't exist, this is first review in current hour
-        if ($review_count === false) {
-            return [
-                'valid' => true,
-                'message' => '',
-            ];
-        }
-        
-        // Check if limit exceeded
-        if ((int) $review_count >= 5) {
+        // Check if limit exceeded (5 reviews per hour)
+        if ($recent_reviews >= 5) {
             return [
                 'valid' => false,
                 'message' => __('You are submitting reviews too quickly. Please try again later.', 'mebl-review-bridge'),
@@ -194,33 +201,5 @@ class MEBL_Review_Validation {
         ];
     }
     
-    /**
-     * Increment rate limit counter
-     * 
-     * Called after successful review insertion to track submission count.
-     * Creates or increments transient with 1-hour expiration.
-     * 
-     * @param int $user_id User ID
-     * @return void
-     */
-    public static function increment_rate_limit($user_id) {
-        $transient_key = 'mebl_rate_limit_user_' . $user_id;
-        $review_count = get_transient($transient_key);
-        
-        if ($review_count === false) {
-            // First review in current hour
-            set_transient($transient_key, 1, HOUR_IN_SECONDS);
-        } else {
-            // Increment counter
-            set_transient($transient_key, (int) $review_count + 1, HOUR_IN_SECONDS);
-        }
-        
-        if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log(sprintf(
-                'MEBL Review Bridge: Rate limit counter incremented for user %d. Count: %d',
-                $user_id,
-                $review_count === false ? 1 : (int) $review_count + 1
-            ));
-        }
-    }
 }
+

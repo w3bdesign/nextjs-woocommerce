@@ -177,7 +177,415 @@ add_action('wp_ajax_mebl_quick_approve_review', function() {
 - Rating changes: ⚠️ Only if obviously incorrect (e.g., 1-star with glowing review)
 ```
 
-### 6.2 Security Measures
+### 6.2 Email Notifications (Phase 6)
+
+#### Overview
+
+Email notifications keep administrators informed of new review submissions and notify reviewers when their reviews are approved or rejected. This system integrates with WordPress's native `wp_mail()` and Settings → Discussion configuration.
+
+**Key Features:**
+
+- Admin notifications on new review submission
+- Reviewer notifications on approval/rejection
+- Configurable via WordPress Settings → Discussion
+- HTML email templates with product/review details
+- Action hooks for extensibility
+
+#### Admin Notification on Review Submission
+
+**When:** Triggered immediately after successful review submission (Phase 4 `mebl_review_submitted` hook).
+
+**Who Receives:** Site administrator (from `get_option('admin_email')`), or custom recipient via filter.
+
+**Implementation:**
+
+```php
+/**
+ * Send admin email notification for new review
+ * Hook into mebl_review_submitted action from Phase 4
+ */
+add_action('mebl_review_submitted', 'mebl_notify_admin_new_review', 10, 3);
+
+function mebl_notify_admin_new_review($comment_id, $product_id, $user_id) {
+    // Check if admin notifications are enabled
+    if (!apply_filters('mebl_review_admin_notification_enabled', true)) {
+        return;
+    }
+
+    $comment = get_comment($comment_id);
+    $product = wc_get_product($product_id);
+    $user = get_userdata($user_id);
+
+    if (!$comment || !$product || !$user) {
+        return;
+    }
+
+    // Get admin email (filterable for custom recipients)
+    $admin_email = apply_filters('mebl_review_admin_email', get_option('admin_email'));
+
+    // Build email content
+    $rating = get_comment_meta($comment_id, 'rating', true);
+    $verified = get_comment_meta($comment_id, 'verified', true);
+
+    $subject = sprintf(
+        __('[%s] New Review Pending Approval', 'mebl-review-bridge'),
+        get_bloginfo('name')
+    );
+
+    $message = sprintf(
+        __("A new review has been submitted and is awaiting moderation.\n\n", 'mebl-review-bridge') .
+        __("Product: %s\n", 'mebl-review-bridge') .
+        __("Reviewer: %s (%s)\n", 'mebl-review-bridge') .
+        __("Rating: %d/5 stars\n", 'mebl-review-bridge') .
+        __("Verified Purchase: %s\n\n", 'mebl-review-bridge') .
+        __("Review Content:\n%s\n\n", 'mebl-review-bridge') .
+        __("Moderate this review:\n%s\n", 'mebl-review-bridge'),
+        $product->get_name(),
+        $user->display_name,
+        $user->user_email,
+        $rating,
+        $verified ? __('Yes', 'mebl-review-bridge') : __('No', 'mebl-review-bridge'),
+        wp_trim_words($comment->comment_content, 50),
+        admin_url("comment.php?action=approve&c={$comment_id}")
+    );
+
+    // Allow filtering of message content
+    $message = apply_filters('mebl_review_admin_notification_message', $message, $comment, $product, $user);
+
+    // Send email
+    wp_mail($admin_email, $subject, $message);
+}
+```
+
+**Filters for Customization:**
+
+```php
+// Disable admin notifications globally
+add_filter('mebl_review_admin_notification_enabled', '__return_false');
+
+// Send to multiple recipients
+add_filter('mebl_review_admin_email', function($email) {
+    return ['admin@example.com', 'manager@example.com'];
+});
+
+// Customize message content
+add_filter('mebl_review_admin_notification_message', function($message, $comment, $product, $user) {
+    // Add custom fields or formatting
+    return $message . "\n\nInternal Notes: Check inventory for this product.";
+}, 10, 4);
+```
+
+#### Reviewer Notification on Approval
+
+**When:** Triggered when admin approves a review via WordPress dashboard or bulk action.
+
+**Who Receives:** Review author (from `$comment->comment_author_email`).
+
+**Implementation:**
+
+```php
+/**
+ * Send email to reviewer when their review is approved
+ * Hook into WordPress native transition_comment_status action
+ */
+add_action('transition_comment_status', 'mebl_notify_reviewer_approved', 10, 3);
+
+function mebl_notify_reviewer_approved($new_status, $old_status, $comment) {
+    // Only for reviews transitioning to approved
+    if ($comment->comment_type !== 'review') {
+        return;
+    }
+
+    if ($new_status !== 'approved' || $old_status === 'approved') {
+        return;
+    }
+
+    // Check if reviewer notifications are enabled
+    if (!apply_filters('mebl_review_reviewer_notification_enabled', true)) {
+        return;
+    }
+
+    $product_id = $comment->comment_post_ID;
+    $product = wc_get_product($product_id);
+
+    if (!$product) {
+        return;
+    }
+
+    $reviewer_email = $comment->comment_author_email;
+    $reviewer_name = $comment->comment_author;
+
+    $subject = sprintf(
+        __('[%s] Your Review Has Been Approved', 'mebl-review-bridge'),
+        get_bloginfo('name')
+    );
+
+    $product_url = get_permalink($product_id);
+
+    $message = sprintf(
+        __("Hi %s,\n\n", 'mebl-review-bridge') .
+        __("Great news! Your review for \"%s\" has been approved and is now visible to other customers.\n\n", 'mebl-review-bridge') .
+        __("View your review here:\n%s\n\n", 'mebl-review-bridge') .
+        __("Thank you for sharing your feedback!\n\n", 'mebl-review-bridge') .
+        __("- The %s Team\n", 'mebl-review-bridge'),
+        $reviewer_name,
+        $product->get_name(),
+        $product_url,
+        get_bloginfo('name')
+    );
+
+    // Allow filtering of message content
+    $message = apply_filters('mebl_review_reviewer_notification_message', $message, $comment, $product);
+
+    // Send email
+    wp_mail($reviewer_email, $subject, $message);
+}
+```
+
+**Filters for Customization:**
+
+```php
+// Disable reviewer notifications
+add_filter('mebl_review_reviewer_notification_enabled', '__return_false');
+
+// Customize approval message
+add_filter('mebl_review_reviewer_notification_message', function($message, $comment, $product) {
+    // Add promotional content
+    return $message . "\n\nEnjoy 10% off your next purchase with code THANKYOU10";
+}, 10, 3);
+```
+
+#### Reviewer Notification on Rejection
+
+**When:** Triggered when admin rejects a review (moves to trash/spam).
+
+**Who Receives:** Review author (optional, disabled by default for spam).
+
+**Implementation:**
+
+```php
+/**
+ * Send email to reviewer when their review is rejected
+ * Optional feature - may not be desired for spam/abuse cases
+ */
+add_action('transition_comment_status', 'mebl_notify_reviewer_rejected', 10, 3);
+
+function mebl_notify_reviewer_rejected($new_status, $old_status, $comment) {
+    // Only for reviews transitioning to rejected/trash
+    if ($comment->comment_type !== 'review') {
+        return;
+    }
+
+    if (!in_array($new_status, ['trash', 'spam']) || in_array($old_status, ['trash', 'spam'])) {
+        return;
+    }
+
+    // Rejection notifications disabled by default
+    if (!apply_filters('mebl_review_rejection_notification_enabled', false)) {
+        return;
+    }
+
+    // Don't notify for spam
+    if ($new_status === 'spam') {
+        return;
+    }
+
+    $product_id = $comment->comment_post_ID;
+    $product = wc_get_product($product_id);
+
+    if (!$product) {
+        return;
+    }
+
+    $reviewer_email = $comment->comment_author_email;
+    $reviewer_name = $comment->comment_author;
+
+    $subject = sprintf(
+        __('[%s] Review Update', 'mebl-review-bridge'),
+        get_bloginfo('name')
+    );
+
+    $message = sprintf(
+        __("Hi %s,\n\n", 'mebl-review-bridge') .
+        __("Thank you for submitting a review for \"%s\".\n\n", 'mebl-review-bridge') .
+        __("Unfortunately, we were unable to approve your review as it did not meet our community guidelines.\n\n", 'mebl-review-bridge') .
+        __("Common reasons for rejection:\n", 'mebl-review-bridge') .
+        __("- Contains promotional content or links\n", 'mebl-review-bridge') .
+        __("- Includes personal contact information\n", 'mebl-review-bridge') .
+        __("- Does not relate to the product\n\n", 'mebl-review-bridge') .
+        __("If you have questions, please contact us.\n\n", 'mebl-review-bridge') .
+        __("- The %s Team\n", 'mebl-review-bridge'),
+        $reviewer_name,
+        $product->get_name(),
+        get_bloginfo('name')
+    );
+
+    // Allow filtering of message content
+    $message = apply_filters('mebl_review_rejection_notification_message', $message, $comment, $product);
+
+    // Send email
+    wp_mail($reviewer_email, $subject, $message);
+}
+```
+
+#### HTML Email Templates (Optional Enhancement)
+
+For richer email formatting, implement HTML templates using WordPress `wp_mail` with `Content-Type: text/html` header.
+
+**Example:**
+
+```php
+/**
+ * Send HTML email for review approval
+ */
+function mebl_send_html_approval_email($reviewer_email, $reviewer_name, $product, $product_url) {
+    $subject = sprintf(__('[%s] Your Review Has Been Approved', 'mebl-review-bridge'), get_bloginfo('name'));
+
+    $message = '
+    <html>
+    <head>
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: #0073aa; color: #fff; padding: 20px; text-align: center; }
+            .content { padding: 20px; background: #f9f9f9; }
+            .button { display: inline-block; padding: 10px 20px; background: #0073aa; color: #fff; text-decoration: none; border-radius: 5px; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>' . get_bloginfo('name') . '</h1>
+            </div>
+            <div class="content">
+                <h2>Your Review Has Been Approved!</h2>
+                <p>Hi ' . esc_html($reviewer_name) . ',</p>
+                <p>Great news! Your review for <strong>' . esc_html($product->get_name()) . '</strong> has been approved and is now visible to other customers.</p>
+                <p><a href="' . esc_url($product_url) . '" class="button">View Your Review</a></p>
+                <p>Thank you for sharing your feedback!</p>
+                <p>- The ' . get_bloginfo('name') . ' Team</p>
+            </div>
+        </div>
+    </body>
+    </html>';
+
+    $headers = ['Content-Type: text/html; charset=UTF-8'];
+
+    wp_mail($reviewer_email, $subject, $message, $headers);
+}
+```
+
+#### WordPress Settings Integration
+
+Leverage native WordPress Settings → Discussion options for user control.
+
+**Admin UI Addition (Phase 6):**
+
+```php
+/**
+ * Add email notification settings to Discussion settings page
+ */
+add_action('admin_init', function() {
+    add_settings_section(
+        'mebl_review_notifications',
+        __('Review Email Notifications', 'mebl-review-bridge'),
+        function() {
+            echo '<p>' . __('Configure email notifications for product reviews.', 'mebl-review-bridge') . '</p>';
+        },
+        'discussion'
+    );
+
+    add_settings_field(
+        'mebl_notify_admin_new_review',
+        __('Notify admin of new reviews', 'mebl-review-bridge'),
+        function() {
+            $enabled = get_option('mebl_notify_admin_new_review', 1);
+            echo '<input type="checkbox" name="mebl_notify_admin_new_review" value="1" ' . checked(1, $enabled, false) . '>';
+            echo '<label>' . __('Send email to site admin when a review is submitted', 'mebl-review-bridge') . '</label>';
+        },
+        'discussion',
+        'mebl_review_notifications'
+    );
+
+    add_settings_field(
+        'mebl_notify_reviewer_approval',
+        __('Notify reviewers of approval', 'mebl-review-bridge'),
+        function() {
+            $enabled = get_option('mebl_notify_reviewer_approval', 1);
+            echo '<input type="checkbox" name="mebl_notify_reviewer_approval" value="1" ' . checked(1, $enabled, false) . '>';
+            echo '<label>' . __('Send email to reviewer when their review is approved', 'mebl-review-bridge') . '</label>';
+        },
+        'discussion',
+        'mebl_review_notifications'
+    );
+
+    register_setting('discussion', 'mebl_notify_admin_new_review');
+    register_setting('discussion', 'mebl_notify_reviewer_approval');
+});
+
+// Apply settings in notification functions
+add_filter('mebl_review_admin_notification_enabled', function($enabled) {
+    return (bool) get_option('mebl_notify_admin_new_review', 1);
+});
+
+add_filter('mebl_review_reviewer_notification_enabled', function($enabled) {
+    return (bool) get_option('mebl_notify_reviewer_approval', 1);
+});
+```
+
+#### Action Hooks for Extensibility
+
+**Available Hooks:**
+
+- `mebl_review_submitted` (Phase 4) — Fires after review is inserted into database
+- `transition_comment_status` (WordPress native) — Fires when comment status changes (approve/reject/spam)
+- `mebl_review_approved` (optional, Phase 6) — Custom hook for approval-specific logic
+
+**Example Custom Hook:**
+
+```php
+/**
+ * Add custom mebl_review_approved action for clearer intent
+ * Hook into transition_comment_status and fire custom action
+ */
+add_action('transition_comment_status', function($new_status, $old_status, $comment) {
+    if ($comment->comment_type === 'review' && $new_status === 'approved' && $old_status !== 'approved') {
+        do_action('mebl_review_approved', $comment->comment_ID, $comment->comment_post_ID, $comment->user_id);
+    }
+}, 10, 3);
+
+// Usage:
+add_action('mebl_review_approved', function($comment_id, $product_id, $user_id) {
+    // Custom logic on approval (e.g., loyalty points, analytics)
+});
+```
+
+#### Testing Checklist
+
+**Admin Notifications:**
+
+- [ ] Submit review via GraphQL mutation → Admin receives email
+- [ ] Email contains product name, reviewer name, rating, content preview
+- [ ] Email includes direct link to moderation interface
+- [ ] `mebl_review_admin_notification_enabled` filter can disable notifications
+- [ ] `mebl_review_admin_email` filter can override recipient
+
+**Reviewer Notifications:**
+
+- [ ] Approve review in WordPress dashboard → Reviewer receives email
+- [ ] Email contains product name, link to product page
+- [ ] Rejection notifications disabled by default (spam protection)
+- [ ] `mebl_review_reviewer_notification_enabled` filter can disable notifications
+- [ ] HTML email templates render correctly in common email clients
+
+**WordPress Settings Integration:**
+
+- [ ] Settings → Discussion shows "Review Email Notifications" section
+- [ ] Checkbox settings persist across page reloads
+- [ ] Unchecking options disables respective notifications
+- [ ] Settings integrate with existing WordPress `wp_mail()` configuration
+
+### 6.3 Security Measures
 
 #### Input Sanitization
 
@@ -378,7 +786,7 @@ const sanitizedContent = DOMPurify.sanitize(review.content, {
 <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
 ```
 
-### 6.3 Spam Prevention Strategies
+### 6.4 Spam Prevention Strategies
 
 #### Rate Limiting
 
@@ -587,7 +995,7 @@ private static function verify_recaptcha($token) {
 }
 ```
 
-### 6.4 Abuse Handling
+### 6.5 Abuse Handling
 
 #### User Reporting System (Phase 2)
 
@@ -798,7 +1206,7 @@ add_action('admin_menu', function() {
 });
 ```
 
-### 6.5 Content Moderation Policies
+### 6.6 Content Moderation Policies
 
 #### Automated Content Filtering
 
@@ -908,7 +1316,7 @@ if ($toxicity_score > 0.7) {
 }
 ```
 
-### 6.6 Admin Monitoring Dashboard (Phase 2)
+### 6.7 Admin Monitoring Dashboard (Phase 2)
 
 **Custom Admin Page:**
 
@@ -1026,7 +1434,7 @@ function mebl_render_analytics_page() {
 
 ✅ Moderation workflows defined (manual, auto-approval, priority queuing)  
 ✅ Security measures implemented (input sanitization, SQL injection prevention, XSS protection)  
-✅ Spam prevention strategies detailed (rate limiting, Akismet, honeypots, CAPTCHA)  
+✅ Spam prevention strategies detailed (rate limiting, Antispam Bee, honeypots, CAPTCHA)  
 ✅ Abuse handling system designed (user reporting, IP blocking, content filtering)  
 ✅ Content moderation policies established (blacklist filtering, toxicity scoring)  
 ✅ Admin monitoring dashboard specified

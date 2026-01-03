@@ -868,7 +868,7 @@ class MEBL_Review_Queue {
     }
 
     public static function process_review($review_data) {
-        // Step 1: Spam check (Akismet)
+        // Step 1: Spam check (Antispam Bee)
         $is_spam = self::check_spam($review_data);
 
         // Step 2: Toxicity analysis (if enabled)
@@ -953,7 +953,7 @@ MEBL_Review_Logger::log_event('review_submitted', [
 
 MEBL_Review_Logger::log_event('review_spam_detected', [
     'product_id' => $product_id,
-    'reason' => 'akismet_flagged',
+    'reason' => 'antispam_bee_flagged',
 ]);
 
 MEBL_Review_Logger::log_event('review_moderation_approved', [

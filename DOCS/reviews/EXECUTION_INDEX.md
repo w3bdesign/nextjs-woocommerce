@@ -28,7 +28,7 @@ Tasks:
 
 1. Enable WooCommerce product reviews
 2. Enable comment moderation and threading
-3. Configure anti-spam baseline (Akismet or equivalent)
+3. Configure anti-spam baseline (Antispam Bee or equivalent)
 4. Verify required plugins are installed and active:
    - WooCommerce
    - WPGraphQL
@@ -225,7 +225,7 @@ Output:
 
 ## Phase 6 – Admin & Moderation UX (WordPress)
 
-**Goal:** Improve review management experience for admins.
+**Goal:** Improve review management experience for admins and implement email notifications.
 
 Tasks:
 
@@ -233,11 +233,13 @@ Tasks:
 2. Display rating and verification status
 3. Add moderation shortcuts
 4. Support bulk actions
+5. Implement email notifications (admin alerts on submission, reviewer approval notifications)
 
 Spec reference:
 
 - Admin UI
 - Moderation Workflow
+- Email Notifications (Part 6, Section 6.2)
 
 Out of scope:
 
