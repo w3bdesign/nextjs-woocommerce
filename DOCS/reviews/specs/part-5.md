@@ -1,15 +1,16 @@
 ## Part 5: Frontend Integration and SSR/SEO Considerations
 
+> **MVP Scope:** Rating histogram UI removed. Focus on essential review display and submission.
+
 ### 5.1 React Component Architecture
 
-**Component Hierarchy:**
+**Component Hierarchy (MVP):**
 
 ```
 ProductPage (src/pages/product/[slug].tsx)
   └── ProductReviews.component.tsx
-        ├── ReviewSummary.component.tsx
-        │     ├── StarRating.component.tsx
-        │     └── RatingHistogram.component.tsx
+        ├── ReviewSummary.component.tsx (simplified - no histogram)
+        │     └── StarRating.component.tsx
         ├── ReviewList.component.tsx
         │     └── ReviewCard.component.tsx
         │           ├── StarRating.component.tsx
@@ -103,93 +104,41 @@ export const StarRating: React.FC<StarRatingProps> = ({
 };
 ```
 
-#### Review Summary Component
+#### Review Summary Component (MVP - Simplified)
 
 **File: `src/components/Product/ReviewSummary.component.tsx`**
 
 ```typescript
 import React from 'react';
 import { StarRating } from './StarRating.component';
-import { RatingHistogram } from '@/types/review';
 import { TypographyH3, TypographyP } from '@/components/ui/Typography.component';
 
 interface ReviewSummaryProps {
   averageRating: number;
   reviewCount: number;
-  ratingHistogram?: RatingHistogram | null;
 }
 
 export const ReviewSummary: React.FC<ReviewSummaryProps> = ({
   averageRating,
   reviewCount,
-  ratingHistogram,
 }) => {
-  const renderHistogram = () => {
-    if (!ratingHistogram) return null;
-
-    const ratings = [
-      { stars: 5, count: ratingHistogram.fiveStar },
-      { stars: 4, count: ratingHistogram.fourStar },
-      { stars: 3, count: ratingHistogram.threeStar },
-      { stars: 2, count: ratingHistogram.twoStar },
-      { stars: 1, count: ratingHistogram.oneStar },
-    ];
-
-    const maxCount = Math.max(...ratings.map((r) => r.count));
-
-    return (
-      <div className="space-y-2">
-        {ratings.map(({ stars, count }) => {
-          const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
-
-          return (
-            <div key={stars} className="flex items-center gap-3">
-              <span className="text-sm text-gray-600 w-12">
-                {stars} star{stars !== 1 ? 's' : ''}
-              </span>
-              <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-yellow-400 transition-all duration-300"
-                  style={{ width: `${percentage}%` }}
-                  aria-label={`${count} ${stars}-star reviews`}
-                />
-              </div>
-              <span className="text-sm text-gray-600 w-8 text-right">
-                {count}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
     <div className="border rounded-lg p-6 bg-gray-50">
-      <div className="flex items-start gap-8">
-        {/* Left: Overall Rating */}
-        <div className="text-center">
-          <div className="text-5xl font-bold text-gray-900 mb-2">
-            {averageRating.toFixed(1)}
-          </div>
-          <StarRating rating={averageRating} size="lg" />
-          <TypographyP className="text-sm text-gray-600 mt-2">
-            Based on {reviewCount} {reviewCount === 1 ? 'review' : 'reviews'}
-          </TypographyP>
+      <div className="flex flex-col items-center text-center">
+        <div className="text-5xl font-bold text-gray-900 mb-2">
+          {averageRating.toFixed(1)}
         </div>
-
-        {/* Right: Histogram */}
-        {ratingHistogram && (
-          <div className="flex-1">
-            <TypographyH3 className="text-lg mb-4">Rating Distribution</TypographyH3>
-            {renderHistogram()}
-          </div>
-        )}
+        <StarRating rating={averageRating} size="lg" />
+        <TypographyP className="text-sm text-gray-600 mt-2">
+          Based on {reviewCount} {reviewCount === 1 ? 'review' : 'reviews'}
+        </TypographyP>
       </div>
     </div>
   );
 };
 ```
+
+> **MVP Note:** Rating histogram UI removed. For post-MVP, can add bar chart showing distribution of 1-5 star ratings.
 
 #### Review Card Component
 
@@ -634,7 +583,6 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({
         <ReviewSummary
           averageRating={product.averageRating}
           reviewCount={product.reviewCount}
-          ratingHistogram={product.ratingHistogram}
         />
       )}
 

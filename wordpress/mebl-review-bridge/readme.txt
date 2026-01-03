@@ -18,7 +18,7 @@ Headless API bridge for WooCommerce product reviews. Stores reviews in WordPress
 
 * **Native WordPress Storage**: Reviews stored in `wp_comments` table with `comment_type='review'`
 * **Verified Purchase Badges**: Automatic verification using WooCommerce order data
-* **Rating Aggregates**: Calculates and caches average ratings, review counts, and rating histograms
+* **Rating Aggregates**: Calculates and caches average ratings and review counts
 * **Performance Optimized**: Custom database indexes for fast queries
 * **GraphQL Ready**: Designed to work with WPGraphQL (Phase 3)
 * **Moderation Support**: Uses WordPress native comment moderation system
@@ -84,7 +84,7 @@ Reviews are stored using WordPress core tables:
 
 * `wp_comments` - Review content, author, timestamps
 * `wp_commentmeta` - Rating (1-5), verified purchase flag
-* `wp_postmeta` - Cached aggregates (_wc_average_rating, _wc_review_count, _wc_rating_histogram)
+* `wp_postmeta` - Cached aggregates (_wc_average_rating, _wc_review_count)
 
 Custom indexes are created on activation for optimal query performance.
 
@@ -200,7 +200,6 @@ Initial release. Phase 1 of multi-phase review system implementation.
 * `moderation_state` (commentmeta) - Cached moderation state
 * `_wc_average_rating` (postmeta) - Float, cached average
 * `_wc_review_count` (postmeta) - Integer, cached count
-* `_wc_rating_histogram` (postmeta) - JSON, rating distribution
 
 **Transients (Rate Limiting):**
 

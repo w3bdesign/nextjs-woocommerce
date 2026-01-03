@@ -29,6 +29,9 @@ export interface AttributeNode {
   value: string;
 }
 
+// Import review types
+import type { ProductReviewConnection } from './review';
+
 export interface Product {
   __typename: string;
   databaseId: number;
@@ -69,6 +72,11 @@ export interface Product {
     customPricing?: Record<string, number>;
     defaultConfiguration?: Record<string, string>;
   };
+  /** Review system fields (Phase 3) */
+  reviewsAllowed?: boolean;
+  averageRating?: number | null;
+  reviewCount?: number;
+  reviews?: ProductReviewConnection;
 }
 
 export interface ProductType {

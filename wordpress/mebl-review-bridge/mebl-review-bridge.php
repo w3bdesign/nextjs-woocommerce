@@ -190,29 +190,26 @@ function mebl_review_create_indexes() {
 function mebl_review_init() {
     // Check dependencies on every page load
     if (!mebl_review_check_dependencies()) {
-        error_log('MEBL Review Bridge: Initialization skipped due to missing dependencies.');
+        error_log('[MEBL Review Bridge] Initialization skipped due to missing dependencies.');
         return;
     }
     
-    // Load text domain for translations
-    $textdomain_loaded = load_plugin_textdomain('mebl-review-bridge', false, dirname(plugin_basename(__FILE__)) . '/languages');
-    if (!$textdomain_loaded) {
-        error_log('MEBL Review Bridge: Failed to load text domain. Translation files may be missing.');
-    }
+    error_log('[MEBL Review Bridge] Starting plugin initialization...');
     
-    // Require class files
+    // Require core class files
     $class_files = [
         'class-review-storage.php',
         'class-rating-aggregator.php',
         'class-review-hooks.php',
         'class-review-validation.php',
+        'class-review-helpers.php',
     ];
     
     foreach ($class_files as $file) {
         $file_path = MEBL_REVIEW_PATH . 'includes/' . $file;
         if (!file_exists($file_path)) {
             error_log(sprintf(
-                'MEBL Review Bridge: Critical error - Required file missing: %s',
+                '[MEBL Review Bridge] CRITICAL: Required file missing: %s',
                 $file_path
             ));
             return;
@@ -221,20 +218,42 @@ function mebl_review_init() {
     }
     
     // Verify classes exist after loading
-    $required_classes = ['MEBL_Review_Storage', 'MEBL_Rating_Aggregator', 'MEBL_Review_Hooks', 'MEBL_Review_Validation'];
+    $required_classes = ['MEBL_Review_Storage', 'MEBL_Rating_Aggregator', 'MEBL_Review_Hooks', 'MEBL_Review_Validation', 'MEBL_Review_Helpers'];
     foreach ($required_classes as $class) {
         if (!class_exists($class)) {
             error_log(sprintf(
-                'MEBL Review Bridge: Critical error - Required class not found: %s',
+                '[MEBL Review Bridge] CRITICAL: Required class not found: %s',
                 $class
             ));
             return;
         }
     }
     
+    error_log('[MEBL Review Bridge] ✓ Core classes loaded');
+    
     // Initialize hooks
     MEBL_Review_Hooks::init();
+    error_log('[MEBL Review Bridge] ✓ WordPress hooks initialized');
     
-    error_log('MEBL Review Bridge: Plugin initialized successfully.');
+    // Load GraphQL extension if WPGraphQL is available (Phase 3)
+    if (class_exists('WPGraphQL')) {
+        $graphql_file = MEBL_REVIEW_PATH . 'includes/class-graphql-reviews.php';
+        if (file_exists($graphql_file)) {
+            require_once $graphql_file;
+            
+            if (class_exists('MEBL_Review_GraphQL')) {
+                MEBL_Review_GraphQL::init();
+                error_log('[MEBL Review Bridge] ✓ GraphQL extension loaded and initialized');
+            } else {
+                error_log('[MEBL Review Bridge] ERROR: MEBL_Review_GraphQL class not found after loading file');
+            }
+        } else {
+            error_log('[MEBL Review Bridge] ERROR: GraphQL file not found at ' . $graphql_file);
+        }
+    } else {
+        error_log('[MEBL Review Bridge] WPGraphQL not active - GraphQL API disabled');
+    }
+    
+    error_log('[MEBL Review Bridge] ✓ Plugin initialization complete');
 }
 add_action('plugins_loaded', 'mebl_review_init');

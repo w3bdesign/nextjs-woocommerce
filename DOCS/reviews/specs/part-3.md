@@ -1,5 +1,19 @@
 ## Part 3: API Contracts and Integration Points
 
+> **⚠️ MVP SCOPE UPDATE (January 2026)**
+>
+> **For MVP:** We use WooGraphQL's native review fields without any custom GraphQL extensions.
+>
+> - ✅ **WooGraphQL Native:** `reviews`, `reviewsAllowed`, `averageRating`, `reviewCount`
+> - ❌ **Removed from MVP:** `ratingHistogram` (nice-to-have, not essential)
+>
+> **Implementation Approach:** Our plugin provides:
+>
+> 1. Backend data pipeline (Phase 1/2) that populates `_wc_average_rating` and `_wc_review_count` meta
+> 2. `submitReview` mutation (Phase 4) with validation
+>
+> See `WOOGQL_INTEGRATION.md` for complete integration architecture.
+
 ### 3.1 GraphQL Schema Definition
 
 **Complete Schema Extension (WPGraphQL):**
@@ -143,9 +157,27 @@ type RatingHistogram {
 # EXTEND WOOCOMMERCE PRODUCT TYPES
 # ============================================
 
+# NOTE: WooGraphQL already provides these fields on all Product types:
+# - reviews (ProductToCommentConnection) ← Native
+# - reviewsAllowed (Boolean) ← Native
+# - averageRating (Float) ← Native
+# - reviewCount (Int) ← Native
+#
+# Our plugin ONLY registers ratingHistogram on Product interface
+
+extend type Product {
+  """
+  Rating distribution histogram (CUSTOM FIELD)
+  Registered by MEBL Review Bridge plugin
+  """
+  ratingHistogram: RatingHistogram
+}
+
+# Examples showing WooGraphQL native + MEBL custom fields:
+
 extend type SimpleProduct {
   """
-  Paginated list of approved product reviews
+  Paginated list of approved product reviews (WooGraphQL Native)
   """
   reviews(
     """
@@ -165,29 +197,29 @@ extend type SimpleProduct {
   ): ProductReviewConnection
 
   """
-  Whether reviews are enabled for this product
+  Whether reviews are enabled for this product (WooGraphQL Native)
   """
   reviewsAllowed: Boolean!
 
   """
-  Average rating (1.0 - 5.0, null if no reviews)
+  Average rating (1.0 - 5.0, null if no reviews) (WooGraphQL Native)
   """
   averageRating: Float
 
   """
-  Total count of approved reviews
+  Total count of approved reviews (WooGraphQL Native)
   """
   reviewCount: Int!
 
   """
-  Rating distribution histogram
+  Rating distribution histogram (MEBL Custom)
   """
   ratingHistogram: RatingHistogram
 }
 
 extend type VariableProduct {
   """
-  Paginated list of approved product reviews
+  Paginated list of approved product reviews (WooGraphQL Native)
   """
   reviews(
     first: Int = 10
@@ -196,12 +228,12 @@ extend type VariableProduct {
   ): ProductReviewConnection
 
   """
-  Whether reviews are enabled for this product
+  Whether reviews are enabled for this product (WooGraphQL Native)
   """
   reviewsAllowed: Boolean!
 
   """
-  Average rating (1.0 - 5.0, null if no reviews)
+  Average rating (1.0 - 5.0, null if no reviews) (WooGraphQL Native)
   """
   averageRating: Float
 

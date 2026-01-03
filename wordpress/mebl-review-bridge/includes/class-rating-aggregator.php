@@ -2,7 +2,7 @@
 /**
  * Rating Aggregator Class
  * 
- * Calculates and caches product rating aggregates (average, count, histogram).
+ * Calculates and caches product rating aggregates (average, count).
  * Stores cached values in wp_postmeta for fast retrieval.
  * 
  * @package MEBL_Review_Bridge
@@ -19,15 +19,13 @@ class MEBL_Rating_Aggregator {
     /**
      * Calculate product rating statistics and update cache
      * 
-     * Queries all approved reviews for a product, calculates average rating,
-     * total count, and rating distribution histogram.
+     * Queries all approved reviews for a product, calculates average rating and total count.
      * 
      * @param int $product_id Product ID
      * @return array|false {
      *     Rating statistics, false on failure.
      *     @type float $average   Average rating (0.00 - 5.00)
      *     @type int   $count     Total number of approved reviews
-     *     @type array $histogram Rating distribution (1-5 stars)
      * }
      */
     public static function calculate_product_rating($product_id) {
@@ -66,44 +64,13 @@ class MEBL_Rating_Aggregator {
         $count = count($ratings);
         $average = $count > 0 ? array_sum($ratings) / $count : 0;
         
-        // Build histogram
-        $histogram = self::calculate_rating_histogram($ratings);
-        
         // Update product meta (cache)
-        self::update_product_meta($product_id, $average, $count, $histogram);
+        self::update_product_meta($product_id, $average, $count);
         
         return array(
             'average'   => round($average, 2),
             'count'     => $count,
-            'histogram' => $histogram,
         );
-    }
-    
-    /**
-     * Calculate rating distribution histogram
-     * 
-     * @param array $ratings Array of rating values (1-5)
-     * @return array Associative array with star counts {1: X, 2: X, 3: X, 4: X, 5: X}
-     */
-    public static function calculate_rating_histogram($ratings) {
-        // Initialize histogram with zeros
-        $histogram = array(
-            '5' => 0,
-            '4' => 0,
-            '3' => 0,
-            '2' => 0,
-            '1' => 0,
-        );
-        
-        // Count occurrences of each rating
-        foreach ($ratings as $rating) {
-            $rating = (int) $rating;
-            if ($rating >= 1 && $rating <= 5) {
-                $histogram[(string) $rating]++;
-            }
-        }
-        
-        return $histogram;
     }
     
     /**
@@ -114,10 +81,9 @@ class MEBL_Rating_Aggregator {
      * @param int   $product_id Product ID
      * @param float $average    Average rating
      * @param int   $count      Review count
-     * @param array $histogram  Rating distribution
      * @return bool True on success, false on failure
      */
-    public static function update_product_meta($product_id, $average, $count, $histogram) {
+    public static function update_product_meta($product_id, $average, $count) {
         if (empty($product_id)) {
             error_log('MEBL Review Bridge: update_product_meta() called with empty product_id.');
             return false;
@@ -137,30 +103,21 @@ class MEBL_Rating_Aggregator {
             (int) $count
         );
         
-        // Update rating histogram (stored as JSON)
-        $histogram_updated = update_post_meta(
-            $product_id,
-            '_wc_rating_histogram',
-            wp_json_encode($histogram)
-        );
-        
-        $success = ($average_updated !== false) && ($count_updated !== false) && ($histogram_updated !== false);
+        $success = ($average_updated !== false) && ($count_updated !== false);
         
         if (!$success) {
             error_log(sprintf(
-                'MEBL Review Bridge: Failed to update product meta for product %d. Average: %s, Count: %s, Histogram: %s',
+                'MEBL Review Bridge: Failed to update product meta for product %d. Average: %s, Count: %s',
                 $product_id,
                 $average_updated !== false ? 'OK' : 'FAILED',
-                $count_updated !== false ? 'OK' : 'FAILED',
-                $histogram_updated !== false ? 'OK' : 'FAILED'
+                $count_updated !== false ? 'OK' : 'FAILED'
             ));
         } else if (defined('WP_DEBUG') && WP_DEBUG) {
             error_log(sprintf(
-                'MEBL Review Bridge: Product meta updated successfully. Product ID: %d, Average: %.2f, Count: %d, Histogram: %s',
+                'MEBL Review Bridge: Product meta updated successfully. Product ID: %d, Average: %.2f, Count: %d',
                 $product_id,
                 $average,
-                $count,
-                wp_json_encode($histogram)
+                $count
             ));
         }
         
@@ -215,7 +172,6 @@ class MEBL_Rating_Aggregator {
      *     Cached rating data, false if not cached.
      *     @type float $average   Average rating
      *     @type int   $count     Review count
-     *     @type array $histogram Rating distribution
      * }
      */
     public static function get_cached_rating($product_id) {
@@ -225,20 +181,15 @@ class MEBL_Rating_Aggregator {
         
         $average = get_post_meta($product_id, '_wc_average_rating', true);
         $count = get_post_meta($product_id, '_wc_review_count', true);
-        $histogram = get_post_meta($product_id, '_wc_rating_histogram', true);
         
         // If no cached data, return false
         if ($average === '' && $count === '') {
             return false;
         }
         
-        // Decode histogram JSON
-        $histogram_decoded = !empty($histogram) ? json_decode($histogram, true) : array();
-        
         return array(
             'average'   => (float) $average,
             'count'     => (int) $count,
-            'histogram' => $histogram_decoded,
         );
     }
     

@@ -372,3 +372,45 @@ export const GET_CUSTOMER_ORDERS = gql`
     }
   }
 `;
+
+export const GET_PRODUCT_REVIEWS = gql`
+  query GetProductReviews(
+    $slug: ID!
+    $first: Int = 10
+    $after: String
+    $orderBy: ReviewOrderBy = RECENT
+  ) {
+    product(id: $slug, idType: SLUG) {
+      databaseId
+      name
+      slug
+
+      # Review metadata
+      reviewsAllowed
+      averageRating
+      reviewCount
+
+      # Paginated reviews
+      reviews(first: $first, after: $after, orderBy: $orderBy) {
+        edges {
+          node {
+            id
+            author
+            content
+            rating
+            date
+            verified
+          }
+          cursor
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+        }
+        totalCount
+      }
+    }
+  }
+`;

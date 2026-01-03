@@ -223,3 +223,21 @@ export const UPDATE_CART = gql`
     }
   }
 `;
+
+export const SUBMIT_REVIEW = gql`
+  mutation SubmitReview($input: SubmitReviewInput!) {
+    submitReview(input: $input) {
+      success
+      message
+      review {
+        id
+        author
+        content
+        rating
+        date
+        verified
+      }
+      clientMutationId
+    }
+  }
+`;

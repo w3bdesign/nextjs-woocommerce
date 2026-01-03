@@ -678,8 +678,10 @@ class Test_GraphQL_Reviews extends WP_UnitTestCase {
 - [ ] Query with first=20 → Returns 20 reviews
 - [ ] Query with after=[cursor] → Returns next page
 - [ ] Mutation submitReview → Creates pending review
-- [ ] Query averageRating → Returns cached value
-- [ ] Query ratingHistogram → Returns distribution
+- [ ] Query averageRating → Returns cached value (WooGraphQL native)
+- [ ] Query reviewCount → Returns count (WooGraphQL native)
+
+> **Note:** `ratingHistogram` removed from MVP scope.
 
 ### 4.5 Backward Compatibility
 

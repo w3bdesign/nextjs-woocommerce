@@ -122,31 +122,45 @@ Output:
 
 ## Phase 3 – GraphQL Read API
 
-**Goal:** Expose reviews and aggregates via GraphQL for frontend consumption.
+**Goal:** Leverage WooGraphQL's native review fields for MVP.
+
+**Integration Model:** WooGraphQL already provides `reviews`, `reviewsAllowed`, `averageRating`, `reviewCount` on all Product types. Our plugin provides the backend that populates the cache meta (`_wc_average_rating`, `_wc_review_count`) that WooGraphQL's native resolvers read from.
+
+**For MVP:** No custom GraphQL fields needed. WooGraphQL's native schema is sufficient.
 
 Tasks:
 
-1. Register Review GraphQL object type
-2. Register Rating / Aggregate types
-3. Extend WooCommerce Product GraphQL types
-4. Implement connections and pagination
-5. Enforce visibility and moderation rules at resolver level
+1. Verify Phase 1/2 backend populates `_wc_average_rating` and `_wc_review_count` correctly
+2. Test WooGraphQL's native review fields in GraphiQL
+3. Document integration points with WooGraphQL
 
 Spec reference:
 
-- GraphQL Schema
-- Queries
+- GraphQL Schema (part-3.md)
+- WooGraphQL Integration (WOOGQL_INTEGRATION.md)
 - Product Extensions
+
+**WooGraphQL Native Fields (Use directly):**
+
+- `reviews` (ProductToCommentConnection) - paginated review list
+- `reviewsAllowed` (Boolean) - whether comments are open
+- `averageRating` (Float) - reads from `_wc_average_rating` meta
+- `reviewCount` (Int) - reads from `_wc_review_count` meta
+
+**Custom Plugin Value:**
+
+- Backend data pipeline (Phase 1/2) that populates `_wc_*` meta cache
 
 Out of scope:
 
-- Mutations
-- Frontend
-- SEO schema
+- Mutations (Phase 4)
+- Frontend UI (Phase 5)
+- Custom GraphQL extensions beyond WooGraphQL
 
 Output:
 
-- GraphQL schema and resolvers
+- Integration documentation
+- Test verification that WooGraphQL fields work correctly
 
 ---
 

@@ -86,22 +86,17 @@ WHERE post_type = 'product';
 -- Stored in existing wp_postmeta table
 SELECT post_id, meta_key, meta_value
 FROM wp_postmeta
-WHERE meta_key IN ('_wc_average_rating', '_wc_review_count', '_wc_rating_histogram');
+WHERE meta_key IN ('_wc_average_rating', '_wc_review_count');
 ```
 
-**Cache Meta Keys:**
+**Cache Meta Keys (MVP):**
 
-| Meta Key               | Type  | Purpose                  | Update Trigger              |
-| ---------------------- | ----- | ------------------------ | --------------------------- |
-| `_wc_average_rating`   | FLOAT | Average rating (1.0-5.0) | New review approved/deleted |
-| `_wc_review_count`     | INT   | Total approved reviews   | New review approved/deleted |
-| `_wc_rating_histogram` | JSON  | Rating distribution      | New review approved/deleted |
+| Meta Key             | Type  | Purpose                  | Update Trigger              |
+| -------------------- | ----- | ------------------------ | --------------------------- |
+| `_wc_average_rating` | FLOAT | Average rating (1.0-5.0) | New review approved/deleted |
+| `_wc_review_count`   | INT   | Total approved reviews   | New review approved/deleted |
 
-**Example `_wc_rating_histogram` value:**
-
-```json
-{ "5": 42, "4": 18, "3": 5, "2": 1, "1": 0 }
-```
+> **Note:** Rating histogram removed from MVP scope. WooGraphQL's native `averageRating` and `reviewCount` fields are sufficient for MVP.
 
 ### 2.2 Entity Relationships
 
@@ -306,7 +301,7 @@ KEY meta_key (meta_key(191))
 
 **Product Aggregate Cache (Critical Path):**
 
-**Stored In:** `wp_postmeta` keys `_wc_average_rating`, `_wc_review_count`, `_wc_rating_histogram`
+**Stored In:** `wp_postmeta` keys `_wc_average_rating`, `_wc_review_count`
 
 **Invalidation Triggers:**
 
@@ -342,15 +337,9 @@ function mebl_update_product_rating_cache($new_status, $comment) {
     $average = $count > 0 ? array_sum($ratings) / $count : 0;
 
     // Build histogram
-    $histogram = array_fill(1, 5, 0);
-    foreach ($ratings as $rating) {
-        $histogram[(int)$rating]++;
-    }
-
-    // Update post meta (cached values)
+    // Update post meta (cached values - MVP scope)
     update_post_meta($product_id, '_wc_average_rating', round($average, 2));
     update_post_meta($product_id, '_wc_review_count', $count);
-    update_post_meta($product_id, '_wc_rating_histogram', json_encode($histogram));
 
     // Invalidate WooCommerce transients
     delete_transient('wc_average_rating_' . $product_id);
