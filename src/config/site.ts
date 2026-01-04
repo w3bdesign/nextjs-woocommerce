@@ -6,7 +6,7 @@
 export const siteConfig = {
   name: 'MEBL FURNITURE',
   description: 'Premium furniture store with customizable 3D configurator',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://mebl.furniture',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://mebl.onrender.com',
 
   mainNav: [
     {

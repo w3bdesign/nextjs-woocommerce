@@ -24,6 +24,8 @@ export const GET_PRODUCT_REVIEWS = gql`
         regularPrice
         price
         id
+        sku
+        stockStatus
         stockQuantity
         configurator {
           enabled
@@ -36,6 +38,8 @@ export const GET_PRODUCT_REVIEWS = gql`
         regularPrice
         price
         id
+        sku
+        stockStatus
         attributes {
           nodes {
             id

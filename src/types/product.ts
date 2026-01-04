@@ -36,12 +36,15 @@ export interface Product {
   __typename: string;
   databaseId: number;
   name: string;
+  description?: string;
   onSale: boolean;
   slug: string;
   image: Image;
   price: string;
   regularPrice: string;
   salePrice?: string;
+  sku?: string;
+  stockStatus?: string;
   productCategories?: {
     nodes: ProductCategory[];
   };

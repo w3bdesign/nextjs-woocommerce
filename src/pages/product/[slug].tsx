@@ -1,12 +1,17 @@
 // Imports
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import { withRouter } from 'next/router';
 
 // Components
 import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
 import Layout from '@/components/Layout/Layout.component';
+import { ProductStructuredData } from '@/components/Product/ProductStructuredData.component';
 import SingleProduct from '@/components/Product/SingleProduct.component';
 import { Skeleton } from '@/components/ui/skeleton';
+
+// Config
+import { siteConfig } from '@/config/site';
 
 const ProductReviews = dynamic(
   () =>
@@ -50,16 +55,65 @@ const Product: NextPage = ({
   isAuthenticated,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const hasError = networkStatus === '8';
+
+  // Generate meta description with review stats
+  const metaDescription =
+    product.reviewCount && product.reviewCount > 0
+      ? `Read ${product.reviewCount} customer reviews for ${product.name}. Average rating: ${product.averageRating?.toFixed(1)}/5.`
+      : product.description || `${product.name} - Premium furniture from MEBL`;
+
   return (
     <Layout title={`${product.name ? product.name : ''}`}>
-      {product && (
-        <BreadcrumbNav
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Products', href: '/products' },
-            { label: product.name },
-          ]}
+      <Head>
+        {/* Enhanced title with review context */}
+        <title>{`${product.name}${product.reviewCount && product.reviewCount > 0 ? ' - Customer Reviews' : ''}`}</title>
+
+        {/* Meta description with review stats */}
+        <meta name="description" content={metaDescription} />
+
+        {/* Open Graph tags */}
+        <meta property="og:title" content={product.name} />
+        <meta
+          property="og:description"
+          content={product.description || metaDescription}
         />
+        {product.image?.sourceUrl && (
+          <meta property="og:image" content={product.image.sourceUrl} />
+        )}
+        <meta property="og:type" content="product" />
+        <meta
+          property="og:url"
+          content={`${siteConfig.url}/product/${product.slug}`}
+        />
+
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={product.name} />
+        <meta
+          name="twitter:description"
+          content={product.description || metaDescription}
+        />
+        {product.image?.sourceUrl && (
+          <meta name="twitter:image" content={product.image.sourceUrl} />
+        )}
+      </Head>
+
+      {product && (
+        <>
+          <ProductStructuredData
+            product={product}
+            reviews={product.reviews?.edges
+              ?.map((edge) => edge.node)
+              .slice(0, 5)}
+          />
+          <BreadcrumbNav
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Products', href: '/products' },
+              { label: product.name },
+            ]}
+          />
+        </>
       )}
       {product ? (
         <>
