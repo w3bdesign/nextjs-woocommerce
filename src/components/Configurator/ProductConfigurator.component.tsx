@@ -77,38 +77,12 @@ export default function ProductConfigurator({
   // Determine configuration mode: family-based or legacy single-model
   const family = familyId ? getModelFamily(familyId) : undefined;
 
-  console.log(
-    '[ProductConfigurator] Configuration mode:',
-    JSON.stringify(
-      {
-        'familyId prop': familyId,
-        'family loaded': !!family,
-        'snap.familyId': snap.familyId,
-        'snap.activeVariantId': snap.activeVariantId,
-      },
-      null,
-      2,
-    ),
-  );
-
   // For family-based: Get the active variant's modelId from store
   const activeModelId =
     family && snap.activeVariantId
       ? family.variants.find((v) => v.id === snap.activeVariantId)?.modelId ||
         family.variants[0]?.modelId
       : undefined;
-
-  console.log(
-    '[ProductConfigurator] Active model resolution:',
-    JSON.stringify(
-      {
-        activeModelId,
-        'is family mode': !!family,
-      },
-      null,
-      2,
-    ),
-  );
 
   // Get the model configuration from the registry (reactive to activeVariantId changes)
   // Guard the call since `activeModelId` may be undefined during initialization

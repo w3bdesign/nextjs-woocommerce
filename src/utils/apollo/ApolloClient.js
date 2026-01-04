@@ -267,6 +267,39 @@ const client = new ApolloClient({
           },
         },
       },
+      Product: {
+        fields: {
+          reviews: {
+            keyArgs: ['where', ['orderBy']],
+            merge(existing, incoming, { args }) {
+              if (!existing) return incoming;
+              if (!args?.after) return incoming;
+
+              // Merge edges for pagination
+              const existingEdges = existing.edges || [];
+              const incomingEdges = incoming.edges || [];
+
+              return {
+                ...incoming,
+                edges: [...existingEdges, ...incomingEdges],
+              };
+            },
+          },
+          // Ensure fresh reads for aggregate fields
+          averageRating: {
+            read(cached, { _cache, _field }) {
+              // Allow cache-and-network to update this
+              return cached;
+            },
+          },
+          reviewCount: {
+            read(cached, { _cache, _field }) {
+              // Allow cache-and-network to update this
+              return cached;
+            },
+          },
+        },
+      },
     },
   }),
 });

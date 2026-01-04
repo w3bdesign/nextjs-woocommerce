@@ -2,22 +2,29 @@
  * Product Review Type Definitions
  *
  * TypeScript interfaces for the review system.
- * Matches GraphQL schema from WordPress backend.
+ * Uses WooGraphQL native Comment fields (MVP - no custom extensions).
  *
  * @package MEBL
  * @since 1.0.0
  */
 
 /**
- * Product review data structure
+ * Product review data structure (native WooGraphQL Comment)
  */
 export interface ProductReview {
   id: string;
-  author: string;
+  databaseId: number;
+  author: {
+    node: {
+      name: string;
+    };
+  };
   content: string;
-  rating: number; // 1-5
   date: string; // ISO 8601
-  verified: boolean;
+  approved: boolean;
+  commentId?: number;
+  rating?: number;
+  verified?: boolean;
 }
 
 /**

@@ -154,13 +154,23 @@ class MEBL_Review_Validation {
             'count'   => true,
         ]);
         
+        // Debug logging
+        error_log(sprintf(
+            '[MEBL Review Validation] Duplicate check - Product: %d, User: %d, Existing count: %d',
+            $product_id,
+            $user_id,
+            $existing
+        ));
+        
         if ($existing > 0) {
+            error_log('[MEBL Review Validation] BLOCKED: Duplicate review detected');
             return [
                 'valid' => false,
                 'message' => __('You have already reviewed this product.', 'mebl-review-bridge'),
             ];
         }
         
+        error_log('[MEBL Review Validation] ALLOWED: No duplicate found');
         return [
             'valid' => true,
             'message' => '',

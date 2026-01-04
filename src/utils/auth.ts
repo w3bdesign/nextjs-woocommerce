@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { IncomingMessage } from 'http';
 import { LOGIN_USER, REFRESH_AUTH_TOKEN } from './gql/GQL_MUTATIONS';
 
 const AUTH_TOKEN_KEY =
@@ -80,6 +81,31 @@ export async function hasCredentials(): Promise<boolean> {
 export function getAuthToken(): string | null {
   if (typeof window === 'undefined') return null;
   return sessionStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+/**
+ * Extract auth token from request for SSR
+ * Checks cookies and Authorization header
+ */
+export function getAuthTokenFromRequest(req: IncomingMessage): string | null {
+  // Check Authorization header
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.substring(7);
+  }
+
+  // Check cookies for auth token
+  const cookies = req.headers.cookie;
+  if (cookies) {
+    const authCookie = cookies
+      .split(';')
+      .find((c) => c.trim().startsWith(`${AUTH_TOKEN_KEY}=`));
+    if (authCookie) {
+      return authCookie.split('=')[1];
+    }
+  }
+
+  return null;
 }
 
 export async function refreshAuthToken(): Promise<string | null> {

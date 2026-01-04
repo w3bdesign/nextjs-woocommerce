@@ -1,13 +1,32 @@
 // Imports
+import dynamic from 'next/dynamic';
 import { withRouter } from 'next/router';
 
 // Components
 import BreadcrumbNav from '@/components/Layout/BreadcrumbNav.component';
 import Layout from '@/components/Layout/Layout.component';
 import SingleProduct from '@/components/Product/SingleProduct.component';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const ProductReviews = dynamic(
+  () =>
+    import('@/components/Product/ProductReviews.component').then((mod) => ({
+      default: mod.ProductReviews,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="space-y-4">
+        <Skeleton className="h-32 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    ),
+  },
+);
 
 // Utilities
 import client from '@/utils/apollo/ApolloClient';
+import { getAuthTokenFromRequest } from '@/utils/auth';
 
 // Types
 import type {
@@ -17,7 +36,7 @@ import type {
 } from 'next';
 
 // GraphQL
-import { GET_SINGLE_PRODUCT } from '@/utils/gql/GQL_QUERIES';
+import { GET_PRODUCT_REVIEWS } from '@/utils/gql/GET_PRODUCT_REVIEWS';
 
 /**
  * Display a single product with dynamic pretty urls
@@ -28,6 +47,7 @@ import { GET_SINGLE_PRODUCT } from '@/utils/gql/GQL_QUERIES';
 const Product: NextPage = ({
   product,
   networkStatus,
+  isAuthenticated,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const hasError = networkStatus === '8';
   return (
@@ -42,7 +62,10 @@ const Product: NextPage = ({
         />
       )}
       {product ? (
-        <SingleProduct product={product} />
+        <>
+          <SingleProduct product={product} />
+          <ProductReviews product={product} isAuthenticated={isAuthenticated} />
+        </>
       ) : (
         <div className="mt-8 text-2xl text-center">Loading product...</div>
       )}
@@ -61,6 +84,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   query,
   res,
+  req,
 }) => {
   // Handle legacy URLs with ID parameter by removing it
   if (query.id) {
@@ -70,33 +94,39 @@ export const getServerSideProps: GetServerSideProps = async ({
     return { props: {} };
   }
 
+  // Check authentication status
+  const authToken = getAuthTokenFromRequest(req);
+  const isAuthenticated = !!authToken;
+
+  // Fetch product with reviews (single query for SSR optimization)
   const { data, loading, networkStatus } = await client.query({
-    query: GET_SINGLE_PRODUCT,
-    variables: { slug: params?.slug },
+    query: GET_PRODUCT_REVIEWS,
+    variables: {
+      slug: params?.slug,
+      first: 10,
+    },
   });
 
-  // Debug logging: Log raw GraphQL response for configurator data
-  if (data?.product?.configurator) {
-    console.log('[NETWORK] GraphQL Response for product:', params?.slug);
+  // Debug logging: Log reviews data with rating field
+  if (data?.product?.reviews) {
+    console.log('[REVIEWS] Reviews data for product:', params?.slug);
     console.log(
-      '[NETWORK] Configurator data:',
-      JSON.stringify(data.product.configurator, null, 2),
+      '[REVIEWS] Reviews edges:',
+      JSON.stringify(data.product.reviews.edges, null, 2),
     );
     console.log(
-      '[NETWORK] Full product data:',
-      JSON.stringify(
-        {
-          databaseId: data.product.databaseId,
-          name: data.product.name,
-          configurator: data.product.configurator,
-        },
-        null,
-        2,
-      ),
+      '[REVIEWS] First review rating:',
+      data.product.reviews.edges?.[0]?.node?.rating,
     );
   }
 
   return {
-    props: { product: data.product, loading, networkStatus },
+    props: {
+      product: data.product,
+      loading,
+      networkStatus,
+      isAuthenticated,
+      initialApolloState: client.cache.extract(),
+    },
   };
 };

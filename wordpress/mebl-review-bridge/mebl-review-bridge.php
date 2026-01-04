@@ -250,6 +250,19 @@ function mebl_review_init() {
         } else {
             error_log('[MEBL Review Bridge] ERROR: GraphQL file not found at ' . $graphql_file);
         }
+        
+        // Load GraphQL schema extensions for rating/verified fields
+        $graphql_schema_file = MEBL_REVIEW_PATH . 'includes/class-graphql-schema.php';
+        if (file_exists($graphql_schema_file)) {
+            require_once $graphql_schema_file;
+            
+            if (class_exists('MEBL\\ReviewBridge\\GraphQL_Schema')) {
+                new \MEBL\ReviewBridge\GraphQL_Schema();
+                error_log('[MEBL Review Bridge] ✓ GraphQL schema extensions loaded (rating/verified fields)');
+            } else {
+                error_log('[MEBL Review Bridge] ERROR: GraphQL_Schema class not found after loading file');
+            }
+        }
     } else {
         error_log('[MEBL Review Bridge] WPGraphQL not active - GraphQL API disabled');
     }
