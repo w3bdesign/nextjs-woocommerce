@@ -399,8 +399,8 @@ class MEBL_Review_GraphQL {
             ));
         }
         
-        // Trigger action hook for extensibility
-        do_action('mebl_review_submitted', $comment_id, $product_id);
+        // Trigger action hook for extensibility (Phase 6 spec requires 3 parameters)
+        do_action('mebl_review_submitted', $comment_id, $product_id, $user->ID);
         
         return [
             'success' => true,

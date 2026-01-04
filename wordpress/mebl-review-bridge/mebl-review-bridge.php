@@ -203,6 +203,8 @@ function mebl_review_init() {
         'class-review-hooks.php',
         'class-review-validation.php',
         'class-review-helpers.php',
+        'class-admin-ui.php',
+        'class-email-notifications.php',
     ];
     
     foreach ($class_files as $file) {
@@ -218,7 +220,15 @@ function mebl_review_init() {
     }
     
     // Verify classes exist after loading
-    $required_classes = ['MEBL_Review_Storage', 'MEBL_Rating_Aggregator', 'MEBL_Review_Hooks', 'MEBL_Review_Validation', 'MEBL_Review_Helpers'];
+    $required_classes = [
+        'MEBL_Review_Storage', 
+        'MEBL_Rating_Aggregator', 
+        'MEBL_Review_Hooks', 
+        'MEBL_Review_Validation', 
+        'MEBL_Review_Helpers',
+        'MEBL_Review_Admin_UI',
+        'MEBL_Email_Notifications',
+    ];
     foreach ($required_classes as $class) {
         if (!class_exists($class)) {
             error_log(sprintf(
@@ -234,6 +244,16 @@ function mebl_review_init() {
     // Initialize hooks
     MEBL_Review_Hooks::init();
     error_log('[MEBL Review Bridge] ✓ WordPress hooks initialized');
+    
+    // Initialize admin UI (Phase 6)
+    if (is_admin()) {
+        MEBL_Review_Admin_UI::init();
+        error_log('[MEBL Review Bridge] ✓ Admin UI initialized');
+    }
+    
+    // Initialize email notifications (Phase 6)
+    MEBL_Email_Notifications::init();
+    error_log('[MEBL Review Bridge] ✓ Email notifications initialized');
     
     // Load GraphQL extension if WPGraphQL is available (Phase 3)
     if (class_exists('WPGraphQL')) {
