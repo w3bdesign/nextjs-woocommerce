@@ -280,33 +280,6 @@ Output:
 
 ---
 
-## Phase 8 – Performance, Rollout & Safety
-
-**Goal:** Ensure stability and safe deployment.
-
-Tasks:
-
-1. Cache invalidation rules
-2. Performance safeguards
-3. Feature-flagged rollout
-4. Rollback strategy
-
-Spec reference:
-
-- Performance
-- Rollout & Rollback
-
-Out of scope:
-
-- New features
-- Refactors
-
-Output:
-
-- Production-readiness checklist
-
----
-
 ## Execution Rule Summary (For Copilot)
 
 - Work on **one phase only**
