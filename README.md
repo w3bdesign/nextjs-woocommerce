@@ -40,7 +40,7 @@ Optional plugin:
 
 The current release has been tested and is confirmed working with the following versions:
 
-- WordPress version 6.8.1
+- WordPress version 6.9
 - WooCommerce version 9.9.5
 - WP GraphQL version 2.3.3
 - WooGraphQL version 0.19.0
