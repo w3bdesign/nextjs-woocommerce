@@ -24,7 +24,7 @@
     "framer"
   ],
   "author": "w3bdesign",
-  "license": "ISC",
+  "license": "AGPL-3.0",
   "dependencies": {
     "@apollo/client": "^3.14.0",
     "@types/react": "^19.2.7",
