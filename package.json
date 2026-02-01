@@ -41,7 +41,7 @@
     "react-hook-form": "^7.71.1",
     "react-instantsearch-dom": "^6.40.4",
     "uuid": "^13.0.0",
-    "zustand": "^5.0.10"
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
