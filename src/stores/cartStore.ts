@@ -14,7 +14,6 @@ interface CartState {
   clearWooCommerceSession: () => void;
 }
 
-
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
