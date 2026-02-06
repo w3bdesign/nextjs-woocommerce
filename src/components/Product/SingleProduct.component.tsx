@@ -15,14 +15,18 @@ const PLACEHOLDER_FALLBACK = 'https://via.placeholder.com/600';
 
 /** Format a price string by padding the currency symbol */
 const formatPrice = (value: string | undefined): string | undefined => {
-  if (!value) return value;
+  if (!value) {
+    return value;
+  }
   return paddedPrice(value, 'kr');
 };
 
 /** Strip HTML tags from a string using DOMParser (client-side only) */
 const useStrippedDescription = (html: string): string | null =>
   useMemo(() => {
-    if (typeof globalThis.window === 'undefined') return null;
+    if (typeof window === 'undefined') {
+      return null;
+    }
     return new DOMParser().parseFromString(html, 'text/html').body
       .textContent;
   }, [html]);
@@ -54,6 +58,21 @@ const ProductImage = ({
   </div>
 );
 
+/** Compute the current and original price for sale items */
+const getSalePrices = (
+  hasVariations: boolean,
+  price: string | undefined,
+  salePrice: string | undefined,
+  regularPrice: string | undefined,
+) => ({
+  currentPrice: hasVariations
+    ? filteredVariantPrice(price ?? '', '')
+    : salePrice,
+  originalPrice: hasVariations
+    ? filteredVariantPrice(price ?? '', 'right')
+    : regularPrice,
+});
+
 const PriceDisplay = ({
   onSale,
   hasVariations,
@@ -71,13 +90,12 @@ const PriceDisplay = ({
     return <p className="text-xl font-bold">{price}</p>;
   }
 
-  const currentPrice = hasVariations
-    ? filteredVariantPrice(price ?? '', '')
-    : salePrice;
-
-  const originalPrice = hasVariations
-    ? filteredVariantPrice(price ?? '', 'right')
-    : regularPrice;
+  const { currentPrice, originalPrice } = getSalePrices(
+    hasVariations,
+    price,
+    salePrice,
+    regularPrice,
+  );
 
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
@@ -126,6 +144,18 @@ const VariationSelector = ({
   </div>
 );
 
+// --- Loading state ---
+
+const ProductLoadingState = () => (
+  <section className="bg-white mb-[8rem] md:mb-12">
+    <div className="h-56 mt-20">
+      <p className="text-xl font-bold text-center">Laster produkt ...</p>
+      <br />
+      <LoadingSpinner />
+    </div>
+  </section>
+);
+
 // --- Main Component ---
 
 const SingleProduct = ({ product }: ISingleProductProps) => {
@@ -146,16 +176,10 @@ const SingleProduct = ({ product }: ISingleProductProps) => {
   const hasVariations = Boolean(product.variations);
 
   if (isLoading) {
-    return (
-      <section className="bg-white mb-[8rem] md:mb-12">
-        <div className="h-56 mt-20">
-          <p className="text-xl font-bold text-center">Laster produkt ...</p>
-          <br />
-          <LoadingSpinner />
-        </div>
-      </section>
-    );
+    return <ProductLoadingState />;
   }
+
+  const resolvedVariationId = hasVariations ? selectedVariation : void 0;
 
   return (
     <section className="bg-white mb-[8rem] md:mb-12">
@@ -196,7 +220,7 @@ const SingleProduct = ({ product }: ISingleProductProps) => {
             <div className="w-full mx-auto md:mx-0 max-w-[14.375rem]">
               <AddToCart
                 product={product}
-                variationId={hasVariations ? selectedVariation : undefined}
+                variationId={resolvedVariationId}
                 fullWidth={true}
               />
             </div>
