@@ -74,8 +74,8 @@ The current release has been tested and is confirmed working with the following 
 
 ## Features
 
-- Next.js version 15.1.7
-- React version 18.3.1
+- Next.js version 16.1.6
+- React version 19.2.4
 - Typescript
 - Tests with Playwright
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
