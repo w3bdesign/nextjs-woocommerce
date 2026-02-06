@@ -43,9 +43,6 @@ const CartContents = () => {
     {
       onCompleted: () => {
         refetch();
-        setTimeout(() => {
-          refetch();
-        }, 3000);
       },
     },
   );
@@ -65,10 +62,6 @@ const CartContents = () => {
         },
       });
     }
-    refetch();
-    setTimeout(() => {
-      refetch();
-    }, 3000);
   };
 
   useEffect(() => {

@@ -9,22 +9,28 @@ import {
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
+interface SessionData {
+  token: string;
+  createdTime: number;
+}
+
 /**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
  */
-export const middleware = new ApolloLink(async (operation, forward) => {
+export const middleware = new ApolloLink((operation, forward) => {
   /**
    * If session data exist in local storage, set value as session header.
    * Here we also delete the session if it is older than 7 days
    */
-  const sessionData = process.browser
-    ? JSON.parse(localStorage.getItem('woo-session'))
-    : null;
+  const sessionData: SessionData | null =
+    typeof window !== 'undefined'
+      ? JSON.parse(localStorage.getItem('woo-session') || 'null')
+      : null;
 
-  const headers = {};
+  const headers: Record<string, string> = {};
 
-  if (sessionData && sessionData.token && sessionData.createdTime) {
+  if (sessionData?.token && sessionData?.createdTime) {
     const { token, createdTime } = sessionData;
 
     // Check if the token is older than 7 days
@@ -65,7 +71,7 @@ export const afterware = new ApolloLink((operation, forward) =>
 
     const session = headers.get('woocommerce-session');
 
-    if (session && process.browser) {
+    if (session && typeof window !== 'undefined') {
       if ('false' === session) {
         // Remove session data if session destroyed.
         localStorage.removeItem('woo-session');
@@ -82,11 +88,11 @@ export const afterware = new ApolloLink((operation, forward) =>
   }),
 );
 
-const clientSide = typeof window === 'undefined';
+const isServerSide = typeof window === 'undefined';
 
 // Apollo GraphQL client.
 const client = new ApolloClient({
-  ssrMode: clientSide,
+  ssrMode: isServerSide,
   link: middleware.concat(
     afterware.concat(
       createHttpLink({
