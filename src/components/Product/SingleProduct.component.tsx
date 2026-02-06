@@ -5,10 +5,13 @@ import { useState, useEffect } from 'react';
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 // Components
-import AddToCart, { IProductRootObject } from './AddToCart.component';
+import AddToCart from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
-const SingleProduct = ({ product }: IProductRootObject) => {
+// Types
+import type { ISingleProductProps } from '@/types/product';
+
+const SingleProduct = ({ product }: ISingleProductProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
 

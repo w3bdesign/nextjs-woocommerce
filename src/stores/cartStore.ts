@@ -1,34 +1,18 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface Image {
-  sourceUrl?: string;
-  srcSet?: string;
-  title: string;
-}
-
-export interface Product {
-  cartKey: string;
-  name: string;
-  qty: number;
-  price: number;
-  totalPrice: string;
-  image: Image;
-  productId: number;
-}
+import type { CartProduct, Cart } from '@/types/cart';
 
 interface CartState {
-  cart: {
-    products: Product[];
-    totalProductsCount: number;
-    totalProductsPrice: number;
-  } | null;
+  cart: Cart | null;
   isLoading: boolean;
   setCart: (cart: CartState['cart']) => void;
   updateCart: (newCart: NonNullable<CartState['cart']>) => void;
   syncWithWooCommerce: (cart: NonNullable<CartState['cart']>) => void;
   clearWooCommerceSession: () => void;
 }
+
+export type { CartProduct, Cart };
 
 export const useCartStore = create<CartState>()(
   persist(

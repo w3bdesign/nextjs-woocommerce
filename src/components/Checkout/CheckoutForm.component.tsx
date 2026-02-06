@@ -14,41 +14,10 @@ import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
 import { useCartStore } from '@/stores/cartStore';
 
 // Utils
-import {
-  getFormattedCart,
-  createCheckoutData,
-  ICheckoutDataProps,
-} from '@/utils/functions/functions';
+import { getFormattedCart, createCheckoutData } from '@/utils/functions/functions';
 
-export interface IBilling {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  city: string;
-  postcode: string;
-  email: string;
-  phone: string;
-}
-
-export interface IShipping {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  city: string;
-  postcode: string;
-  email: string;
-  phone: string;
-}
-
-export interface ICheckoutData {
-  clientMutationId: string;
-  billing: IBilling;
-  shipping: IShipping;
-  shipToDifferentAddress: boolean;
-  paymentMethod: string;
-  isPaid: boolean;
-  transactionId: string;
-}
+// Types
+import type { ICheckoutDataProps, ICheckoutData } from '@/types/checkout';
 
 const CheckoutForm = () => {
   const { cart, clearWooCommerceSession, syncWithWooCommerce } = useCartStore();

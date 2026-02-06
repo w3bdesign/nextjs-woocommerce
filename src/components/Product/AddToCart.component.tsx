@@ -12,81 +12,26 @@ import { useCartStore } from '@/stores/cartStore';
 // Utils
 import { getFormattedCart } from '@/utils/functions/functions';
 
+// Types
+import type {
+  ISingleProduct,
+  ISingleProductProps,
+  IVariationDetail,
+} from '@/types/product';
+
 // GraphQL
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { ADD_TO_CART } from '@/utils/gql/GQL_MUTATIONS';
 
-interface IImage {
-  __typename: string;
-  id: string;
-  uri: string;
-  title: string;
-  srcSet: string;
-  sourceUrl: string;
-}
-
-interface IVariationNode {
-  __typename: string;
-  name: string;
-}
-
-interface IAllPaColors {
-  __typename: string;
-  nodes: IVariationNode[];
-}
-
-interface IAllPaSizes {
-  __typename: string;
-  nodes: IVariationNode[];
-}
-
-export interface IVariationNodes {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  name: string;
-  stockStatus: string;
-  stockQuantity: number;
-  purchasable: boolean;
-  onSale: boolean;
-  salePrice?: string;
-  regularPrice: string;
-}
-
-interface IVariations {
-  __typename: string;
-  nodes: IVariationNodes[];
-}
-
-export interface IProduct {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  averageRating: number;
-  slug: string;
-  description: string;
-  onSale: boolean;
-  image: IImage;
-  name: string;
-  salePrice?: string;
-  regularPrice: string;
-  price: string;
-  stockQuantity: number;
-  allPaColors?: IAllPaColors;
-  allPaSizes?: IAllPaSizes;
-  variations?: IVariations;
-}
-
-export interface IProductRootObject {
-  product: IProduct;
-  variationId?: number;
-  fullWidth?: boolean;
-}
+// Re-export types for backward compatibility
+export type IProduct = ISingleProduct;
+export type IProductRootObject = ISingleProductProps;
+export type IVariationNodes = IVariationDetail;
 
 /**
  * Handles the Add to cart functionality.
  * Uses GraphQL for product data
- * @param {IAddToCartProps} product // Product data
+ * @param {ISingleProductProps} product // Product data
  * @param {number} variationId // Variation ID
  * @param {boolean} fullWidth // Whether the button should be full-width
  */
@@ -95,7 +40,7 @@ const AddToCart = ({
   product,
   variationId,
   fullWidth = false,
-}: IProductRootObject) => {
+}: ISingleProductProps) => {
   const { syncWithWooCommerce, isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
 

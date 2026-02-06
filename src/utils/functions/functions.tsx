@@ -1,106 +1,34 @@
 /*eslint complexity: ["error", 20]*/
 
 import { v4 as uuidv4 } from 'uuid';
-
-import type { Product } from '@/stores/cartStore';
-
-interface RootObject {
-  products: Product[];
-  totalProductsCount: number;
-  totalProductsPrice: number;
-}
-
 import { ChangeEvent } from 'react';
-import { IVariationNodes } from '@/components/Product/AddToCart.component';
 
-/* Interface for products*/
+import type { CartProduct, Cart } from '@/types/cart';
+import type { ICheckoutDataProps } from '@/types/checkout';
+import type {
+  ICartItemNode,
+  IUpdateCartItem,
+  IUpdateCartInput,
+  IUpdateCartVariables,
+  IUpdateCartMutationArgs,
+  IFormattedCartProps,
+} from '@/types/graphql';
 
-export interface IImage {
-  __typename: string;
-  id: string;
-  sourceUrl?: string;
-  srcSet?: string;
-  altText: string;
-  title: string;
-}
+// Re-export types that other files import from here
+export type {
+  ICartItemNode,
+  ICheckoutDataProps,
+  IUpdateCartItem,
+  IUpdateCartInput,
+  IUpdateCartVariables,
+  IUpdateCartMutationArgs,
+};
 
-export interface IGalleryImages {
-  __typename: string;
-  nodes: IImage[];
-}
-
-interface IProductNode {
-  __typename: string;
-  id: string;
-  databaseId: number;
-  name: string;
-  description: string;
-  type: string;
-  onSale: boolean;
-  slug: string;
-  averageRating: number;
-  reviewCount: number;
-  image: IImage;
-  galleryImages: IGalleryImages;
-  productId: number;
-}
-
-interface IProduct {
-  __typename: string;
-  node: IProductNode;
-}
-
-export interface IProductRootObject {
-  __typename: string;
-  key: string;
-  product: IProduct;
-  variation?: IVariationNodes;
-  quantity: number;
-  total: string;
-  subtotal: string;
-  subtotalTax: string;
-}
+// Keep backward-compatible alias for IProductRootObject → ICartItemNode
+export type IProductRootObject = ICartItemNode;
+export type IUpdateCartRootObject = IUpdateCartMutationArgs;
 
 type TUpdatedItems = { key: string; quantity: number }[];
-
-export interface IUpdateCartItem {
-  key: string;
-  quantity: number;
-}
-
-export interface IUpdateCartInput {
-  clientMutationId: string;
-  items: IUpdateCartItem[];
-}
-
-export interface IUpdateCartVariables {
-  input: IUpdateCartInput;
-}
-
-export interface IUpdateCartRootObject {
-  variables: IUpdateCartVariables;
-}
-
-/* Interface for props */
-
-interface IFormattedCartProps {
-  cart: { contents: { nodes: IProductRootObject[] }; total: number };
-}
-
-export interface ICheckoutDataProps {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  address2: string;
-  city: string;
-  country: string;
-  state: string;
-  postcode: string;
-  email: string;
-  phone: string;
-  company: string;
-  paymentMethod: string;
-}
 
 /**
  * Add empty character after currency symbol
@@ -139,7 +67,7 @@ export const filteredVariantPrice = (price: string, side: string) => {
 
 /**
  * Returns cart data in the required format.
- * @param {String} data Cart data
+ * @param {IFormattedCartProps} data Cart data from GraphQL
  */
 
 export const getFormattedCart = (data: IFormattedCartProps) => {
@@ -149,7 +77,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
 
   const givenProducts = data.cart.contents.nodes;
 
-  const formattedCart: RootObject = {
+  const formattedCart: Cart = {
     products: [],
     totalProductsCount: 0,
     totalProductsPrice: 0,
@@ -164,7 +92,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
     const convertedCurrency = item.total.replace(/[^0-9.-]+/g, '');
 
     // Create a new product object for each item to avoid shared reference bug
-    const product: Product = {
+    const product: CartProduct = {
       productId: givenProduct.productId,
       cartKey: item.key,
       name: givenProduct.name,
@@ -235,33 +163,15 @@ export const createCheckoutData = (order: ICheckoutDataProps) => ({
  *
  */
 export const getUpdatedItems = (
-  products: IProductRootObject[],
+  products: ICartItemNode[],
   newQty: number,
   cartKey: string,
 ) => {
-  // Create an empty array.
+  const updatedItems: TUpdatedItems = products.map((cartItem) => ({
+    key: cartItem.key,
+    quantity: cartItem.key === cartKey ? newQty : cartItem.quantity,
+  }));
 
-  const updatedItems: TUpdatedItems = [];
-
-  // Loop through the product array.
-  products.forEach((cartItem) => {
-    // If you find the cart key of the product user is trying to update, push the key and new qty.
-    if (cartItem.key === cartKey) {
-      updatedItems.push({
-        key: cartItem.key,
-        quantity: newQty,
-      });
-
-      // Otherwise just push the existing qty without updating.
-    } else {
-      updatedItems.push({
-        key: cartItem.key,
-        quantity: cartItem.quantity,
-      });
-    }
-  });
-
-  // Return the updatedItems array with new Qtys.
   return updatedItems;
 };
 
@@ -272,8 +182,8 @@ export const getUpdatedItems = (
 export const handleQuantityChange = (
   event: ChangeEvent<HTMLInputElement>,
   cartKey: string,
-  cart: IProductRootObject[],
-  updateCart: (variables: IUpdateCartRootObject) => void,
+  cart: ICartItemNode[],
+  updateCart: (variables: IUpdateCartMutationArgs) => void,
   updateCartProcessing: boolean,
 ) => {
   if (typeof window !== 'undefined') {
