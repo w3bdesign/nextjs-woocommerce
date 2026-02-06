@@ -1,164 +1,273 @@
 // Imports
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 // Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 // Components
-import AddToCart, { IProductRootObject } from './AddToCart.component';
+import AddToCart from './AddToCart.component';
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
-const SingleProduct = ({ product }: IProductRootObject) => {
+// Types
+import type { ISingleProductProps, ISingleProduct } from '@/types/product';
+
+const PLACEHOLDER_FALLBACK = 'https://via.placeholder.com/600';
+
+/** Format a price string by padding the currency symbol */
+const formatPrice = (value: string | undefined): string | undefined => {
+  if (!value) {
+    return value;
+  }
+  return paddedPrice(value, 'kr');
+};
+
+/** Strip HTML tags from a string using DOMParser (client-side only) */
+const useStrippedDescription = (html: string): string | null =>
+  useMemo(() => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return new DOMParser().parseFromString(html, 'text/html').body
+      .textContent;
+  }, [html]);
+
+/** Resolve the product image source URL */
+const getImageSrc = (image: ISingleProduct['image']): string =>
+  image?.sourceUrl ||
+  process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ||
+  PLACEHOLDER_FALLBACK;
+
+/** Get the current sale price based on whether the product has variations */
+const getCurrentSalePrice = (
+  hasVariations: boolean,
+  price: string,
+  salePrice: string | undefined,
+): string | undefined =>
+  hasVariations ? filteredVariantPrice(price, '') : salePrice;
+
+/** Get the original (regular) price based on whether the product has variations */
+const getOriginalSalePrice = (
+  hasVariations: boolean,
+  price: string,
+  regularPrice: string | undefined,
+): string | undefined =>
+  hasVariations ? filteredVariantPrice(price, 'right') : regularPrice;
+
+/** Initialise the selected variation from the product's first variation node */
+const useVariationInitializer = (
+  variations: ISingleProduct['variations'],
+  setSelectedVariation: (id: number) => void,
+  setIsLoading: (loading: boolean) => void,
+) => {
+  useEffect(() => {
+    setIsLoading(false);
+    if (variations) {
+      setSelectedVariation(variations.nodes[0].databaseId);
+    }
+  }, [variations, setSelectedVariation, setIsLoading]);
+};
+
+// --- Sub-components ---
+
+const ProductImage = ({
+  image,
+  alt,
+}: {
+  image: ISingleProduct['image'];
+  alt: string;
+}) => (
+  <div className="mb-6 md:mb-0 group">
+    <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-gray-100">
+      <img
+        id="product-image"
+        src={getImageSrc(image)}
+        alt={alt}
+        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+      />
+    </div>
+  </div>
+);
+
+const PriceDisplay = ({
+  onSale,
+  hasVariations,
+  price,
+  salePrice,
+  regularPrice,
+}: {
+  onSale: boolean;
+  hasVariations: boolean;
+  price: string | undefined;
+  salePrice: string | undefined;
+  regularPrice: string | undefined;
+}) => {
+  if (!onSale) {
+    return <p className="text-xl font-bold">{price}</p>;
+  }
+
+  const safePrice = price ?? '';
+  const currentPrice = getCurrentSalePrice(hasVariations, safePrice, salePrice);
+  const originalPrice = getOriginalSalePrice(hasVariations, safePrice, regularPrice);
+
+  return (
+    <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
+      <p className="text-xl font-bold text-red-600">{currentPrice}</p>
+      <p className="text-xl text-gray-500 line-through">{originalPrice}</p>
+    </div>
+  );
+};
+
+const StockStatus = ({ quantity }: { quantity: number }) => (
+  <div className="mb-6 mx-auto md:mx-0">
+    <div className="p-2 bg-green-100 border border-green-400 rounded-lg max-w-[14.375rem]">
+      <p className="text-lg text-green-700 font-semibold text-center md:text-left">
+        {quantity} på lager
+      </p>
+    </div>
+  </div>
+);
+
+const VariationSelector = ({
+  variations,
+  onSelect,
+}: {
+  variations: NonNullable<ISingleProduct['variations']>;
+  onSelect: (id: number) => void;
+}) => (
+  <div className="mb-6 mx-auto md:mx-0 w-full max-w-[14.375rem]">
+    <label
+      htmlFor="variant"
+      className="block text-lg font-medium mb-2 text-center md:text-left"
+    >
+      Varianter
+    </label>
+    <select
+      id="variant"
+      name="variant"
+      className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      onChange={(e) => onSelect(Number(e.target.value))}
+    >
+      {variations.nodes.map(({ id, name, databaseId, stockQuantity }) => (
+        <option key={id} value={databaseId}>
+          {name.split('- ').pop()} - ({stockQuantity} på lager)
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+// --- Loading state ---
+
+const ProductLoadingState = () => (
+  <section className="bg-white mb-[8rem] md:mb-12">
+    <div className="h-56 mt-20">
+      <p className="text-xl font-bold text-center">Laster produkt ...</p>
+      <br />
+      <LoadingSpinner />
+    </div>
+  </section>
+);
+
+// --- Product Details ---
+
+const ProductDetails = ({
+  product,
+  hasVariations,
+  price,
+  salePrice,
+  regularPrice,
+  descriptionText,
+  selectedVariation,
+  onSelectVariation,
+}: {
+  product: ISingleProduct;
+  hasVariations: boolean;
+  price: string | undefined;
+  salePrice: string | undefined;
+  regularPrice: string | undefined;
+  descriptionText: string | null;
+  selectedVariation: number | undefined;
+  onSelectVariation: (id: number) => void;
+}) => {
+  const resolvedVariationId = hasVariations ? selectedVariation : void 0;
+
+  return (
+    <div className="flex flex-col">
+      <h1 className="text-xl font-bold text-center md:text-left mb-4">
+        {product.name}
+      </h1>
+
+      <div className="text-center md:text-left mb-6">
+        <PriceDisplay
+          onSale={product.onSale}
+          hasVariations={hasVariations}
+          price={price}
+          salePrice={salePrice}
+          regularPrice={regularPrice}
+        />
+      </div>
+
+      <p className="text-lg mb-6 text-center md:text-left">
+        {descriptionText}
+      </p>
+
+      {Boolean(product.stockQuantity) && (
+        <StockStatus quantity={product.stockQuantity} />
+      )}
+
+      {product.variations && (
+        <VariationSelector
+          variations={product.variations}
+          onSelect={onSelectVariation}
+        />
+      )}
+
+      <div className="w-full mx-auto md:mx-0 max-w-[14.375rem]">
+        <AddToCart
+          product={product}
+          variationId={resolvedVariationId}
+          fullWidth={true}
+        />
+      </div>
+    </div>
+  );
+};
+
+// --- Main Component ---
+
+const SingleProduct = ({ product }: ISingleProductProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
 
-  const placeholderFallBack = 'https://via.placeholder.com/600';
+  useVariationInitializer(product.variations, setSelectedVariation, setIsLoading);
 
-  let DESCRIPTION_WITHOUT_HTML;
+  const price = formatPrice(product.price);
+  const regularPrice = formatPrice(product.regularPrice);
+  const salePrice = formatPrice(product.salePrice);
+  const descriptionText = useStrippedDescription(product.description);
+  const hasVariations = Boolean(product.variations);
 
-  useEffect(() => {
-    setIsLoading(false);
-    if (product.variations) {
-      const firstVariant = product.variations.nodes[0].databaseId;
-      setSelectedVariation(firstVariant);
-    }
-  }, [product.variations]);
-
-  let { description, image, name, onSale, price, regularPrice, salePrice } =
-    product;
-
-  // Add padding/empty character after currency symbol here
-  if (price) {
-    price = paddedPrice(price, 'kr');
-  }
-  if (regularPrice) {
-    regularPrice = paddedPrice(regularPrice, 'kr');
-  }
-  if (salePrice) {
-    salePrice = paddedPrice(salePrice, 'kr');
-  }
-
-  // Strip out HTML from description
-  if (typeof window !== 'undefined') {
-    DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
-      description,
-      'text/html',
-    ).body.textContent;
+  if (isLoading) {
+    return <ProductLoadingState />;
   }
 
   return (
     <section className="bg-white mb-[8rem] md:mb-12">
-      {isLoading ? (
-        <div className="h-56 mt-20">
-          <p className="text-xl font-bold text-center">Laster produkt ...</p>
-          <br />
-          <LoadingSpinner />
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
+          <ProductImage image={product.image} alt={product.name} />
+          <ProductDetails
+            product={product}
+            hasVariations={hasVariations}
+            price={price}
+            salePrice={salePrice}
+            regularPrice={regularPrice}
+            descriptionText={descriptionText}
+            selectedVariation={selectedVariation}
+            onSelectVariation={setSelectedVariation}
+          />
         </div>
-      ) : (
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
-            {/* Image Container */}
-            <div className="mb-6 md:mb-0 group">
-              <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-gray-100">
-                <img
-                  id="product-image"
-                  src={
-                    image?.sourceUrl ||
-                    process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ||
-                    placeholderFallBack
-                  }
-                  alt={name}
-                  className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
-                />
-              </div>
-            </div>
-
-            {/* Product Details Container */}
-            <div className="flex flex-col">
-              <h1 className="text-xl font-bold text-center md:text-left mb-4">
-                {name}
-              </h1>
-
-              {/* Price Display */}
-              <div className="text-center md:text-left mb-6">
-                {onSale ? (
-                  <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
-                    <p className="text-xl font-bold text-red-600">
-                      {product.variations
-                        ? filteredVariantPrice(price, '')
-                        : salePrice}
-                    </p>
-                    <p className="text-xl text-gray-500 line-through">
-                      {product.variations
-                        ? filteredVariantPrice(price, 'right')
-                        : regularPrice}
-                    </p>
-                  </div>
-                ) : (
-                  <p className="text-xl font-bold">{price}</p>
-                )}
-              </div>
-
-              {/* Description */}
-              <p className="text-lg mb-6 text-center md:text-left">
-                {DESCRIPTION_WITHOUT_HTML}
-              </p>
-
-              {/* Stock Status */}
-              {Boolean(product.stockQuantity) && (
-                <div className="mb-6 mx-auto md:mx-0">
-                  <div className="p-2 bg-green-100 border border-green-400 rounded-lg max-w-[14.375rem]">
-                    <p className="text-lg text-green-700 font-semibold text-center md:text-left">
-                      {product.stockQuantity} på lager
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Variations Select */}
-              {product.variations && (
-                <div className="mb-6 mx-auto md:mx-0 w-full max-w-[14.375rem]">
-                  <label
-                    htmlFor="variant"
-                    className="block text-lg font-medium mb-2 text-center md:text-left"
-                  >
-                    Varianter
-                  </label>
-                  <select
-                    id="variant"
-                    name="variant"
-                    className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    onChange={(e) =>
-                      setSelectedVariation(Number(e.target.value))
-                    }
-                  >
-                    {product.variations.nodes.map(
-                      ({ id, name, databaseId, stockQuantity }) => (
-                        <option key={id} value={databaseId}>
-                          {name.split('- ').pop()} - ({stockQuantity} på lager)
-                        </option>
-                      ),
-                    )}
-                  </select>
-                </div>
-              )}
-
-              {/* Add to Cart Button */}
-              <div className="w-full mx-auto md:mx-0 max-w-[14.375rem]">
-                {product.variations ? (
-                  <AddToCart
-                    product={product}
-                    variationId={selectedVariation}
-                    fullWidth={true}
-                  />
-                ) : (
-                  <AddToCart product={product} fullWidth={true} />
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </section>
   );
 };

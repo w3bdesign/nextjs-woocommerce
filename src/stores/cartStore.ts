@@ -1,28 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface Image {
-  sourceUrl?: string;
-  srcSet?: string;
-  title: string;
-}
+import type { Cart } from '@/types/cart';
 
-export interface Product {
-  cartKey: string;
-  name: string;
-  qty: number;
-  price: number;
-  totalPrice: string;
-  image: Image;
-  productId: number;
-}
+export type { CartProduct, Cart } from '@/types/cart';
 
 interface CartState {
-  cart: {
-    products: Product[];
-    totalProductsCount: number;
-    totalProductsPrice: number;
-  } | null;
+  cart: Cart | null;
   isLoading: boolean;
   setCart: (cart: CartState['cart']) => void;
   updateCart: (newCart: NonNullable<CartState['cart']>) => void;
