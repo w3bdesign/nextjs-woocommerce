@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { CartProduct, Cart } from '@/types/cart';
+import type { Cart } from '@/types/cart';
 
 export type { CartProduct, Cart } from '@/types/cart';
 
