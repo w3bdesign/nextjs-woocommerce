@@ -143,73 +143,51 @@ export const filteredVariantPrice = (price: string, side: string) => {
  */
 
 export const getFormattedCart = (data: IFormattedCartProps) => {
+  if (!data?.cart?.contents?.nodes?.length) {
+    return;
+  }
+
+  const givenProducts = data.cart.contents.nodes;
+
   const formattedCart: RootObject = {
     products: [],
     totalProductsCount: 0,
     totalProductsPrice: 0,
   };
 
-  if (!data) {
-    return;
-  }
-  const givenProducts = data.cart.contents.nodes;
-
-  // Create an empty object.
-  formattedCart.products = [];
-
-  const product: Product = {
-    productId: 0,
-    cartKey: '',
-    name: '',
-    qty: 0,
-    price: 0,
-    totalPrice: '0',
-    image: { sourceUrl: '', srcSet: '', title: '' },
-  };
-
   let totalProductsCount = 0;
-  let i = 0;
 
-  if (!givenProducts.length) {
-    return;
-  }
-
-  givenProducts.forEach(() => {
-    const givenProduct = givenProducts[Number(i)].product.node;
+  givenProducts.forEach((item) => {
+    const givenProduct = item.product.node;
 
     // Convert price to a float value
-    const convertedCurrency = givenProducts[Number(i)].total.replace(
-      /[^0-9.-]+/g,
-      '',
-    );
+    const convertedCurrency = item.total.replace(/[^0-9.-]+/g, '');
 
-    product.productId = givenProduct.productId;
-    product.cartKey = givenProducts[Number(i)].key;
-    product.name = givenProduct.name;
-    product.qty = givenProducts[Number(i)].quantity;
-    product.price = Number(convertedCurrency) / product.qty;
-    product.totalPrice = givenProducts[Number(i)].total;
+    // Create a new product object for each item to avoid shared reference bug
+    const product: Product = {
+      productId: givenProduct.productId,
+      cartKey: item.key,
+      name: givenProduct.name,
+      qty: item.quantity,
+      price: Number(convertedCurrency) / item.quantity,
+      totalPrice: item.total,
+      image: givenProduct.image?.sourceUrl
+        ? {
+            sourceUrl: givenProduct.image.sourceUrl,
+            srcSet: givenProduct.image.srcSet,
+            title: givenProduct.image.title,
+          }
+        : {
+            sourceUrl: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
+            srcSet: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
+            title: givenProduct.name,
+          },
+    };
 
-    // Ensure we can add products without images to the cart
-
-    product.image = givenProduct.image.sourceUrl
-      ? {
-          sourceUrl: givenProduct.image.sourceUrl,
-          srcSet: givenProduct.image.srcSet,
-          title: givenProduct.image.title,
-        }
-      : {
-          sourceUrl: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
-          srcSet: process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL,
-          title: givenProduct.name,
-        };
-
-    totalProductsCount += givenProducts[Number(i)].quantity;
-
-    // Push each item into the products array.
+    totalProductsCount += item.quantity;
     formattedCart.products.push(product);
-    i++;
   });
+
   formattedCart.totalProductsCount = totalProductsCount;
   formattedCart.totalProductsPrice = data.cart.total;
 
@@ -247,7 +225,7 @@ export const createCheckoutData = (order: ICheckoutDataProps) => ({
   shipToDifferentAddress: false,
   paymentMethod: order.paymentMethod,
   isPaid: false,
-  transactionId: 'fhggdfjgfi',
+  transactionId: uuidv4(),
 });
 
 /**
@@ -298,7 +276,7 @@ export const handleQuantityChange = (
   updateCart: (variables: IUpdateCartRootObject) => void,
   updateCartProcessing: boolean,
 ) => {
-  if (process.browser) {
+  if (typeof window !== 'undefined') {
     event.stopPropagation();
 
     // Return if the previous update cart mutation request is still processing
