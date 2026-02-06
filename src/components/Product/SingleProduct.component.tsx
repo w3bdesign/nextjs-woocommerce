@@ -37,6 +37,36 @@ const getImageSrc = (image: ISingleProduct['image']): string =>
   process.env.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL ||
   PLACEHOLDER_FALLBACK;
 
+/** Get the current sale price based on whether the product has variations */
+const getCurrentSalePrice = (
+  hasVariations: boolean,
+  price: string,
+  salePrice: string | undefined,
+): string | undefined =>
+  hasVariations ? filteredVariantPrice(price, '') : salePrice;
+
+/** Get the original (regular) price based on whether the product has variations */
+const getOriginalSalePrice = (
+  hasVariations: boolean,
+  price: string,
+  regularPrice: string | undefined,
+): string | undefined =>
+  hasVariations ? filteredVariantPrice(price, 'right') : regularPrice;
+
+/** Initialise the selected variation from the product's first variation node */
+const useVariationInitializer = (
+  variations: ISingleProduct['variations'],
+  setSelectedVariation: (id: number) => void,
+  setIsLoading: (loading: boolean) => void,
+) => {
+  useEffect(() => {
+    setIsLoading(false);
+    if (variations) {
+      setSelectedVariation(variations.nodes[0].databaseId);
+    }
+  }, [variations, setSelectedVariation, setIsLoading]);
+};
+
 // --- Sub-components ---
 
 const ProductImage = ({
@@ -58,21 +88,6 @@ const ProductImage = ({
   </div>
 );
 
-/** Compute the current and original price for sale items */
-const getSalePrices = (
-  hasVariations: boolean,
-  price: string | undefined,
-  salePrice: string | undefined,
-  regularPrice: string | undefined,
-) => ({
-  currentPrice: hasVariations
-    ? filteredVariantPrice(price ?? '', '')
-    : salePrice,
-  originalPrice: hasVariations
-    ? filteredVariantPrice(price ?? '', 'right')
-    : regularPrice,
-});
-
 const PriceDisplay = ({
   onSale,
   hasVariations,
@@ -90,12 +105,9 @@ const PriceDisplay = ({
     return <p className="text-xl font-bold">{price}</p>;
   }
 
-  const { currentPrice, originalPrice } = getSalePrices(
-    hasVariations,
-    price,
-    salePrice,
-    regularPrice,
-  );
+  const safePrice = price ?? '';
+  const currentPrice = getCurrentSalePrice(hasVariations, safePrice, salePrice);
+  const originalPrice = getOriginalSalePrice(hasVariations, safePrice, regularPrice);
 
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
@@ -156,18 +168,78 @@ const ProductLoadingState = () => (
   </section>
 );
 
+// --- Product Details ---
+
+const ProductDetails = ({
+  product,
+  hasVariations,
+  price,
+  salePrice,
+  regularPrice,
+  descriptionText,
+  selectedVariation,
+  onSelectVariation,
+}: {
+  product: ISingleProduct;
+  hasVariations: boolean;
+  price: string | undefined;
+  salePrice: string | undefined;
+  regularPrice: string | undefined;
+  descriptionText: string | null;
+  selectedVariation: number | undefined;
+  onSelectVariation: (id: number) => void;
+}) => {
+  const resolvedVariationId = hasVariations ? selectedVariation : void 0;
+
+  return (
+    <div className="flex flex-col">
+      <h1 className="text-xl font-bold text-center md:text-left mb-4">
+        {product.name}
+      </h1>
+
+      <div className="text-center md:text-left mb-6">
+        <PriceDisplay
+          onSale={product.onSale}
+          hasVariations={hasVariations}
+          price={price}
+          salePrice={salePrice}
+          regularPrice={regularPrice}
+        />
+      </div>
+
+      <p className="text-lg mb-6 text-center md:text-left">
+        {descriptionText}
+      </p>
+
+      {Boolean(product.stockQuantity) && (
+        <StockStatus quantity={product.stockQuantity} />
+      )}
+
+      {product.variations && (
+        <VariationSelector
+          variations={product.variations}
+          onSelect={onSelectVariation}
+        />
+      )}
+
+      <div className="w-full mx-auto md:mx-0 max-w-[14.375rem]">
+        <AddToCart
+          product={product}
+          variationId={resolvedVariationId}
+          fullWidth={true}
+        />
+      </div>
+    </div>
+  );
+};
+
 // --- Main Component ---
 
 const SingleProduct = ({ product }: ISingleProductProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedVariation, setSelectedVariation] = useState<number>();
 
-  useEffect(() => {
-    setIsLoading(false);
-    if (product.variations) {
-      setSelectedVariation(product.variations.nodes[0].databaseId);
-    }
-  }, [product.variations]);
+  useVariationInitializer(product.variations, setSelectedVariation, setIsLoading);
 
   const price = formatPrice(product.price);
   const regularPrice = formatPrice(product.regularPrice);
@@ -179,52 +251,21 @@ const SingleProduct = ({ product }: ISingleProductProps) => {
     return <ProductLoadingState />;
   }
 
-  const resolvedVariationId = hasVariations ? selectedVariation : void 0;
-
   return (
     <section className="bg-white mb-[8rem] md:mb-12">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
           <ProductImage image={product.image} alt={product.name} />
-
-          <div className="flex flex-col">
-            <h1 className="text-xl font-bold text-center md:text-left mb-4">
-              {product.name}
-            </h1>
-
-            <div className="text-center md:text-left mb-6">
-              <PriceDisplay
-                onSale={product.onSale}
-                hasVariations={hasVariations}
-                price={price}
-                salePrice={salePrice}
-                regularPrice={regularPrice}
-              />
-            </div>
-
-            <p className="text-lg mb-6 text-center md:text-left">
-              {descriptionText}
-            </p>
-
-            {Boolean(product.stockQuantity) && (
-              <StockStatus quantity={product.stockQuantity} />
-            )}
-
-            {product.variations && (
-              <VariationSelector
-                variations={product.variations}
-                onSelect={setSelectedVariation}
-              />
-            )}
-
-            <div className="w-full mx-auto md:mx-0 max-w-[14.375rem]">
-              <AddToCart
-                product={product}
-                variationId={resolvedVariationId}
-                fullWidth={true}
-              />
-            </div>
-          </div>
+          <ProductDetails
+            product={product}
+            hasVariations={hasVariations}
+            price={price}
+            salePrice={salePrice}
+            regularPrice={regularPrice}
+            descriptionText={descriptionText}
+            selectedVariation={selectedVariation}
+            onSelectVariation={setSelectedVariation}
+          />
         </div>
       </div>
     </section>
