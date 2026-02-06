@@ -22,7 +22,7 @@ const formatPrice = (value: string | undefined): string | undefined => {
 /** Strip HTML tags from a string using DOMParser (client-side only) */
 const useStrippedDescription = (html: string): string | null =>
   useMemo(() => {
-    if (typeof window === 'undefined') return null;
+    if (typeof globalThis.window === 'undefined') return null;
     return new DOMParser().parseFromString(html, 'text/html').body
       .textContent;
   }, [html]);
