@@ -12,7 +12,9 @@ import Button from '../UI/Button.component';
 
 // Constants
 import { INPUT_FIELDS } from '@/utils/constants/INPUT_FIELDS';
-import { ICheckoutDataProps } from '@/utils/functions/functions';
+
+// Types
+import type { ICheckoutDataProps } from '@/types/checkout';
 
 interface IBillingProps {
   handleFormSubmit: SubmitHandler<ICheckoutDataProps>;
