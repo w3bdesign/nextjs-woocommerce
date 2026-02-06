@@ -122,10 +122,12 @@ const AddToCart = ({
     variables: {
       input: productQueryInput,
     },
-
+    refetchQueries: [{ query: GET_CART }],
     onCompleted: () => {
-      // Update the cart with new values in React context.
-      refetch();
+      // Delayed refetch to ensure WooCommerce backend has settled
+      setTimeout(() => {
+        refetch();
+      }, 2000);
     },
 
     onError: () => {
