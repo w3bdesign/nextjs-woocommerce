@@ -3,6 +3,8 @@ import { persist } from 'zustand/middleware';
 
 import type { CartProduct, Cart } from '@/types/cart';
 
+export type { CartProduct, Cart } from '@/types/cart';
+
 interface CartState {
   cart: Cart | null;
   isLoading: boolean;
@@ -12,7 +14,6 @@ interface CartState {
   clearWooCommerceSession: () => void;
 }
 
-export type { CartProduct, Cart };
 
 export const useCartStore = create<CartState>()(
   persist(

@@ -7,22 +7,17 @@ import type { CartProduct, Cart } from '@/types/cart';
 import type { ICheckoutDataProps } from '@/types/checkout';
 import type {
   ICartItemNode,
-  IUpdateCartItem,
-  IUpdateCartInput,
-  IUpdateCartVariables,
   IUpdateCartMutationArgs,
   IFormattedCartProps,
 } from '@/types/graphql';
 
 // Re-export types that other files import from here
-export type {
-  ICartItemNode,
-  ICheckoutDataProps,
-  IUpdateCartItem,
-  IUpdateCartInput,
-  IUpdateCartVariables,
-  IUpdateCartMutationArgs,
-};
+export type { ICartItemNode } from '@/types/graphql';
+export type { ICheckoutDataProps } from '@/types/checkout';
+export type { IUpdateCartItem } from '@/types/graphql';
+export type { IUpdateCartInput } from '@/types/graphql';
+export type { IUpdateCartVariables } from '@/types/graphql';
+export type { IUpdateCartMutationArgs } from '@/types/graphql';
 
 // Keep backward-compatible alias for IProductRootObject → ICartItemNode
 export type IProductRootObject = ICartItemNode;
