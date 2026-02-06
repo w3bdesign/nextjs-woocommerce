@@ -94,8 +94,12 @@ const CheckoutForm = () => {
     if (null !== orderData) {
       // Perform checkout mutation when the value for orderData changes.
       checkout();
+      // Delayed refetch to ensure WooCommerce backend has settled
+      setTimeout(() => {
+        refetch();
+      }, 2000);
     }
-  }, [checkout, orderData]);
+  }, [checkout, orderData, refetch]);
 
   useEffect(() => {
     refetch();
