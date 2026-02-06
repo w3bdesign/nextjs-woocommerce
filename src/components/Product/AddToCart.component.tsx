@@ -135,10 +135,6 @@ const AddToCart = ({
 
   const handleAddToCart = () => {
     addToCart();
-    // Refetch cart after 2 seconds
-    setTimeout(() => {
-      refetch();
-    }, 2000);
   };
 
   return (

@@ -94,11 +94,8 @@ const CheckoutForm = () => {
     if (null !== orderData) {
       // Perform checkout mutation when the value for orderData changes.
       checkout();
-      setTimeout(() => {
-        refetch();
-      }, 2000);
     }
-  }, [checkout, orderData, refetch]);
+  }, [checkout, orderData]);
 
   useEffect(() => {
     refetch();

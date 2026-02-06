@@ -39,7 +39,7 @@ const SingleProduct = ({ product }: IProductRootObject) => {
   }
 
   // Strip out HTML from description
-  if (process.browser) {
+  if (typeof window !== 'undefined') {
     DESCRIPTION_WITHOUT_HTML = new DOMParser().parseFromString(
       description,
       'text/html',
