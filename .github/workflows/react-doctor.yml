@@ -1,0 +1,107 @@
+name: React Doctor
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  react-doctor:
+    name: React Health Check
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run React Doctor
+        id: doctor
+        run: |
+          # Run react-doctor with verbose output, pipe "n" to decline skill install prompt
+          echo n | npx react-doctor@latest --verbose 2>&1 | tee /tmp/react-doctor-output.txt
+
+          # Extract the score (run again with --score for clean output)
+          SCORE=$(echo n | npx react-doctor@latest --score 2>&1 | grep -oP '\d+ / \d+' || echo "unknown")
+          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+
+          # Extract just the numeric score for threshold check
+          SCORE_NUM=$(echo "$SCORE" | grep -oP '^\d+' || echo "0")
+          echo "score_num=$SCORE_NUM" >> "$GITHUB_OUTPUT"
+
+      - name: Post PR comment with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('/tmp/react-doctor-output.txt', 'utf8');
+            const score = '${{ steps.doctor.outputs.score }}';
+
+            // Strip ANSI escape codes for clean markdown
+            const clean = output.replace(/\x1b\[[0-9;]*m/g, '');
+
+            const body = `## 🩺 React Doctor — Score: ${score}
+
+            <details>
+            <summary>Full diagnostics</summary>
+
+            \`\`\`
+            ${clean}
+            \`\`\`
+
+            </details>
+
+            > Powered by [react-doctor](https://github.com/millionco/react-doctor)
+            `;
+
+            // Find existing comment to update instead of creating duplicates
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(
+              (c) => c.body?.includes('🩺 React Doctor')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## 🩺 React Doctor — Score: ${{ steps.doctor.outputs.score }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/react-doctor-output.txt | sed 's/\x1b\[[0-9;]*m//g' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check score threshold
+        run: |
+          SCORE=${{ steps.doctor.outputs.score_num }}
+          THRESHOLD=80
+          echo "React Doctor score: $SCORE (threshold: $THRESHOLD)"
+          if [ "$SCORE" -lt "$THRESHOLD" ]; then
+            echo "::error::React Doctor score $SCORE is below threshold $THRESHOLD"
+            exit 1
+          fi
