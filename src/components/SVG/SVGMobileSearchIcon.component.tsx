@@ -15,6 +15,15 @@ const SVGMobileSearchIcon = () => {
       <svg
         className="cursor-pointer"
         onClick={scrollToTop}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            scrollToTop();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Scroll to top"
         fill="#fff"
         xmlns="https://www.w3.org/2000/svg"
         viewBox="0 0 50 50"

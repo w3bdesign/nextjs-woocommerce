@@ -1,4 +1,4 @@
-import { motion, Transition } from 'motion/react';
+import { m, Transition } from 'motion/react';
 
 import type { IAnimateProps } from './types/Animations.types';
 
@@ -26,13 +26,13 @@ const FadeLeftToRightItem = ({ children, cssClass }: IAnimateProps) => {
     hidden: { opacity: 0, x: -20 },
   };
   return (
-    <motion.span
+    <m.span
       variants={fadeLeftToRightItemVariants}
       className={cssClass}
       data-testid="fadelefttorightitem"
     >
       {children}
-    </motion.span>
+    </m.span>
   );
 };
 
