@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useReducer, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
 import FadeLeftToRight from '@/components/Animations/FadeLeftToRight.component';
@@ -11,6 +11,46 @@ const hamburgerLine =
 
 const opacityFull = 'opacity-100 group-hover:opacity-100';
 
+// --- Reducer ---
+
+interface HamburgerState {
+  isExpanded: boolean;
+  hidden: string;
+  isAnimating: boolean;
+}
+
+type HamburgerAction =
+  | { type: 'EXPAND' }
+  | { type: 'COLLAPSE' }
+  | { type: 'ANIMATION_END_EXPANDED' }
+  | { type: 'ANIMATION_END_COLLAPSED' }
+  | { type: 'TOGGLE' };
+
+const initialState: HamburgerState = {
+  isExpanded: false,
+  hidden: 'invisible',
+  isAnimating: false,
+};
+
+function hamburgerReducer(
+  state: HamburgerState,
+  action: HamburgerAction,
+): HamburgerState {
+  switch (action.type) {
+    case 'TOGGLE':
+      if (state.isAnimating) return state;
+      return state.isExpanded
+        ? { ...state, isExpanded: false, isAnimating: true }
+        : { ...state, isExpanded: true, hidden: '', isAnimating: true };
+    case 'ANIMATION_END_EXPANDED':
+      return { ...state, isAnimating: false };
+    case 'ANIMATION_END_COLLAPSED':
+      return { ...state, hidden: 'invisible', isAnimating: false };
+    default:
+      return state;
+  }
+}
+
 /**
  * Hamburger component used in mobile menu. Animates to a X when clicked
  * @function Hamburger
@@ -20,63 +60,38 @@ const opacityFull = 'opacity-100 group-hover:opacity-100';
  */
 
 const Hamburger = () => {
-  const [isExpanded, setisExpanded] = useState(false);
-  const [hidden, setHidden] = useState('invisible');
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [state, dispatch] = useReducer(hamburgerReducer, initialState);
+  const { isExpanded, hidden, isAnimating } = state;
   const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
 
   useEffect(() => {
-    if (isExpanded) {
-      setHidden('');
-      setIsAnimating(true);
-
-      // Clear any existing timeout
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-
-      // Set a timeout for the animation duration
-      animationTimeoutRef.current = setTimeout(() => {
-        setIsAnimating(false);
-      }, 1000); // Match this with the animation duration
-    } else {
-      setIsAnimating(true);
-
-      // Clear any existing timeout
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-
-      // Set a timeout for the animation duration and hiding
-      animationTimeoutRef.current = setTimeout(() => {
-        setHidden('invisible');
-        setIsAnimating(false);
-      }, 1000); // Match this with the animation duration
+    // Clear any existing timeout
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
     }
 
-    // Cleanup function to clear timeout when component unmounts
+    if (!isAnimating) return;
+
+    animationTimeoutRef.current = setTimeout(() => {
+      dispatch(
+        isExpanded
+          ? { type: 'ANIMATION_END_EXPANDED' }
+          : { type: 'ANIMATION_END_COLLAPSED' },
+      );
+    }, 1000);
+
     return () => {
       if (animationTimeoutRef.current) {
         clearTimeout(animationTimeoutRef.current);
       }
     };
-  }, [isExpanded]);
+  }, [isExpanded, isAnimating]);
 
   const handleMobileMenuClick = useCallback(() => {
-    // Prevent clicks during animation
-    if (isAnimating) {
-      return;
-    }
-
-    /**
-     * Anti-pattern: setisExpanded(!isExpanded)
-     * Even if your state updates are batched and multiple updates to the enabled/disabled state are made together
-     * each update will rely on the correct previous state so that you always end up with the result you expect.
-     */
-    setisExpanded((prevExpanded) => !prevExpanded);
-  }, [setisExpanded, isAnimating]);
+    dispatch({ type: 'TOGGLE' });
+  }, []);
 
   return (
     <div className="z-50 md:hidden lg:hidden xl:hidden bg-blue-800">
@@ -133,7 +148,7 @@ const Hamburger = () => {
                       className="text-xl inline-block px-4 py-2 no-underline hover:text-black hover:underline"
                       onClick={() => {
                         if (!isAnimating) {
-                          setisExpanded((prevExpanded) => !prevExpanded);
+                          dispatch({ type: 'TOGGLE' });
                         }
                       }}
                       onKeyDown={(event) => {
@@ -142,7 +157,7 @@ const Hamburger = () => {
                           (event.key === 'Enter' || event.key === ' ') &&
                           !isAnimating
                         ) {
-                          setisExpanded((prevExpanded) => !prevExpanded);
+                          dispatch({ type: 'TOGGLE' });
                         }
                       }}
                       tabIndex={0} // Make the span focusable
