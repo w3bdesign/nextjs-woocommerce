@@ -48,22 +48,20 @@ jobs:
             const output = fs.readFileSync('/tmp/react-doctor-output.txt', 'utf8');
             const score = '${{ steps.doctor.outputs.score }}';
 
-            // Strip ANSI escape codes for clean markdown
-            const clean = output.replace(/\x1b\[[0-9;]*m/g, '');
-
-            const body = `## 🩺 React Doctor — Score: ${score}
-
-            <details>
-            <summary>Full diagnostics</summary>
-
-            \`\`\`
-            ${clean}
-            \`\`\`
-
-            </details>
-
-            > Powered by [react-doctor](https://github.com/millionco/react-doctor)
-            `;
+            const body = [
+              `## 🩺 React Doctor — Score: ${score}`,
+              '',
+              '<details>',
+              '<summary>Full diagnostics</summary>',
+              '',
+              '```',
+              output.trim(),
+              '```',
+              '',
+              '</details>',
+              '',
+              '> Powered by [react-doctor](https://github.com/millionco/react-doctor)',
+            ].join('\n');
 
             // Find existing comment to update instead of creating duplicates
             const { data: comments } = await github.rest.issues.listComments({
@@ -98,12 +96,13 @@ jobs:
           echo "## 🩺 React Doctor — Score: ${{ steps.doctor.outputs.score }}" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          cat /tmp/react-doctor-output.txt | sed 's/\x1b\[[0-9;]*m//g' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/react-doctor-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Check score threshold
         run: |
-          SCORE=${{ steps.doctor.outputs.score_num }}
+          SCORE="${{ steps.doctor.outputs.score_num }}"
+          SCORE="${SCORE:-0}"
           THRESHOLD=80
           echo "React Doctor score: $SCORE (threshold: $THRESHOLD)"
           if [ "$SCORE" -lt "$THRESHOLD" ]; then
