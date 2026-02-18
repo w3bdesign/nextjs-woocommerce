@@ -15,6 +15,8 @@
     "playwright:ui": "npx playwright test --ui",
     "playwright:debug": "npx playwright test --debug",
     "playwright:codegen": "playwright codegen",
+    "doctor": "echo n | react-doctor --verbose",
+    "doctor:score": "echo n | react-doctor --score",
     "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
   },
   "keywords": [

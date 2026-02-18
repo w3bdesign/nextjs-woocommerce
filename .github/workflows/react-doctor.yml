@@ -23,11 +23,11 @@ jobs:
       - name: Run React Doctor
         id: doctor
         run: |
-          # Run react-doctor with verbose output, pipe "n" to decline skill install prompt
-          echo n | npx react-doctor@latest --verbose 2>&1 | tee /tmp/react-doctor-output.txt
+          # Run react-doctor via local devDependency (avoids npx isolation issues with typescript)
+          npm run doctor 2>&1 | tee /tmp/react-doctor-output.txt
 
           # Extract the score (run again with --score for clean output)
-          SCORE=$(echo n | npx react-doctor@latest --score 2>&1 | grep -oP '\d+ / \d+' || echo "unknown")
+          SCORE=$(npm run doctor:score 2>&1 | grep -oP '\d+ / \d+' || echo "unknown")
           echo "score=$SCORE" >> "$GITHUB_OUTPUT"
 
           # Extract just the numeric score for threshold check
