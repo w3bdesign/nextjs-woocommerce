@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 import { useCartStore } from '@/stores/cartStore';
@@ -13,15 +12,7 @@ interface ICartProps {
  */
 const Cart = ({ stickyNav }: ICartProps) => {
   const cart = useCartStore((state) => state.cart);
-  const [productCount, setProductCount] = useState<number | null | undefined>();
-
-  useEffect(() => {
-    if (cart) {
-      setProductCount(cart.totalProductsCount);
-    } else {
-      setProductCount(null);
-    }
-  }, [cart]);
+  const productCount = cart?.totalProductsCount ?? null;
 
   return (
     <>

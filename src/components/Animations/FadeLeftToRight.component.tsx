@@ -1,4 +1,4 @@
-import { motion, Transition } from 'motion/react';
+import { LazyMotion, domAnimation, m, Transition } from 'motion/react';
 
 import type { IAnimateStaggerWithDelayProps } from './types/Animations.types';
 
@@ -45,15 +45,17 @@ const FadeLeftToRight = ({
     },
   };
   return (
-    <motion.div
-      initial="hidden"
-      animate={animateNotReverse ? 'visible' : 'hidden'}
-      variants={FadeLeftToRightVariants}
-      className={cssClass}
-      data-testid="fadelefttoright"
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        initial="hidden"
+        animate={animateNotReverse ? 'visible' : 'hidden'}
+        variants={FadeLeftToRightVariants}
+        className={cssClass}
+        data-testid="fadelefttoright"
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   );
 };
 

@@ -1,4 +1,4 @@
-import { motion, Transition } from 'motion/react';
+import { LazyMotion, domAnimation, m, Transition } from 'motion/react';
 
 import type { IAnimateWithDelayProps } from './types/Animations.types';
 
@@ -18,7 +18,7 @@ const FadeUp = ({ children, cssClass, delay }: IAnimateWithDelayProps) => {
     duration: 0.5,
     stiffness: 110,
   };
- 
+
   const fadeUpVariants = {
     initial: { opacity: 0, y: 20 },
     animate: {
@@ -29,15 +29,17 @@ const FadeUp = ({ children, cssClass, delay }: IAnimateWithDelayProps) => {
   };
 
   return (
-    <motion.div
-      className={cssClass}
-      variants={fadeUpVariants}
-      initial="initial"
-      animate="animate"
-      data-testid="fadeup"
-    >
-      {children}
-    </motion.div>
+    <LazyMotion features={domAnimation}>
+      <m.div
+        className={cssClass}
+        variants={fadeUpVariants}
+        initial="initial"
+        animate="animate"
+        data-testid="fadeup"
+      >
+        {children}
+      </m.div>
+    </LazyMotion>
   );
 };
 
