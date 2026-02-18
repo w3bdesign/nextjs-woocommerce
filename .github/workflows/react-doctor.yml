@@ -24,15 +24,20 @@ jobs:
         id: doctor
         run: |
           # Run react-doctor via local devDependency (avoids npx isolation issues with typescript)
-          npm run doctor 2>&1 | tee /tmp/react-doctor-output.txt
+          npm run doctor 2>&1 | tee /tmp/react-doctor-raw.txt
 
-          # Extract the score (run again with --score for clean output)
-          SCORE=$(npm run doctor:score 2>&1 | grep -oP '\d+ / \d+' || echo "unknown")
+          # Strip ANSI escape codes for clean output
+          sed 's/\x1b\[[0-9;]*m//g; s/\x1b\[[0-9;]*[A-Za-z]//g' /tmp/react-doctor-raw.txt | tr -d '\r' > /tmp/react-doctor-output.txt
+
+          # Extract score from the cleaned output (matches "96 / 100" pattern)
+          SCORE=$(grep -oP '\d+ / 100' /tmp/react-doctor-output.txt | head -1 || echo "unknown")
           echo "score=$SCORE" >> "$GITHUB_OUTPUT"
 
           # Extract just the numeric score for threshold check
           SCORE_NUM=$(echo "$SCORE" | grep -oP '^\d+' || echo "0")
           echo "score_num=$SCORE_NUM" >> "$GITHUB_OUTPUT"
+
+          echo "Detected score: $SCORE (numeric: $SCORE_NUM)"
 
       - name: Post PR comment with results
         if: github.event_name == 'pull_request'
