@@ -36,9 +36,9 @@ Use `redirect('/path')` from `next/navigation` in a Server Component, or handle 
 
 Use `import { LazyMotion, m } from "framer-motion"` with `domAnimation` features — saves ~30kb.
 
-- [ ] `src/components/Animations/FadeUp.component.tsx` — line 1
-- [ ] `src/components/Animations/FadeLeftToRightItem.component.tsx` — line 1
-- [ ] `src/components/Animations/FadeLeftToRight.component.tsx` — line 1
+- [x] `src/components/Animations/FadeUp.component.tsx` — line 1 ✅ Replaced `motion` with `LazyMotion` + `m`
+- [x] `src/components/Animations/FadeLeftToRightItem.component.tsx` — line 1 ✅ Replaced `motion` with `m`
+- [x] `src/components/Animations/FadeLeftToRight.component.tsx` — line 1 ✅ Replaced `motion` with `LazyMotion` + `m`
 
 ---
 
@@ -48,7 +48,7 @@ Use `import { LazyMotion, m } from "framer-motion"` with `domAnimation` features
 
 Visible, non-interactive elements with click handlers must have `keyup`, `keydown`, or `keypress` listener and a `role` attribute.
 
-- [ ] `src/components/SVG/SVGMobileSearchIcon.component.tsx` — line 15: add `onKeyDown` handler and `role="button"`
+- [x] `src/components/SVG/SVGMobileSearchIcon.component.tsx` — line 15 ✅ Added `onKeyDown`, `role="button"`, `tabIndex={0}`, `aria-label`
 
 ---
 
@@ -58,13 +58,13 @@ Visible, non-interactive elements with click handlers must have `keyup`, `keydow
 
 Combine into `useReducer`: `const [state, dispatch] = useReducer(reducer, initialState)`.
 
-- [ ] `src/components/Footer/Hamburger.component.tsx` — line 30
+- [x] `src/components/Footer/Hamburger.component.tsx` — line 30 ✅ Refactored to `useReducer` with `HamburgerState` / `HamburgerAction`
 
 ### Move `useEffect` simulating event handler to an actual event handler (1 instance)
 
 Move the conditional logic into `onClick`, `onChange`, or `onSubmit` handlers directly.
 
-- [ ] `src/components/Header/Cart.component.tsx` — line 18
+- [x] `src/components/Header/Cart.component.tsx` — line 18 ✅ Replaced `useEffect` + `useState` with derived state `cart?.totalProductsCount ?? null`
 
 ---
 
