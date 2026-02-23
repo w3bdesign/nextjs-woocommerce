@@ -28,7 +28,7 @@
   "author": "w3bdesign",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@apollo/client": "^3.14.0",
+    "@apollo/client": "^4.1.6",
     "@types/react": "^19.2.14",
     "algoliasearch": "^4.26.0",
     "autoprefixer": "^10.4.24",
