@@ -30,7 +30,7 @@
   "dependencies": {
     "@apollo/client": "^3.14.0",
     "@types/react": "^19.2.14",
-    "algoliasearch": "^4.27.0",
+    "algoliasearch": "^5.49.1",
     "autoprefixer": "^10.4.27",
     "graphql": "^16.13.0",
     "lodash": "^4.17.23",
