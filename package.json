@@ -34,7 +34,7 @@
     "autoprefixer": "^10.4.27",
     "graphql": "^16.13.0",
     "lodash": "^4.17.23",
-    "motion": "^12.34.3",
+    "motion": "^12.34.4",
     "next": "16.1.6",
     "nprogress": "^0.2.0",
     "postcss": "^8.5.6",
