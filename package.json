@@ -33,7 +33,7 @@
     "algoliasearch": "^4.27.0",
     "autoprefixer": "^10.4.27",
     "graphql": "^16.13.2",
-    "lodash": "^4.17.23",
+    "lodash": "^4.18.1",
     "motion": "^12.38.0",
     "next": "16.2.2",
     "nprogress": "^0.2.0",
