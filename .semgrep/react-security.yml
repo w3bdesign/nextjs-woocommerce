@@ -1,0 +1,172 @@
+rules:
+  # ============================================================
+  # React Security Rules
+  # OWASP A03:2021 - Injection / XSS Prevention
+  # ============================================================
+
+  - id: react-dangerously-set-inner-html
+    patterns:
+      - pattern: <$EL dangerouslySetInnerHTML={...} />
+      - pattern-not: <$EL dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(...)}} />
+      - pattern-not: <$EL dangerouslySetInnerHTML={{__html: purify.sanitize(...)}} />
+      - pattern-not: <$EL dangerouslySetInnerHTML={{__html: sanitize(...)}} />
+    message: >
+      dangerouslySetInnerHTML used without DOMPurify sanitization.
+      This is a direct XSS vector. Sanitize HTML with DOMPurify before rendering.
+      OWASP A03:2021 - Injection.
+    severity: ERROR
+    languages: [javascript, typescript, jsx, tsx]
+    metadata:
+      owasp: A03:2021
+      cwe: CWE-79
+
+  - id: react-href-javascript-protocol
+    patterns:
+      - pattern-either:
+          - pattern: <a href="javascript:..." ...>...</a>
+          - pattern: <a href={'javascript:...'} ...>...</a>
+          - pattern: <a href={`javascript:...`} ...>...</a>
+    message: >
+      javascript: protocol in href is an XSS vector.
+      Use onClick handlers or validated URLs instead.
+      OWASP A03:2021 - Injection.
+    severity: ERROR
+    languages: [javascript, typescript, jsx, tsx]
+    metadata:
+      owasp: A03:2021
+      cwe: CWE-79
+
+  - id: react-ref-innerhtml
+    patterns:
+      - pattern-either:
+          - pattern: $REF.current.innerHTML = ...
+          - pattern: $EL.innerHTML = ...
+    message: >
+      Direct innerHTML assignment bypasses React's XSS protection.
+      Use React state and dangerouslySetInnerHTML with DOMPurify,
+      or better yet, render content through React components.
+      OWASP A03:2021 - Injection.
+    severity: ERROR
+    languages: [javascript, typescript, jsx, tsx]
+    metadata:
+      owasp: A03:2021
+      cwe: CWE-79
+
+  # ============================================================
+  # OWASP A07:2021 - Authentication Failures
+  # ============================================================
+
+  - id: react-jwt-localstorage
+    patterns:
+      - pattern-either:
+          - pattern: localStorage.setItem("token", ...)
+          - pattern: localStorage.setItem('token', ...)
+          - pattern: localStorage.setItem("jwt", ...)
+          - pattern: localStorage.setItem('jwt', ...)
+          - pattern: localStorage.setItem("access_token", ...)
+          - pattern: localStorage.setItem('access_token', ...)
+          - pattern: localStorage.setItem("accessToken", ...)
+          - pattern: localStorage.setItem('accessToken', ...)
+          - pattern: localStorage.setItem("auth_token", ...)
+          - pattern: localStorage.setItem('auth_token', ...)
+    message: >
+      Storing auth tokens in localStorage is vulnerable to XSS theft.
+      Use httpOnly cookies set by the server instead.
+      OWASP A07:2021 - Identification and Authentication Failures.
+    severity: ERROR
+    languages: [javascript, typescript, jsx, tsx]
+    metadata:
+      owasp: A07:2021
+      cwe: CWE-922
+
+  # ============================================================
+  # OWASP A08:2021 - Software and Data Integrity Failures
+  # ============================================================
+
+  - id: react-postmessage-no-origin-check
+    pattern: |
+      window.addEventListener("message", function($EVENT) {
+        ...
+      })
+    pattern-not: |
+      window.addEventListener("message", function($EVENT) {
+        ...
+        $EVENT.origin ...
+        ...
+      })
+    message: >
+      postMessage listener without origin validation. Always check
+      event.origin against a trusted allowlist to prevent cross-origin attacks.
+      OWASP A08:2021 - Software and Data Integrity Failures.
+    severity: ERROR
+    languages: [javascript, typescript]
+    metadata:
+      owasp: A08:2021
+      cwe: CWE-346
+
+  - id: react-window-open-noopener
+    patterns:
+      - pattern: window.open($URL)
+      - pattern-not: window.open($URL, $NAME, "...noopener...")
+    message: >
+      window.open without 'noopener' allows the opened page to access
+      window.opener. Add 'noopener,noreferrer' to the features parameter.
+      OWASP A08:2021 - Software and Data Integrity Failures.
+    severity: WARNING
+    languages: [javascript, typescript, jsx, tsx]
+    metadata:
+      owasp: A08:2021
+      cwe: CWE-1022
+
+  # ============================================================
+  # OWASP A04:2021 - Insecure Design
+  # ============================================================
+
+  - id: react-eval-in-component
+    patterns:
+      - pattern-either:
+          - pattern: |
+              function $COMP(...) {
+                ...
+                eval(...)
+                ...
+              }
+          - pattern: |
+              const $COMP = (...) => {
+                ...
+                eval(...)
+                ...
+              }
+    message: >
+      eval() inside a React component is extremely dangerous.
+      User input could reach eval through props or state.
+      Refactor to avoid dynamic code execution entirely.
+      OWASP A04:2021 - Insecure Design.
+    severity: ERROR
+    languages: [javascript, typescript, jsx, tsx]
+    metadata:
+      owasp: A04:2021
+      cwe: CWE-95
+
+  # ============================================================
+  # OWASP A05:2021 - Security Misconfiguration
+  # ============================================================
+
+  - id: react-insecure-fetch-http
+    patterns:
+      - pattern-either:
+          - pattern: fetch("http://...")
+          - pattern: fetch('http://...')
+          - pattern: axios.get("http://...")
+          - pattern: axios.get('http://...')
+          - pattern: axios.post("http://...", ...)
+          - pattern: axios.post('http://...', ...)
+    message: >
+      HTTP request to non-HTTPS URL. All API calls should use HTTPS
+      to prevent data interception.
+      OWASP A05:2021 - Security Misconfiguration.
+    severity: WARNING
+    languages: [javascript, typescript, jsx, tsx]
+    metadata:
+      owasp: A05:2021
+      cwe: CWE-319
