@@ -47,9 +47,9 @@ rules:
               let $SECRET = "..."
           - pattern: |
               var $SECRET = "..."
-    metavariable-regex:
-      metavariable: $SECRET
-      regex: (password|secret|apiKey|api_key|token|privateKey|private_key|SECRET_KEY|JWT_SECRET)
+      - metavariable-regex:
+          metavariable: $SECRET
+          regex: (?i)(password|secret|apiKey|api_key|token|privateKey|private_key|SECRET_KEY|JWT_SECRET)
     message: >
       Possible hardcoded secret assigned to variable '$SECRET'.
       Use environment variables or a secrets manager.
@@ -149,7 +149,8 @@ rules:
               cors({ origin: '*' })
           - pattern: |
               cors({ origin: true })
-          - pattern: "Access-Control-Allow-Origin: *"
+          - pattern: $RES.setHeader("Access-Control-Allow-Origin", "*")
+          - pattern: $RES.setHeader('Access-Control-Allow-Origin', '*')
     message: >
       CORS configured with wildcard or unrestricted origin.
       Whitelist specific origins in production.
