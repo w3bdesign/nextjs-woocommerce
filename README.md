@@ -20,6 +20,7 @@
 - [Installation](#Installation)
 - [Features](#Features)
 - [Lighthouse Performance Monitoring](#lighthouse-performance-monitoring)
+- [Security](#security)
 - [Issues](#Issues)
 - [Troubleshooting](#Troubleshooting)
 - [TODO](#TODO)
@@ -134,6 +135,18 @@ This project uses automated Lighthouse testing through GitHub Actions to ensure 
   - PWA: Assessing Progressive Web App capabilities
 
 View the latest Lighthouse results in the GitHub Actions tab under the "Lighthouse Check" workflow.
+
+## Security
+
+This project runs automated OWASP security scanning on every push and pull request via GitHub Actions:
+
+| Scan | Tool | What It Catches |
+|------|------|-----------------|
+| 🔑 **Secret Detection** | [gitleaks](https://github.com/gitleaks/gitleaks) | Hardcoded API keys, passwords, tokens, private keys |
+| 🔍 **SAST** | [Semgrep](https://semgrep.dev) | OWASP Top 10 + React/Next.js-specific vulnerabilities |
+| 📦 **Dependencies** | [Trivy](https://github.com/aquasecurity/trivy) | Known CVEs in npm packages (CRITICAL/HIGH) |
+
+Custom Semgrep rules cover OWASP categories A01–A10 including XSS prevention, injection detection, authentication checks, SSRF protection, and security misconfiguration. View results in the GitHub Actions tab under the "OWASP Security Scan" workflow.
 
 ## Troubleshooting
 
