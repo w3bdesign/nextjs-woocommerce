@@ -90,17 +90,21 @@ rules:
 
   - id: nextjs-dangerously-set-inner-html
     patterns:
-      - pattern: <$EL dangerouslySetInnerHTML={...} />
-      - pattern-not: <$EL dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(...)}} />
-      - pattern-not: <$EL dangerouslySetInnerHTML={{__html: sanitize(...)}} />
-      - pattern-not: <$EL dangerouslySetInnerHTML={{__html: purify.sanitize(...)}} />
+      - pattern: |
+          <$EL dangerouslySetInnerHTML={...} />
+      - pattern-not: |
+          <$EL dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(...)}} />
+      - pattern-not: |
+          <$EL dangerouslySetInnerHTML={{__html: sanitize(...)}} />
+      - pattern-not: |
+          <$EL dangerouslySetInnerHTML={{__html: purify.sanitize(...)}} />
     message: >
       dangerouslySetInnerHTML in Next.js page without sanitization.
       SSR makes this especially dangerous — XSS payloads are rendered
       server-side and served to all users. Use DOMPurify.
       OWASP A03:2021 - Injection.
     severity: ERROR
-    languages: [javascript, typescript, jsx, tsx]
+    languages: [javascript, typescript]
     paths:
       include:
         - "**/pages/**"
@@ -190,7 +194,7 @@ rules:
       server-side capabilities — leverage them for secure auth.
       OWASP A07:2021 - Identification and Authentication Failures.
     severity: ERROR
-    languages: [javascript, typescript, jsx, tsx]
+    languages: [javascript, typescript]
     metadata:
       owasp: A07:2021
       cwe: CWE-922
@@ -202,9 +206,12 @@ rules:
   - id: nextjs-api-route-error-exposure
     patterns:
       - pattern-either:
-          - pattern: $RES.status(500).json({ ..., error: $ERR.message, ... })
-          - pattern: $RES.status(500).json({ ..., stack: $ERR.stack, ... })
-          - pattern: $RES.status(500).json({ ..., error: $ERR, ... })
+          - pattern: |
+              $RES.status(500).json({ ..., error: $ERR.message, ... })
+          - pattern: |
+              $RES.status(500).json({ ..., stack: $ERR.stack, ... })
+          - pattern: |
+              $RES.status(500).json({ ..., error: $ERR, ... })
           - pattern: $RES.status(500).send($ERR.message)
           - pattern: $RES.status(500).send($ERR.stack)
     message: >
