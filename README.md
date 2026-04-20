@@ -1,9 +1,8 @@
 [![Lighthouse CI](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/lighthouse.yml?branch=master&label=Lighthouse%20CI&logo=lighthouse&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/lighthouse.yml)
 [![Playwright Tests](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/playwright.yml?branch=master&label=Playwright%20Tests&logo=playwright&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/playwright.yml)
 [![Codacy Badge](https://img.shields.io/codacy/grade/29de6847b01142e6a0183988fc3df46a?logo=codacy&logoColor=white)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
-[![CodeFactor](https://img.shields.io/codefactor/grade/github/w3bdesign/nextjs-woocommerce?logo=codefactor&logoColor=white)](https://www.codefactor.io/repository/github/w3bdesign/nextjs-woocommerce)
 [![Quality Gate Status](https://img.shields.io/sonar/alert_status/w3bdesign_nextjs-woocommerce?server=https%3A%2F%2Fsonarcloud.io&logo=sonarcloud&logoColor=white)](https://sonarcloud.io/dashboard?id=w3bdesign_nextjs-woocommerce)
-[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![OWASP Security](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/security.yml?branch=master&label=OWASP%20Security&logo=owasp&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/security.yml)
 
 ![bilde](https://github.com/user-attachments/assets/08047025-0950-472a-ae7d-932c7faee1db)
 
@@ -20,6 +19,7 @@
 - [Installation](#Installation)
 - [Features](#Features)
 - [Lighthouse Performance Monitoring](#lighthouse-performance-monitoring)
+- [Security](#security)
 - [Issues](#Issues)
 - [Troubleshooting](#Troubleshooting)
 - [TODO](#TODO)
@@ -134,6 +134,18 @@ This project uses automated Lighthouse testing through GitHub Actions to ensure 
   - PWA: Assessing Progressive Web App capabilities
 
 View the latest Lighthouse results in the GitHub Actions tab under the "Lighthouse Check" workflow.
+
+## Security
+
+This project runs automated OWASP security scanning on every push and pull request via GitHub Actions:
+
+| Scan | Tool | What It Catches |
+|------|------|-----------------|
+| 🔑 **Secret Detection** | [gitleaks](https://github.com/gitleaks/gitleaks) | Hardcoded API keys, passwords, tokens, private keys |
+| 🔍 **SAST** | [Semgrep](https://semgrep.dev) | OWASP Top 10 + React/Next.js-specific vulnerabilities |
+| 📦 **Dependencies** | [Trivy](https://github.com/aquasecurity/trivy) | Known CVEs in npm packages (CRITICAL/HIGH) |
+
+Custom Semgrep rules cover OWASP categories A01–A10 including XSS prevention, injection detection, authentication checks, SSRF protection, and security misconfiguration. View results in the GitHub Actions tab under the "OWASP Security Scan" workflow.
 
 ## Troubleshooting
 

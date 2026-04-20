@@ -51,16 +51,18 @@
     "@types/lodash": "^4.17.24",
     "@types/node": "24.12.2",
     "@types/nprogress": "^0.2.3",
-    "@types/react-instantsearch-dom": "^6.12.9",
-    "@types/uuid": "^11.0.0",
+    "@types/react-instantsearch-dom": "^6.12.9",    
     "@typescript-eslint/eslint-plugin": "^8.58.2",
     "@typescript-eslint/parser": "^8.58.2",
     "babel-plugin-styled-components": "^2.1.4",
     "eslint-config-next": "^16.2.4",
     "postcss-preset-env": "^11.2.1",
     "prettier": "^3.8.3",
-    "react-doctor": "^0.0.35",
+    "react-doctor": "^0.0.37",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp", "unrs-resolver"]
   }
 }

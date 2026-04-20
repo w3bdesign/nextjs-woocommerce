@@ -1,0 +1,72 @@
+name: OWASP Security Scan
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sast:
+    name: SAST - Semgrep
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    container:
+      image: semgrep/semgrep:1.160.0
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run Semgrep with OWASP rules
+        run: |
+          semgrep scan \
+            --config .semgrep/ \
+            --config "p/owasp-top-ten" \
+            --config "p/javascript" \
+            --config "p/typescript" \
+            --config "p/react" \
+            --severity ERROR \
+            --error \
+            --verbose
+        # --config .semgrep/         → Custom rules (owasp-top10, react, nextjs)
+        # --config "p/owasp-top-ten" → Semgrep registry OWASP rules (auto-updated)
+        # --config "p/javascript"    → Semgrep registry JS rules (auto-updated)
+        # --config "p/typescript"    → Semgrep registry TS rules (auto-updated)
+        # --config "p/react"         → Semgrep registry React rules (auto-updated)
+        # --severity ERROR           → Only report ERROR-level findings (ignore WARNINGs)
+        # --error                    → Exit code 1 if findings (fails the job)
+
+  dependencies:
+    name: Dependency Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          exit-code: 1
+          format: table
