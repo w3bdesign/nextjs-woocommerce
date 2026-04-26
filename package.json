@@ -58,7 +58,7 @@
     "eslint-config-next": "^16.2.4",
     "postcss-preset-env": "^11.2.1",
     "prettier": "^3.8.3",
-    "react-doctor": "^0.0.37",
+    "react-doctor": "^0.0.39",
     "tailwindcss": "^3.4.19",
     "typescript": "^6.0.3"
   },
