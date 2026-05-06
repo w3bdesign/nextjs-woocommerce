@@ -3,9 +3,7 @@ module.exports = {
   content: ['./src/components/**/*.tsx', './src/pages/**/*.tsx'],
   safelist: [
     // Dynamic color classes used in ProductFilters for color swatches
-    {
-      pattern: /bg-(red|blue|green|yellow|pink|purple|indigo|orange|teal|cyan|gray|black|white|slate|zinc|stone|amber|lime|emerald|sky|violet|fuchsia|rose)-(50|100|200|300|400|500|600|700|800|900)/,
-    },
+    { pattern: /bg-(red|blue|green|yellow|pink|purple|orange|teal|cyan|gray)-500/ },
   ],
   theme: {
     extend: {
