@@ -2,6 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Design Tokens (CSS Custom Properties) ─── */
+
+:root {
+  /* Brand — Muted Slate Blue */
+  --color-primary: #3B6B8A;
+  --color-primary-light: #5A8BA8;
+  --color-primary-dark: #254D6B;
+  --color-accent: #4A8F8F;
+
+  /* Semantic */
+  --color-success: #2D8A5E;
+  --color-warning: #C4882A;
+  --color-error: #B83B2A;
+
+  /* Surfaces */
+  --color-surface: #FAF9F7;
+  --color-surface-alt: #F3F1ED;
+  --color-border: #E5E2DC;
+
+  /* Text */
+  --color-text: #2C2C2C;
+  --color-text-muted: #6B6862;
+  --color-text-light: #9C9890;
+}
+
+/* ─── Focus-visible ring for all interactive elements ─── */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── Reduced motion for accessibility ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Base body styles ─── */
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+/* ─── Legacy layout overrides ─── */
+
 #cart-div {
   width: 300px;
 }
