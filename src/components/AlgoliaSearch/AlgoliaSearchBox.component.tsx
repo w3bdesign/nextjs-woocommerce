@@ -19,7 +19,7 @@ const AlgoliaSearchBox = () => {
   const [hasFocus, sethasFocus] = useState<boolean>(false);
 
   return (
-    <div className="hidden mt-2 md:inline xl:inline">
+    <div className="hidden md:inline xl:inline">
       <div className="">
         <InstantSearch
           indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
