@@ -44,7 +44,7 @@ const UserRegistration = () => {
   if (registrationCompleted) {
     return (
       <div className="text-center my-8">
-        <h2 className="text-2xl font-bold text-green-600 mb-4">
+        <h2 className="text-2xl font-bold text-success mb-4">
           Registrering vellykket!
         </h2>
         <p>Du kan nå logge inn med din konto.</p>
@@ -53,7 +53,7 @@ const UserRegistration = () => {
   }
 
   return (
-    <section className="text-gray-700 container p-4 py-2 mx-auto mb-[8rem] md:mb-0">
+    <section className="text-text-muted container p-4 py-2 mx-auto mb-32 md:mb-0">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="mx-auto lg:w-1/2 flex flex-wrap">
@@ -89,7 +89,7 @@ const UserRegistration = () => {
             />
 
             {error && (
-              <div className="w-full p-2 text-red-600 text-sm text-center">
+              <div className="w-full p-2 text-error text-sm text-center" role="alert">
                 {error.message}
               </div>
             )}

@@ -38,7 +38,7 @@ export const InputField = ({
   autoComplete,
 }: IInputRootObject) => {
   const { register, formState: { errors } } = useFormContext();
-  const hasError = Boolean(errors[inputName]);
+  const hasError = Object.prototype.hasOwnProperty.call(errors, inputName);
 
   return (
     <div className="w-full md:w-1/2 p-2">
@@ -59,7 +59,7 @@ export const InputField = ({
         type={type ?? 'text'}
         autoComplete={autoComplete}
         aria-invalid={hasError ? 'true' : 'false'}
-        aria-describedby={hasError ? `${inputName}-error` : undefined}
+        {...(hasError ? { 'aria-describedby': `${inputName}-error` } : {})}
         {...customValidation}
         {...register(inputName)}
       />
