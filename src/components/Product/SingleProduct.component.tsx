@@ -77,7 +77,7 @@ const ProductImage = ({
   alt: string;
 }) => (
   <div className="mb-6 md:mb-0 group">
-    <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-gray-100">
+    <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-surface-alt">
       <img
         id="product-image"
         src={getImageSrc(image)}
@@ -102,7 +102,7 @@ const PriceDisplay = ({
   regularPrice: string | undefined;
 }) => {
   if (!onSale) {
-    return <p className="text-xl font-bold">{price}</p>;
+    return <p className="text-xl font-bold text-text">{price}</p>;
   }
 
   const safePrice = price ?? '';
@@ -111,16 +111,16 @@ const PriceDisplay = ({
 
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
-      <p className="text-xl font-bold text-red-600">{currentPrice}</p>
-      <p className="text-xl text-gray-500 line-through">{originalPrice}</p>
+      <p className="text-xl font-bold text-error">{currentPrice}</p>
+      <p className="text-xl text-text-light line-through">{originalPrice}</p>
     </div>
   );
 };
 
 const StockStatus = ({ quantity }: { quantity: number }) => (
   <div className="mb-6 mx-auto md:mx-0">
-    <div className="p-2 bg-green-100 border border-green-400 rounded-lg max-w-[14.375rem]">
-      <p className="text-lg text-green-700 font-semibold text-center md:text-left">
+    <div className="p-2 bg-green-50 border border-success rounded-lg max-w-56">
+      <p className="text-lg text-success font-semibold text-center md:text-left">
         {quantity} på lager
       </p>
     </div>
@@ -134,7 +134,7 @@ const VariationSelector = ({
   variations: NonNullable<ISingleProduct['variations']>;
   onSelect: (id: number) => void;
 }) => (
-  <div className="mb-6 mx-auto md:mx-0 w-full max-w-[14.375rem]">
+  <div className="mb-6 mx-auto md:mx-0 w-full max-w-56">
     <label
       htmlFor="variant"
       className="block text-lg font-medium mb-2 text-center md:text-left"
@@ -144,7 +144,7 @@ const VariationSelector = ({
     <select
       id="variant"
       name="variant"
-      className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="w-full px-4 py-2 bg-surface border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
       onChange={(e) => onSelect(Number(e.target.value))}
     >
       {variations.nodes.map(({ id, name, databaseId, stockQuantity }) => (
@@ -159,9 +159,9 @@ const VariationSelector = ({
 // --- Loading state ---
 
 const ProductLoadingState = () => (
-  <section className="bg-white mb-[8rem] md:mb-12">
+  <section className="bg-surface mb-32 md:mb-12">
     <div className="h-56 mt-20">
-      <p className="text-xl font-bold text-center">Laster produkt ...</p>
+      <p className="text-xl font-bold text-center text-text">Laster produkt ...</p>
       <br />
       <LoadingSpinner />
     </div>
@@ -193,7 +193,7 @@ const ProductDetails = ({
 
   return (
     <div className="flex flex-col">
-      <h1 className="text-xl font-bold text-center md:text-left mb-4">
+      <h1 className="text-2xl md:text-3xl font-light text-center md:text-left mb-4 text-text">
         {product.name}
       </h1>
 
@@ -207,7 +207,7 @@ const ProductDetails = ({
         />
       </div>
 
-      <p className="text-lg mb-6 text-center md:text-left">
+      <p className="text-lg mb-6 text-center md:text-left text-text-muted">
         {descriptionText}
       </p>
 
@@ -222,7 +222,7 @@ const ProductDetails = ({
         />
       )}
 
-      <div className="w-full mx-auto md:mx-0 max-w-[14.375rem]">
+      <div className="w-full mx-auto md:mx-0 max-w-56">
         <AddToCart
           product={product}
           variationId={resolvedVariationId}
@@ -252,7 +252,7 @@ const SingleProduct = ({ product }: ISingleProductProps) => {
   }
 
   return (
-    <section className="bg-white mb-[8rem] md:mb-12">
+    <section className="bg-surface mb-32 md:mb-12">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:grid md:grid-cols-2 md:gap-8">
           <ProductImage image={product.image} alt={product.name} />
