@@ -19,7 +19,7 @@ interface IDisplayProductsProps {
  */
 
 const DisplayProducts = ({ products }: IDisplayProductsProps) => (
-  <section className="container mx-auto bg-white py-12">
+  <section className="container mx-auto bg-surface py-12">
     <div
       id="product-container"
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
@@ -50,7 +50,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
             return (
               <div key={uuidv4()} className="group">
                 <Link href={`/produkt/${encodeURIComponent(slug)}`}>
-                  <div className="aspect-[3/4] relative overflow-hidden bg-gray-100">
+                  <div className="aspect-[3/4] relative overflow-hidden bg-surface-alt">
                     {image ? (
                       <img
                         id="product-image"
@@ -73,7 +73,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <span>
                     <div className="mt-4">
-                      <p className="text-xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
+                      <p className="text-base font-medium text-center cursor-pointer hover:text-primary transition-colors duration-200">
                         {name}
                       </p>
                     </div>
@@ -82,17 +82,17 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 <div className="mt-2 text-center">
                   {onSale ? (
                     <div className="flex justify-center items-center space-x-2">
-                      <span className="text-xl font-bold text-red-600">
+                      <span className="text-xl font-bold text-error">
                         {variations && filteredVariantPrice(price, '')}
                         {!variations && salePrice}
                       </span>
-                      <span className="text-lg text-gray-500 line-through">
+                      <span className="text-lg text-text-light line-through">
                         {variations && filteredVariantPrice(price, 'right')}
                         {!variations && regularPrice}
                       </span>
                     </div>
                   ) : (
-                    <span className="text-lg text-gray-900">{price}</span>
+                    <span className="text-lg text-text">{price}</span>
                   )}
                 </div>
               </div>
@@ -100,7 +100,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
           },
         )
       ) : (
-        <div className="mx-auto text-xl font-bold text-center text-gray-800 no-underline uppercase">
+        <div className="mx-auto text-xl font-bold text-center text-text no-underline uppercase">
           Ingen produkter funnet
         </div>
       )}
