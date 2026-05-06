@@ -18,6 +18,7 @@
 
 - [Installation](#Installation)
 - [Features](#Features)
+- [Design System](#design-system)
 - [Lighthouse Performance Monitoring](#lighthouse-performance-monitoring)
 - [Security](#security)
 - [Issues](#Issues)
@@ -122,7 +123,7 @@ The current release has been tested and is confirmed working with the following 
 
 ## Design System
 
-This project uses a custom design system built with Tailwind CSS design tokens, guided by the [Claude Design](https://github.com/anthropics/claude-design-system-prompt) principles. The system is defined in [`tailwind.config.js`](tailwind.config.js) and [`globals.css`](src/styles/globals.css).
+This project uses a custom design system built with Tailwind CSS design tokens. The system is defined in [`tailwind.config.js`](tailwind.config.js) and [`globals.css`](src/styles/globals.css).
 
 ### Color Palette
 
