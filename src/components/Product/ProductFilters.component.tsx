@@ -69,9 +69,9 @@ const ProductFilters = ({
 
   return (
     <div className="w-full md:w-64 flex-shrink-0">
-      <div className="bg-white border border-border border-t-4 border-t-primary px-8 pb-8 sm:px-6 sm:pb-6 pt-6 rounded-lg shadow-md">
+      <div className="bg-surface px-8 pb-8 sm:px-6 sm:pb-6 rounded-lg shadow-sm">
         <div className="mb-8">
-          <h3 className="font-semibold mb-4 text-primary uppercase text-sm tracking-wider">Produkt Type</h3>
+          <h3 className="font-semibold mb-4 text-text">PRODUKT TYPE</h3>
           <div className="space-y-2">
             {productTypes.map((type) => (
               <Checkbox
@@ -86,7 +86,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4 text-primary uppercase text-sm tracking-wider">Pris</h3>
+          <h3 className="font-semibold mb-4 text-text">PRIS</h3>
           <RangeSlider
             id="price-range"
             label="Pris"
@@ -100,7 +100,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4 text-primary uppercase text-sm tracking-wider">Størrelse</h3>
+          <h3 className="font-semibold mb-4 text-text">STØRRELSE</h3>
           <div className="grid grid-cols-3 gap-2">
             {sizes.map((size) => (
               <Button
@@ -116,7 +116,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4 text-primary uppercase text-sm tracking-wider">Farge</h3>
+          <h3 className="font-semibold mb-4 text-text">FARGE</h3>
           <div className="grid grid-cols-3 gap-2">
             {colors.map((color) => (
               <button
