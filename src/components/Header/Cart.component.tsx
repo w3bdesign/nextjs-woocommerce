@@ -18,7 +18,7 @@ const Cart = ({ stickyNav }: ICartProps) => {
     <>
       <Link href="/handlekurv">
         <span
-          className="pl-4 no-underline inline-flex items-center"
+          className="pl-4 mt-2 no-underline inline-flex items-center"
           aria-label="Handlekurv"
         >
           <svg
