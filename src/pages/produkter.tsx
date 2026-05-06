@@ -13,7 +13,7 @@ const Produkter: NextPage = ({
     return (
       <Layout title="Produkter">
         <div className="flex justify-center items-center min-h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary"></div>
         </div>
       </Layout>
     );
@@ -22,7 +22,7 @@ const Produkter: NextPage = ({
     return (
       <Layout title="Produkter">
         <div className="flex justify-center items-center min-h-screen">
-          <p className="text-red-500">Ingen produkter funnet</p>
+          <p className="text-error">Ingen produkter funnet</p>
         </div>
       </Layout>
     );

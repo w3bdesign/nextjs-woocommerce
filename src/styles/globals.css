@@ -76,6 +76,12 @@ body {
   margin-top: -20px;
 }
 
+/* Fix Algolia search input background to match design system */
+
+.ais-SearchBox-input {
+  background-color: var(--color-surface);
+}
+
 /* Fix Algolia mobile searchbox design issues */
 
 #mobilesearchdiv {
