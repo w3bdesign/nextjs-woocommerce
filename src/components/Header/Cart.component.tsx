@@ -18,11 +18,11 @@ const Cart = ({ stickyNav }: ICartProps) => {
     <>
       <Link href="/handlekurv">
         <span
-          className="pl-4 no-underline inline-block"
+          className="pl-4 no-underline inline-flex items-center"
           aria-label="Handlekurv"
         >
           <svg
-            className={`${stickyNav ? 'fill-white' : 'fill-text'}`}
+            className={`block ${stickyNav ? 'fill-white' : 'fill-text'}`}
             xmlns="https://www.w3.org/2000/svg"
             width="55"
             height="55"
