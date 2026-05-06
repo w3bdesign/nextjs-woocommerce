@@ -43,16 +43,18 @@ const Billing = ({ handleFormSubmit }: IBillingProps) => {
   const methods = useForm<ICheckoutDataProps>();
 
   return (
-    <section className="text-gray-700 container p-4 py-2 mx-auto mb-[8rem] md:mb-0">
+    <section className="text-text container p-4 py-2 mx-auto mb-32 md:mb-0">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
+        <form onSubmit={methods.handleSubmit(handleFormSubmit)} noValidate>
           <div className="mx-auto lg:w-1/2 flex flex-wrap">
-            {INPUT_FIELDS.map(({ id, label, name, customValidation }) => (
+            {INPUT_FIELDS.map(({ id, label, name, customValidation, type, autoComplete }) => (
               <InputField
                 key={id}
                 inputLabel={label}
                 inputName={name}
                 customValidation={customValidation}
+                type={type}
+                autoComplete={autoComplete}
               />
             ))}
             <OrderButton />
