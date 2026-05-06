@@ -3,6 +3,7 @@ import { FieldValues, useFormContext, UseFormRegister } from 'react-hook-form';
 interface ICustomValidation {
   required?: boolean;
   minlength?: number;
+  pattern?: string;
 }
 
 interface IErrors {}
@@ -14,6 +15,7 @@ export interface IInputRootObject {
   errors?: IErrors;
   register?: UseFormRegister<FieldValues>;
   type?: string;
+  autoComplete?: string;
 }
 
 /**
@@ -26,28 +28,50 @@ export interface IInputRootObject {
  * @param {UseFormRegister<FieldValues>} register - register function from react-hook-form
  * @param {boolean} [required=true] - whether or not this field is required. default true
  * @param {string} [type='text'] - the input type. defaults to text
+ * @param {string} [autoComplete] - the autocomplete attribute for the input
  */
 export const InputField = ({
   customValidation,
   inputLabel,
   inputName,
   type,
+  autoComplete,
 }: IInputRootObject) => {
-  const { register } = useFormContext();
+  const { register, formState: { errors } } = useFormContext();
+  const hasError = Boolean(errors[inputName]);
 
   return (
-    <div className="w-1/2 p-2">
-      <label htmlFor={inputName} className="pb-4">
+    <div className="w-full md:w-1/2 p-2">
+      <label htmlFor={inputName} className="block text-sm font-medium text-text mb-1">
         {inputLabel}
+        {customValidation?.required && (
+          <span className="text-error ml-1" aria-hidden="true">*</span>
+        )}
       </label>
       <input
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className={`bg-surface border text-text text-sm block w-full p-2.5 rounded-md transition-colors duration-200 ${
+          hasError
+            ? 'border-error focus:ring-error focus:border-error'
+            : 'border-border focus:ring-primary focus:border-primary'
+        } focus:ring-2 focus:outline-none`}
         id={inputName}
         placeholder={inputLabel}
         type={type ?? 'text'}
+        autoComplete={autoComplete}
+        aria-invalid={hasError ? 'true' : 'false'}
+        aria-describedby={hasError ? `${inputName}-error` : undefined}
         {...customValidation}
         {...register(inputName)}
       />
+      {hasError && (
+        <p
+          id={`${inputName}-error`}
+          className="mt-1 text-sm text-error"
+          role="alert"
+        >
+          {inputLabel} er påkrevd
+        </p>
+      )}
     </div>
   );
 };
