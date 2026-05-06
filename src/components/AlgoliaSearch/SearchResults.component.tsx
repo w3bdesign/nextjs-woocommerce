@@ -40,7 +40,7 @@ const SearchResults = ({
         href={`/produkt/${product_name.replace(/ /g, '-')}`}
         passHref
       >
-        <div className="flex p-6 bg-white">
+        <div className="flex p-6 bg-surface">
           <header className="hit-image-container">
             <img
               src={product_image}
