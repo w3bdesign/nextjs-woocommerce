@@ -9,9 +9,9 @@ interface IPageTitleProps {
  * @returns {JSX.Element} - Rendered component
  */
 const PageTitle = ({ title }: IPageTitleProps) => (
-  <section className="w-full bg-primary">
+  <section className="w-full bg-surface border-b border-border">
     <div className="container mx-auto py-12 px-6">
-      <h1 className="text-2xl text-center tracking-wider text-white uppercase">
+      <h1 className="text-2xl text-center tracking-wider text-primary-dark uppercase">
         {title}
       </h1>
     </div>
