@@ -44,11 +44,10 @@ const AddToCart = ({
   const { syncWithWooCommerce, isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
 
-  const productId = product?.databaseId ? product?.databaseId : variationId;
-
   const productQueryInput = {
     clientMutationId: uuidv4(), // Generate a unique id.
-    productId,
+    productId: product?.databaseId,
+    ...(variationId ? { variationId } : {}),
   };
 
   // Get cart data query
