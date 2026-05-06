@@ -53,7 +53,7 @@ const ProductCard = ({
 
       <Link href={`/produkt/${slug}`}>
         <div className="mt-4">
-          <p className="text-base font-medium text-center cursor-pointer hover:text-primary transition-colors duration-200">
+          <p className="text-xl font-bold text-center cursor-pointer hover:text-primary transition-colors duration-200">
             {name}
           </p>
         </div>
