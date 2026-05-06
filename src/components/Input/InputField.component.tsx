@@ -38,7 +38,7 @@ export const InputField = ({
   autoComplete,
 }: IInputRootObject) => {
   const { register, formState: { errors } } = useFormContext();
-  const hasError = Object.prototype.hasOwnProperty.call(errors, inputName);
+  const hasError = Object.hasOwn(errors, inputName);
 
   return (
     <div className="w-full md:w-1/2 p-2">
