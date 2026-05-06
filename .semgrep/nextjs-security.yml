@@ -1,0 +1,262 @@
+rules:
+  # ============================================================
+  # Next.js Security Rules
+  # ============================================================
+
+  # ============================================================
+  # OWASP A01:2021 - Broken Access Control
+  # ============================================================
+
+  - id: nextjs-api-route-no-method-check
+    patterns:
+      - pattern: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+          }
+      - pattern-not: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+            $REQ.method ...
+            ...
+          }
+    message: >
+      Next.js API route does not check req.method. Without method
+      validation, the endpoint accepts GET, POST, PUT, DELETE etc.
+      Check req.method and return 405 for unsupported methods.
+      OWASP A01:2021 - Broken Access Control.
+    severity: WARNING
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/pages/api/**"
+        - "**/app/api/**"
+    metadata:
+      owasp: A01:2021
+      cwe: CWE-749
+
+  - id: nextjs-api-route-no-auth-check
+    patterns:
+      - pattern: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+          }
+      - pattern-not: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+            getSession(...)
+            ...
+          }
+      - pattern-not: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+            getToken(...)
+            ...
+          }
+      - pattern-not: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+            getServerSession(...)
+            ...
+          }
+      - pattern-not: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+            auth(...)
+            ...
+          }
+      - pattern-not: |
+          export default function $HANDLER($REQ, $RES) {
+            ...
+            $REQ.headers.authorization ...
+            ...
+          }
+    message: >
+      Next.js API route without visible authentication check.
+      Verify the user's session or token before processing.
+      OWASP A01:2021 - Broken Access Control.
+    severity: WARNING
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/pages/api/**"
+        - "**/app/api/**"
+    metadata:
+      owasp: A01:2021
+      cwe: CWE-862
+
+  # ============================================================
+  # OWASP A03:2021 - Injection
+  # ============================================================
+
+  - id: nextjs-dangerously-set-inner-html
+    patterns:
+      - pattern: |
+          <$EL dangerouslySetInnerHTML={...} />
+      - pattern-not: |
+          <$EL dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(...)}} />
+      - pattern-not: |
+          <$EL dangerouslySetInnerHTML={{__html: sanitize(...)}} />
+      - pattern-not: |
+          <$EL dangerouslySetInnerHTML={{__html: purify.sanitize(...)}} />
+    message: >
+      dangerouslySetInnerHTML in Next.js page without sanitization.
+      SSR makes this especially dangerous — XSS payloads are rendered
+      server-side and served to all users. Use DOMPurify.
+      OWASP A03:2021 - Injection.
+    severity: ERROR
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/pages/**"
+        - "**/app/**"
+        - "**/components/**"
+    metadata:
+      owasp: A03:2021
+      cwe: CWE-79
+
+  # ============================================================
+  # OWASP A05:2021 - Security Misconfiguration
+  # ============================================================
+
+  - id: nextjs-env-client-exposure
+    patterns:
+      - pattern-regex: NEXT_PUBLIC_(SECRET|PASSWORD|API_KEY|PRIVATE|JWT_SECRET|DATABASE|DB_)
+    message: >
+      Sensitive-looking env variable uses NEXT_PUBLIC_ prefix, which
+      exposes it to the browser bundle. Remove NEXT_PUBLIC_ prefix
+      for server-only secrets and access them only in API routes
+      or getServerSideProps.
+      OWASP A05:2021 - Security Misconfiguration.
+    severity: ERROR
+    languages: [generic]
+    paths:
+      include:
+        - "**/.env*"
+        - "**/next.config.*"
+    metadata:
+      owasp: A05:2021
+      cwe: CWE-200
+
+  - id: nextjs-missing-security-headers
+    patterns:
+      - pattern: |
+          const $CONFIG = { ... }
+      - pattern-not: |
+          const $CONFIG = { ..., headers: ..., ... }
+    message: >
+      next.config.js without security headers configuration. Add
+      headers() to set X-Frame-Options, X-Content-Type-Options,
+      Referrer-Policy, and Content-Security-Policy.
+      OWASP A05:2021 - Security Misconfiguration.
+    severity: WARNING
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/next.config.*"
+    metadata:
+      owasp: A05:2021
+      cwe: CWE-693
+
+  - id: nextjs-image-remote-wildcard
+    patterns:
+      - pattern-regex: "remotePatterns.*\\*\\*"
+    message: >
+      Next.js Image component configured with wildcard remote patterns.
+      Restrict to specific domains to prevent SSRF through image optimization.
+      OWASP A05:2021 - Security Misconfiguration.
+    severity: WARNING
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/next.config.*"
+    metadata:
+      owasp: A05:2021
+      cwe: CWE-918
+
+  # ============================================================
+  # OWASP A07:2021 - Authentication Failures
+  # ============================================================
+
+  - id: nextjs-jwt-localstorage
+    patterns:
+      - pattern-either:
+          - pattern: localStorage.setItem("token", ...)
+          - pattern: localStorage.setItem('token', ...)
+          - pattern: localStorage.setItem("jwt", ...)
+          - pattern: localStorage.setItem('jwt', ...)
+          - pattern: localStorage.setItem("access_token", ...)
+          - pattern: localStorage.setItem('access_token', ...)
+          - pattern: localStorage.setItem("accessToken", ...)
+          - pattern: localStorage.setItem('accessToken', ...)
+    message: >
+      Storing auth tokens in localStorage in a Next.js app. Use
+      httpOnly cookies with next-auth or similar. Next.js has
+      server-side capabilities — leverage them for secure auth.
+      OWASP A07:2021 - Identification and Authentication Failures.
+    severity: ERROR
+    languages: [javascript, typescript]
+    metadata:
+      owasp: A07:2021
+      cwe: CWE-922
+
+  # ============================================================
+  # OWASP A08:2021 - Data Integrity Failures
+  # ============================================================
+
+  - id: nextjs-api-route-error-exposure
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $RES.status(500).json({ ..., error: $ERR.message, ... })
+          - pattern: |
+              $RES.status(500).json({ ..., stack: $ERR.stack, ... })
+          - pattern: |
+              $RES.status(500).json({ ..., error: $ERR, ... })
+          - pattern: $RES.status(500).send($ERR.message)
+          - pattern: $RES.status(500).send($ERR.stack)
+    message: >
+      API route exposes error details to the client. Return a generic
+      error message and log the full error server-side.
+      OWASP A09:2021 - Security Logging and Monitoring Failures.
+    severity: ERROR
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/pages/api/**"
+        - "**/app/api/**"
+    metadata:
+      owasp: A09:2021
+      cwe: CWE-209
+
+  # ============================================================
+  # OWASP A10:2021 - SSRF
+  # ============================================================
+
+  - id: nextjs-ssrf-in-server-props
+    patterns:
+      - pattern-either:
+          - pattern: |
+              export async function getServerSideProps($CTX) {
+                ...
+                fetch($CTX.query.$PARAM)
+                ...
+              }
+          - pattern: |
+              export async function getServerSideProps($CTX) {
+                ...
+                axios.get($CTX.query.$PARAM)
+                ...
+              }
+    message: >
+      URL from query parameters passed to fetch inside getServerSideProps.
+      This runs server-side and can be exploited for SSRF. Validate
+      URLs against an allowlist.
+      OWASP A10:2021 - Server-Side Request Forgery.
+    severity: ERROR
+    languages: [javascript, typescript]
+    paths:
+      include:
+        - "**/pages/**"
+    metadata:
+      owasp: A10:2021
+      cwe: CWE-918
