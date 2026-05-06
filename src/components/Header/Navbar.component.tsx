@@ -9,13 +9,13 @@ import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
  */
 const Navbar = () => {
   return (
-    <header className="border-b border-gray-200">
-      <nav id="header" className="top-0 z-50 w-full bg-white">
+    <header className="border-b border-border">
+      <nav id="header" className="top-0 z-50 w-full bg-surface">
         <div className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex flex-col space-y-4 md:hidden">
             <div className="text-center">
               <Link href="/">
-                <span className="text-lg font-bold tracking-widest text-gray-900">
+                <span className="text-lg font-bold tracking-widest text-text">
                   NETTBUTIKK
                 </span>
               </Link>
@@ -29,7 +29,7 @@ const Navbar = () => {
               <Link href="/produkter">
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-500"></span>
                     Produkter
                   </span>
                 </span>
@@ -37,14 +37,14 @@ const Navbar = () => {
               <Link href="/kategorier">
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-gray-900 group-hover:w-full transition-all duration-500"></span>
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-500"></span>
                     Kategorier
                   </span>
                 </span>
               </Link>
             </div>
             <Link href="/" className="hidden lg:block">
-              <span className="text-xl font-bold tracking-widest text-gray-900 hover:text-gray-700 transition-colors">
+              <span className="text-xl font-bold tracking-widest text-text hover:text-primary transition-colors duration-200">
                 NETTBUTIKK
               </span>
             </Link>

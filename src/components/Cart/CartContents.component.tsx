@@ -90,11 +90,11 @@ const CartContents = () => {
     <div className="container mx-auto px-4 py-8">
       {data?.cart?.contents?.nodes?.length ? (
         <>
-          <div className="bg-white rounded-lg p-6 mb-8 md:w-full">
+          <div className="bg-surface rounded-lg p-6 mb-8 md:w-full">
             {data.cart.contents.nodes.map((item: IProductRootObject) => (
               <div
                 key={item.key}
-                className="flex items-center border-b border-gray-200 py-4"
+                className="flex items-center border-b border-border py-4"
               >
                 <div className="flex-shrink-0 w-24 h-24 relative hidden md:block">
                   <Image
@@ -104,14 +104,14 @@ const CartContents = () => {
                     alt={item.product.node.name}
                     layout="fill"
                     objectFit="cover"
-                    className="rounded"
+                    className="rounded-md"
                   />
                 </div>
                 <div className="flex-grow ml-4">
-                  <h2 className="text-lg font-semibold">
+                  <h2 className="text-lg font-semibold text-text">
                     {item.product.node.name}
                   </h2>
-                  <p className="text-gray-600">
+                  <p className="text-text-muted">
                     kr {getUnitPrice(item.subtotal, item.quantity)}
                   </p>
                 </div>
@@ -129,7 +129,8 @@ const CartContents = () => {
                         updateCartProcessing,
                       );
                     }}
-                    className="w-16 px-2 py-1 text-center border border-gray-300 rounded mr-2"
+                    className="w-16 px-2 py-1 text-center border border-border rounded-md mr-2 bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
+                    aria-label={`Antall ${item.product.node.name}`}
                   />
                   <Button
                     handleButtonClick={() =>
@@ -145,15 +146,15 @@ const CartContents = () => {
                   </Button>
                 </div>
                 <div className="ml-4">
-                  <p className="text-lg font-semibold">{item.subtotal}</p>
+                  <p className="text-lg font-semibold text-text">{item.subtotal}</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="bg-white rounded-lg p-6 md:w-full">
+          <div className="bg-surface rounded-lg p-6 md:w-full">
             <div className="flex justify-end mb-4">
-              <span className="font-semibold pr-2">Subtotal:</span>
-              <span>{cartTotal}</span>
+              <span className="font-semibold pr-2 text-text">Subtotal:</span>
+              <span className="text-text">{cartTotal}</span>
             </div>
             {!isCheckoutPage && (
               <div className="flex justify-center mb-4">
@@ -166,7 +167,7 @@ const CartContents = () => {
         </>
       ) : (
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">
+          <h2 className="text-2xl font-bold mb-4 text-text">
             Ingen produkter i handlekurven
           </h2>
           <Link href="/produkter" passHref>
@@ -176,8 +177,8 @@ const CartContents = () => {
       )}
       {updateCartProcessing && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg">
-            <p className="text-lg mb-2">Oppdaterer handlekurv...</p>
+          <div className="bg-surface p-4 rounded-lg">
+            <p className="text-lg mb-2 text-text">Oppdaterer handlekurv...</p>
             <LoadingSpinner />
           </div>
         </div>

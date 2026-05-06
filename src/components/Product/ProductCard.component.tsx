@@ -32,7 +32,7 @@ const ProductCard = ({
 
   return (
     <div className="group">
-      <div className="aspect-[3/4] overflow-hidden bg-gray-100 relative">
+      <div className="aspect-[3/4] overflow-hidden bg-surface-alt relative">
         <Link href={`/produkt/${slug}`}>
           {image?.sourceUrl ? (
             <Image
@@ -44,8 +44,8 @@ const ProductCard = ({
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
           ) : (
-            <div className="h-full w-full bg-gray-100 flex items-center justify-center">
-              <span className="text-gray-400">No image</span>
+            <div className="h-full w-full bg-surface-alt flex items-center justify-center">
+              <span className="text-text-light">No image</span>
             </div>
           )}
         </Link>
@@ -53,7 +53,7 @@ const ProductCard = ({
 
       <Link href={`/produkt/${slug}`}>
         <div className="mt-4">
-          <p className="text-xl font-bold text-center cursor-pointer hover:text-gray-600 transition-colors">
+          <p className="text-xl font-bold text-center cursor-pointer hover:text-primary transition-colors duration-200">
             {name}
           </p>
         </div>
@@ -61,11 +61,11 @@ const ProductCard = ({
       <div className="mt-2 text-center">
         {onSale ? (
           <div className="flex items-center justify-center gap-2">
-            <span className="text-xl font-bold text-red-600">{formattedSalePrice}</span>
-            <span className="text-lg text-gray-500 line-through">{formattedRegularPrice}</span>
+            <span className="text-xl font-bold text-error">{formattedSalePrice}</span>
+            <span className="text-lg text-text-light line-through">{formattedRegularPrice}</span>
           </div>
         ) : (
-          <span className="text-lg text-gray-900">{formattedPrice}</span>
+          <span className="text-lg text-text">{formattedPrice}</span>
         )}
       </div>
     </div>

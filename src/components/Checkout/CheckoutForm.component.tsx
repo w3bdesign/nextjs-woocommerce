@@ -91,13 +91,13 @@ const CheckoutForm = () => {
           <Billing handleFormSubmit={handleFormSubmit} />
           {/*Error display*/}
           {requestError && (
-            <div className="h-32 text-xl text-center text-red-600">
+            <div className="h-32 text-xl text-center text-error" role="alert">
               En feil har oppstått.
             </div>
           )}
           {/* Checkout Loading*/}
           {checkoutLoading && (
-            <div className="text-xl text-center">
+            <div className="text-xl text-center text-text">
               Behandler ordre, vennligst vent ...
               <LoadingSpinner />
             </div>
@@ -106,12 +106,12 @@ const CheckoutForm = () => {
       ) : (
         <>
           {!cart && !orderCompleted && (
-            <h1 className="text-2xl m-12 mt-24 font-bold text-center">
+            <h1 className="text-2xl m-12 mt-24 font-bold text-center text-text">
               Ingen produkter i handlekurven
             </h1>
           )}
           {orderCompleted && (
-            <div className="container h-24 m-12 mx-auto mt-24 text-xl text-center">
+            <div className="container h-24 m-12 mx-auto mt-24 text-xl text-center text-primary">
               Takk for din ordre!
             </div>
           )}

@@ -11,7 +11,7 @@ const Hero = () => (
     <div className="absolute inset-0">
       <Image
         src="/images/hero.jpg"
-        alt="Hero image"
+        alt="Stripete Zig Zag puter i varme farger, arrangert på en sofa"
         fill
         priority
         className="object-cover object-center"

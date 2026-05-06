@@ -18,11 +18,11 @@ const Cart = ({ stickyNav }: ICartProps) => {
     <>
       <Link href="/handlekurv">
         <span
-          className="pl-4 mt-4 no-underline inline-block"
+          className="pl-4 mt-2 no-underline inline-flex items-center"
           aria-label="Handlekurv"
         >
           <svg
-            className={`${stickyNav ? 'fill-white' : 'fill-current'}`}
+            className={`block ${stickyNav ? 'fill-white' : 'fill-text'}`}
             xmlns="https://www.w3.org/2000/svg"
             width="55"
             height="55"
@@ -42,7 +42,7 @@ const Cart = ({ stickyNav }: ICartProps) => {
       {productCount && (
         <span
           className={`w-6 h-6 pb-2 -mt-5 !-ml-2 text-center rounded-full
-          ${stickyNav ? 'text-black bg-white' : 'text-white bg-black'}`}
+          ${stickyNav ? 'text-primary-dark bg-white' : 'text-white bg-primary'}`}
         >
           {productCount}
         </span>

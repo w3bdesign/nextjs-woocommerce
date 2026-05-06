@@ -25,10 +25,10 @@ const CustomerAccount = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Mine ordre</h1>
+      <h1 className="text-2xl font-bold mb-4 text-text">Mine ordre</h1>
       {orders && orders.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
+          <table className="min-w-full bg-surface">
             <thead>
               <tr>
                 <th className="py-2 px-4 border-b">Ordrenummer</th>

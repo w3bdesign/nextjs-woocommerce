@@ -69,9 +69,9 @@ const ProductFilters = ({
 
   return (
     <div className="w-full md:w-64 flex-shrink-0">
-      <div className="bg-white px-8 pb-8 sm:px-6 sm:pb-6 rounded-lg shadow-sm">
+      <div className="bg-surface px-8 pb-8 sm:px-6 sm:pb-6 rounded-lg shadow-sm">
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">PRODUKT TYPE</h3>
+          <h3 className="font-semibold mb-4 text-text">PRODUKT TYPE</h3>
           <div className="space-y-2">
             {productTypes.map((type) => (
               <Checkbox
@@ -86,7 +86,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">PRIS</h3>
+          <h3 className="font-semibold mb-4 text-text">PRIS</h3>
           <RangeSlider
             id="price-range"
             label="Pris"
@@ -100,7 +100,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">STØRRELSE</h3>
+          <h3 className="font-semibold mb-4 text-text">STØRRELSE</h3>
           <div className="grid grid-cols-3 gap-2">
             {sizes.map((size) => (
               <Button
@@ -116,7 +116,7 @@ const ProductFilters = ({
         </div>
 
         <div className="mb-8">
-          <h3 className="font-semibold mb-4">FARGE</h3>
+          <h3 className="font-semibold mb-4 text-text">FARGE</h3>
           <div className="grid grid-cols-3 gap-2">
             {colors.map((color) => (
               <button
@@ -126,7 +126,7 @@ const ProductFilters = ({
                   color.class
                 } ${
                   selectedColors.includes(color.name)
-                    ? 'ring-2 ring-offset-2 ring-gray-900'
+                    ? 'ring-2 ring-offset-2 ring-primary'
                     : ''
                 }`}
                 title={color.name}

@@ -44,17 +44,17 @@ const ProductList = ({ products, title }: ProductListProps) => {
       {/* Main Content */}
       <div className="flex-1">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
-          <h1 className="text-xl sm:text-2xl font-medium text-center sm:text-left">
-            {title} <span className="text-gray-500">({filteredProducts.length})</span>
+          <h1 className="text-xl sm:text-2xl font-medium text-center sm:text-left text-text">
+            {title} <span className="text-text-muted">({filteredProducts.length})</span>
           </h1>
 
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4">
-            <label htmlFor="sort-select" className="text-sm font-medium">Sortering:</label>
+            <label htmlFor="sort-select" className="text-sm font-medium text-text">Sortering:</label>
             <select
               id="sort-select"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="min-w-[140px] border rounded-md px-3 py-1.5 text-sm"
+              className="min-w-[140px] border border-border rounded-md px-3 py-1.5 text-sm bg-surface text-text focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="popular">Populær</option>
               <option value="price-low">Pris: Lav til Høy</option>

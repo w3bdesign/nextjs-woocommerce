@@ -18,6 +18,7 @@
 
 - [Installation](#Installation)
 - [Features](#Features)
+- [Design System](#design-system)
 - [Lighthouse Performance Monitoring](#lighthouse-performance-monitoring)
 - [Security](#security)
 - [Issues](#Issues)
@@ -120,6 +121,70 @@ The current release has been tested and is confirmed working with the following 
   - Product type categorization
   - Sorting options (popularity, price, newest)
 
+## Design System
+
+This project uses a custom design system built with Tailwind CSS design tokens. The system is defined in [`tailwind.config.js`](tailwind.config.js) and [`globals.css`](src/styles/globals.css).
+
+### Color Palette
+
+The palette uses a muted slate-blue primary with warm neutral surfaces — chosen to feel calm, Nordic, and appropriate for a home goods store.
+
+| Token           | Hex       | Usage                                           |
+| --------------- | --------- | ----------------------------------------------- |
+| `primary`       | `#3B6B8A` | Buttons, links, focus rings, active states      |
+| `primary-light` | `#5A8BA8` | Hover accents, info states                      |
+| `primary-dark`  | `#254D6B` | Mobile nav, button hover, dark accents          |
+| `accent`        | `#4A8F8F` | Secondary accent (teal)                         |
+| `surface`       | `#FAF9F7` | Page background, cards, inputs (warm off-white) |
+| `surface-alt`   | `#F3F1ED` | Image placeholders, alternating surfaces        |
+| `border`        | `#E5E2DC` | All borders and dividers                        |
+| `text`          | `#2C2C2C` | Primary body text (warm near-black)             |
+| `text-muted`    | `#6B6862` | Secondary text, descriptions                    |
+| `text-light`    | `#9C9890` | Tertiary text, strikethrough prices             |
+| `success`       | `#2D8A5E` | Stock status, success messages                  |
+| `warning`       | `#C4882A` | Warning states                                  |
+| `error`         | `#B83B2A` | Sale prices, errors, destructive actions        |
+
+### Typography
+
+- Uses Tailwind's default system font stack
+- Type scale defined from `text-xs` (0.75rem) to `text-5xl` (3rem)
+- Hierarchy rules: product card title `text-xl font-bold` > price `text-lg`, detail page h1 `text-2xl md:text-3xl font-light` > card title
+
+### Accessibility
+
+- Global `focus-visible` ring (`2px solid primary`) on all interactive elements
+- `prefers-reduced-motion: reduce` disables all animations and transitions
+- Form inputs display inline error messages with `role="alert"` and `aria-invalid`
+- Required fields marked with asterisks
+- Proper `type` (`email`, `tel`) and `autocomplete` attributes on checkout inputs
+- Descriptive `alt` text on images
+- `disabled:cursor-not-allowed` on buttons
+- Semantic HTML throughout (`<nav>`, `<main>`, `<section>`, `<label htmlFor>`)
+
+### Button Variants
+
+| Variant     | Appearance                | Use Case                                |
+| ----------- | ------------------------- | --------------------------------------- |
+| `primary`   | Solid blue (`bg-primary`) | Main CTAs — KJØP, GÅ TIL KASSE, BESTILL |
+| `secondary` | Solid red (`bg-error`)    | Destructive actions — Fjern             |
+| `hero`      | White on dark overlay     | Hero section CTA                        |
+| `filter`    | Bordered, toggleable      | Size filter buttons                     |
+| `reset`     | Light gray surface        | Reset filters                           |
+
+All buttons include `hover`, `active:scale-[0.98]`, `focus-visible`, and `disabled` states with `duration-200` transitions.
+
+### CSS Custom Properties
+
+Design tokens are also available as CSS custom properties in [`globals.css`](src/styles/globals.css) for use outside Tailwind:
+
+```css
+var(--color-primary)      /* #3B6B8A */
+var(--color-surface)      /* #FAF9F7 */
+var(--color-text)         /* #2C2C2C */
+var(--color-error)        /* #B83B2A */
+```
+
 ## Lighthouse Performance Monitoring
 
 This project uses automated Lighthouse testing through GitHub Actions to ensure high-quality web performance. On every pull request:
@@ -139,11 +204,11 @@ View the latest Lighthouse results in the GitHub Actions tab under the "Lighthou
 
 This project runs automated OWASP security scanning on every push and pull request via GitHub Actions:
 
-| Scan | Tool | What It Catches |
-|------|------|-----------------|
-| 🔑 **Secret Detection** | [gitleaks](https://github.com/gitleaks/gitleaks) | Hardcoded API keys, passwords, tokens, private keys |
-| 🔍 **SAST** | [Semgrep](https://semgrep.dev) | OWASP Top 10 + React/Next.js-specific vulnerabilities |
-| 📦 **Dependencies** | [Trivy](https://github.com/aquasecurity/trivy) | Known CVEs in npm packages (CRITICAL/HIGH) |
+| Scan                    | Tool                                             | What It Catches                                       |
+| ----------------------- | ------------------------------------------------ | ----------------------------------------------------- |
+| 🔑 **Secret Detection** | [gitleaks](https://github.com/gitleaks/gitleaks) | Hardcoded API keys, passwords, tokens, private keys   |
+| 🔍 **SAST**             | [Semgrep](https://semgrep.dev)                   | OWASP Top 10 + React/Next.js-specific vulnerabilities |
+| 📦 **Dependencies**     | [Trivy](https://github.com/aquasecurity/trivy)   | Known CVEs in npm packages (CRITICAL/HIGH)            |
 
 Custom Semgrep rules cover OWASP categories A01–A10 including XSS prevention, injection detection, authentication checks, SSRF protection, and security misconfiguration. View results in the GitHub Actions tab under the "OWASP Security Scan" workflow.
 

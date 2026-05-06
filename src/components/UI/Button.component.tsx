@@ -38,21 +38,21 @@ const Button = ({
   const getVariantClasses = (variant: TButtonVariant = 'primary') => {
     switch (variant) {
       case 'hero':
-        return 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white text-gray-900 hover:bg-gray-400 hover:text-white hover:shadow-md';
+        return 'inline-block px-8 py-4 text-sm tracking-wider uppercase bg-white text-text hover:bg-surface-alt hover:shadow-md active:scale-[0.98]';
       case 'filter':
-        return selected 
-          ? 'px-3 py-1 border rounded bg-gray-900 text-white'
-          : 'px-3 py-1 border rounded hover:bg-gray-100 bg-white text-gray-900';
+        return selected
+          ? 'px-3 py-1 border border-border rounded-md bg-primary text-white'
+          : 'px-3 py-1 border border-border rounded-md hover:bg-surface-alt bg-surface text-text active:scale-[0.98]';
       case 'reset':
-        return 'w-full mt-8 py-2 px-4 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors';
+        return 'w-full mt-8 py-2 px-4 bg-surface-alt text-text-muted rounded-md hover:bg-border active:scale-[0.98]';
       case 'secondary':
-        return 'px-2 lg:px-4 py-2 font-bold border border-gray-400 border-solid rounded text-white bg-red-500 hover:bg-red-600';
+        return 'px-2 lg:px-4 py-2 font-bold border border-error rounded-md text-white bg-error hover:bg-red-700 active:scale-[0.98]';
       default: // primary
-        return 'px-2 lg:px-4 py-2 font-bold border border-gray-400 border-solid rounded text-white bg-blue-500 hover:bg-blue-600';
+        return 'px-2 lg:px-4 py-2 font-bold border border-primary rounded-md text-white bg-primary hover:bg-primary-dark active:scale-[0.98]';
     }
   };
 
-  const classes = `${getVariantClasses(variant)} ease-in-out transition-all duration-300 disabled:opacity-50 ${
+  const classes = `${getVariantClasses(variant)} ease-in-out transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
     fullWidth ? 'w-full md:w-auto' : ''
   }`;
 

@@ -7,7 +7,7 @@ import FadeLeftToRightItem from '@/components/Animations/FadeLeftToRightItem.com
 import LINKS from '@/utils/constants/LINKS';
 
 const hamburgerLine =
-  'h-1 w-10 my-1 rounded-full bg-white transition ease transform duration-300 not-sr-only';
+  'h-1 w-10 my-1 rounded-full bg-white transition ease transform duration-200 not-sr-only';
 
 const opacityFull = 'opacity-100 group-hover:opacity-100';
 
@@ -94,7 +94,7 @@ const Hamburger = () => {
   }, []);
 
   return (
-    <div className="z-50 md:hidden lg:hidden xl:hidden bg-blue-800">
+    <div className="z-50 md:hidden lg:hidden xl:hidden bg-primary-dark">
       <button
         className={`flex flex-col w-16 rounded justify-center items-center group ${isAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         data-cy="hamburger"
@@ -134,14 +134,14 @@ const Hamburger = () => {
         <div
           id="mobile-menu"
           aria-hidden={!isExpanded}
-          className={`absolute left-0 bottom-24 z-10 w-full text-center text-black bg-white ${hidden}`}
+          className={`absolute left-0 bottom-24 z-10 w-full text-center text-text bg-surface ${hidden}`}
         >
           <ul>
             {LINKS.map(({ id, title, href }) => (
               <FadeLeftToRightItem key={id} cssClass="block">
                 <li
                   id="mobile-li"
-                  className="w-full p-4 border-t border-gray-400 border-solid rounded"
+                  className="w-full p-4 border-t border-border border-solid rounded-md"
                 >
                   <Link href={href} passHref>
                     <span

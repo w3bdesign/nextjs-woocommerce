@@ -27,8 +27,8 @@ const MobileSearch = () => {
             resetTitle: 'Slett søketekst',
             placeholder: 'Søk etter produkter',
           }}
-          className={`px-4 py-2 text-base bg-white border outline-none rounded ${
-            hasFocus ? 'border-black' : 'border-gray-400'
+          className={`px-4 py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
+            hasFocus ? 'border-primary' : 'border-border'
           }`}
           onReset={() => {
             setSearch(null);
