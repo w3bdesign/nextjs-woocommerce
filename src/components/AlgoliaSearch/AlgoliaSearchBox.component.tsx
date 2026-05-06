@@ -33,8 +33,8 @@ const AlgoliaSearchBox = () => {
               resetTitle: 'Slett søketekst',
               placeholder: 'Søk etter produkter',
             }}
-            className={`px-4 py-2 text-base bg-white border outline-none rounded ${
-              hasFocus ? 'border-black' : 'border-gray-400'
+            className={`px-4 py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
+              hasFocus ? 'border-primary' : 'border-border'
             }`}
             onChange={(event) => {
               const target = event.target as HTMLInputElement;
@@ -51,7 +51,7 @@ const AlgoliaSearchBox = () => {
             }}
           />
           {search && (
-            <div className="absolute z-50 bg-white shadow-lg rounded-md mt-1 md:w-[18rem]">
+            <div className="absolute z-50 bg-surface shadow-lg rounded-md mt-1 md:w-[18rem]">
               <Hits hitComponent={SearchResults} />
             </div>
           )}
