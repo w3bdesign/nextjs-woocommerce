@@ -4,7 +4,7 @@ import { useCartStore } from '@/stores/cartStore';
 
 interface ICartProps {
   stickyNav?: boolean;
-}
+} 
 
 /**
  * Displays the shopping cart contents.
