@@ -176,7 +176,7 @@ const CartContents = () => {
         </div>
       )}
       {updateCartProcessing && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-overlay bg-opacity-50">
           <div className="bg-surface p-4 rounded-lg">
             <p className="text-lg mb-2 text-text">Oppdaterer handlekurv...</p>
             <LoadingSpinner />
