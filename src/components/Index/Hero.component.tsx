@@ -14,10 +14,11 @@ const Hero = () => (
         alt="Stripete Zig Zag puter i varme farger, arrangert på en sofa"
         fill
         priority
+        sizes="100vw"
         className="object-cover object-center"
         quality={90}
       />
-      <div className="absolute inset-0 bg-black bg-opacity-30" />
+      <div className="absolute inset-0 bg-overlay bg-opacity-30" />
     </div>
     
     <div className="relative h-full container mx-auto flex items-center p-4 md:p-0">

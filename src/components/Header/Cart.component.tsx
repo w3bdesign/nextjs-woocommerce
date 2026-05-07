@@ -4,7 +4,7 @@ import { useCartStore } from '@/stores/cartStore';
 
 interface ICartProps {
   stickyNav?: boolean;
-}
+} 
 
 /**
  * Displays the shopping cart contents.
@@ -12,7 +12,7 @@ interface ICartProps {
  */
 const Cart = ({ stickyNav }: ICartProps) => {
   const cart = useCartStore((state) => state.cart);
-  const productCount = cart?.totalProductsCount ?? null;
+  const productCount = cart?.totalProductsCount ?? 0;
 
   return (
     <>
@@ -39,7 +39,7 @@ const Cart = ({ stickyNav }: ICartProps) => {
         </span>
       </Link>
 
-      {productCount && (
+      {productCount > 0 && (
         <span
           className={`w-6 h-6 pb-2 -mt-5 !-ml-2 text-center rounded-full
           ${stickyNav ? 'text-primary-dark bg-white' : 'text-white bg-primary'}`}

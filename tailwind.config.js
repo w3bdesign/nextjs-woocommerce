@@ -27,6 +27,7 @@ module.exports = {
           muted: '#6B6862',
           light: '#9C9890',
         },
+        overlay: '#2C2C2C',
         success: '#2D8A5E',
         warning: '#C4882A',
         error: '#B83B2A',

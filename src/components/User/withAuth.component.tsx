@@ -6,7 +6,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const Wrapper = (props: P) => {
-    const router = useRouter();
+    const { push } = useRouter();
     const [isChecking, setIsChecking] = useState(true);
     
     const { data, loading, error } = useQuery(GET_CURRENT_USER, {
@@ -20,10 +20,10 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
         
         // If there's an error or no customer data, user is not authenticated
         if (error || !data?.customer) {
-          router.push('/logg-inn');
+          push('/logg-inn');
         }
       }
-    }, [data, loading, error, router]);
+    }, [data, loading, error, push]);
 
     // Show loading while checking authentication
     if (loading || isChecking) {
