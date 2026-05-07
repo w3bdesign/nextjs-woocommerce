@@ -14,6 +14,7 @@ const Hero = () => (
         alt="Stripete Zig Zag puter i varme farger, arrangert på en sofa"
         fill
         priority
+        sizes="100vw"
         className="object-cover object-center"
         quality={90}
       />
