@@ -17,11 +17,10 @@ import { useCartStore } from '@/stores/cartStore';
 import { getFormattedCart, createCheckoutData } from '@/utils/functions/functions';
 
 // Types
-import type { ICheckoutDataProps, ICheckoutData } from '@/types/checkout';
+import type { ICheckoutDataProps } from '@/types/checkout';
 
 const CheckoutForm = () => {
   const { cart, clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
-  const [orderData, setOrderData] = useState<ICheckoutData | null>(null);
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
 
@@ -44,9 +43,6 @@ const CheckoutForm = () => {
   const [checkout, { loading: checkoutLoading }] = useMutation(
     CHECKOUT_MUTATION,
     {
-      variables: {
-        input: orderData,
-      },
       onCompleted: () => {
         clearWooCommerceSession();
         setorderCompleted(true);
@@ -60,25 +56,21 @@ const CheckoutForm = () => {
   );
 
   useEffect(() => {
-    if (null !== orderData) {
-      // Perform checkout mutation when the value for orderData changes.
-      checkout();
-      // Delayed refetch to ensure WooCommerce backend has settled
-      setTimeout(() => {
-        refetch();
-      }, 2000);
-    }
-  }, [checkout, orderData, refetch]);
-
-  useEffect(() => {
     refetch();
   }, [refetch]);
 
   const handleFormSubmit = (submitData: ICheckoutDataProps) => {
     const checkOutData = createCheckoutData(submitData);
-
-    setOrderData(checkOutData);
     setRequestError(null);
+    checkout({
+      variables: {
+        input: checkOutData,
+      },
+    });
+    // Delayed refetch to ensure WooCommerce backend has settled
+    setTimeout(() => {
+      refetch();
+    }, 2000);
   };
 
   return (
