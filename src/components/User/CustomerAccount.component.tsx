@@ -41,7 +41,7 @@ const CustomerAccount = () => {
               {orders.map((order: Order) => (
                 <tr key={order.id}>
                   <td className="py-2 px-4 border-b">{order.orderNumber}</td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border-b" suppressHydrationWarning>
                     {new Date(order.date).toLocaleDateString()}
                   </td>
                   <td className="py-2 px-4 border-b">{order.status}</td>
