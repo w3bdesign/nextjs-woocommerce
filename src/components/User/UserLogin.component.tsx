@@ -20,7 +20,7 @@ const UserLogin = () => {
   const methods = useForm<ILoginData>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const { push } = useRouter();
 
   const onSubmit = async (data: ILoginData) => {
     setLoading(true);
@@ -28,7 +28,7 @@ const UserLogin = () => {
     try {
       const result = await login(data.username, data.password);
       if (result.success && result.status === 'SUCCESS') {
-        router.push('/min-konto');
+        push('/min-konto');
       } else {
         throw new Error('Failed to login');
       }
