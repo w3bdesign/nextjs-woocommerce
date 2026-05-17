@@ -22,7 +22,7 @@ const Checkbox = ({ id, label, checked, onChange }: ICheckboxProps) => {
       <input
         id={id}
         type="checkbox"
-        className="form-checkbox h-5 w-5 cursor-pointer"
+        className="form-checkbox size-5 cursor-pointer"
         checked={checked}
         onChange={onChange}
       />
