@@ -167,7 +167,7 @@ const CartContents = () => {
         </>
       ) : (
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4 text-text">
+          <h2 className="text-2xl font-semibold mb-4 text-text">
             Ingen produkter i handlekurven
           </h2>
           <Link href="/produkter" passHref>
