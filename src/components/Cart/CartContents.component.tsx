@@ -96,7 +96,7 @@ const CartContents = () => {
                 key={item.key}
                 className="flex items-center border-b border-border py-4"
               >
-                <div className="flex-shrink-0 w-24 h-24 relative hidden md:block">
+                <div className="flex-shrink-0 size-24 relative hidden md:block">
                   <Image
                     src={
                       item.product.node.image?.sourceUrl || '/placeholder.png'
@@ -167,7 +167,7 @@ const CartContents = () => {
         </>
       ) : (
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4 text-text">
+          <h2 className="text-2xl font-semibold mb-4 text-text">
             Ingen produkter i handlekurven
           </h2>
           <Link href="/produkter" passHref>

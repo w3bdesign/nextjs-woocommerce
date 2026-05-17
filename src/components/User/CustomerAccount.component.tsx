@@ -25,7 +25,7 @@ const CustomerAccount = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 text-text">Mine ordre</h1>
+      <h1 className="text-2xl font-semibold mb-4 text-text">Mine ordre</h1>
       {orders && orders.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-surface">

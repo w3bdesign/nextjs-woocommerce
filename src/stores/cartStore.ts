@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 
 import type { Cart } from '@/types/cart';
 
-export type { CartProduct, Cart } from '@/types/cart';
+export type { Cart } from '@/types/cart';
 
 interface CartState {
   cart: Cart | null;
