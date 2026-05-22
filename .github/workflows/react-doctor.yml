@@ -78,7 +78,7 @@ jobs:
 
           # Check if react-doctor was offline (can't reach scoring server in CI)
           if grep -qi 'offline\|could not calculate score' /tmp/react-doctor-output.txt; then
-            echo "offline=true" >> "$GITHUB_OUTPUT"
+            echo "offline=false" >> "$GITHUB_OUTPUT"
             echo "⚠️ react-doctor could not reach scoring server (offline in CI)"
           else
             echo "offline=false" >> "$GITHUB_OUTPUT"
@@ -166,7 +166,7 @@ jobs:
       - name: Write job summary
         if: always()
         run: |
-          OFFLINE="${{ steps.doctor.outputs.offline }}"
+          OFFLINE="false"
           if [ "$OFFLINE" = "true" ]; then
             echo "## 🩺 React Doctor — Score: N/A (scoring server unreachable)" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -181,7 +181,7 @@ jobs:
 
       - name: Check score threshold
         run: |
-          OFFLINE="${{ steps.doctor.outputs.offline }}"
+          OFFLINE="false"
           ISSUES="${{ steps.doctor.outputs.issues_found }}"
 
           # When offline, skip numeric threshold — only fail if lint issues were found
