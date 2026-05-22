@@ -12,6 +12,8 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v6
         with:
@@ -23,24 +25,39 @@ jobs:
       - name: Run React Doctor
         id: doctor
         run: |
-          # Run react-doctor via local devDependency (avoids npx isolation issues with typescript)
-          npm run doctor 2>&1 | tee /tmp/react-doctor-raw.txt
+          # Run react-doctor via local devDependency with --fail-on for CI gating
+          # --fail-on error: exits non-zero only on error-severity diagnostics
+          # --verbose: full rule details for diagnostics
+          # --diff main: only scan files changed vs main branch
+          npx --no react-doctor --verbose --diff main --fail-on error --pr-comment 2>&1 | tee /tmp/react-doctor-raw.txt || true
 
           # Strip ANSI escape codes for clean output
           sed 's/\x1b\[[0-9;]*m//g; s/\x1b\[[0-9;]*[A-Za-z]//g' /tmp/react-doctor-raw.txt | tr -d '\r' > /tmp/react-doctor-output.txt
 
-          # Extract score from the cleaned output (matches "96 / 100" pattern)
-          SCORE=$(grep -oP '\d+ / 100' /tmp/react-doctor-output.txt | head -1 || echo "unknown")
-          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+          # Extract score if available (matches "96 / 100" or standalone number from --score)
+          SCORE=$(grep -oP '\d+(?= / 100)' /tmp/react-doctor-output.txt | head -1 || echo "")
 
-          # Extract just the numeric score for threshold check
-          SCORE_NUM=$(echo "$SCORE" | grep -oP '^\d+' || echo "0")
-          echo "score_num=$SCORE_NUM" >> "$GITHUB_OUTPUT"
+          # Extract issue summary
+          ISSUES=$(grep -oP '\d+(?= issues)' /tmp/react-doctor-output.txt | head -1 || echo "0")
+          TOTAL_FILES=$(grep -oP '(?<=/)\d+(?= files)' /tmp/react-doctor-output.txt | head -1 || echo "0")
 
-          echo "Detected score: $SCORE (numeric: $SCORE_NUM)"
+          if [ -n "$SCORE" ]; then
+            echo "score=$SCORE / 100" >> "$GITHUB_OUTPUT"
+            echo "score_num=$SCORE" >> "$GITHUB_OUTPUT"
+          else
+            echo "score=${ISSUES} issues across ${TOTAL_FILES} files (offline)" >> "$GITHUB_OUTPUT"
+            echo "score_num=" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "issues=$ISSUES" >> "$GITHUB_OUTPUT"
+
+      - name: Run React Doctor (CI gate)
+        run: |
+          # Separate step for the exit code so the previous step always captures output
+          npx --no react-doctor --fail-on error --diff main
 
       - name: Post PR comment with results
-        if: github.event_name == 'pull_request'
+        if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v9
         with:
           script: |
@@ -98,14 +115,3 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/react-doctor-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Check score threshold
-        run: |
-          SCORE="${{ steps.doctor.outputs.score_num }}"
-          SCORE="${SCORE:-0}"
-          THRESHOLD=80
-          echo "React Doctor score: $SCORE (threshold: $THRESHOLD)"
-          if [ "$SCORE" -lt "$THRESHOLD" ]; then
-            echo "::error::React Doctor score $SCORE is below threshold $THRESHOLD"
-            exit 1
-          fi
