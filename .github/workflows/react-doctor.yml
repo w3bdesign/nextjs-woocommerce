@@ -1,72 +1,120 @@
 name: React Doctor
 
 on:
+  push:
+    branches: [main, master]
   pull_request:
     branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   react-doctor:
     name: React Health Check
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
+      contents: read
       pull-requests: write
+      issues: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: actions/setup-node@v6
+      - name: Detect package manager
+        id: pm
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            echo "manager=pnpm" >> "$GITHUB_OUTPUT"
+            echo "install=pnpm install --frozen-lockfile" >> "$GITHUB_OUTPUT"
+            echo "run=pnpm run" >> "$GITHUB_OUTPUT"
+            echo "cache=pnpm" >> "$GITHUB_OUTPUT"
+            echo "Detected pnpm (pnpm-lock.yaml found)"
+          elif [ -f "yarn.lock" ]; then
+            echo "manager=yarn" >> "$GITHUB_OUTPUT"
+            echo "install=yarn install --frozen-lockfile" >> "$GITHUB_OUTPUT"
+            echo "run=yarn" >> "$GITHUB_OUTPUT"
+            echo "cache=yarn" >> "$GITHUB_OUTPUT"
+            echo "Detected yarn (yarn.lock found)"
+          else
+            echo "manager=npm" >> "$GITHUB_OUTPUT"
+            echo "install=npm ci" >> "$GITHUB_OUTPUT"
+            echo "run=npm run" >> "$GITHUB_OUTPUT"
+            echo "cache=npm" >> "$GITHUB_OUTPUT"
+            echo "Detected npm (default)"
+          fi
+
+      - name: Install pnpm
+        if: steps.pm.outputs.manager == 'pnpm'
+        uses: pnpm/action-setup@2e223e0f0d2b8fd9872cbadb8b7428e5f8b5556d
+        with:
+          version: 11
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 24
+          cache: ${{ steps.pm.outputs.cache }}
 
       - name: Install dependencies
-        run: npm ci
+        run: ${{ steps.pm.outputs.install }}
 
       - name: Run React Doctor
         id: doctor
         run: |
-          # Run react-doctor via local devDependency
-          # Use --score to get numeric score (forces score API call)
-          # react-doctor auto-disables scoring in CI (--offline implied),
-          # so we compute the score locally from the diagnostic output.
-          npm run doctor 2>&1 | tee /tmp/react-doctor-raw.txt
+          # Run react-doctor via local devDependency (avoids npx isolation issues with typescript)
+          ${{ steps.pm.outputs.run }} doctor 2>&1 | tee /tmp/react-doctor-raw.txt
 
           # Strip ANSI escape codes for clean output
           sed 's/\x1b\[[0-9;]*m//g; s/\x1b\[[0-9;]*[A-Za-z]//g' /tmp/react-doctor-raw.txt | tr -d '\r' > /tmp/react-doctor-output.txt
 
-          # Try to extract score from output (matches "96 / 100" pattern)
-          SCORE=$(grep -oP '\d+(?= / 100)' /tmp/react-doctor-output.txt | head -1 || echo "")
-
-          if [ -z "$SCORE" ]; then
-            # Score unavailable (offline mode) — compute locally using the documented formula:
-            # score = 100 - (unique_error_rules × 1.5) - (unique_warning_rules × 0.75)
-            # In the output, warnings are marked with ⚠ and each unique rule is listed once
-            WARNING_RULES=$(grep -c '⚠ react-doctor/' /tmp/react-doctor-output.txt || echo "0")
-            ERROR_RULES=$(grep -c '✖ react-doctor/' /tmp/react-doctor-output.txt || echo "0")
-
-            # Compute score using bc for floating point, then truncate to integer
-            SCORE=$(echo "100 - ($ERROR_RULES * 1.5) - ($WARNING_RULES * 0.75)" | bc | cut -d. -f1)
-            # Clamp to 0 minimum
-            if [ "$SCORE" -lt 0 ] 2>/dev/null; then
-              SCORE=0
-            fi
-            echo "Computed score locally: $SCORE / 100 ($ERROR_RULES error rules, $WARNING_RULES warning rules)"
+          # Check if react-doctor was offline (can't reach scoring server in CI)
+          if grep -qi 'offline\|could not calculate score' /tmp/react-doctor-output.txt; then
+            echo "offline=true" >> "$GITHUB_OUTPUT"
+            echo "⚠️ react-doctor could not reach scoring server (offline in CI)"
           else
-            echo "Detected score from output: $SCORE / 100"
+            echo "offline=false" >> "$GITHUB_OUTPUT"
           fi
 
-          echo "score=$SCORE / 100" >> "$GITHUB_OUTPUT"
-          echo "score_num=$SCORE" >> "$GITHUB_OUTPUT"
+          # Check for lint issues (the actionable part of the report)
+          if grep -qi 'No issues found' /tmp/react-doctor-output.txt; then
+            echo "issues_found=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "issues_found=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          # Extract score from the cleaned output (matches "96 / 100" pattern)
+          SCORE=$(grep -oP '\d+ / 100' /tmp/react-doctor-output.txt | head -1 || echo "unknown")
+          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+
+          # Extract just the numeric score for threshold check
+          SCORE_NUM=$(echo "$SCORE" | grep -oP '^\d+' || echo "0")
+          echo "score_num=$SCORE_NUM" >> "$GITHUB_OUTPUT"
+
+          echo "Detected score: $SCORE (numeric: $SCORE_NUM)"
 
       - name: Post PR comment with results
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v9
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
             const fs = require('fs');
             const output = fs.readFileSync('/tmp/react-doctor-output.txt', 'utf8');
             const score = '${{ steps.doctor.outputs.score }}';
+            const offline = '${{ steps.doctor.outputs.offline }}' === 'true';
+            const issuesFound = '${{ steps.doctor.outputs.issues_found }}' === 'true';
+
+            const scoreDisplay = offline
+              ? 'N/A (scoring server unreachable)'
+              : score;
+            const statusEmoji = offline
+              ? (issuesFound ? '⚠️' : '✅')
+              : '';
 
             const body = [
-              `## 🩺 React Doctor — Score: ${score}`,
+              `## 🩺 React Doctor — Score: ${scoreDisplay} ${statusEmoji}`,
+              '',
+              offline ? '> ⚠️ Scoring server was unreachable in CI. Lint results are still valid.' : '',
               '',
               '<details>',
               '<summary>Full diagnostics</summary>',
@@ -78,7 +126,7 @@ jobs:
               '</details>',
               '',
               '> Powered by [react-doctor](https://github.com/millionco/react-doctor)',
-            ].join('\n');
+            ].filter(Boolean).join('\n');
 
             // Find existing comment to update instead of creating duplicates
             const { data: comments } = await github.rest.issues.listComments({
@@ -110,7 +158,14 @@ jobs:
       - name: Write job summary
         if: always()
         run: |
-          echo "## 🩺 React Doctor — Score: ${{ steps.doctor.outputs.score }}" >> "$GITHUB_STEP_SUMMARY"
+          OFFLINE="${{ steps.doctor.outputs.offline }}"
+          if [ "$OFFLINE" = "true" ]; then
+            echo "## 🩺 React Doctor — Score: N/A (scoring server unreachable)" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "> ⚠️ Scoring server was unreachable in CI. Lint results are still valid." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## 🩺 React Doctor — Score: ${{ steps.doctor.outputs.score }}" >> "$GITHUB_STEP_SUMMARY"
+          fi
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/react-doctor-output.txt >> "$GITHUB_STEP_SUMMARY"
@@ -118,6 +173,20 @@ jobs:
 
       - name: Check score threshold
         run: |
+          OFFLINE="${{ steps.doctor.outputs.offline }}"
+          ISSUES="${{ steps.doctor.outputs.issues_found }}"
+
+          # When offline, skip numeric threshold — only fail if lint issues were found
+          if [ "$OFFLINE" = "true" ]; then
+            echo "⚠️ Scoring server unreachable — skipping numeric threshold check"
+            if [ "$ISSUES" = "true" ]; then
+              echo "::error::react-doctor found lint issues (score unavailable due to offline)"
+              exit 1
+            fi
+            echo "✅ No lint issues found (score unavailable due to offline)"
+            exit 0
+          fi
+
           SCORE="${{ steps.doctor.outputs.score_num }}"
           SCORE="${SCORE:-0}"
           THRESHOLD=80
