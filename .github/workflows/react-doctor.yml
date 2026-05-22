@@ -61,8 +61,16 @@ jobs:
 
       - name: Run React Doctor
         id: doctor
+        env:
+          # Unset CI env vars so react-doctor does NOT auto-enable offline mode.
+          # This forces online scoring via the react.doctor API.
+          CI: ""
+          GITHUB_ACTIONS: ""
+          GITLAB_CI: ""
+          CIRCLECI: ""
         run: |
           # Run react-doctor via local devDependency (avoids npx isolation issues with typescript)
+          # CI env vars are unset above to force online mode (score API call)
           ${{ steps.pm.outputs.run }} doctor 2>&1 | tee /tmp/react-doctor-raw.txt
 
           # Strip ANSI escape codes for clean output
