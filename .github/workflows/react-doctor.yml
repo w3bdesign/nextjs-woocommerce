@@ -12,8 +12,6 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v6
         with:
@@ -25,39 +23,41 @@ jobs:
       - name: Run React Doctor
         id: doctor
         run: |
-          # Run react-doctor via local devDependency with --fail-on for CI gating
-          # --fail-on error: exits non-zero only on error-severity diagnostics
-          # --verbose: full rule details for diagnostics
-          # --diff main: only scan files changed vs main branch
-          npx --no react-doctor --verbose --diff main --fail-on error --pr-comment 2>&1 | tee /tmp/react-doctor-raw.txt || true
+          # Run react-doctor via local devDependency
+          # Use --score to get numeric score (forces score API call)
+          # react-doctor auto-disables scoring in CI (--offline implied),
+          # so we compute the score locally from the diagnostic output.
+          npm run doctor 2>&1 | tee /tmp/react-doctor-raw.txt
 
           # Strip ANSI escape codes for clean output
           sed 's/\x1b\[[0-9;]*m//g; s/\x1b\[[0-9;]*[A-Za-z]//g' /tmp/react-doctor-raw.txt | tr -d '\r' > /tmp/react-doctor-output.txt
 
-          # Extract score if available (matches "96 / 100" or standalone number from --score)
+          # Try to extract score from output (matches "96 / 100" pattern)
           SCORE=$(grep -oP '\d+(?= / 100)' /tmp/react-doctor-output.txt | head -1 || echo "")
 
-          # Extract issue summary
-          ISSUES=$(grep -oP '\d+(?= issues)' /tmp/react-doctor-output.txt | head -1 || echo "0")
-          TOTAL_FILES=$(grep -oP '(?<=/)\d+(?= files)' /tmp/react-doctor-output.txt | head -1 || echo "0")
+          if [ -z "$SCORE" ]; then
+            # Score unavailable (offline mode) — compute locally using the documented formula:
+            # score = 100 - (unique_error_rules × 1.5) - (unique_warning_rules × 0.75)
+            # In the output, warnings are marked with ⚠ and each unique rule is listed once
+            WARNING_RULES=$(grep -c '⚠ react-doctor/' /tmp/react-doctor-output.txt || echo "0")
+            ERROR_RULES=$(grep -c '✖ react-doctor/' /tmp/react-doctor-output.txt || echo "0")
 
-          if [ -n "$SCORE" ]; then
-            echo "score=$SCORE / 100" >> "$GITHUB_OUTPUT"
-            echo "score_num=$SCORE" >> "$GITHUB_OUTPUT"
+            # Compute score using bc for floating point, then truncate to integer
+            SCORE=$(echo "100 - ($ERROR_RULES * 1.5) - ($WARNING_RULES * 0.75)" | bc | cut -d. -f1)
+            # Clamp to 0 minimum
+            if [ "$SCORE" -lt 0 ] 2>/dev/null; then
+              SCORE=0
+            fi
+            echo "Computed score locally: $SCORE / 100 ($ERROR_RULES error rules, $WARNING_RULES warning rules)"
           else
-            echo "score=${ISSUES} issues across ${TOTAL_FILES} files (offline)" >> "$GITHUB_OUTPUT"
-            echo "score_num=" >> "$GITHUB_OUTPUT"
+            echo "Detected score from output: $SCORE / 100"
           fi
 
-          echo "issues=$ISSUES" >> "$GITHUB_OUTPUT"
-
-      - name: Run React Doctor (CI gate)
-        run: |
-          # Separate step for the exit code so the previous step always captures output
-          npx --no react-doctor --fail-on error --diff main
+          echo "score=$SCORE / 100" >> "$GITHUB_OUTPUT"
+          echo "score_num=$SCORE" >> "$GITHUB_OUTPUT"
 
       - name: Post PR comment with results
-        if: always() && github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v9
         with:
           script: |
@@ -115,3 +115,14 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           cat /tmp/react-doctor-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check score threshold
+        run: |
+          SCORE="${{ steps.doctor.outputs.score_num }}"
+          SCORE="${SCORE:-0}"
+          THRESHOLD=80
+          echo "React Doctor score: $SCORE (threshold: $THRESHOLD)"
+          if [ "$SCORE" -lt "$THRESHOLD" ]; then
+            echo "::error::React Doctor score $SCORE is below threshold $THRESHOLD"
+            exit 1
+          fi
