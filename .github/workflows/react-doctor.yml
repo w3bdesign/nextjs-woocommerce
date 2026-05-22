@@ -61,28 +61,17 @@ jobs:
 
       - name: Run React Doctor
         id: doctor
-        env:
+        run: |
           # Unset CI env vars so react-doctor does NOT auto-enable offline mode.
           # This forces online scoring via the react.doctor API.
-          CI: ""
-          GITHUB_ACTIONS: ""
-          GITLAB_CI: ""
-          CIRCLECI: ""
-        run: |
+          # react-doctor checks: GITHUB_ACTIONS, GITLAB_CI, CIRCLECI, and CI === "true"
+          unset CI GITHUB_ACTIONS GITLAB_CI CIRCLECI
+
           # Run react-doctor via local devDependency (avoids npx isolation issues with typescript)
-          # CI env vars are unset above to force online mode (score API call)
           ${{ steps.pm.outputs.run }} doctor 2>&1 | tee /tmp/react-doctor-raw.txt
 
           # Strip ANSI escape codes for clean output
           sed 's/\x1b\[[0-9;]*m//g; s/\x1b\[[0-9;]*[A-Za-z]//g' /tmp/react-doctor-raw.txt | tr -d '\r' > /tmp/react-doctor-output.txt
-
-          # Check if react-doctor was offline (can't reach scoring server in CI)
-          if grep -qi 'offline\|could not calculate score' /tmp/react-doctor-output.txt; then
-            echo "offline=false" >> "$GITHUB_OUTPUT"
-            echo "⚠️ react-doctor could not reach scoring server (offline in CI)"
-          else
-            echo "offline=false" >> "$GITHUB_OUTPUT"
-          fi
 
           # Check for lint issues (the actionable part of the report)
           if grep -qi 'No issues found' /tmp/react-doctor-output.txt; then
