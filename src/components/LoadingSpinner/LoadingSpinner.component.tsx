@@ -3,7 +3,7 @@
  */
 const LoadingSpinner = () => (
   <div className="w-full h-full flex justify-center items-center p-4 mt-2">
-    <output role="status">
+    <div role="status">
       <svg
         aria-hidden="true"
         className="inline size-16 text-surface-alt animate-spin fill-primary"
@@ -21,7 +21,7 @@ const LoadingSpinner = () => (
         />
       </svg>
       <span className="sr-only">Laster ...</span>
-    </output>
+    </div>
   </div>
 );
 
