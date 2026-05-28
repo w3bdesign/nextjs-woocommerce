@@ -144,27 +144,17 @@ const Hamburger = () => {
                   className="w-full p-4 border-t border-border border-solid rounded-md"
                 >
                   <Link href={href} passHref>
-                    <span
-                      className="text-xl inline-block px-4 py-2 no-underline hover:text-black hover:underline"
+                    <button
+                      type="button"
+                      className="text-xl inline-block px-4 py-2 no-underline hover:text-black hover:underline bg-transparent border-none cursor-pointer"
                       onClick={() => {
                         if (!isAnimating) {
                           dispatch({ type: 'TOGGLE' });
                         }
                       }}
-                      onKeyDown={(event) => {
-                        // 'Enter' key or 'Space' key
-                        if (
-                          (event.key === 'Enter' || event.key === ' ') &&
-                          !isAnimating
-                        ) {
-                          dispatch({ type: 'TOGGLE' });
-                        }
-                      }}
-                      tabIndex={0} // Make the span focusable
-                      role="button" // Indicate the span acts as a button
                     >
                       {title}
-                    </span>
+                    </button>
                   </Link>
                 </li>
               </FadeLeftToRightItem>

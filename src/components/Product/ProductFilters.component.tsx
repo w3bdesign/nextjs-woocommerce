@@ -120,6 +120,7 @@ const ProductFilters = ({
           <div className="grid grid-cols-3 gap-2">
             {colors.map((color) => (
               <button
+                type="button"
                 key={color.name}
                 onClick={() => toggleColor(color.name)}
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
