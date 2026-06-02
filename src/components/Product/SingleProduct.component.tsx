@@ -222,20 +222,16 @@ const ProductDetails = ({
 // --- Main Component ---
 
 const SingleProduct = ({ product }: ISingleProductProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedVariation, setSelectedVariation] = useState<number>();
-
-  useVariationInitializer(product.variations, setSelectedVariation, setIsLoading);
+  // Initialize selectedVariation with the first variation's databaseId if variations exist
+  const [selectedVariation, setSelectedVariation] = useState<number | undefined>(
+    product.variations?.nodes[0]?.databaseId
+  );
 
   const price = formatPrice(product.price);
   const regularPrice = formatPrice(product.regularPrice);
   const salePrice = formatPrice(product.salePrice);
   const descriptionText = useStrippedDescription(product.description);
   const hasVariations = Boolean(product.variations);
-
-  if (isLoading) {
-    return <ProductLoadingState />;
-  }
 
   return (
     <section className="bg-surface mb-32 md:mb-12">
