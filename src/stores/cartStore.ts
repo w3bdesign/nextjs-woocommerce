@@ -5,6 +5,10 @@ import type { Cart } from '@/types/cart';
 
 export type { Cart } from '@/types/cart';
 
+// Versioned localStorage keys to prevent crashes on schema changes
+const WOOCOMMERCE_CART_KEY = 'woocommerce-cart:v1';
+const WOO_SESSION_KEY = 'woo-session:v1';
+
 interface CartState {
   cart: Cart | null;
   isLoading: boolean;
@@ -23,16 +27,16 @@ export const useCartStore = create<CartState>()(
       updateCart: (newCart) => {
         set({ cart: newCart });
         // Sync with WooCommerce
-        localStorage.setItem('woocommerce-cart', JSON.stringify(newCart));
+        localStorage.setItem(WOOCOMMERCE_CART_KEY, JSON.stringify(newCart));
       },
       syncWithWooCommerce: (cart) => {
         set({ cart });
-        localStorage.setItem('woocommerce-cart', JSON.stringify(cart));
+        localStorage.setItem(WOOCOMMERCE_CART_KEY, JSON.stringify(cart));
       },
       clearWooCommerceSession: () => {
         set({ cart: null });
-        localStorage.removeItem('woo-session');
-        localStorage.removeItem('woocommerce-cart');
+        localStorage.removeItem(WOO_SESSION_KEY);
+        localStorage.removeItem(WOOCOMMERCE_CART_KEY);
       },
     }),
     {
