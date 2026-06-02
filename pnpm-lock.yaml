@@ -88,7 +88,7 @@ importers:
         specifier: ^3.8.3
         version: 3.8.3
       react-doctor:
-        specifier: ^0.2.12
+        specifier: ^0.2.13
         version: 0.2.14(eslint@9.39.4(jiti@1.21.7))
       tailwindcss:
         specifier: ^3.4.19
