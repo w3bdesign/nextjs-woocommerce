@@ -68,8 +68,8 @@ export const useProductFilters = (products: Product[]) => {
       return true;
     });
 
-    // Sort products
-    return [...(filtered || [])].sort((a, b) => {
+    // Sort products using toSorted() for immutable sorting (ES2023)
+    return (filtered || []).toSorted((a, b) => {
       const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
       const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
 

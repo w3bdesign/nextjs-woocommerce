@@ -9,6 +9,10 @@ import {
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
+// Versioned localStorage keys to prevent crashes on schema changes
+const WOOCOMMERCE_CART_KEY = 'woocommerce-cart:v1';
+const WOO_SESSION_KEY = 'woo-session:v1';
+
 interface SessionData {
   token: string;
   createdTime: number;
@@ -25,7 +29,7 @@ export const middleware = new ApolloLink((operation, forward) => {
    */
   // Cache the localStorage read to avoid multiple accesses across middleware and afterware
   const cachedWooSession =
-    globalThis.window === undefined ? null : localStorage.getItem('woo-session');
+    globalThis.window === undefined ? null : localStorage.getItem(WOO_SESSION_KEY);
   
   const sessionData: SessionData | null = cachedWooSession
     ? JSON.parse(cachedWooSession)
@@ -39,8 +43,8 @@ export const middleware = new ApolloLink((operation, forward) => {
     // Check if the token is older than 7 days
     if (Date.now() - createdTime > SEVEN_DAYS) {
       // If it is, delete it
-      localStorage.removeItem('woo-session');
-      localStorage.setItem('woocommerce-cart', JSON.stringify({}));
+      localStorage.removeItem(WOO_SESSION_KEY);
+      localStorage.setItem(WOOCOMMERCE_CART_KEY, JSON.stringify({}));
     } else {
       // If it's not, use the token
       headers['woocommerce-session'] = `Session ${token}`;
@@ -81,11 +85,11 @@ export const afterware = new ApolloLink((operation, forward) =>
       // Use the cached value from middleware instead of re-reading localStorage
       if ('false' === session) {
         // Remove session data if session destroyed.
-        localStorage.removeItem('woo-session');
+        localStorage.removeItem(WOO_SESSION_KEY);
         // Update session new data if changed.
       } else if (!cachedWooSession) {
         localStorage.setItem(
-          'woo-session',
+          WOO_SESSION_KEY,
           JSON.stringify({ token: session, createdTime: Date.now() }),
         );
       }
