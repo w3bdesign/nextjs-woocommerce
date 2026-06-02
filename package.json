@@ -62,7 +62,8 @@
   },
   "pnpm": {
     "overrides": {
-      "axe-core": "4.11.4"
+      "axe-core": "4.11.4",
+      "eslint-plugin-jsx-a11y>axe-core": "4.11.4"
     }
   }
 }
