@@ -62,8 +62,16 @@
   },
   "pnpm": {
     "overrides": {
-      "axe-core": "4.11.4",
-      "eslint-plugin-jsx-a11y>axe-core": "4.11.4"
+      "axe-core": "4.11.4"
+    },
+    "peerDependencyRules": {
+      "ignoreMissing": ["*"],
+      "allowedVersions": {
+        "axe-core": "4.11.4"
+      }
     }
+  },
+  "resolutions": {
+    "axe-core": "4.11.4"
   }
 }
