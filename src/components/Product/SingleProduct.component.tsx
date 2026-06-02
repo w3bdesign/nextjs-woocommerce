@@ -53,20 +53,6 @@ const getOriginalSalePrice = (
 ): string | undefined =>
   hasVariations ? filteredVariantPrice(price, 'right') : regularPrice;
 
-/** Initialise the selected variation from the product's first variation node */
-const useVariationInitializer = (
-  variations: ISingleProduct['variations'],
-  setSelectedVariation: (id: number) => void,
-  setIsLoading: (loading: boolean) => void,
-) => {
-  useEffect(() => {
-    setIsLoading(false);
-    if (variations) {
-      setSelectedVariation(variations.nodes[0].databaseId);
-    }
-  }, [variations, setSelectedVariation, setIsLoading]);
-};
-
 // --- Sub-components ---
 
 const ProductImage = ({
