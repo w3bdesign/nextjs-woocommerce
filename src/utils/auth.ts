@@ -1,10 +1,22 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { LOGIN_USER } from './gql/GQL_MUTATIONS';
 
-function getErrorMessage(error: any): string {
+type LoginError = {
+  graphQLErrors?: Array<{ message?: string }>;
+  networkError?: unknown;
+  message?: string;
+};
+
+function getErrorMessage(error: unknown): string {
+  if (typeof error !== 'object' || error === null) {
+    return 'En ukjent feil oppstod. Vennligst prøv igjen senere.';
+  }
+
+  const loginError = error as LoginError;
+
   // Check for GraphQL errors
-  if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-    const graphQLError = error.graphQLErrors[0];
+  if (loginError.graphQLErrors && loginError.graphQLErrors.length > 0) {
+    const graphQLError = loginError.graphQLErrors[0];
     const message = graphQLError.message;
 
     // Map GraphQL error messages to user-friendly messages
@@ -27,12 +39,12 @@ function getErrorMessage(error: any): string {
   }
 
   // Check for network errors
-  if (error.networkError) {
+  if (loginError.networkError) {
     return 'Nettverksfeil. Vennligst sjekk internetttilkoblingen din og prøv igjen.';
   }
 
   // Fallback for other errors
-  if (error.message) {
+  if (loginError.message) {
     return 'Det oppstod en feil under innlogging. Vennligst prøv igjen.';
   }
 
