@@ -2,6 +2,7 @@
   "name": "nextjs-woocommerce",
   "version": "1.2.5",
   "private": true,
+  "packageManager": "pnpm@11.0.8",
   "scripts": {
     "lhci": "lhci autorun",
     "lhci:perf": "lhci autorun --collect.settings.preset=perf",
@@ -11,16 +12,17 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
-    "playwright": "npx playwright test",
-    "playwright:ui": "npx playwright test --ui",
-    "playwright:debug": "npx playwright test --debug",
-    "playwright:codegen": "playwright codegen",
+    "playwright": "pnpm exec playwright test",
+    "playwright:ui": "pnpm exec playwright test --ui",
+    "playwright:debug": "pnpm exec playwright test --debug",
+    "playwright:codegen": "pnpm exec playwright codegen",
     "doctor": "echo n | react-doctor --verbose",
     "doctor:score": "echo n | react-doctor --score",
-    "refresh": "rm -rf node_modules && rm package-lock.json && npm i && npm run format"
+    "refresh": "rm -rf node_modules && rm pnpm-lock.yaml && pnpm install && pnpm run format"
   },
   "keywords": [
     "next.js",
+    "portfolio",
     "next",
     "javascript",
     "framer"
@@ -47,7 +49,7 @@
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.60.0",
-    "@types/node": "24.12.4",
+    "@types/node": "25.9.1",
     "@types/nprogress": "^0.2.3",
     "@types/react-instantsearch-dom": "^6.12.9",
     "@typescript-eslint/eslint-plugin": "^8.60.0",
@@ -56,14 +58,22 @@
     "eslint-config-next": "^16.2.6",
     "postcss-preset-env": "^11.3.0",
     "prettier": "^3.8.3",
-    "react-doctor": "^0.2.13",
+    "react-doctor": "^0.2.14",
     "tailwindcss": "^3.4.19",
     "typescript": "^6.0.3"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "unrs-resolver"
-    ]
+    "overrides": {
+      "axe-core": "4.11.4"
+    },
+    "peerDependencyRules": {
+      "ignoreMissing": ["*"],
+      "allowedVersions": {
+        "axe-core": "4.11.4"
+      }
+    }
+  },
+  "resolutions": {
+    "axe-core": "4.11.4"
   }
 }
