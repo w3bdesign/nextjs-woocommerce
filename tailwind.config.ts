@@ -1,9 +1,11 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
   content: ['./src/components/**/*.tsx', './src/pages/**/*.tsx'],
   safelist: [
     // Dynamic color classes used in ProductFilters for color swatches
-    { pattern: /bg-(red|blue|green|yellow|pink|purple|orange|teal|cyan|gray)-500/ },
+    {
+      pattern:
+        /bg-(red|blue|green|yellow|pink|purple|orange|teal|cyan|gray)-500/,
+    },
   ],
   theme: {
     extend: {
@@ -57,3 +59,5 @@ module.exports = {
   },
   plugins: [],
 };
+
+export default config;
