@@ -63,7 +63,7 @@ The current release has been tested and is confirmed working with the following 
 
 5.  Modify the values according to your setup
 
-6.  Start the server with `npm run dev`
+6.  Start the server with `pnpm run dev`
 
 7.  Enable COD (Cash On Demand) payment method in WooCommerce
 
