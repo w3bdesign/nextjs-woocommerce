@@ -25,7 +25,7 @@ export const middleware = new ApolloLink((operation, forward) => {
    */
   // Cache the localStorage read to avoid multiple accesses across middleware and afterware
   const cachedWooSession =
-    typeof globalThis.window === 'undefined' ? null : localStorage.getItem('woo-session');
+    globalThis.window === undefined ? null : localStorage.getItem('woo-session');
   
   const sessionData: SessionData | null = cachedWooSession
     ? JSON.parse(cachedWooSession)
@@ -77,7 +77,7 @@ export const afterware = new ApolloLink((operation, forward) =>
 
     const session = headers.get('woocommerce-session');
 
-    if (session && typeof globalThis.window !== 'undefined') {
+    if (session && globalThis.window !== undefined) {
       // Use the cached value from middleware instead of re-reading localStorage
       if ('false' === session) {
         // Remove session data if session destroyed.
@@ -95,7 +95,7 @@ export const afterware = new ApolloLink((operation, forward) =>
   }),
 );
 
-const isServerSide = typeof globalThis.window === 'undefined';
+const isServerSide = globalThis.window === undefined;
 
 // Apollo GraphQL client.
 const client = new ApolloClient({
