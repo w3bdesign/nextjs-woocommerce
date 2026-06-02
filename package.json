@@ -59,5 +59,10 @@
     "react-doctor": "^0.2.12",
     "tailwindcss": "^3.4.19",
     "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "axe-core": "4.11.4"
+    }
   }
 }
