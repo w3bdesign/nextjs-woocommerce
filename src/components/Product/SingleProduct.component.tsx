@@ -1,12 +1,11 @@
 // Imports
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 
 // Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 // Components
 import AddToCart from './AddToCart.component';
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 // Types
 import type { ISingleProductProps, ISingleProduct } from '@/types/product';
@@ -52,20 +51,6 @@ const getOriginalSalePrice = (
   regularPrice: string | undefined,
 ): string | undefined =>
   hasVariations ? filteredVariantPrice(price, 'right') : regularPrice;
-
-/** Initialise the selected variation from the product's first variation node */
-const useVariationInitializer = (
-  variations: ISingleProduct['variations'],
-  setSelectedVariation: (id: number) => void,
-  setIsLoading: (loading: boolean) => void,
-) => {
-  useEffect(() => {
-    setIsLoading(false);
-    if (variations) {
-      setSelectedVariation(variations.nodes[0].databaseId);
-    }
-  }, [variations, setSelectedVariation, setIsLoading]);
-};
 
 // --- Sub-components ---
 
@@ -156,18 +141,6 @@ const VariationSelector = ({
   </div>
 );
 
-// --- Loading state ---
-
-const ProductLoadingState = () => (
-  <section className="bg-surface mb-32 md:mb-12">
-    <div className="h-56 mt-20">
-      <p className="text-xl font-bold text-center text-text">Laster produkt ...</p>
-      <br />
-      <LoadingSpinner />
-    </div>
-  </section>
-);
-
 // --- Product Details ---
 
 const ProductDetails = ({
@@ -236,20 +209,16 @@ const ProductDetails = ({
 // --- Main Component ---
 
 const SingleProduct = ({ product }: ISingleProductProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedVariation, setSelectedVariation] = useState<number>();
-
-  useVariationInitializer(product.variations, setSelectedVariation, setIsLoading);
+  // Initialize selectedVariation with the first variation's databaseId if variations exist
+  const [selectedVariation, setSelectedVariation] = useState<number | undefined>(
+    product.variations?.nodes[0]?.databaseId
+  );
 
   const price = formatPrice(product.price);
   const regularPrice = formatPrice(product.regularPrice);
   const salePrice = formatPrice(product.salePrice);
   const descriptionText = useStrippedDescription(product.description);
   const hasVariations = Boolean(product.variations);
-
-  if (isLoading) {
-    return <ProductLoadingState />;
-  }
 
   return (
     <section className="bg-surface mb-32 md:mb-12">

@@ -23,10 +23,13 @@ export const middleware = new ApolloLink((operation, forward) => {
    * If session data exist in local storage, set value as session header.
    * Here we also delete the session if it is older than 7 days
    */
-  const sessionData: SessionData | null =
-    typeof window !== 'undefined'
-      ? JSON.parse(localStorage.getItem('woo-session') || 'null')
-      : null;
+  // Cache the localStorage read to avoid multiple accesses across middleware and afterware
+  const cachedWooSession =
+    globalThis.window === undefined ? null : localStorage.getItem('woo-session');
+  
+  const sessionData: SessionData | null = cachedWooSession
+    ? JSON.parse(cachedWooSession)
+    : null;
 
   const headers: Record<string, string> = {};
 
@@ -49,6 +52,8 @@ export const middleware = new ApolloLink((operation, forward) => {
 
   operation.setContext({
     headers,
+    // Pass the cached session to afterware to avoid re-reading localStorage
+    cachedWooSession,
   });
 
   return forward(operation);
@@ -67,16 +72,18 @@ export const afterware = new ApolloLink((operation, forward) =>
     const context = operation.getContext();
     const {
       response: { headers },
+      cachedWooSession,
     } = context;
 
     const session = headers.get('woocommerce-session');
 
-    if (session && typeof window !== 'undefined') {
+    if (session && globalThis.window !== undefined) {
+      // Use the cached value from middleware instead of re-reading localStorage
       if ('false' === session) {
         // Remove session data if session destroyed.
         localStorage.removeItem('woo-session');
         // Update session new data if changed.
-      } else if (!localStorage.getItem('woo-session')) {
+      } else if (!cachedWooSession) {
         localStorage.setItem(
           'woo-session',
           JSON.stringify({ token: session, createdTime: Date.now() }),
@@ -88,7 +95,7 @@ export const afterware = new ApolloLink((operation, forward) =>
   }),
 );
 
-const isServerSide = typeof window === 'undefined';
+const isServerSide = globalThis.window === undefined;
 
 // Apollo GraphQL client.
 const client = new ApolloClient({
