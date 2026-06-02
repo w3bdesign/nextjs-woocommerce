@@ -72,11 +72,14 @@ export const afterware = new ApolloLink((operation, forward) =>
     const session = headers.get('woocommerce-session');
 
     if (session && typeof window !== 'undefined') {
+      // Cache the localStorage read to avoid multiple accesses
+      const existingSession = localStorage.getItem('woo-session');
+      
       if ('false' === session) {
         // Remove session data if session destroyed.
         localStorage.removeItem('woo-session');
         // Update session new data if changed.
-      } else if (!localStorage.getItem('woo-session')) {
+      } else if (!existingSession) {
         localStorage.setItem(
           'woo-session',
           JSON.stringify({ token: session, createdTime: Date.now() }),
