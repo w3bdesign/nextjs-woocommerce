@@ -2,6 +2,7 @@
   "name": "nextjs-woocommerce",
   "version": "1.2.5",
   "private": true,
+  "packageManager": "pnpm@11.0.8",
   "scripts": {
     "lhci": "lhci autorun",
     "lhci:perf": "lhci autorun --collect.settings.preset=perf",
