@@ -29,7 +29,6 @@ const OrderButton = () => {
         placeholder="paymentMethod"
         type="hidden"
         value="cod"
-        checked
         {...register('paymentMethod')}
       />
       <div className="mt-4 flex justify-center">
