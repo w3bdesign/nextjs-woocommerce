@@ -63,7 +63,8 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp",
-      "unrs-resolver"
+      "unrs-resolver",
+      "msgpackr-extract"
     ]
   }
 }
