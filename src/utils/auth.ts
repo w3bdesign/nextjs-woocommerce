@@ -1,28 +1,24 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { LOGIN_USER } from './gql/GQL_MUTATIONS';
 
-// Cookie-based authentication - no token storage needed
-export function hasCredentials() {
-  if (typeof window === 'undefined') {
-    return false; // Server-side, no credentials available
+type LoginError = {
+  graphQLErrors?: Array<{ message?: string }>;
+  networkError?: unknown;
+  message?: string;
+};
+
+function getErrorMessage(error: unknown): string {
+  if (typeof error !== 'object' || error === null) {
+    return 'En ukjent feil oppstod. Vennligst prøv igjen senere.';
   }
-  
-  // With cookie-based auth, we'll check if user is logged in through a query
-  // For now, we'll return false and let components handle the check
-  return false;
-}
 
-export async function getAuthToken() {
-  // Cookie-based auth doesn't need JWT tokens
-  return null;
-}
+  const loginError = error as LoginError;
 
-function getErrorMessage(error: any): string {
   // Check for GraphQL errors
-  if (error.graphQLErrors && error.graphQLErrors.length > 0) {
-    const graphQLError = error.graphQLErrors[0];
+  if (loginError.graphQLErrors && loginError.graphQLErrors.length > 0) {
+    const graphQLError = loginError.graphQLErrors[0];
     const message = graphQLError.message;
-    
+
     // Map GraphQL error messages to user-friendly messages
     switch (message) {
       case 'invalid_username':
@@ -41,17 +37,17 @@ function getErrorMessage(error: any): string {
         return 'Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.';
     }
   }
-  
+
   // Check for network errors
-  if (error.networkError) {
+  if (loginError.networkError) {
     return 'Nettverksfeil. Vennligst sjekk internetttilkoblingen din og prøv igjen.';
   }
-  
+
   // Fallback for other errors
-  if (error.message) {
+  if (loginError.message) {
     return 'Det oppstod en feil under innlogging. Vennligst prøv igjen.';
   }
-  
+
   return 'En ukjent feil oppstod. Vennligst prøv igjen senere.';
 }
 
@@ -71,7 +67,9 @@ export async function login(username: string, password: string) {
     const loginResult = data.loginWithCookies;
 
     if (loginResult.status !== 'SUCCESS') {
-      throw new Error('Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.');
+      throw new Error(
+        'Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.',
+      );
     }
 
     // On successful login, cookies are automatically set by the server
@@ -82,6 +80,7 @@ export async function login(username: string, password: string) {
   }
 }
 
+/*
 export async function logout() {
   // For cookie-based auth, we might need a logout mutation
   // For now, we can clear any client-side state
@@ -90,3 +89,4 @@ export async function logout() {
     window.location.href = '/';
   }
 }
+*/
