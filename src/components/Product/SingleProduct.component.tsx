@@ -6,7 +6,6 @@ import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
 // Components
 import AddToCart from './AddToCart.component';
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 // Types
 import type { ISingleProductProps, ISingleProduct } from '@/types/product';
