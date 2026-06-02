@@ -1,3 +1,6 @@
+packages:
+  - '.'
+
 allowBuilds:
   msgpackr-extract: true
   sharp: true
