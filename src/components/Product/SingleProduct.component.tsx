@@ -142,18 +142,6 @@ const VariationSelector = ({
   </div>
 );
 
-// --- Loading state ---
-
-const ProductLoadingState = () => (
-  <section className="bg-surface mb-32 md:mb-12">
-    <div className="h-56 mt-20">
-      <p className="text-xl font-bold text-center text-text">Laster produkt ...</p>
-      <br />
-      <LoadingSpinner />
-    </div>
-  </section>
-);
-
 // --- Product Details ---
 
 const ProductDetails = ({
