@@ -80,6 +80,7 @@ export async function login(username: string, password: string) {
   }
 }
 
+/*
 export async function logout() {
   // For cookie-based auth, we might need a logout mutation
   // For now, we can clear any client-side state
@@ -88,3 +89,4 @@ export async function logout() {
     window.location.href = '/';
   }
 }
+*/
