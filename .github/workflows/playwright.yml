@@ -12,8 +12,6 @@ jobs:
     - uses: actions/checkout@v6
     - name: Install pnpm
       uses: pnpm/action-setup@2e223e0f0d2b8fd9872cbadb8b7428e5f8b5556d
-      with:
-        version: 11
     - uses: actions/setup-node@v6
       with:
         node-version: 24

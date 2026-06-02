@@ -48,8 +48,6 @@ jobs:
       - name: Install pnpm
         if: steps.pm.outputs.manager == 'pnpm'
         uses: pnpm/action-setup@2e223e0f0d2b8fd9872cbadb8b7428e5f8b5556d
-        with:
-          version: 11
 
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
