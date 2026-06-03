@@ -42,7 +42,7 @@ importers:
         specifier: 19.2.6
         version: 19.2.6(react@19.2.6)
       react-hook-form:
-        specifier: ^7.76.1
+        specifier: ^7.77.0
         version: 7.77.0(react@19.2.6)
       react-instantsearch-dom:
         specifier: ^6.40.4
