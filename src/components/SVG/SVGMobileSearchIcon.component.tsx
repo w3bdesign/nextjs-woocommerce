@@ -2,14 +2,16 @@
  * The SVG that we use for search in the navbar for mobile.
  * Also includes logic for closing and opening the search form.
  */
-const SVGMobileSearchIcon = () => {
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
 
+// Pure function moved to module scope to avoid rebuilding on every render
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
+const SVGMobileSearchIcon = () => {
   return (
     <div className="inline mb-0.5 mr-2 md:hidden xl:hidden">
       <button
