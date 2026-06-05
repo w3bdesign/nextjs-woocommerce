@@ -70,10 +70,10 @@ importers:
         specifier: ^6.12.9
         version: 6.12.9
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.60.0
+        specifier: ^8.60.1
         version: 8.60.1(@typescript-eslint/parser@8.60.1(eslint@10.4.1(jiti@1.21.7))(typescript@6.0.3))(eslint@10.4.1(jiti@1.21.7))(typescript@6.0.3)
       '@typescript-eslint/parser':
-        specifier: ^8.60.0
+        specifier: ^8.60.1
         version: 8.60.1(eslint@10.4.1(jiti@1.21.7))(typescript@6.0.3)
       babel-plugin-styled-components:
         specifier: ^2.3.0
