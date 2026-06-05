@@ -12,7 +12,7 @@ const Navbar = () => {
     <header className="border-b border-border">
       <nav id="header" className="top-0 z-50 w-full bg-surface">
         <div className="container mx-auto px-4 sm:px-6 py-4">
-          <div className="flex flex-col space-y-4 md:hidden">
+          <div className="flex flex-col gap-4 md:hidden">
             <div className="text-center">
               <Link href="/">
                 <span className="text-lg font-bold tracking-widest text-text">
@@ -25,7 +25,7 @@ const Navbar = () => {
             </div>
           </div>
           <div className="hidden md:flex items-center justify-between">
-            <div className="flex items-center space-x-8">
+            <div className="flex items-center gap-8">
               <Link href="/produkter">
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
@@ -48,7 +48,7 @@ const Navbar = () => {
                 NETTBUTIKK
               </span>
             </Link>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-3">
               <AlgoliaSearchBox />
               <Cart />
             </div>

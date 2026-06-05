@@ -19,6 +19,14 @@ import {
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
+// Pure function moved to module scope to avoid rebuilding on every render
+const getUnitPrice = (subtotal: string, quantity: number) => {
+  const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g, ''));
+  return isNaN(numericSubtotal)
+    ? 'N/A'
+    : (numericSubtotal / quantity).toFixed(2);
+};
+
 const CartContents = () => {
   const router = useRouter();
   const { clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
@@ -78,13 +86,6 @@ const CartContents = () => {
   }, [refetch]);
 
   const cartTotal = data?.cart?.total || '0';
-
-  const getUnitPrice = (subtotal: string, quantity: number) => {
-    const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g, ''));
-    return isNaN(numericSubtotal)
-      ? 'N/A'
-      : (numericSubtotal / quantity).toFixed(2);
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -178,7 +179,7 @@ const CartContents = () => {
       {updateCartProcessing && (
         <div className="fixed inset-0 flex items-center justify-center bg-overlay bg-opacity-50">
           <div className="bg-surface p-4 rounded-lg">
-            <p className="text-lg mb-2 text-text">Oppdaterer handlekurv...</p>
+            <p className="text-lg mb-2 text-text">Oppdaterer handlekurv…</p>
             <LoadingSpinner />
           </div>
         </div>

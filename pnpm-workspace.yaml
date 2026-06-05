@@ -5,3 +5,7 @@ allowBuilds:
   msgpackr-extract: true
   sharp: true
   unrs-resolver: true
+
+minimumReleaseAge: 4320
+
+# trustPolicy: no-downgrade

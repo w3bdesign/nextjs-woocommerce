@@ -1,6 +1,5 @@
 /*eslint complexity: ["error", 20]*/
 import Link from 'next/link';
-import { v4 as uuidv4 } from 'uuid';
 
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
@@ -12,7 +11,7 @@ interface IDisplayProductsProps {
 
 /**
  * Displays all of the products as long as length is defined.
- * Does a map() over the props array and utilizes uuidv4 for unique key values.
+ * Does a map() over the props array and uses product slug for unique key values.
  * @function DisplayProducts
  * @param {IDisplayProductsProps} products Products to render
  * @returns {JSX.Element} - Rendered component
@@ -48,7 +47,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
             }
 
             return (
-              <div key={uuidv4()} className="group">
+              <div key={slug} className="group">
                 <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <div className="aspect-[3/4] relative overflow-hidden bg-surface-alt">
                     {image ? (
@@ -81,7 +80,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 </Link>
                 <div className="mt-2 text-center">
                   {onSale ? (
-                    <div className="flex justify-center items-center space-x-2">
+                    <div className="flex justify-center items-center gap-2">
                       <span className="text-xl font-bold text-error">
                         {variations && filteredVariantPrice(price, '')}
                         {!variations && salePrice}
