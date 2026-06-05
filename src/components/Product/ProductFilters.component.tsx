@@ -139,6 +139,7 @@ const ProductFilters = ({
                     : ''
                 }`}
                 title={color.name}
+                aria-label={`Filtrer etter farge: ${color.name}`}
               />
             ))}
           </div>
