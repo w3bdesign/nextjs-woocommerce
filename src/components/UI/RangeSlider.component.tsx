@@ -34,7 +34,7 @@ const RangeSlider = ({
   startValue = min,
   formatValue = (val: number) => val.toString(),
 }: IRangeSliderProps) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleRangeValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(parseInt(e.target.value));
   };
 
@@ -49,7 +49,7 @@ const RangeSlider = ({
         min={min}
         max={max}
         value={value}
-        onChange={handleChange}
+        onChange={handleRangeValueChange}
         className="w-full cursor-pointer"
       />
       <div className="flex justify-between mt-2">

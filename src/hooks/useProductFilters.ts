@@ -36,10 +36,13 @@ export const useProductFilters = (products: Product[]) => {
         productPrice >= priceRange[0] && productPrice <= priceRange[1];
       if (!withinPriceRange) return false;
 
-      // Filter by product type
-      const selectedTypes = productTypes
-        .filter((t) => t.checked)
-        .map((t) => t.name.toLowerCase());
+      // Filter by product type - combined iteration for performance
+      const selectedTypes: string[] = [];
+      for (const type of productTypes) {
+        if (type.checked) {
+          selectedTypes.push(type.name.toLowerCase());
+        }
+      }
       if (selectedTypes.length > 0) {
         const productCategories =
           product.productCategories?.nodes.map((cat) =>

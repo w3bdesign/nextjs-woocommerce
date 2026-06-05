@@ -80,7 +80,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 </Link>
                 <div className="mt-2 text-center">
                   {onSale ? (
-                    <div className="flex justify-center items-center space-x-2">
+                    <div className="flex justify-center items-center gap-2">
                       <span className="text-xl font-bold text-error">
                         {variations && filteredVariantPrice(price, '')}
                         {!variations && salePrice}

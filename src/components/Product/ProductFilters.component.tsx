@@ -42,13 +42,21 @@ const ProductFilters = ({
     ),
   ).sort((a, b) => a.localeCompare(b));
 
-  // Get unique colors from all products
-  const availableColors = products
-    .flatMap((product: Product) => product.allPaColors?.nodes || [])
-    .filter((color, index, self) => 
-      index === self.findIndex((c) => c.slug === color.slug)
-    )
-    .sort((a, b) => a.name.localeCompare(b.name));
+  // Get unique colors from all products - combined iteration for performance
+  const availableColors: Array<{ name: string; slug: string }> = [];
+  const seenSlugs = new Set<string>();
+  
+  for (const product of products) {
+    const colorNodes = product.allPaColors?.nodes || [];
+    for (const color of colorNodes) {
+      if (!seenSlugs.has(color.slug)) {
+        seenSlugs.add(color.slug);
+        availableColors.push(color);
+      }
+    }
+  }
+  
+  availableColors.sort((a, b) => a.name.localeCompare(b.name));
 
   const colors = availableColors.map((color) => ({
     name: color.name,
