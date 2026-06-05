@@ -16,8 +16,6 @@
     "playwright:ui": "pnpm exec playwright test --ui",
     "playwright:debug": "pnpm exec playwright test --debug",
     "playwright:codegen": "pnpm exec playwright codegen",
-    "doctor": "echo n | react-doctor --verbose",
-    "doctor:score": "echo n | react-doctor --score",
     "refresh": "rm -rf node_modules && rm pnpm-lock.yaml && pnpm install && pnpm run format"
   },
   "keywords": [
