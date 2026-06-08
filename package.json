@@ -31,7 +31,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@apollo/client": "^3.14.1",
-    "@types/react": "^19.2.16",
+    "@types/react": "^19.2.17",
     "algoliasearch": "^5.53.0",
     "autoprefixer": "^10.5.0",
     "graphql": "^16.14.1",
