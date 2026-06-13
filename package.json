@@ -36,7 +36,7 @@
     "autoprefixer": "^10.5.0",
     "graphql": "^16.14.2",
     "motion": "^12.40.0",
-    "next": "16.2.7",
+    "next": "16.2.9",
     "nprogress": "^0.2.0",
     "postcss": "^8.5.15",
     "react": "19.2.7",
