@@ -34,7 +34,7 @@
     "@types/react": "^19.2.17",
     "algoliasearch": "^5.53.0",
     "autoprefixer": "^10.5.0",
-    "graphql": "^16.14.1",
+    "graphql": "^16.14.2",
     "motion": "^12.40.0",
     "next": "16.2.7",
     "nprogress": "^0.2.0",
