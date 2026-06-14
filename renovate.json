@@ -22,7 +22,7 @@
         "pin",
         "digest"
       ],
-      "automerge": true,
+      "automerge": false,
       "matchDepTypes": [
         "dependencies",
         "devDependencies",
@@ -35,8 +35,7 @@
         "patch",
         "lockFileMaintenance"
       ],
-      "automerge": true,
-      "automergeType": "branch",
+      "automerge": false,
       "matchDepTypes": [
         "dependencies",
         "devDependencies",

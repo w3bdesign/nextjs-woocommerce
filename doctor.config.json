@@ -1,0 +1,18 @@
+{
+  "$schema": "https://react.doctor/schema/config.json",
+  "ignore": {
+    "overrides": [
+      {
+        "files": [
+          "src/pages/**",
+          "src/components/User/withAuth.component.tsx"
+        ],
+        "rules": ["react-doctor/only-export-components"]
+      },
+      {
+        "files": ["pnpm-workspace.yaml"],
+        "rules": ["react-doctor/require-pnpm-hardening"]
+      }
+    ]
+  }
+}

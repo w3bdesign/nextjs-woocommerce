@@ -1,3 +1,46 @@
+// Kept for future token-refresh implementation. Not exported until used.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const REFRESH_AUTH_TOKEN = gql`
+  mutation RefreshAuthToken($refreshToken: String!) {
+    refreshJwtAuthToken(input: { jwtRefreshToken: $refreshToken }) {
+      authToken
+    }
+  }
+`;
+
+-------------------------------------------------------------
+
+export const CREATE_USER = gql`
+  mutation CreateUser(
+    $username: String!
+    $email: String!
+    $password: String!
+    $firstName: String
+    $lastName: String
+  ) {
+    registerCustomer(
+      input: {
+        username: $username
+        email: $email
+        password: $password
+        firstName: $firstName
+        lastName: $lastName
+      }
+    ) {
+      customer {
+        id
+        email
+        firstName
+        lastName
+        username
+      }
+    }
+  }
+`;
+
+--------------------------------------------------------------
+
+
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useForm, FormProvider } from 'react-hook-form';

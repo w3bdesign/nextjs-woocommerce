@@ -1,46 +1,10 @@
 import { gql } from '@apollo/client';
 
-export const CREATE_USER = gql`
-  mutation CreateUser(
-    $username: String!
-    $email: String!
-    $password: String!
-    $firstName: String
-    $lastName: String
-  ) {
-    registerCustomer(
-      input: {
-        username: $username
-        email: $email
-        password: $password
-        firstName: $firstName
-        lastName: $lastName
-      }
-    ) {
-      customer {
-        id
-        email
-        firstName
-        lastName
-        username
-      }
-    }
-  }
-`;
-
 export const LOGIN_USER = gql`
   mutation Login($username: String!, $password: String!) {
     loginWithCookies(input: { login: $username, password: $password }) {
       status
       clientMutationId
-    }
-  }
-`;
-
-export const REFRESH_AUTH_TOKEN = gql`
-  mutation RefreshAuthToken($refreshToken: String!) {
-    refreshJwtAuthToken(input: { jwtRefreshToken: $refreshToken }) {
-      authToken
     }
   }
 `;

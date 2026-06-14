@@ -74,36 +74,6 @@ export const GET_SINGLE_PRODUCT = gql`
 `;
 
 /**
- * Fetch first 4 products from a specific category
- */
-
-export const FETCH_FIRST_PRODUCTS_FROM_HOODIES_QUERY = `
- query MyQuery {
-  products(first: 4, where: {category: "Hoodies"}) {
-    nodes {
-      productId
-      name
-      onSale
-      slug
-      image {
-        sourceUrl
-      }
-      ... on SimpleProduct {
-        price
-        regularPrice
-        salePrice
-      }
-      ... on VariableProduct {
-        price
-        regularPrice
-        salePrice
-      }
-    }
-  }
-}
- `;
-
-/**
  * Fetch first 200 Woocommerce products from GraphQL
  */
 export const FETCH_ALL_PRODUCTS_QUERY = gql`
