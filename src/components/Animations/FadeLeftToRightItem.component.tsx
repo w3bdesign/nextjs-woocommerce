@@ -10,21 +10,22 @@ import type { IAnimateProps } from './types/Animations.types';
  * @returns {JSX.Element} - Rendered component
  */
 
-const FadeLeftToRightItem = ({ children, cssClass }: IAnimateProps) => {
-  const transition: Transition = {
-    type: 'spring',
-    duration: 0.5,
-    stiffness: 110,
-  };
+const transition: Transition = {
+  type: 'spring',
+  duration: 0.5,
+  stiffness: 110,
+};
 
-  const fadeLeftToRightItemVariants = {
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition,
-    },
-    hidden: { opacity: 0, x: -20 },
-  };
+const fadeLeftToRightItemVariants = {
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition,
+  },
+  hidden: { opacity: 0, x: -20 },
+};
+
+const FadeLeftToRightItem = ({ children, cssClass }: IAnimateProps) => {
   return (
     <m.span
       variants={fadeLeftToRightItemVariants}
