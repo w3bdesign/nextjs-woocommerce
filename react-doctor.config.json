@@ -1,5 +1,0 @@
-{
-  "ignore": {
-    "rules": ["react-doctor/only-export-components"]
-  }
-}
