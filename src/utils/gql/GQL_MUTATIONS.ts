@@ -37,16 +37,6 @@ export const LOGIN_USER = gql`
   }
 `;
 
-// Kept for future token-refresh implementation. Not exported until used.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const REFRESH_AUTH_TOKEN = gql`
-  mutation RefreshAuthToken($refreshToken: String!) {
-    refreshJwtAuthToken(input: { jwtRefreshToken: $refreshToken }) {
-      authToken
-    }
-  }
-`;
-
 export const ADD_TO_CART = gql`
   mutation ($input: AddToCartInput!) {
     addToCart(input: $input) {
