@@ -85,8 +85,8 @@ importers:
         specifier: ^3.8.4
         version: 3.8.4
       react-doctor:
-        specifier: ^0.4.2
-        version: 0.4.2(eslint@10.4.1(jiti@1.21.7))
+        specifier: ^0.5.1
+        version: 0.5.1(eslint@10.4.1(jiti@1.21.7))
       tailwindcss:
         specifier: ^3.4.19
         version: 3.4.19(yaml@2.9.0)
@@ -2819,8 +2819,8 @@ packages:
   oxc-resolver@11.20.0:
     resolution: {integrity: sha512-CblytBiV/a/ZXY34dsVU2NxhIOxMXst8CvDCtyBelVITgd7PLrKzbEbA6oKLdPjvDKDzCiW48qzmzZ+mYaqn+g==}
 
-  oxlint-plugin-react-doctor@0.4.2:
-    resolution: {integrity: sha512-pH5TCM+FqvbiK7I6PVdUD6AY0013okJ4DCee4eQbce2FjU2X+TXw+gkBxw7GT8S3I6jqvFLGkabekmISKcSJnw==}
+  oxlint-plugin-react-doctor@0.5.1:
+    resolution: {integrity: sha512-gGx0NCPA7s8z8UYCulfhX4CiXwBI4QdQve7zaVXglakWzzdgcXMZv6pedmbKUtefegzlfzkKDcYO4lOg8vqnJw==}
     engines: {node: ^20.19.0 || >=22.12.0}
 
   oxlint@1.68.0:
@@ -3189,8 +3189,8 @@ packages:
     resolution: {integrity: sha512-s4VSOf6yN0rvbRZGxs8Om5CWj6seneMwK3oDb4lWDH0UPhWcxwOWw5+qk24bxq87szX1ydrwylIOp2uG1ojUpA==}
     engines: {node: '>= 0.8'}
 
-  react-doctor@0.4.2:
-    resolution: {integrity: sha512-h4wykdqF93jBd4RD4AlKjyaukfizqcrwAMdZGLM0UsCw7ipOqJXFPvfPRK+GbHVh8KKoYWq1nU7K1M3uGTY/Ag==}
+  react-doctor@0.5.1:
+    resolution: {integrity: sha512-2LSJ/iYtUugr9xj01XTyU2tRtfjmGjiwyDotrnxL0raP+q4Uhp10VaiY7BqfDhBpj4HtCsC+//G1xVupTTBDoA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -5053,11 +5053,11 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 25.9.2
+      '@types/node': 25.9.3
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 25.9.2
+      '@types/node': 25.9.3
     optional: true
 
   '@typescript-eslint/eslint-plugin@8.60.1(@typescript-eslint/parser@8.60.1(eslint@10.4.1(jiti@1.21.7))(typescript@6.0.3))(eslint@10.4.1(jiti@1.21.7))(typescript@6.0.3)':
@@ -5437,7 +5437,7 @@ snapshots:
 
   chrome-launcher@1.2.1:
     dependencies:
-      '@types/node': 25.9.2
+      '@types/node': 25.9.3
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 2.0.2
@@ -6528,7 +6528,7 @@ snapshots:
       '@oxc-resolver/binding-win32-arm64-msvc': 11.20.0
       '@oxc-resolver/binding-win32-x64-msvc': 11.20.0
 
-  oxlint-plugin-react-doctor@0.4.2:
+  oxlint-plugin-react-doctor@0.5.1:
     dependencies:
       '@typescript-eslint/types': 8.60.1
       eslint-scope: 9.1.2
@@ -6978,7 +6978,7 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  react-doctor@0.4.2(eslint@10.4.1(jiti@1.21.7)):
+  react-doctor@0.5.1(eslint@10.4.1(jiti@1.21.7)):
     dependencies:
       '@babel/code-frame': 7.29.7
       '@effect/platform-node-shared': 4.0.0-beta.70(effect@4.0.0-beta.70)
@@ -6992,7 +6992,7 @@ snapshots:
       jiti: 2.7.0
       magicast: 0.5.3
       oxlint: 1.68.0
-      oxlint-plugin-react-doctor: 0.4.2
+      oxlint-plugin-react-doctor: 0.5.1
       prompts: 2.4.2
       typescript: 6.0.3
       vscode-languageserver: 9.0.1
@@ -7238,7 +7238,7 @@ snapshots:
 
   speedline-core@1.4.3:
     dependencies:
-      '@types/node': 25.9.2
+      '@types/node': 25.9.3
       image-ssim: 0.2.0
       jpeg-js: 0.4.4
 
