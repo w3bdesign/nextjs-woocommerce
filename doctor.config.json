@@ -11,7 +11,7 @@
       },
       {
         "files": ["pnpm-workspace.yaml"],
-        "rules": ["react-doctor/trust-policy-no-downgrade"]
+        "rules": ["react-doctor/require-pnpm-hardening"]
       }
     ]
   }
