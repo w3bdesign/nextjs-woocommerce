@@ -8,6 +8,10 @@
           "src/components/User/withAuth.component.tsx"
         ],
         "rules": ["react-doctor/only-export-components"]
+      },
+      {
+        "files": ["pnpm-workspace.yaml"],
+        "rules": ["react-doctor/trust-policy-no-downgrade"]
       }
     ]
   }
