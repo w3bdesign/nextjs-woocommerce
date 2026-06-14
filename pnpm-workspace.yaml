@@ -8,4 +8,4 @@ allowBuilds:
 
 minimumReleaseAge: 4320
 
-# trustPolicy: no-downgrade
+trustPolicy: no-downgrade
