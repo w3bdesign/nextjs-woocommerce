@@ -37,7 +37,9 @@ export const LOGIN_USER = gql`
   }
 `;
 
-export const REFRESH_AUTH_TOKEN = gql`
+// Kept for future token-refresh implementation. Not exported until used.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const REFRESH_AUTH_TOKEN = gql`
   mutation RefreshAuthToken($refreshToken: String!) {
     refreshJwtAuthToken(input: { jwtRefreshToken: $refreshToken }) {
       authToken
