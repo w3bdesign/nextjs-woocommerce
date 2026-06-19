@@ -45,7 +45,7 @@ importers:
         specifier: ^7.79.0
         version: 7.79.0(react@19.2.7)
       react-instantsearch:
-        specifier: ^7.0.0
+        specifier: ^7.35.1
         version: 7.35.1(algoliasearch@5.54.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       uuid:
         specifier: ^14.0.0
