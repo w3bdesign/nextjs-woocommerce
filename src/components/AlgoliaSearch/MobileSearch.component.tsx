@@ -4,10 +4,22 @@ import { useState } from 'react';
 
 import SearchResults from './SearchResults.component';
 
-const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
-  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY!,
-);
+// Validate required environment variables
+const ALGOLIA_APP_ID = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
+const ALGOLIA_API_KEY = process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY;
+const ALGOLIA_INDEX_NAME = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME;
+
+if (!ALGOLIA_APP_ID) {
+  throw new Error('NEXT_PUBLIC_ALGOLIA_APP_ID environment variable is required');
+}
+if (!ALGOLIA_API_KEY) {
+  throw new Error('NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY environment variable is required');
+}
+if (!ALGOLIA_INDEX_NAME) {
+  throw new Error('NEXT_PUBLIC_ALGOLIA_INDEX_NAME environment variable is required');
+}
+
+const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 
 /**
  * Algolia search for mobile menu.
@@ -18,7 +30,7 @@ const MobileSearch = () => {
   return (
     <div className="inline mt-4 md:hidden">
       <InstantSearch
-        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME!}
+        indexName={ALGOLIA_INDEX_NAME}
         searchClient={searchClient}
       >
         <SearchBox
