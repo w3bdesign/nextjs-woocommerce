@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { trimmedStringToLength } from '@/utils/functions/functions';
 
 interface ISearchResultProps {
@@ -41,11 +42,13 @@ const SearchResults = ({
         passHref
       >
         <div className="flex p-6 bg-surface">
-          <header className="hit-image-container">
-            <img
+          <header className="hit-image-container relative w-12 h-12">
+            <Image
               src={product_image}
               alt={product_name}
-              className="w-12 hit-image"
+              fill
+              sizes="48px"
+              className="hit-image object-cover"
             />
           </header>
           <div className="pl-4 text-left">

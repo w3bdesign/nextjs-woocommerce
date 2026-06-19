@@ -1,5 +1,6 @@
 /*eslint complexity: ["error", 20]*/
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
 
@@ -51,20 +52,22 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                 <Link href={`/produkt/${encodeURIComponent(slug)}`}>
                   <div className="aspect-[3/4] relative overflow-hidden bg-surface-alt">
                     {image ? (
-                      <img
+                      <Image
                         id="product-image"
-                        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+                        className="object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
-                        src={image.sourceUrl}
+                        src={image.sourceUrl || process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL || ''}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       />
                     ) : (
-                      <img
+                      <Image
                         id="product-image"
-                        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+                        className="object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
-                        src={
-                          process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL
-                        }
+                        src={process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL || ''}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       />
                     )}
                   </div>
