@@ -16,14 +16,13 @@ interface ISearchResultProps {
 
 /**
  * Displays search results from Algolia
- * @param {object} hit {
- * @param {string} product_image Product image from WooCommerce
- * @param {string} product_name Name of product
- * @param {string} regular_price Price without discount
- * @param {string} sale_price Price when on sale
- * @param {boolean} on_sale Is the product on sale? True or false
- * @param {string} short_description Short description of product
- }
+ * @param {object} hit - Algolia hit object
+ * @param {string} hit.product_image - Product image from WooCommerce
+ * @param {string} hit.product_name - Name of product
+ * @param {string} hit.regular_price - Price without discount
+ * @param {string} hit.sale_price - Price when on sale
+ * @param {boolean} hit.on_sale - Is the product on sale? True or false
+ * @param {string} hit.short_description - Short description of product
  */
 const SearchResults = ({
   hit: {
