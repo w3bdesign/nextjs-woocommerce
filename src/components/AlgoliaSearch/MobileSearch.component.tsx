@@ -2,7 +2,7 @@ import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
 import SearchResults from './SearchResults.component';
-import { searchClient, indexName } from '@/utils/algolia/config';
+import { getSearchClient, indexName, isAlgoliaConfigured } from '@/utils/algolia/config';
 
 /**
  * Algolia search for mobile menu.
@@ -10,6 +10,17 @@ import { searchClient, indexName } from '@/utils/algolia/config';
 const MobileSearch = () => {
   const [search, setSearch] = useState<string | null>(null);
   const [hasFocus, sethasFocus] = useState<boolean>(false);
+
+  // Don't render if Algolia is not configured
+  if (!isAlgoliaConfigured) {
+    return null;
+  }
+
+  const searchClient = getSearchClient();
+
+  if (!searchClient) {
+    return null;
+  }
 
   return (
     <div className="inline mt-4 md:hidden">
