@@ -38,7 +38,7 @@ const CustomSearchBox = () => {
         onBlur={() => setHasFocus(false)}
       />
       {query && (
-        <div className="absolute z-50 bg-surface shadow-lg rounded-md mt-1 md:w-[18rem]">
+        <div className="absolute left-0 right-0 top-full z-50 bg-surface shadow-lg rounded-md mt-1">
           <Hits hitComponent={SearchResults} />
         </div>
       )}
