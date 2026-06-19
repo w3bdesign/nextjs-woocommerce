@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.60.0",
+    "@playwright/test": "^1.61.0",
     "@types/node": "25.9.3",
     "@types/nprogress": "^0.2.3",
     "@types/react-instantsearch-dom": "^6.12.9",
