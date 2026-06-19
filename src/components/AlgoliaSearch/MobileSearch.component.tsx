@@ -4,22 +4,10 @@ import { useState } from 'react';
 
 import SearchResults from './SearchResults.component';
 
-// Validate required environment variables
-const ALGOLIA_APP_ID = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
-const ALGOLIA_API_KEY = process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY;
-const ALGOLIA_INDEX_NAME = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME;
-
-if (!ALGOLIA_APP_ID) {
-  throw new Error('NEXT_PUBLIC_ALGOLIA_APP_ID environment variable is required');
-}
-if (!ALGOLIA_API_KEY) {
-  throw new Error('NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY environment variable is required');
-}
-if (!ALGOLIA_INDEX_NAME) {
-  throw new Error('NEXT_PUBLIC_ALGOLIA_INDEX_NAME environment variable is required');
-}
-
-const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
+const searchClient = algoliasearch(
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
+  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY || '',
+);
 
 /**
  * Algolia search for mobile menu.
@@ -27,10 +15,23 @@ const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_API_KEY);
 const MobileSearch = () => {
   const [search, setSearch] = useState<string | null>(null);
   const [hasFocus, sethasFocus] = useState<boolean>(false);
+
+  if (process.env.NODE_ENV === 'development') {
+    if (!process.env.NEXT_PUBLIC_ALGOLIA_APP_ID) {
+      console.warn('MobileSearch: NEXT_PUBLIC_ALGOLIA_APP_ID is not configured');
+    }
+    if (!process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY) {
+      console.warn('MobileSearch: NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY is not configured');
+    }
+    if (!process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME) {
+      console.warn('MobileSearch: NEXT_PUBLIC_ALGOLIA_INDEX_NAME is not configured');
+    }
+  }
+
   return (
     <div className="inline mt-4 md:hidden">
       <InstantSearch
-        indexName={ALGOLIA_INDEX_NAME}
+        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || ''}
         searchClient={searchClient}
       >
         <SearchBox
