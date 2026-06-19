@@ -15,7 +15,7 @@ const searchClient = algoliasearch(
  * Custom SearchBox wrapper to track query state
  */
 const CustomSearchBox = () => {
-  const { query, refine } = useSearchBox();
+  const { query } = useSearchBox();
   const [hasFocus, setHasFocus] = useState<boolean>(false);
 
   return (
