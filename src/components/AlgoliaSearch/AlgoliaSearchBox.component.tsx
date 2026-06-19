@@ -5,8 +5,8 @@ import { useState } from 'react';
 import SearchResults from './SearchResults.component';
 
 const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? 'changeme',
-  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY ?? 'changeme',
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
+  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY!,
 );
 
 // https://www.algolia.com/doc/api-reference/widgets/instantsearch/react/
@@ -22,7 +22,7 @@ const AlgoliaSearchBox = () => {
     <div className="hidden mb-0.5 md:inline xl:inline">
       <div className="">
         <InstantSearch
-          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
+          indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME!}
           searchClient={searchClient}
         >
           {/*We need to conditionally add a border because the element has position:fixed*/}
