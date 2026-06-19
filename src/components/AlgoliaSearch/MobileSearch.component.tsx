@@ -1,5 +1,5 @@
-import { algoliasearch } from 'algoliasearch';
-import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
+import { liteClient as algoliasearch } from 'algoliasearch/lite';
+import { InstantSearch, SearchBox, Hits } from 'react-instantsearch';
 import { useState } from 'react';
 
 import SearchResults from './SearchResults.component';
@@ -22,10 +22,10 @@ const MobileSearch = () => {
         searchClient={searchClient}
       >
         <SearchBox
+          placeholder="Søk etter produkter"
           translations={{
-            submitTitle: 'Søk',
-            resetTitle: 'Slett søketekst',
-            placeholder: 'Søk etter produkter',
+            submitButtonTitle: 'Søk',
+            resetButtonTitle: 'Slett søketekst',
           }}
           className={`px-4 py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
             hasFocus ? 'border-primary' : 'border-border'
