@@ -1,5 +1,6 @@
 // Imports
 import { useState, useMemo } from 'react';
+import Image from 'next/image';
 
 // Utils
 import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
@@ -63,11 +64,13 @@ const ProductImage = ({
 }) => (
   <div className="mb-6 md:mb-0 group">
     <div className="max-w-xl mx-auto aspect-[3/4] relative overflow-hidden bg-surface-alt">
-      <img
+      <Image
         id="product-image"
         src={getImageSrc(image)}
         alt={alt}
-        className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
+        fill
+        sizes="(max-width: 768px) 100vw, 672px"
+        className="object-cover object-center transition duration-300 group-hover:scale-105"
       />
     </div>
   </div>
