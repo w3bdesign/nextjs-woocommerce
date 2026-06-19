@@ -1,6 +1,6 @@
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch';
-import { useState } from 'react';
+import { useState, type ChangeEvent, type KeyboardEvent } from 'react';
 
 import SearchResults from './SearchResults.component';
 
@@ -36,12 +36,12 @@ const AlgoliaSearchBox = () => {
             className={`px-4 py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
               hasFocus ? 'border-primary' : 'border-border'
             }`}
-            onChange={(event) => {
-              const target = event.target as HTMLInputElement;
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              const target = event.target;
               sethasFocus(true);
               setSearch(target.value);
             }}
-            onKeyDown={(event) => {
+            onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
               const target = event.target as HTMLInputElement;
               sethasFocus(true);
               setSearch(target.value);
