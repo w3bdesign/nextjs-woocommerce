@@ -1,13 +1,8 @@
-import { algoliasearch } from 'algoliasearch';
 import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-dom';
 import { useState } from 'react';
 
 import SearchResults from './SearchResults.component';
-
-const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
-  process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY || '',
-);
+import { searchClient, indexName } from '@/utils/algolia/config';
 
 /**
  * Algolia search for mobile menu.
@@ -16,24 +11,9 @@ const MobileSearch = () => {
   const [search, setSearch] = useState<string | null>(null);
   const [hasFocus, sethasFocus] = useState<boolean>(false);
 
-  if (process.env.NODE_ENV === 'development') {
-    if (!process.env.NEXT_PUBLIC_ALGOLIA_APP_ID) {
-      console.warn('MobileSearch: NEXT_PUBLIC_ALGOLIA_APP_ID is not configured');
-    }
-    if (!process.env.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY) {
-      console.warn('MobileSearch: NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY is not configured');
-    }
-    if (!process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME) {
-      console.warn('MobileSearch: NEXT_PUBLIC_ALGOLIA_INDEX_NAME is not configured');
-    }
-  }
-
   return (
     <div className="inline mt-4 md:hidden">
-      <InstantSearch
-        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || ''}
-        searchClient={searchClient}
-      >
+      <InstantSearch indexName={indexName} searchClient={searchClient}>
         <SearchBox
           translations={{
             submitTitle: 'Søk',
