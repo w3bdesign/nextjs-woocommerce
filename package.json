@@ -38,7 +38,7 @@
     "motion": "^12.42.2",
     "next": "16.2.10",
     "nprogress": "^0.2.0",
-    "postcss": "^8.5.15",
+    "postcss": "^8.5.16",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-hook-form": "^7.80.0",
