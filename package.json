@@ -30,7 +30,7 @@
   "author": "w3bdesign",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@apollo/client": "^3.14.1",
+    "@apollo/client": "^4.2.7",
     "@types/react": "^19.2.17",
     "algoliasearch": "^5.55.1",
     "autoprefixer": "^10.5.2",
