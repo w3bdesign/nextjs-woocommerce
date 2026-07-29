@@ -137,7 +137,7 @@ const ProductFilters = ({
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
                   color.class
                 } ${
-                  selectedColors.includes(color.name)
+                  selectedColorSet.has(color.name)
                     ? 'ring-2 ring-offset-2 ring-primary'
                     : ''
                 }`}
