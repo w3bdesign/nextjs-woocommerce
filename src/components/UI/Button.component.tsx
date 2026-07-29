@@ -12,6 +12,7 @@ interface IButtonProps {
   href?: string;
   title?: string;
   selected?: boolean;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 /**
