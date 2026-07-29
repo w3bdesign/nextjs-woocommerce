@@ -27,6 +27,13 @@ jobs:
           npm_config_ignore_scripts: true
         run: pnpm exec playwright install --with-deps chromium firefox # NOSONAR - playwright install downloads binaries, not npm packages
       - name: Build the project
+        env:
+          NEXT_PUBLIC_GRAPHQL_URL: ${{ secrets.NEXT_PUBLIC_GRAPHQL_URL }}
+          NEXT_PUBLIC_ALGOLIA_INDEX_NAME: ${{ secrets.NEXT_PUBLIC_ALGOLIA_INDEX_NAME }}
+          NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL: ${{ secrets.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL }}
+          NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL: ${{ secrets.NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL }}
+          NEXT_PUBLIC_ALGOLIA_APP_ID: ${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}
+          NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_ALGOLIA_PUBLIC_API_KEY }}
         run: pnpm build
       - name: Start the application
         run: pnpm start &
