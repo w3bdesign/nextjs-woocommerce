@@ -86,7 +86,7 @@ importers:
         specifier: ^11.3.2
         version: 11.3.2(postcss@8.5.23)
       prettier:
-        specifier: ^3.9.4
+        specifier: ^3.9.6
         version: 3.9.6
       react-doctor:
         specifier: ^0.7.1
