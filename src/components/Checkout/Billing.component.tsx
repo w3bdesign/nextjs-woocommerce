@@ -32,7 +32,7 @@ const OrderButton = () => {
         {...register('paymentMethod')}
       />
       <div className="mt-4 flex justify-center">
-        <Button>BESTILL</Button>
+        <Button type="submit">BESTILL</Button>
       </div>
     </div>
   );
