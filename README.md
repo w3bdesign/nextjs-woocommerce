@@ -41,10 +41,10 @@ Optional plugin:
 
 The current release has been tested and is confirmed working with the following versions:
 
-- WordPress version 6.9
-- WooCommerce version 9.9.5
-- WP GraphQL version 2.3.3
-- WooGraphQL version 0.19.0
+- WordPress version 7.0.2
+- WooCommerce version 10.9.4
+- WP GraphQL version 2.18.0
+- WooGraphQL version 1.0.3
 - WPGraphQL CORS version 2.1
 
 2.  For debugging and testing, install either:
