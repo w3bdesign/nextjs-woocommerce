@@ -216,7 +216,7 @@ Custom Semgrep rules cover OWASP categories A01–A10 including XSS prevention, 
 
 ### I am getting a cart undefined error or other GraphQL errors
 
-Check that you are using the 0.12.0 version of the [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) plugin
+Check that you are using the latest version of the [wp-graphql-woocommerce](https://github.com/wp-graphql/wp-graphql-woocommerce) plugin
 
 ### The products page isn't loading
 
