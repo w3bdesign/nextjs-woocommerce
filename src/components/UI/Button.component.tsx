@@ -12,6 +12,7 @@ interface IButtonProps {
   href?: string;
   title?: string;
   selected?: boolean;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 /**
@@ -34,6 +35,7 @@ const Button = ({
   href,
   title,
   selected = false,
+  type = 'button',
 }: IButtonProps) => {
   const getVariantClasses = (variant: TButtonVariant = 'primary') => {
     switch (variant) {
@@ -66,7 +68,7 @@ const Button = ({
 
   return (
     <button
-      type="button"
+      type={type}
       onClick={handleButtonClick}
       disabled={buttonDisabled}
       className={classes}
