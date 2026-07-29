@@ -19,7 +19,7 @@ importers:
         specifier: ^19.2.17
         version: 19.2.17
       algoliasearch:
-        specifier: ^5.55.1
+        specifier: ^5.56.0
         version: 5.56.0
       autoprefixer:
         specifier: ^10.5.4
