@@ -31,7 +31,7 @@ export const useProductFilters = (products: Product[]) => {
   const filterProducts = (products: Product[]) => {
     const filtered = products?.filter((product: Product) => {
       // Filter by price
-      const productPrice = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+      const productPrice = Number.parseFloat(product.price.replace(/[^0-9.]/g, ''));
       const withinPriceRange =
         productPrice >= priceRange[0] && productPrice <= priceRange[1];
       if (!withinPriceRange) return false;
@@ -73,8 +73,8 @@ export const useProductFilters = (products: Product[]) => {
 
     // Sort products using toSorted() for immutable sorting (ES2023)
     return (filtered || []).toSorted((a, b) => {
-      const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
-      const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
+      const priceA = Number.parseFloat(a.price.replace(/[^0-9.]/g, ''));
+      const priceB = Number.parseFloat(b.price.replace(/[^0-9.]/g, ''));
 
       switch (sortBy) {
         case 'price-low':

@@ -21,8 +21,8 @@ import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 
 // Pure function moved to module scope to avoid rebuilding on every render
 const getUnitPrice = (subtotal: string, quantity: number) => {
-  const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g, ''));
-  return isNaN(numericSubtotal)
+  const numericSubtotal = Number.parseFloat(subtotal.replace(/[^0-9.-]+/g, ''));
+  return Number.isNaN(numericSubtotal)
     ? 'N/A'
     : (numericSubtotal / quantity).toFixed(2);
 };

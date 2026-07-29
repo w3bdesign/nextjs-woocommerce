@@ -35,7 +35,7 @@ const RangeSlider = ({
   formatValue = (val: number) => val.toString(),
 }: IRangeSliderProps) => {
   const handleRangeValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(parseInt(e.target.value));
+    onChange(Number.parseInt(e.target.value));
   };
 
   return (
