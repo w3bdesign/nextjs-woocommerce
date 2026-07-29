@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps
+        run: pnpm exec playwright install --with-deps # NOSONAR - playwright install downloads browser binaries, not npm packages
       - name: Build the project
         run: pnpm run build
         env:
