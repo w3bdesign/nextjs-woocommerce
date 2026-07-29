@@ -84,15 +84,13 @@ const AddToCart = ({
   };
 
   return (
-    <>
-      <Button
-        handleButtonClick={() => handleAddToCart()}
-        buttonDisabled={addToCartLoading || requestError || isCartLoading}
-        fullWidth={fullWidth}
-      >
-        {isCartLoading ? 'Loading...' : 'KJØP'}
-      </Button>
-    </>
+    <Button
+      handleButtonClick={() => handleAddToCart()}
+      buttonDisabled={addToCartLoading || requestError || isCartLoading}
+      fullWidth={fullWidth}
+    >
+      {isCartLoading ? 'Loading...' : 'KJØP'}
+    </Button>
   );
 };
 

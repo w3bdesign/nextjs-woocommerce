@@ -63,6 +63,9 @@ const ProductFilters = ({
     class: `bg-${color.slug}-500`
   }));
 
+  const selectedSizeSet = new Set(selectedSizes);
+  const selectedColorSet = new Set(selectedColors);
+
   const toggleSize = (size: string) => {
     setSelectedSizes((prev) =>
       prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size],
@@ -115,7 +118,7 @@ const ProductFilters = ({
                 key={size}
                 handleButtonClick={() => toggleSize(size)}
                 variant="filter"
-                selected={selectedSizes.includes(size)}
+                selected={selectedSizeSet.has(size)}
               >
                 {size}
               </Button>
@@ -134,7 +137,7 @@ const ProductFilters = ({
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
                   color.class
                 } ${
-                  selectedColors.includes(color.name)
+                  selectedColorSet.has(color.name)
                     ? 'ring-2 ring-offset-2 ring-primary'
                     : ''
                 }`}

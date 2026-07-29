@@ -31,7 +31,7 @@ export const useProductFilters = (products: Product[]) => {
   const filterProducts = (products: Product[]) => {
     const filtered = products?.filter((product: Product) => {
       // Filter by price
-      const productPrice = parseFloat(product.price.replace(/[^0-9.]/g, ''));
+      const productPrice = Number.parseFloat(product.price.replace(/[^0-9.]/g, ''));
       const withinPriceRange =
         productPrice >= priceRange[0] && productPrice <= priceRange[1];
       if (!withinPriceRange) return false;
@@ -44,27 +44,30 @@ export const useProductFilters = (products: Product[]) => {
         }
       }
       if (selectedTypes.length > 0) {
-        const productCategories =
+        const productCategorySet = new Set(
           product.productCategories?.nodes.map((cat) =>
             cat.name.toLowerCase(),
-          ) || [];
-        if (!selectedTypes.some((type) => productCategories.includes(type)))
+          ) || [],
+        );
+        if (!selectedTypes.some((type) => productCategorySet.has(type)))
           return false;
       }
 
       // Filter by size
       if (selectedSizes.length > 0) {
-        const productSizes =
-          product.allPaSizes?.nodes.map((node) => node.name) || [];
-        if (!selectedSizes.some((size) => productSizes.includes(size)))
+        const productSizeSet = new Set(
+          product.allPaSizes?.nodes.map((node) => node.name) || [],
+        );
+        if (!selectedSizes.some((size) => productSizeSet.has(size)))
           return false;
       }
 
       // Filter by color
       if (selectedColors.length > 0) {
-        const productColors =
-          product.allPaColors?.nodes.map((node) => node.name) || [];
-        if (!selectedColors.some((color) => productColors.includes(color)))
+        const productColorSet = new Set(
+          product.allPaColors?.nodes.map((node) => node.name) || [],
+        );
+        if (!selectedColors.some((color) => productColorSet.has(color)))
           return false;
       }
 
@@ -73,8 +76,8 @@ export const useProductFilters = (products: Product[]) => {
 
     // Sort products using toSorted() for immutable sorting (ES2023)
     return (filtered || []).toSorted((a, b) => {
-      const priceA = parseFloat(a.price.replace(/[^0-9.]/g, ''));
-      const priceB = parseFloat(b.price.replace(/[^0-9.]/g, ''));
+      const priceA = Number.parseFloat(a.price.replace(/[^0-9.]/g, ''));
+      const priceB = Number.parseFloat(b.price.replace(/[^0-9.]/g, ''));
 
       switch (sortBy) {
         case 'price-low':

@@ -31,7 +31,7 @@ jobs:
           node-version: "24"
 
       - name: Install Repomix
-        run: npm install -g repomix
+        run: npm install -g repomix@0.2.12 --ignore-scripts
 
       - name: Generate Repository Documentation
         run: |

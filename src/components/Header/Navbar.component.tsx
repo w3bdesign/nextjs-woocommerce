@@ -30,7 +30,7 @@ const Navbar = () => {
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-500"></span>
-                    Produkter
+                    {' '}Produkter
                   </span>
                 </span>
               </Link>
@@ -38,7 +38,7 @@ const Navbar = () => {
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-500"></span>
-                    Kategorier
+                    {' '}Kategorier
                   </span>
                 </span>
               </Link>
