@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Product, ProductType } from '@/types/product';
-import { getUniqueProductTypes } from '@/utils/functions/productUtils';
+import {
+  getProductSortComparator,
+  getUniqueProductTypes,
+  isWithinPriceRange,
+  matchesColor,
+  matchesProductType,
+  matchesSize,
+} from '@/utils/functions/productUtils';
 
 export const useProductFilters = (products: Product[]) => {
   const [sortBy, setSortBy] = useState('popular');
@@ -29,67 +36,15 @@ export const useProductFilters = (products: Product[]) => {
   };
 
   const filterProducts = (products: Product[]) => {
-    const filtered = products?.filter((product: Product) => {
-      // Filter by price
-      const productPrice = Number.parseFloat(product.price.replace(/[^0-9.]/g, ''));
-      const withinPriceRange =
-        productPrice >= priceRange[0] && productPrice <= priceRange[1];
-      if (!withinPriceRange) return false;
+    const filtered = (products || []).filter(
+      (product: Product) =>
+        isWithinPriceRange(product, priceRange) &&
+        matchesProductType(product, productTypes) &&
+        matchesSize(product, selectedSizes) &&
+        matchesColor(product, selectedColors),
+    );
 
-      // Filter by product type - combined iteration for performance
-      const selectedTypes: string[] = [];
-      for (const type of productTypes) {
-        if (type.checked) {
-          selectedTypes.push(type.name.toLowerCase());
-        }
-      }
-      if (selectedTypes.length > 0) {
-        const productCategorySet = new Set(
-          product.productCategories?.nodes.map((cat) =>
-            cat.name.toLowerCase(),
-          ) || [],
-        );
-        if (!selectedTypes.some((type) => productCategorySet.has(type)))
-          return false;
-      }
-
-      // Filter by size
-      if (selectedSizes.length > 0) {
-        const productSizeSet = new Set(
-          product.allPaSizes?.nodes.map((node) => node.name) || [],
-        );
-        if (!selectedSizes.some((size) => productSizeSet.has(size)))
-          return false;
-      }
-
-      // Filter by color
-      if (selectedColors.length > 0) {
-        const productColorSet = new Set(
-          product.allPaColors?.nodes.map((node) => node.name) || [],
-        );
-        if (!selectedColors.some((color) => productColorSet.has(color)))
-          return false;
-      }
-
-      return true;
-    });
-
-    // Sort products using toSorted() for immutable sorting (ES2023)
-    return (filtered || []).toSorted((a, b) => {
-      const priceA = Number.parseFloat(a.price.replace(/[^0-9.]/g, ''));
-      const priceB = Number.parseFloat(b.price.replace(/[^0-9.]/g, ''));
-
-      switch (sortBy) {
-        case 'price-low':
-          return priceA - priceB;
-        case 'price-high':
-          return priceB - priceA;
-        case 'newest':
-          return b.databaseId - a.databaseId;
-        default: // 'popular'
-          return 0;
-      }
-    });
+    return filtered.toSorted(getProductSortComparator(sortBy));
   };
 
   return {

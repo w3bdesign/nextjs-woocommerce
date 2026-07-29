@@ -212,10 +212,23 @@ const ProductDetails = ({
 // --- Main Component ---
 
 const SingleProduct = ({ product }: ISingleProductProps) => {
-  // Initialize selectedVariation with the first variation's databaseId if variations exist
-  const [selectedVariation, setSelectedVariation] = useState<number | undefined>(
-    product.variations?.nodes[0]?.databaseId
-  );
+  // Track user-selected variation separately; defaults to first variation from the prop
+  const defaultVariationId = product.variations?.nodes[0]?.databaseId;
+  const [userSelectedVariation, setUserSelectedVariation] = useState<
+    number | undefined
+  >(undefined);
+
+  // When the product prop changes, the default updates automatically.
+  // Use the user's explicit selection if available, otherwise fall back to the prop-derived default.
+  const selectedVariation = userSelectedVariation ?? defaultVariationId;
+
+  // Reset user selection when the product changes (new product = new default)
+  const productId = product.databaseId;
+  const [prevProductId, setPrevProductId] = useState(productId);
+  if (productId !== prevProductId) {
+    setPrevProductId(productId);
+    setUserSelectedVariation(undefined);
+  }
 
   const price = formatPrice(product.price);
   const regularPrice = formatPrice(product.regularPrice);
@@ -236,7 +249,7 @@ const SingleProduct = ({ product }: ISingleProductProps) => {
             regularPrice={regularPrice}
             descriptionText={descriptionText}
             selectedVariation={selectedVariation}
-            onSelectVariation={setSelectedVariation}
+            onSelectVariation={setUserSelectedVariation}
           />
         </div>
       </div>

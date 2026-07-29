@@ -7,48 +7,52 @@ type LoginError = {
   message?: string;
 };
 
+const GRAPHQL_ERROR_MESSAGES: Record<string, string> = {
+  invalid_username:
+    'Ugyldig brukernavn eller e-postadresse. Vennligst sjekk og prøv igjen.',
+  incorrect_password:
+    'Feil passord. Vennligst sjekk passordet ditt og prøv igjen.',
+  invalid_email:
+    'Ugyldig e-postadresse. Vennligst skriv inn en gyldig e-postadresse.',
+  empty_username: 'Vennligst skriv inn brukernavn eller e-postadresse.',
+  empty_password: 'Vennligst skriv inn passord.',
+  too_many_retries:
+    'For mange mislykkede forsøk. Vennligst vent litt før du prøver igjen.',
+};
+
+const DEFAULT_GRAPHQL_ERROR =
+  'Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.';
+const NETWORK_ERROR =
+  'Nettverksfeil. Vennligst sjekk internetttilkoblingen din og prøv igjen.';
+const GENERIC_LOGIN_ERROR =
+  'Det oppstod en feil under innlogging. Vennligst prøv igjen.';
+const UNKNOWN_ERROR =
+  'En ukjent feil oppstod. Vennligst prøv igjen senere.';
+
 function getErrorMessage(error: unknown): string {
   if (typeof error !== 'object' || error === null) {
-    return 'En ukjent feil oppstod. Vennligst prøv igjen senere.';
+    return UNKNOWN_ERROR;
   }
 
   const loginError = error as LoginError;
 
   // Check for GraphQL errors
   if (loginError.graphQLErrors && loginError.graphQLErrors.length > 0) {
-    const graphQLError = loginError.graphQLErrors[0];
-    const message = graphQLError.message;
-
-    // Map GraphQL error messages to user-friendly messages
-    switch (message) {
-      case 'invalid_username':
-        return 'Ugyldig brukernavn eller e-postadresse. Vennligst sjekk og prøv igjen.';
-      case 'incorrect_password':
-        return 'Feil passord. Vennligst sjekk passordet ditt og prøv igjen.';
-      case 'invalid_email':
-        return 'Ugyldig e-postadresse. Vennligst skriv inn en gyldig e-postadresse.';
-      case 'empty_username':
-        return 'Vennligst skriv inn brukernavn eller e-postadresse.';
-      case 'empty_password':
-        return 'Vennligst skriv inn passord.';
-      case 'too_many_retries':
-        return 'For mange mislykkede forsøk. Vennligst vent litt før du prøver igjen.';
-      default:
-        return 'Innlogging mislyktes. Vennligst sjekk dine opplysninger og prøv igjen.';
-    }
+    const message = loginError.graphQLErrors[0].message ?? '';
+    return GRAPHQL_ERROR_MESSAGES[message] ?? DEFAULT_GRAPHQL_ERROR;
   }
 
   // Check for network errors
   if (loginError.networkError) {
-    return 'Nettverksfeil. Vennligst sjekk internetttilkoblingen din og prøv igjen.';
+    return NETWORK_ERROR;
   }
 
   // Fallback for other errors
   if (loginError.message) {
-    return 'Det oppstod en feil under innlogging. Vennligst prøv igjen.';
+    return GENERIC_LOGIN_ERROR;
   }
 
-  return 'En ukjent feil oppstod. Vennligst prøv igjen senere.';
+  return UNKNOWN_ERROR;
 }
 
 export async function login(username: string, password: string) {
