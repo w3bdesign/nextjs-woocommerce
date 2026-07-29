@@ -9,3 +9,7 @@ allowBuilds:
 minimumReleaseAge: 4320
 
 # trustPolicy: no-downgrade
+
+overrides:
+  postcss@<8.5.18: "~8.5.23"
+  sharp@<0.35.0: "^0.35.0"
