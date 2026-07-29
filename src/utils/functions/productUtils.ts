@@ -40,9 +40,12 @@ export const matchesProductType = (
   product: Product,
   productTypes: ProductType[],
 ): boolean => {
-  const selectedTypes = productTypes
-    .filter((type) => type.checked)
-    .map((type) => type.name.toLowerCase());
+  const selectedTypes = productTypes.reduce<string[]>((acc, type) => {
+    if (type.checked) {
+      acc.push(type.name.toLowerCase());
+    }
+    return acc;
+  }, []);
 
   if (selectedTypes.length === 0) return true;
 
