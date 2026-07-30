@@ -42,7 +42,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-hook-form": "^7.83.0",
-    "react-instantsearch": "^7.38.0",
+    "react-instantsearch": "^7.41.0",
     "sharp": "^0.35.0",
     "uuid": "^14.0.1",
     "zustand": "^5.0.14"
