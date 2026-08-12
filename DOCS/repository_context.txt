@@ -6848,7 +6848,7 @@ export default SingleProduct;
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=w3bdesign/nextjs-woocommerce&type=Date)](https://star-history.com/#w3bdesign/nextjs-woocommerce&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=w3bdesign/nextjs-woocommerce&type=Date)](https://star-history.dera.page/#w3bdesign/nextjs-woocommerce&Date)
 
 # Next.js Ecommerce site with WooCommerce backend
 
