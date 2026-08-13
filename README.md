@@ -6,16 +6,6 @@
 
 ![bilde](https://github.com/user-attachments/assets/08047025-0950-472a-ae7d-932c7faee1db)
 
-## Star History
-
-<a href="https://www.star-history.com/?repos=nextjs-woocommerce%2Fnextjs-woocommerce&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=nextjs-woocommerce/nextjs-woocommerce&type=date&theme=dark&legend=top-left&sealed_token=A-LSFeysRYwUj-gkXjuf7dDY8wW6vxauraN8lgRzinAh9Ft0Ejtbf9-CHuB4xvMZ-KognixnvGDzvQJf4VZDPT0vPB5BaZoD8gNlM6S9X-okOIRYl9bJQC0F98R8nAwbfioPuJa3oJtPL0l_c25K-O1wQGHePaLaDa9lMLqOxn1IGFAFVQFTbO-I7V0D" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=nextjs-woocommerce/nextjs-woocommerce&type=date&legend=top-left&sealed_token=A-LSFeysRYwUj-gkXjuf7dDY8wW6vxauraN8lgRzinAh9Ft0Ejtbf9-CHuB4xvMZ-KognixnvGDzvQJf4VZDPT0vPB5BaZoD8gNlM6S9X-okOIRYl9bJQC0F98R8nAwbfioPuJa3oJtPL0l_c25K-O1wQGHePaLaDa9lMLqOxn1IGFAFVQFTbO-I7V0D" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=nextjs-woocommerce/nextjs-woocommerce&type=date&legend=top-left&sealed_token=A-LSFeysRYwUj-gkXjuf7dDY8wW6vxauraN8lgRzinAh9Ft0Ejtbf9-CHuB4xvMZ-KognixnvGDzvQJf4VZDPT0vPB5BaZoD8gNlM6S9X-okOIRYl9bJQC0F98R8nAwbfioPuJa3oJtPL0l_c25K-O1wQGHePaLaDa9lMLqOxn1IGFAFVQFTbO-I7V0D" />
- </picture>
-</a>
-
 # Next.js Ecommerce site with WooCommerce backend
 
 ## Live URL: <https://next-woocommerce.dfweb.no>
