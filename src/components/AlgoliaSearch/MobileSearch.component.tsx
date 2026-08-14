@@ -44,7 +44,7 @@ const CustomSearchBox = () => {
  */
 const MobileSearch = () => {
   return (
-    <div className="mobile-search-wrapper mx-auto mt-4 w-full max-w-md px-2 md:hidden">
+    <div className="mx-auto mt-4 w-full max-w-md px-2 md:hidden">
       <InstantSearch
         indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
         searchClient={searchClient}
