@@ -25,9 +25,7 @@ const CustomSearchBox = () => {
           resetButtonTitle: 'Slett søketekst',
         }}
         classNames={{
-          root: 'w-full',
-          form: 'flex w-full items-center',
-          input: `flex-1 w-full px-4 py-3 md:py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
+          input: `w-full px-4 py-3 md:py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
             hasFocus ? 'border-primary' : 'border-border'
           }`,
         }}
@@ -44,7 +42,7 @@ const CustomSearchBox = () => {
  */
 const MobileSearch = () => {
   return (
-    <div className="mx-auto mt-4 w-full max-w-md px-2 md:hidden">
+    <div className="mt-4 md:hidden">
       <InstantSearch
         indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
         searchClient={searchClient}
