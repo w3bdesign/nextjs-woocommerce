@@ -52,7 +52,7 @@ const CustomSearchBox = () => {
 const AlgoliaSearchBox = () => {
   return (
     <div className="hidden mb-0.5 md:inline-block xl:inline-block">
-      <div className="relative w-72">
+      <div className="relative w-72 md:w-80 lg:w-96 xl:w-[28rem]">
         <InstantSearch
           indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
           searchClient={searchClient}
