@@ -105,9 +105,14 @@ body {
   right: 0.75rem;
   margin-left: 0;
   transform: translateY(-50%);
-  display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Keep the reset (X) button hidden while the input is empty */
+
+.ais-SearchBox-reset[hidden] {
+  display: none;
 }
 
 .ais-Hits {
