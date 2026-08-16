@@ -28,9 +28,9 @@ const CustomSearchBox = () => {
           resetButtonTitle: 'Slett søketekst',
         }}
         classNames={{
-          root: 'w-full',
-          form: 'relative w-full',
-          input: `w-full px-4 py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
+          root: '',
+          form: 'relative',
+          input: `px-4 py-2 text-base bg-surface border outline-none rounded-md transition-colors duration-200 ${
             hasFocus ? 'border-primary' : 'border-border'
           }`,
         }}
