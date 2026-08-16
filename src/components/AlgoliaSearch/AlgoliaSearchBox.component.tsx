@@ -1,5 +1,10 @@
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
-import { InstantSearch, SearchBox, Hits, useSearchBox } from 'react-instantsearch';
+import {
+  InstantSearch,
+  SearchBox,
+  Hits,
+  useSearchBox,
+} from 'react-instantsearch';
 import { useState } from 'react';
 
 import SearchResults from './SearchResults.component';
@@ -52,7 +57,7 @@ const CustomSearchBox = () => {
 const AlgoliaSearchBox = () => {
   return (
     <div className="hidden mb-0.5 md:inline-block xl:inline-block">
-      <div className="relative w-72 md:w-80 lg:w-96 xl:w-[28rem]">
+      <div className="relative w-72 lg:w-80 xl:w-96">
         <InstantSearch
           indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME ?? 'changeme'}
           searchClient={searchClient}
