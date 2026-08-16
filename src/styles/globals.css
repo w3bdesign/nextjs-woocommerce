@@ -76,21 +76,23 @@ body {
   margin-top: -20px;
 }
 
-/* Fix Algolia search input background to match design system */
+/* Align input, results dropdown and reset (X) button to the same width */
+
+.ais-SearchBox-form {
+  position: relative;
+  width: 100%;
+  display: block;
+}
 
 .ais-SearchBox-input {
+  width: 100%;
+  padding-right: 2.5rem;
+  box-sizing: border-box;
   background-color: var(--color-surface);
 }
 
-/* Fix Algolia mobile searchbox design issues */
-
-#mobilesearchdiv {
-  position: absolute;
-  height: 200px;
-}
-
 .ais-SearchBox-submit {
-  width: 48px;
+  display: none;
 }
 
 .ais-SearchBox-submitIcon {
@@ -98,11 +100,34 @@ body {
 }
 
 .ais-SearchBox-reset {
-  margin-left: 10px;
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  margin-left: 0;
+  transform: translateY(-50%);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keep the reset (X) button hidden while the input is empty */
+
+.ais-SearchBox-reset[hidden] {
+  display: none;
+}
+
+.ais-Hits {
+  width: 100%;
 }
 
 /* Fix Chrome padding issue */
 
 .ais-SearchBox-input[type='search']::-webkit-search-cancel-button {
   display: none;
+}
+
+/* Fix Algolia mobile searchbox design issues */
+
+#mobilesearchdiv {
+  position: absolute;
+  height: 200px;
 }
