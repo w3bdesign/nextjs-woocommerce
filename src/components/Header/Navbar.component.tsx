@@ -48,8 +48,8 @@ const Navbar = () => {
                 NETTBUTIKK
               </span>
             </Link>
+            <AlgoliaSearchBox />
             <div className="flex items-center gap-3">
-              <AlgoliaSearchBox />
               <Cart />
             </div>
           </div>
