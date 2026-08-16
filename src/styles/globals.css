@@ -76,12 +76,6 @@ body {
   margin-top: -20px;
 }
 
-/* Fix Algolia search input background to match design system */
-
-.ais-SearchBox-input {
-  background-color: var(--color-surface);
-}
-
 /* Align input, results dropdown and reset (X) button to the same width */
 
 .ais-SearchBox-form {
@@ -94,6 +88,7 @@ body {
   width: 100%;
   padding-right: 2.5rem;
   box-sizing: border-box;
+  background-color: var(--color-surface);
 }
 
 .ais-SearchBox-submit {
