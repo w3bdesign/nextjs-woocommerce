@@ -19,7 +19,7 @@ interface IDisplayProductsProps {
  */
 
 const DisplayProducts = ({ products }: IDisplayProductsProps) => (
-  <section className="container mx-auto bg-surface py-12">
+  <section className="container mx-auto bg-surface py-12 px-4 md:px-6 xl:px-8">
     <div
       id="product-container"
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
