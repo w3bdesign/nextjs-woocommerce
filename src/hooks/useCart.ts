@@ -69,19 +69,30 @@ export const useCart = (): UseCartResult => {
   const clear = useCartStore((state) => state.clear);
 
   /**
-   * Reconcile a cart payload (from the query or a mutation) with the store:
-   * write the formatted cart when there are contents, clear the session when it
-   * has genuinely emptied.
+   * Reconcile a cart payload with the store.
+   *
+   * `allowClear` distinguishes the two callers, which have different authority
+   * over "empty":
+   *
+   * - **Query (`allowClear = false`, populate-only):** a GET_CART fired on mount
+   *   can race the WooCommerce session and come back empty before the session
+   *   has propagated. An empty *read* is therefore NOT proof the cart is empty,
+   *   so it must never destroy state — it simply has nothing to populate. (This
+   *   is the race the old `setTimeout(refetch)` hack papered over.)
+   * - **Mutation (`allowClear = true`, authoritative):** an add/update/remove
+   *   reply reflects a write the user just made. An empty cart here is a real
+   *   "the last item was removed" signal, so clearing is correct.
    */
   const syncFromServer = useCallback(
-    (payload: IFormattedCartProps | null | undefined) => {
+    (payload: IFormattedCartProps | null | undefined, allowClear: boolean) => {
       const formatted = getFormattedCart(payload ?? undefined);
       if (formatted) {
         replace(formatted);
         return;
       }
-      // No contents in a settled server response — the cart is truly empty.
-      if (!payload?.cart?.contents?.nodes?.length) {
+      // Only a confirmed-empty mutation reply may clear the cart. An empty read
+      // is ignored so a session race can never wipe a populated cart.
+      if (allowClear && !payload?.cart?.contents?.nodes?.length) {
         clear();
       }
     },
@@ -92,7 +103,8 @@ export const useCart = (): UseCartResult => {
     GET_CART,
     {
       notifyOnNetworkStatusChange: true,
-      onCompleted: syncFromServer,
+      // Query results are populate-only: never clear on an empty read.
+      onCompleted: (data) => syncFromServer(data, false),
     },
   );
 
@@ -104,14 +116,16 @@ export const useCart = (): UseCartResult => {
   const [addToCart, { loading: addLoading }] = useMutation<IAddToCartData>(
     ADD_TO_CART,
     {
-      onCompleted: (result) => syncFromServer(result?.addToCart),
+      // Mutation reply is authoritative: allow it to clear a confirmed-empty cart.
+      onCompleted: (result) => syncFromServer(result?.addToCart, true),
     },
   );
 
   const [updateCart, { loading: updateLoading }] = useMutation<IUpdateCartData>(
     UPDATE_CART,
     {
-      onCompleted: (result) => syncFromServer(result?.updateItemQuantities),
+      // Mutation reply is authoritative (this is how removeItem empties the cart).
+      onCompleted: (result) => syncFromServer(result?.updateItemQuantities, true),
     },
   );
 
