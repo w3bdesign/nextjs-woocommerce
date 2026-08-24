@@ -6,6 +6,8 @@ import { useCart } from '@/hooks/useCart';
 import Button from '@/components/UI/Button.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
+import type { ChangeEvent } from 'react';
+
 import type { CartProduct } from '@/types/cart';
 
 const CartContents = () => {
@@ -17,7 +19,7 @@ const CartContents = () => {
   const hasProducts = products.length > 0;
 
   const handleQuantityInput = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: ChangeEvent<HTMLInputElement>,
     cartKey: string,
   ) => {
     if (isUpdating) {
