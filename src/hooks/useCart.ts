@@ -42,6 +42,12 @@ export interface UseCartResult {
   removeItem: (cartKey: string) => void;
   /** Force a re-read of the cart from WooCommerce. */
   refetchCart: () => void;
+  /**
+   * Explicitly empty the cart client-side. Use after an event that empties the
+   * server cart out-of-band (e.g. a completed checkout), where a refetch would
+   * be ignored by the populate-only query path.
+   */
+  clearCart: () => void;
 }
 
 /**
@@ -183,6 +189,7 @@ export const useCart = (): UseCartResult => {
     setQuantity,
     removeItem,
     refetchCart: refetch,
+    clearCart: clear,
   };
 };
 
