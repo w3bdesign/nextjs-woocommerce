@@ -23,7 +23,9 @@ const CartContents = () => {
     if (isUpdating) {
       return;
     }
-    const newQty = event.target.value ? parseInt(event.target.value, 10) : 1;
+    const newQty = event.target.value
+      ? Number.parseInt(event.target.value, 10)
+      : 1;
     setQuantity(cartKey, newQty);
   };
 
