@@ -30,8 +30,6 @@ const CheckoutForm = () => {
     {
       onCompleted: () => {
         setorderCompleted(true);
-        // The order emptied the server cart out-of-band. A refetch would be
-        // ignored by the populate-only query path, so clear explicitly.
         clearCart();
       },
       onError: (error) => {
