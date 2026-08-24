@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Architecture review for nextjs-woocommerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+    </script>
+    <style>
+      .seam { stroke-dasharray: 4 4; }
+      .leak { stroke: #dc2626; }
+      .deep { background: linear-gradient(135deg, #0f172a, #1e293b); }
+      .module-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    </style>
+  </head>
+  <body class="bg-stone-50 text-slate-900 font-sans">
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-12">
+
+      <!-- ============ HEADER ============ -->
+      <header class="border-b border-stone-300 pb-6">
+        <h1 class="font-serif text-3xl font-semibold">Architecture review — nextjs-woocommerce</h1>
+        <p class="text-sm text-slate-500 mt-1">2026-08-24 · scoped to recent hot spots: cart flow, session handling, checkout, auth</p>
+        <div class="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-xs text-slate-600">
+          <span class="flex items-center gap-2"><span class="inline-block w-4 h-3 border-2 border-slate-500 bg-white"></span> module</span>
+          <span class="flex items-center gap-2"><svg width="24" height="6"><line x1="0" y1="3" x2="24" y2="3" stroke="#64748b" stroke-width="2" class="seam"/></svg> seam</span>
+          <span class="flex items-center gap-2"><svg width="24" height="6"><line x1="0" y1="3" x2="24" y2="3" stroke="#dc2626" stroke-width="2"/></svg> leakage</span>
+          <span class="flex items-center gap-2"><span class="inline-block w-4 h-3 deep rounded-sm"></span> deep module</span>
+        </div>
+        <p class="text-xs text-amber-700 mt-3">No <code class="font-mono">CONTEXT.md</code> or ADRs found — domain terms below are taken from the code itself.</p>
+      </header>
+
+      <!-- ============ CANDIDATES ============ -->
+      <section id="candidates" class="space-y-10">
+
+        <!-- ========== CANDIDATE 1 ========== -->
+        <article id="c1" class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-4">
+            <h2 class="font-serif text-xl font-semibold">1 · Deepen the Cart into one module</h2>
+            <div class="flex gap-2 shrink-0">
+              <span class="rounded-full bg-emerald-100 text-emerald-800 px-3 py-1 text-xs font-semibold">Strong</span>
+              <span class="rounded-full bg-slate-100 text-slate-600 px-3 py-1 text-xs">in-process</span>
+            </div>
+          </div>
+          <div class="font-mono text-sm text-slate-600 leading-relaxed">
+            src/components/Cart/CartInitializer.component.tsx<br/>
+            src/components/Cart/CartContents.component.tsx<br/>
+            src/components/Product/AddToCart.component.tsx<br/>
+            src/components/Checkout/CheckoutForm.component.tsx<br/>
+            src/utils/functions/functions.tsx · src/stores/cartStore.ts
+          </div>
+
+          <!-- before/after -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="module-label text-slate-400 mb-2">Before — 4 copies of the same ritual</p>
+              <pre class="mermaid">
+flowchart TB
+  CI[CartInitializer] --> Q1[useQuery GET_CART]
+  CC[CartContents] --> Q2[useQuery GET_CART]
+  AC[AddToCart] --> Q3[useQuery GET_CART]
+  CF[CheckoutForm] --> Q4[useQuery GET_CART]
+  Q1 --> F[getFormattedCart]
+  Q2 --> F
+  Q3 --> F
+  Q4 --> F
+  F --> S[cartStore.syncWithWooCommerce]
+  CC -. "setTimeout refetch 3s" .-> Q2
+  AC -. "setTimeout refetch 2s" .-> Q3
+  CF -. "setTimeout refetch 2s" .-> Q4
+  classDef leak stroke:#dc2626,stroke-width:2px;
+  class Q1,Q2,Q3,Q4 leak
+              </pre>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4 flex flex-col">
+              <p class="module-label text-slate-400 mb-2">After — one deep module</p>
+              <div class="flex-1 flex items-center justify-center">
+                <div class="w-full max-w-xs">
+                  <div class="flex justify-around mb-3">
+                    <div class="border-2 border-slate-400 bg-white px-2 py-1 module-label">CartInitializer</div>
+                    <div class="border-2 border-slate-400 bg-white px-2 py-1 module-label">AddToCart</div>
+                    <div class="border-2 border-slate-400 bg-white px-2 py-1 module-label">Checkout</div>
+                  </div>
+                  <svg class="w-full h-6" viewBox="0 0 300 24">
+                    <line x1="60" y1="0" x2="150" y2="22" stroke="#0f172a" stroke-width="2"/>
+                    <line x1="150" y1="0" x2="150" y2="22" stroke="#0f172a" stroke-width="2"/>
+                    <line x1="240" y1="0" x2="150" y2="22" stroke="#0f172a" stroke-width="2"/>
+                  </svg>
+                  <div class="deep rounded-lg p-4 text-white">
+                    <p class="module-label text-emerald-300">useCart()</p>
+                    <p class="text-xs text-slate-300 mt-1 font-mono">items · total · addItem() · setQuantity() · remove()</p>
+                    <div class="mt-3 space-y-1 opacity-40 text-[10px] font-mono">
+                      <p>GET_CART / UPDATE_CART / refetch-settle</p>
+                      <p>getFormattedCart · getUpdatedItems</p>
+                      <p>syncWithWooCommerce · clear session</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p><strong>Problem:</strong> the Cart has no module — fetch, format, sync, and the "wait 2–3s for WooCommerce to settle" retry hack are copy-pasted across four components.</p>
+          <p><strong>Solution:</strong> one <code class="font-mono text-sm">useCart()</code> interface; query, mutation, formatting, settle-refetch, and store sync become implementation.</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>locality: cart bugs concentrate in one module</li>
+            <li>leverage: one interface, four call sites</li>
+            <li>tests hit one interface</li>
+            <li>settle-hack fixed once, everywhere</li>
+            <li>delete 4 copies of the ritual</li>
+          </ul>
+        </article>
+
+        <!-- ========== CANDIDATE 2 ========== -->
+        <article id="c2" class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-4">
+            <h2 class="font-serif text-xl font-semibold">2 · Put the Woo session behind a real seam</h2>
+            <div class="flex gap-2 shrink-0">
+              <span class="rounded-full bg-emerald-100 text-emerald-800 px-3 py-1 text-xs font-semibold">Strong</span>
+              <span class="rounded-full bg-slate-100 text-slate-600 px-3 py-1 text-xs">local-substitutable</span>
+            </div>
+          </div>
+          <div class="font-mono text-sm text-slate-600 leading-relaxed">
+            src/utils/apollo/ApolloClient.ts · src/stores/cartStore.ts
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="module-label text-slate-400 mb-3">Before — three writers, duplicated keys</p>
+              <div class="relative h-64">
+                <div class="absolute top-0 left-0 w-[45%] border-2 border-slate-400 bg-white rounded p-2">
+                  <p class="module-label">Apollo middleware</p>
+                  <p class="text-[10px] font-mono text-red-600 mt-1">'woo-session:v1'<br/>'woocommerce-cart:v1'</p>
+                </div>
+                <div class="absolute top-0 right-0 w-[45%] border-2 border-slate-400 bg-white rounded p-2">
+                  <p class="module-label">Apollo afterware</p>
+                  <p class="text-[10px] font-mono text-red-600 mt-1">'woo-session:v1'</p>
+                </div>
+                <div class="absolute top-24 left-1/4 w-1/2 border-2 border-slate-400 bg-white rounded p-2">
+                  <p class="module-label">cartStore</p>
+                  <p class="text-[10px] font-mono text-red-600 mt-1">'woo-session:v1'<br/>'woocommerce-cart:v1'</p>
+                </div>
+                <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                  <line x1="22%" y1="70" x2="45%" y2="215" stroke="#dc2626" stroke-width="2"/>
+                  <line x1="78%" y1="55" x2="55%" y2="215" stroke="#dc2626" stroke-width="2"/>
+                  <line x1="50%" y1="145" x2="50%" y2="215" stroke="#dc2626" stroke-width="2"/>
+                </svg>
+                <div class="absolute bottom-0 left-1/4 w-1/2 border-2 border-red-400 bg-red-50 rounded p-2 text-center">
+                  <p class="module-label text-red-700">localStorage</p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="module-label text-slate-400 mb-3">After — one adapter behind the seam</p>
+              <div class="relative h-64">
+                <div class="absolute top-0 left-0 w-[30%] border-2 border-slate-400 bg-white rounded p-2 module-label">Apollo link</div>
+                <div class="absolute top-0 left-[35%] w-[30%] border-2 border-slate-400 bg-white rounded p-2 module-label">cartStore</div>
+                <div class="absolute top-0 right-0 w-[30%] border-2 border-slate-400 bg-white rounded p-2 module-label">useCart()</div>
+                <svg class="absolute inset-0 w-full h-full pointer-events-none">
+                  <line x1="15%" y1="40" x2="50%" y2="100" stroke="#0f172a" stroke-width="2"/>
+                  <line x1="50%" y1="40" x2="50%" y2="100" stroke="#0f172a" stroke-width="2"/>
+                  <line x1="85%" y1="40" x2="50%" y2="100" stroke="#0f172a" stroke-width="2"/>
+                  <line x1="5%" y1="150" x2="95%" y2="150" stroke="#64748b" stroke-width="2" class="seam"/>
+                </svg>
+                <div class="absolute top-[100px] left-1/4 w-1/2 deep rounded-lg p-2 text-center">
+                  <p class="module-label text-emerald-300">wooSession</p>
+                  <p class="text-[10px] font-mono text-slate-300">token() · save() · expire() · clear()</p>
+                </div>
+                <div class="absolute bottom-2 left-[10%] w-[35%] border-2 border-slate-300 bg-stone-50 rounded p-2 text-center module-label text-slate-500">localStorage adapter</div>
+                <div class="absolute bottom-2 right-[10%] w-[35%] border-2 border-slate-300 bg-stone-50 rounded p-2 text-center module-label text-slate-500">in-memory adapter (tests)</div>
+              </div>
+            </div>
+          </div>
+
+          <p><strong>Problem:</strong> session persistence leaks across the seam — <code class="font-mono text-sm">woo-session:v1</code> / <code class="font-mono text-sm">woocommerce-cart:v1</code> are duplicated constants with three independent writers.</p>
+          <p><strong>Solution:</strong> one <code class="font-mono text-sm">wooSession</code> module owns keys, expiry (7 days), and clearing; localStorage becomes an adapter behind the seam.</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>two adapters justify the seam: localStorage in prod, in-memory in tests</li>
+            <li>Apollo middleware becomes testable</li>
+            <li>key drift becomes impossible</li>
+            <li>expiry logic lives in one place</li>
+          </ul>
+        </article>
+
+        <!-- ========== CANDIDATE 3 ========== -->
+        <article id="c3" class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-4">
+            <h2 class="font-serif text-xl font-semibold">3 · Shrink the cartStore interface</h2>
+            <div class="flex gap-2 shrink-0">
+              <span class="rounded-full bg-amber-100 text-amber-800 px-3 py-1 text-xs font-semibold">Worth exploring</span>
+              <span class="rounded-full bg-slate-100 text-slate-600 px-3 py-1 text-xs">in-process</span>
+            </div>
+          </div>
+          <div class="font-mono text-sm text-slate-600">src/stores/cartStore.ts</div>
+
+          <!-- mass diagram -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="module-label text-slate-400 mb-3">Before — shallow: interface ≈ implementation</p>
+              <div class="flex items-end justify-center gap-8 h-56">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-28 bg-indigo-200 border border-indigo-400 rounded-t" style="height: 160px;">
+                    <p class="text-[10px] font-mono p-1 leading-tight">setCart<br/>updateCart<br/>syncWithWooCommerce<br/>clearWooCommerceSession<br/>isLoading (never set)</p>
+                  </div>
+                  <p class="module-label">interface</p>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-28 bg-slate-300 border border-slate-400 rounded-t" style="height: 180px;"></div>
+                  <p class="module-label">implementation</p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="module-label text-slate-400 mb-3">After — deep: small interface, tall implementation</p>
+              <div class="flex items-end justify-center gap-8 h-56">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-28 bg-emerald-200 border border-emerald-500 rounded-t" style="height: 50px;">
+                    <p class="text-[10px] font-mono p-1 leading-tight">cart<br/>replace() · clear()</p>
+                  </div>
+                  <p class="module-label">interface</p>
+                </div>
+                <div class="flex flex-col items-center gap-1">
+                  <div class="w-28 deep rounded-t" style="height: 180px;"></div>
+                  <p class="module-label">implementation</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p><strong>Problem:</strong> <code class="font-mono text-sm">setCart</code>, <code class="font-mono text-sm">updateCart</code>, <code class="font-mono text-sm">syncWithWooCommerce</code> are three names for the same write; <code class="font-mono text-sm">isLoading</code> is read but never set — a dead affordance.</p>
+          <p><strong>Solution:</strong> collapse to <code class="font-mono text-sm">replace(cart)</code> and <code class="font-mono text-sm">clear()</code>; delete <code class="font-mono text-sm">isLoading</code>. Folds naturally into candidate 1.</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>interface shrinks; implementation absorbs the wrappers</li>
+            <li>delete a dead flag</li>
+            <li>deletion test: complexity concentrates, none moves</li>
+          </ul>
+        </article>
+
+        <!-- ========== CANDIDATE 4 ========== -->
+        <article id="c4" class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-4">
+            <h2 class="font-serif text-xl font-semibold">4 · Dissolve the functions.tsx grab-bag</h2>
+            <div class="flex gap-2 shrink-0">
+              <span class="rounded-full bg-amber-100 text-amber-800 px-3 py-1 text-xs font-semibold">Worth exploring</span>
+              <span class="rounded-full bg-slate-100 text-slate-600 px-3 py-1 text-xs">in-process</span>
+            </div>
+          </div>
+          <div class="font-mono text-sm text-slate-600">src/utils/functions/functions.tsx</div>
+
+          <!-- cross-section -->
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-white p-4 space-y-1">
+              <p class="module-label text-slate-400 mb-2">Before — one file, five unrelated concerns</p>
+              <div class="h-10 border-l-4 border-red-400 bg-red-50 px-3 flex items-center text-xs font-mono">handleQuantityChange — DOM event + mutation dance, 5 params, no locality</div>
+              <div class="h-10 border-l-4 border-slate-400 bg-stone-50 px-3 flex items-center text-xs font-mono">getFormattedCart / getUpdatedItems — cart shaping</div>
+              <div class="h-10 border-l-4 border-slate-400 bg-stone-50 px-3 flex items-center text-xs font-mono">createCheckoutData — checkout payload</div>
+              <div class="h-10 border-l-4 border-slate-400 bg-stone-50 px-3 flex items-center text-xs font-mono">paddedPrice / trimmedString / filteredVariantPrice — display</div>
+              <div class="h-10 border-l-4 border-amber-400 bg-amber-50 px-3 flex items-center text-xs font-mono">6 type re-exports "for backward compatibility"</div>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4 space-y-2">
+              <p class="module-label text-slate-400 mb-2">After — absorbed by their modules</p>
+              <div class="deep rounded p-3 text-white">
+                <p class="module-label text-emerald-300">Cart module (candidate 1)</p>
+                <p class="text-[10px] font-mono text-slate-300 opacity-60">getFormattedCart · getUpdatedItems · handleQuantityChange</p>
+              </div>
+              <div class="deep rounded p-3 text-white">
+                <p class="module-label text-emerald-300">Checkout module</p>
+                <p class="text-[10px] font-mono text-slate-300 opacity-60">createCheckoutData</p>
+              </div>
+              <div class="border-2 border-slate-400 rounded p-3">
+                <p class="module-label">price formatting</p>
+                <p class="text-[10px] font-mono text-slate-500">paddedPrice · filteredVariantPrice · trimmedString</p>
+              </div>
+              <p class="text-xs text-slate-400 line-through">type re-exports — deleted, import from @/types</p>
+            </div>
+          </div>
+
+          <p><strong>Problem:</strong> <code class="font-mono text-sm">handleQuantityChange</code> was extracted for testability, but the bugs live in the mutation/refetch dance around it — no locality; the rest is five concerns sharing a filename.</p>
+          <p><strong>Solution:</strong> each function moves into the module whose implementation it belongs to; the re-export shim is deleted.</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>locality: cart shaping tested inside the Cart module</li>
+            <li>delete the backward-compat shim</li>
+            <li>deletion test passes: file vanishes, nothing orphaned</li>
+          </ul>
+        </article>
+
+        <!-- ========== CANDIDATE 5 ========== -->
+        <article id="c5" class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
+          <div class="flex items-start justify-between gap-4">
+            <h2 class="font-serif text-xl font-semibold">5 · One Apollo client, one seam</h2>
+            <div class="flex gap-2 shrink-0">
+              <span class="rounded-full bg-slate-200 text-slate-700 px-3 py-1 text-xs font-semibold">Speculative</span>
+              <span class="rounded-full bg-slate-100 text-slate-600 px-3 py-1 text-xs">ports &amp; adapters</span>
+            </div>
+          </div>
+          <div class="font-mono text-sm text-slate-600">src/utils/auth.ts · src/utils/apollo/ApolloClient.ts</div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="module-label text-slate-400 mb-2">Before — login builds its own client</p>
+              <pre class="mermaid">
+flowchart LR
+  L[login] --> C2[new ApolloClient]
+  App[everything else] --> C1[shared client]
+  C1 --> MW[session middleware + afterware]
+  MW --> WP[WPGraphQL]
+  C2 -. skips session handling .-> WP
+  classDef leak stroke:#dc2626,stroke-width:2px;
+  class C2 leak
+              </pre>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-white p-4">
+              <p class="module-label text-slate-400 mb-2">After — one client behind the seam</p>
+              <pre class="mermaid">
+flowchart LR
+  L[login] --> C1[shared client]
+  App[everything else] --> C1
+  C1 --> MW[session middleware + afterware]
+  MW --> WP[WPGraphQL]
+  classDef deepM fill:#0f172a,color:#fff,stroke:#0f172a;
+  class C1,MW deepM
+              </pre>
+            </div>
+          </div>
+
+          <p><strong>Problem:</strong> <code class="font-mono text-sm">login()</code> constructs a second ApolloClient that bypasses the shared client's session middleware — the woocommerce-session header never rides along with login.</p>
+          <p><strong>Solution:</strong> login uses the shared client; if isolation was intentional, that reason belongs in an ADR, not in an unexplained second client.</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>one seam to WPGraphQL, not two</li>
+            <li>session behaviour uniform across all requests</li>
+          </ul>
+          <div class="rounded border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            Speculative: the second client may be deliberate (avoid attaching a guest session to login). If so, record the reason as an ADR.
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ============ TOP RECOMMENDATION ============ -->
+      <section id="top-recommendation" class="rounded-xl deep text-white p-8">
+        <p class="module-label text-emerald-300 mb-2">Top recommendation</p>
+        <h2 class="font-serif text-2xl font-semibold mb-2">
+          <a href="#c1" class="underline decoration-emerald-400 underline-offset-4">Deepen the Cart into one module</a>
+        </h2>
+        <p class="text-slate-300 text-sm max-w-2xl">
+          It has the most leverage — one interface replaces four copies of the fetch→format→sync→settle ritual — and it pulls candidates 3 and 4 in behind it for free: the store interface shrinks and the grab-bag dissolves as side effects of the same deepening.
+        </p>
+      </section>
+
+    </main>
+  </body>
+</html>
