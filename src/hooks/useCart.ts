@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   NetworkStatus,
   useMutation,
@@ -19,21 +19,18 @@ import { getFormattedCart, getUpdatedItems } from './cart/cartUtils';
 
 // Types
 import type { Cart } from '@/types/cart';
-import type { ICartItemNode, IFormattedCartProps } from '@/types/graphql';
-
-/**
- * How long to wait before the reconciling refetch fires. WooCommerce needs a
- * moment for the session/cart to settle after a mutation; a single source of
- * truth for this delay replaces the 2s/3s copies scattered across components.
- */
-const SETTLE_REFETCH_MS = 2000;
+import type {
+  IAddToCartData,
+  IUpdateCartData,
+  IFormattedCartProps,
+} from '@/types/graphql';
 
 export interface UseCartResult {
   /** Formatted, client-side cart. Null when empty or not yet loaded. */
   cart: Cart | null;
   /** True until the first GET_CART for this mount has settled. */
   isLoading: boolean;
-  /** True while an add/update/remove mutation (or its settle refetch) is in flight. */
+  /** True while an add/update/remove mutation is in flight. */
   isUpdating: boolean;
   /** Set if the cart query failed. */
   error?: ApolloError;
@@ -50,10 +47,16 @@ export interface UseCartResult {
 /**
  * The Cart module's single public interface.
  *
- * Owns the entire fetch → format → sync → settle-refetch ritual that used to be
- * copy-pasted across CartInitializer, CartContents, AddToCart and CheckoutForm.
- * Query, mutations, formatting, the settle-refetch hack, store sync and
- * empty-cart session clearing are all implementation details behind this hook.
+ * Owns the entire fetch → format → sync ritual that used to be copy-pasted
+ * across CartInitializer, CartContents, AddToCart and CheckoutForm. Query,
+ * mutations, formatting, store sync and empty-cart session clearing are all
+ * implementation details behind this hook.
+ *
+ * The mutations return the whole authoritative cart (the same selection as
+ * GET_CART, via the shared CartFields fragment), so `onCompleted` formats that
+ * response and writes it straight to the store. There is no settle-refetch and
+ * no timer: the server's own mutation reply is the source of truth, which also
+ * removes the race that the old `setTimeout(refetch)` hack papered over.
  *
  * Rendering reads the persisted store `cart` (so the UI never flashes empty on
  * hydration); decisions that could destroy the session — showing the empty
@@ -65,54 +68,52 @@ export const useCart = (): UseCartResult => {
   const replace = useCartStore((state) => state.replace);
   const clear = useCartStore((state) => state.clear);
 
-  // Track pending settle-refetch timers so they can be cleared on unmount.
-  const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const {
-    data,
-    error,
-    refetch,
-    networkStatus,
-  } = useQuery<IFormattedCartProps>(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: (completed) => {
-      const formatted = getFormattedCart(completed);
-      if (!formatted && !completed?.cart?.contents?.nodes?.length) {
-        // Cart is genuinely empty after a settled fetch — clear the session.
-        clear();
-        return;
-      }
+  /**
+   * Reconcile a cart payload (from the query or a mutation) with the store:
+   * write the formatted cart when there are contents, clear the session when it
+   * has genuinely emptied.
+   */
+  const syncFromServer = useCallback(
+    (payload: IFormattedCartProps | null | undefined) => {
+      const formatted = getFormattedCart(payload ?? undefined);
       if (formatted) {
         replace(formatted);
+        return;
+      }
+      // No contents in a settled server response — the cart is truly empty.
+      if (!payload?.cart?.contents?.nodes?.length) {
+        clear();
       }
     },
-  });
+    [replace, clear],
+  );
+
+  const { error, refetch, networkStatus } = useQuery<IFormattedCartProps>(
+    GET_CART,
+    {
+      notifyOnNetworkStatusChange: true,
+      onCompleted: syncFromServer,
+    },
+  );
 
   // isLoading is true only until the first fetch settles for this mount.
   const isLoading =
     networkStatus === NetworkStatus.loading ||
     networkStatus === NetworkStatus.setVariables;
 
-  const scheduleSettleRefetch = useCallback(() => {
-    if (settleTimer.current) {
-      clearTimeout(settleTimer.current);
-    }
-    settleTimer.current = setTimeout(() => {
-      refetch();
-      settleTimer.current = null;
-    }, SETTLE_REFETCH_MS);
-  }, [refetch]);
-
-  const [addToCart, { loading: addLoading }] = useMutation(ADD_TO_CART, {
-    onCompleted: scheduleSettleRefetch,
-  });
-
-  const [updateCart, { loading: updateLoading }] = useMutation(UPDATE_CART, {
-    onCompleted: () => {
-      refetch();
-      scheduleSettleRefetch();
+  const [addToCart, { loading: addLoading }] = useMutation<IAddToCartData>(
+    ADD_TO_CART,
+    {
+      onCompleted: (result) => syncFromServer(result?.addToCart),
     },
-  });
+  );
+
+  const [updateCart, { loading: updateLoading }] = useMutation<IUpdateCartData>(
+    UPDATE_CART,
+    {
+      onCompleted: (result) => syncFromServer(result?.updateItemQuantities),
+    },
+  );
 
   const addItem = useCallback(
     (productId: number, variationId?: number) => {
@@ -131,20 +132,22 @@ export const useCart = (): UseCartResult => {
 
   const setQuantity = useCallback(
     (cartKey: string, quantity: number) => {
-      const nodes: ICartItemNode[] = data?.cart?.contents?.nodes ?? [];
-      if (!nodes.length) {
+      // Derive the update from the same store cart the UI renders from, so the
+      // mutation input can never disagree with what the user sees.
+      const products = cart?.products ?? [];
+      if (!products.length) {
         return;
       }
       updateCart({
         variables: {
           input: {
             clientMutationId: uuidv4(),
-            items: getUpdatedItems(nodes, quantity, cartKey),
+            items: getUpdatedItems(products, quantity, cartKey),
           },
         },
       });
     },
-    [data, updateCart],
+    [cart, updateCart],
   );
 
   const removeItem = useCallback(
@@ -156,16 +159,6 @@ export const useCart = (): UseCartResult => {
   useEffect(() => {
     refetch();
   }, [refetch]);
-
-  // Clear any pending settle timer on unmount.
-  useEffect(
-    () => () => {
-      if (settleTimer.current) {
-        clearTimeout(settleTimer.current);
-      }
-    },
-    [],
-  );
 
   return {
     cart,

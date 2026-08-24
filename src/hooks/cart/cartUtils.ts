@@ -6,11 +6,7 @@
  */
 
 import type { CartProduct, Cart } from '@/types/cart';
-import type {
-  ICartItemNode,
-  IUpdateCartItem,
-  IFormattedCartProps,
-} from '@/types/graphql';
+import type { IUpdateCartItem, IFormattedCartProps } from '@/types/graphql';
 
 /**
  * Convert a WooCommerce cart GraphQL response into the client-side Cart shape.
@@ -75,13 +71,17 @@ export const getFormattedCart = (
 /**
  * Build the items array for the UPDATE_CART mutation: keep every existing
  * quantity, overriding only the line item identified by cartKey.
+ *
+ * Derives from the same formatted `CartProduct[]` the UI renders from, so the
+ * mutation input can never disagree with what the user sees (one source of
+ * truth instead of reading a parallel Apollo query result).
  */
 export const getUpdatedItems = (
-  products: ICartItemNode[],
+  products: CartProduct[],
   newQty: number,
   cartKey: string,
 ): IUpdateCartItem[] =>
-  products.map((cartItem) => ({
-    key: cartItem.key,
-    quantity: cartItem.key === cartKey ? newQty : cartItem.quantity,
+  products.map((item) => ({
+    key: item.cartKey,
+    quantity: item.cartKey === cartKey ? newQty : item.qty,
   }));
