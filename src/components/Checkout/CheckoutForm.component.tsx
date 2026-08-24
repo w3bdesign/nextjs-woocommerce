@@ -20,7 +20,7 @@ import { createCheckoutData } from '@/utils/functions/functions';
 import type { ICheckoutDataProps } from '@/types/checkout';
 
 const CheckoutForm = () => {
-  const { cart, isLoading, refetchCart } = useCart();
+  const { cart, isLoading, refetchCart, clearCart } = useCart();
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
 
@@ -30,7 +30,9 @@ const CheckoutForm = () => {
     {
       onCompleted: () => {
         setorderCompleted(true);
-        refetchCart();
+        // The order emptied the server cart out-of-band. A refetch would be
+        // ignored by the populate-only query path, so clear explicitly.
+        clearCart();
       },
       onError: (error) => {
         setRequestError(error);
