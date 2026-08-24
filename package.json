@@ -44,7 +44,7 @@
     "react-hook-form": "^7.83.0",
     "react-instantsearch": "^7.44.1",
     "sharp": "^0.35.0",
-    "uuid": "^14.0.1",
+    "uuid": "^14.0.2",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
