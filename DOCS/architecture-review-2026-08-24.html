@@ -37,10 +37,10 @@
         <!-- ========== CANDIDATE 1 ========== -->
         <article id="c1" class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm space-y-4">
           <div class="flex items-start justify-between gap-4">
-            <h2 class="font-serif text-xl font-semibold">1 · Deepen the Cart into one module</h2>
+            <h2 class="font-serif text-xl font-semibold line-through decoration-2 text-slate-400">1 · Deepen the Cart into one module</h2>
             <div class="flex gap-2 shrink-0">
               <span class="rounded-full bg-emerald-100 text-emerald-800 px-3 py-1 text-xs font-semibold">Strong</span>
-              <span class="rounded-full bg-slate-100 text-slate-600 px-3 py-1 text-xs">in-process</span>
+              <span class="rounded-full bg-emerald-600 text-white px-3 py-1 text-xs font-semibold">✓ done · 2026-08-24</span>
             </div>
           </div>
           <div class="font-mono text-sm text-slate-600 leading-relaxed">
@@ -110,6 +110,13 @@ flowchart TB
             <li>settle-hack fixed once, everywhere</li>
             <li>delete 4 copies of the ritual</li>
           </ul>
+          <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm space-y-1">
+            <p class="module-label text-emerald-700">Delivered · 2026-08-24</p>
+            <p>All four call sites now consume <code class="font-mono">useCart()</code> (<code class="font-mono">src/hooks/useCart.ts</code>); <code class="font-mono">getFormattedCart</code>/<code class="font-mono">getUpdatedItems</code> moved to <code class="font-mono">src/hooks/cart/cartUtils.ts</code> as private helpers.</p>
+            <p><code class="font-mono">cartStore</code> shrank to <code class="font-mono">cart · replace() · clear()</code>; the grab-bag cart functions left <code class="font-mono">functions.tsx</code> (candidates 3 &amp; 4 folded in).</p>
+            <p><strong>Settle-hack eliminated, not merely centralized:</strong> <code class="font-mono">ADD_TO_CART</code>/<code class="font-mono">UPDATE_CART</code> now return the full cart via a shared <code class="font-mono">CartFields</code> fragment, so the store syncs from the mutation's own reply — the <code class="font-mono">setTimeout(refetch)</code> race is gone.</p>
+            <p>One source of truth: <code class="font-mono">setQuantity</code> derives its input from the same store cart the UI renders from.</p>
+          </div>
         </article>
 
         <!-- ========== CANDIDATE 2 ========== -->

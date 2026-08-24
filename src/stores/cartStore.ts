@@ -11,29 +11,21 @@ const WOO_SESSION_KEY = 'woo-session:v1';
 
 interface CartState {
   cart: Cart | null;
-  isLoading: boolean;
-  setCart: (cart: CartState['cart']) => void;
-  updateCart: (newCart: NonNullable<CartState['cart']>) => void;
-  syncWithWooCommerce: (cart: NonNullable<CartState['cart']>) => void;
-  clearWooCommerceSession: () => void;
+  /** Replace the cart with a server-confirmed value and mirror it to storage. */
+  replace: (cart: NonNullable<CartState['cart']>) => void;
+  /** Clear the cart and the WooCommerce session keys. */
+  clear: () => void;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       cart: null,
-      isLoading: false,
-      setCart: (cart) => set({ cart }),
-      updateCart: (newCart) => {
-        set({ cart: newCart });
-        // Sync with WooCommerce
-        localStorage.setItem(WOOCOMMERCE_CART_KEY, JSON.stringify(newCart));
-      },
-      syncWithWooCommerce: (cart) => {
+      replace: (cart) => {
         set({ cart });
         localStorage.setItem(WOOCOMMERCE_CART_KEY, JSON.stringify(cart));
       },
-      clearWooCommerceSession: () => {
+      clear: () => {
         set({ cart: null });
         localStorage.removeItem(WOO_SESSION_KEY);
         localStorage.removeItem(WOOCOMMERCE_CART_KEY);

@@ -111,3 +111,19 @@ export interface IUpdateCartMutationArgs {
 export interface IFormattedCartProps {
   cart: { contents: { nodes: ICartItemNode[] }; total: number };
 }
+
+/**
+ * ADD_TO_CART now returns the whole authoritative cart (same selection as
+ * GET_CART) so the client can trust the mutation response and skip a refetch.
+ */
+export interface IAddToCartData {
+  addToCart: IFormattedCartProps | null;
+}
+
+/**
+ * UPDATE_CART likewise returns the whole authoritative cart, letting quantity
+ * changes and removals update the store from the mutation response alone.
+ */
+export interface IUpdateCartData {
+  updateItemQuantities: IFormattedCartProps | null;
+}

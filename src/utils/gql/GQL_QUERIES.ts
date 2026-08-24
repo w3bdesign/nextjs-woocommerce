@@ -212,87 +212,102 @@ export const GET_PRODUCTS_FROM_CATEGORY = gql`
   }
 `;
 
+/**
+ * Shared cart selection.
+ *
+ * Reused by GET_CART and by the ADD_TO_CART / UPDATE_CART mutations so that the
+ * cart a mutation returns is byte-for-byte the same shape the query returns.
+ * That parity is what lets the Cart module trust a mutation's own response and
+ * skip the old settle-refetch entirely.
+ */
+export const CART_FIELDS = gql`
+  fragment CartFields on Cart {
+    contents {
+      nodes {
+        key
+        product {
+          node {
+            id
+            databaseId
+            name
+            description
+            type
+            onSale
+            slug
+            averageRating
+            reviewCount
+            image {
+              id
+              sourceUrl
+              srcSet
+              altText
+              title
+            }
+            galleryImages {
+              nodes {
+                id
+                sourceUrl
+                srcSet
+                altText
+                title
+              }
+            }
+          }
+        }
+        variation {
+          node {
+            id
+            databaseId
+            name
+            description
+            type
+            onSale
+            price
+            regularPrice
+            salePrice
+            image {
+              id
+              sourceUrl
+              srcSet
+              altText
+              title
+            }
+            attributes {
+              nodes {
+                id
+                name
+                value
+              }
+            }
+          }
+        }
+        quantity
+        total
+        subtotal
+        subtotalTax
+      }
+    }
+
+    subtotal
+    subtotalTax
+    shippingTax
+    shippingTotal
+    total
+    totalTax
+    feeTax
+    feeTotal
+    discountTax
+    discountTotal
+  }
+`;
+
 export const GET_CART = gql`
   query GET_CART {
     cart {
-      contents {
-        nodes {
-          key
-          product {
-            node {
-              id
-              databaseId
-              name
-              description
-              type
-              onSale
-              slug
-              averageRating
-              reviewCount
-              image {
-                id
-                sourceUrl
-                srcSet
-                altText
-                title
-              }
-              galleryImages {
-                nodes {
-                  id
-                  sourceUrl
-                  srcSet
-                  altText
-                  title
-                }
-              }
-            }
-          }
-          variation {
-            node {
-              id
-              databaseId
-              name
-              description
-              type
-              onSale
-              price
-              regularPrice
-              salePrice
-              image {
-                id
-                sourceUrl
-                srcSet
-                altText
-                title
-              }
-              attributes {
-                nodes {
-                  id
-                  name
-                  value
-                }
-              }
-            }
-          }
-          quantity
-          total
-          subtotal
-          subtotalTax
-        }
-      }
-
-      subtotal
-      subtotalTax
-      shippingTax
-      shippingTotal
-      total
-      totalTax
-      feeTax
-      feeTotal
-      discountTax
-      discountTotal
+      ...CartFields
     }
   }
+  ${CART_FIELDS}
 `;
 
 export const GET_CURRENT_USER = gql`
