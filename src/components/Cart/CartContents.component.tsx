@@ -54,7 +54,7 @@ const CartContents = () => {
         // Delayed refetch to ensure WooCommerce backend has settled
         setTimeout(() => {
           refetch();
-        }, 3000);
+        }, 2000);
       },
     },
   );
@@ -78,7 +78,7 @@ const CartContents = () => {
     // Delayed refetch to ensure WooCommerce backend has settled
     setTimeout(() => {
       refetch();
-    }, 3000);
+    }, 2000);
   };
 
   useEffect(() => {
