@@ -131,7 +131,12 @@ export const useCart = (): UseCartResult => {
     UPDATE_CART,
     {
       // Mutation reply is authoritative (this is how removeItem empties the cart).
-      onCompleted: (result) => syncFromServer(result?.updateItemQuantities, true),
+      onCompleted: (result) =>
+        syncFromServer(result?.updateItemQuantities, true),
+      onError: async () => {
+        const { data } = await refetch();
+        syncFromServer(data, true);
+      },
     },
   );
 
