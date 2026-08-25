@@ -45,7 +45,7 @@
     "react-instantsearch": "^7.44.1",
     "sharp": "^0.35.0",
     "uuid": "^14.0.1",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
