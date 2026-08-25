@@ -75,10 +75,10 @@ importers:
         specifier: ^0.2.3
         version: 0.2.3
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.66.0
+        specifier: ^8.67.0
         version: 8.67.0(@typescript-eslint/parser@8.67.0(eslint@10.8.1(jiti@1.21.7)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@6.0.3))(eslint@10.8.1(jiti@1.21.7)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@6.0.3)
       '@typescript-eslint/parser':
-        specifier: ^8.66.0
+        specifier: ^8.67.0
         version: 8.67.0(eslint@10.8.1(jiti@1.21.7)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@6.0.3)
       babel-plugin-styled-components:
         specifier: ^2.3.0
