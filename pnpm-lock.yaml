@@ -66,7 +66,7 @@ importers:
         specifier: ^0.15.1
         version: 0.15.1(supports-color@5.5.0)
       '@playwright/test':
-        specifier: ^1.62.0
+        specifier: ^1.62.1
         version: 1.62.1
       '@types/node':
         specifier: 25.9.5
