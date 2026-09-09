@@ -148,8 +148,8 @@ importers:
         specifier: 19.2.8
         version: 19.2.8(react@19.2.8)
       react-hook-form:
-        specifier: ^7.83.0
-        version: 7.85.0(react@19.2.8)
+        specifier: ^7.87.0
+        version: 7.87.0(react@19.2.8)
       react-instantsearch:
         specifier: ^7.44.1
         version: 7.44.1(algoliasearch@5.56.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -3507,8 +3507,8 @@ packages:
     peerDependencies:
       react: ^19.2.8
 
-  react-hook-form@7.85.0:
-    resolution: {integrity: sha512-U2MTriFXnclmV4rOE20p2DcRFv5WEg3FIcBFOKcOLFHDVvGIMPvLTkTWefUsonmlaVy23khVDxDWym6uJVGOzw==}
+  react-hook-form@7.87.0:
+    resolution: {integrity: sha512-zhFzWvLxNHH+8839OnZcUxgMZw88ah2jZWDWvKWgF3Tpbnd0vKL+dlcuU3nZVWESZQjd81EW8K+wU+cYfYAc0w==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
@@ -7475,7 +7475,7 @@ snapshots:
       react: 19.2.8
       scheduler: 0.27.0
 
-  react-hook-form@7.85.0(react@19.2.8):
+  react-hook-form@7.87.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 
