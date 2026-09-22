@@ -134,7 +134,7 @@ importers:
         version: 12.43.0(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       next:
         specifier: 16.2.12
-        version: 16.2.12(@babel/core@7.29.7(supports-color@5.5.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@25.9.5)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.2.12(@babel/core@7.29.7(supports-color@5.5.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@25.9.8)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -155,7 +155,7 @@ importers:
         version: 7.44.1(algoliasearch@5.56.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       sharp:
         specifier: ^0.35.3
-        version: 0.35.3(@types/node@25.9.5)
+        version: 0.35.3(@types/node@25.9.8)
       uuid:
         specifier: ^14.0.2
         version: 14.0.2
@@ -170,8 +170,8 @@ importers:
         specifier: ^1.62.0
         version: 1.62.1
       '@types/node':
-        specifier: 25.9.5
-        version: 25.9.5
+        specifier: 25.9.8
+        version: 25.9.8
       '@types/nprogress':
         specifier: ^0.2.3
         version: 0.2.3
@@ -1562,6 +1562,9 @@ packages:
 
   '@types/node@25.9.5':
     resolution: {integrity: sha512-OScDchr2fwuUmWdf4kZ9h7PcJiYDVInhJizG/biAq3cAvqwYktuy/TYGGdZNMtNTFUP7rnb0NU4TUdm82kt4Rg==}
+
+  '@types/node@25.9.8':
+    resolution: {integrity: sha512-VfMrScDmMhUJQmd5hArdQnFvK0OIeD36uN2Va1FcpYaLB/BgkgM8Ulc50XtYISPMz7APJ30+N0T5EM0jlcdfRw==}
 
   '@types/nprogress@0.2.3':
     resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
@@ -5363,6 +5366,10 @@ snapshots:
     dependencies:
       undici-types: 7.24.6
 
+  '@types/node@25.9.8':
+    dependencies:
+      undici-types: 7.24.6
+
   '@types/nprogress@0.2.3': {}
 
   '@types/qs@6.15.1': {}
@@ -6812,7 +6819,7 @@ snapshots:
 
   netmask@2.1.1: {}
 
-  next@16.2.12(@babel/core@7.29.7(supports-color@5.5.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@25.9.5)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  next@16.2.12(@babel/core@7.29.7(supports-color@5.5.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@25.9.8)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
       '@next/env': 16.2.12
       '@swc/helpers': 0.5.15
@@ -6833,7 +6840,7 @@ snapshots:
       '@next/swc-win32-x64-msvc': 16.2.12
       '@opentelemetry/api': 1.9.1
       '@playwright/test': 1.62.1
-      sharp: 0.35.3(@types/node@25.9.5)
+      sharp: 0.35.3(@types/node@25.9.8)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/node'
@@ -7568,7 +7575,7 @@ snapshots:
 
   setprototypeof@1.2.0: {}
 
-  sharp@0.35.3(@types/node@25.9.5):
+  sharp@0.35.3(@types/node@25.9.8):
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
@@ -7599,7 +7606,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.35.3
       '@img/sharp-win32-ia32': 0.35.3
       '@img/sharp-win32-x64': 0.35.3
-      '@types/node': 25.9.5
+      '@types/node': 25.9.8
 
   shebang-command@2.0.0:
     dependencies:
