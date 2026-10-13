@@ -198,7 +198,7 @@ View the latest Lighthouse results in the GitHub Actions tab under the "Lighthou
 
 ## Accessibility Testing (pa11y)
 
-In addition to Lighthouse, this project runs dedicated accessibility testing with [pa11y](https://github.com/pa11y/pa11y) through GitHub Actions (the "A11y" workflow). On every push and pull request to the `development` branch:
+In addition to Lighthouse, this project runs dedicated accessibility testing with [pa11y](https://github.com/pa11y/pa11y) through GitHub Actions (the "A11y" workflow). On every push and pull request to the `main`/`master` branch:
 
 - The app is built and started locally, then scanned with pa11y against its main public pages:
   - `/` (home)
