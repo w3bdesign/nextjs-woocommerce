@@ -1,0 +1,79 @@
+name: A11y
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pa11y:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: "24"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@2e223e0f0d2b8fd9872cbadb8b7428e5f8b5556d
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Create pa11y config
+        run: |
+          # Create pa11y config file
+          echo '{"chromeLaunchConfig":{"args":["--no-sandbox"]}}' > .pa11y.json
+
+      - name: Build Next.js app
+        run: pnpm build
+
+      - name: Start Next.js app
+        run: pnpm start &
+
+      - name: Wait for the application to be ready
+        run: pnpm exec wait-on http://localhost:3000
+
+      - name: Run pa11y
+        run: |
+          # Create a directory for the reports
+          mkdir -p pa11y-reports
+
+          # Run pa11y on main pages with config
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000 > pa11y-reports/home.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/cv > pa11y-reports/cv.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/prosjekter > pa11y-reports/prosjekter.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/kontakt > pa11y-reports/kontakt.txt || true
+
+      - name: Upload pa11y results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: pa11y-reports
+          path: pa11y-reports/
+
+      - name: Check for accessibility issues
+        run: |
+          if grep -q "Error:" pa11y-reports/*.txt; then
+            echo "Accessibility issues found. Check the uploaded artifacts for details."
+            exit 1
+          fi
