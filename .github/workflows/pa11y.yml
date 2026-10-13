@@ -59,7 +59,7 @@ jobs:
         run: pnpm start &
 
       - name: Wait for the application to be ready
-        run: pnpm exec wait-on http://localhost:3000
+        run: pnpm dlx wait-on http://localhost:3000
 
       - name: Run pa11y
         run: |
