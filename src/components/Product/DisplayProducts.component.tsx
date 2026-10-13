@@ -86,7 +86,7 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                         {variations && filteredVariantPrice(price, '')}
                         {!variations && salePrice}
                       </span>
-                      <span className="text-lg text-text-light line-through">
+                      <span className="text-lg text-text-muted line-through">
                         {variations && filteredVariantPrice(price, 'right')}
                         {!variations && regularPrice}
                       </span>
