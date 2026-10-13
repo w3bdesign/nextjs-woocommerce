@@ -53,7 +53,6 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                   <div className="aspect-[3/4] relative overflow-hidden bg-surface-alt">
                     {image ? (
                       <Image
-                        id="product-image"
                         className="object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
                         src={image.sourceUrl || process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL || ''}
@@ -62,7 +61,6 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                       />
                     ) : (
                       <Image
-                        id="product-image"
                         className="object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
                         src={process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL || ''}
