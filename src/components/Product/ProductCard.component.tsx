@@ -62,7 +62,7 @@ const ProductCard = ({
         {onSale ? (
           <div className="flex items-center justify-center gap-2">
             <span className="text-xl font-bold text-error">{formattedSalePrice}</span>
-            <span className="text-lg text-text-light line-through">{formattedRegularPrice}</span>
+            <span className="text-lg text-text-muted line-through">{formattedRegularPrice}</span>
           </div>
         ) : (
           <span className="text-lg text-text">{formattedPrice}</span>

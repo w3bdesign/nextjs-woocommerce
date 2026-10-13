@@ -21,12 +21,12 @@ const Hero = () => (
       <div className="absolute inset-0 bg-overlay bg-opacity-30" />
     </div>
     
-    <div className="relative h-full container mx-auto flex items-center p-4 md:p-0">
-      <div className="max-w-xl">
+    <div className="relative h-full container mx-auto flex items-center p-4 md:px-6">
+      <div className="max-w-xl rounded-lg bg-overlay/50 p-6 md:p-8">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-white mb-6">
           Stripete Zig Zag Pute Sett
         </h1>
-        <Button 
+        <Button
           href="/produkter"
           variant="hero"
         >

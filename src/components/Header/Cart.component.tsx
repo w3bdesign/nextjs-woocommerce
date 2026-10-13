@@ -15,11 +15,8 @@ const Cart = ({ stickyNav }: ICartProps) => {
   const productCount = cart?.totalProductsCount ?? 0;
 
   return (
-    <Link href="/handlekurv">
-      <span
-        className="pl-4 mt-2 no-underline inline-flex items-center relative"
-        aria-label="Handlekurv"
-      >
+    <Link href="/handlekurv" aria-label="Handlekurv">
+      <span className="pl-4 mt-2 no-underline inline-flex items-center relative">
         <svg
           className={`block ${stickyNav ? 'fill-white' : 'fill-text'}`}
           xmlns="https://www.w3.org/2000/svg"

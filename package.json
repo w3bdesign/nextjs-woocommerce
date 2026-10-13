@@ -55,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
     "babel-plugin-styled-components": "^2.3.0",
+    "pa11y": "^9.1.1",
     "postcss-preset-env": "^11.3.2",
     "prettier": "^3.9.9",
     "react-doctor": "^0.9.13",

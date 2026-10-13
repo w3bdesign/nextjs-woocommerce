@@ -3,6 +3,7 @@
 [![Codacy Badge](https://img.shields.io/codacy/grade/29de6847b01142e6a0183988fc3df46a?logo=codacy&logoColor=white)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
 [![Quality Gate Status](https://img.shields.io/sonar/alert_status/w3bdesign_nextjs-woocommerce?server=https%3A%2F%2Fsonarcloud.io&logo=sonarcloud&logoColor=white)](https://sonarcloud.io/dashboard?id=w3bdesign_nextjs-woocommerce)
 [![OWASP Security](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/security.yml?branch=master&label=OWASP%20Security&logo=owasp&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/security.yml)
+[![A11y](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/pa11y.yml?branch=master&label=A11y&logo=accessibility&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/pa11y.yml)
 
 ![bilde](https://github.com/user-attachments/assets/08047025-0950-472a-ae7d-932c7faee1db)
 
@@ -195,6 +196,24 @@ This project uses automated Lighthouse testing through GitHub Actions to ensure 
   - PWA: Assessing Progressive Web App capabilities
 
 View the latest Lighthouse results in the GitHub Actions tab under the "Lighthouse Check" workflow.
+
+## Accessibility Testing (pa11y)
+
+In addition to Lighthouse, this project runs dedicated accessibility testing with [pa11y](https://github.com/pa11y/pa11y) through GitHub Actions (the "A11y" workflow). On every push and pull request to the `main`/`master` branch:
+
+- The app is built and started locally, then scanned with pa11y against its main public pages:
+  - `/` (home)
+  - `/produkter` (products)
+  - `/kategorier` (categories)
+  - `/handlekurv` (cart)
+  - `/kasse` (checkout)
+  - `/logg-inn` (login)
+- Reports for each page are uploaded as workflow artifacts (`pa11y-reports`)
+- The job fails if any accessibility errors are detected
+
+Note: Dynamic product and category pages (`/produkt/[slug]`, `/kategori/[slug]`) are not scanned in CI because they depend on a live WooCommerce GraphQL backend that may be unreachable during the workflow. Accessibility issues are almost always template-level, so scanning the shared pages above provides equivalent coverage. The authenticated account page (`/min-konto`) is also excluded since it requires login.
+
+View the latest accessibility results in the GitHub Actions tab under the "A11y" workflow.
 
 ## Security
 
