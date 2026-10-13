@@ -196,6 +196,24 @@ This project uses automated Lighthouse testing through GitHub Actions to ensure 
 
 View the latest Lighthouse results in the GitHub Actions tab under the "Lighthouse Check" workflow.
 
+## Accessibility Testing (pa11y)
+
+In addition to Lighthouse, this project runs dedicated accessibility testing with [pa11y](https://github.com/pa11y/pa11y) through GitHub Actions (the "A11y" workflow). On every push and pull request to the `development` branch:
+
+- The app is built and started locally, then scanned with pa11y against its main public pages:
+  - `/` (home)
+  - `/produkter` (products)
+  - `/kategorier` (categories)
+  - `/handlekurv` (cart)
+  - `/kasse` (checkout)
+  - `/logg-inn` (login)
+- Reports for each page are uploaded as workflow artifacts (`pa11y-reports`)
+- The job fails if any accessibility errors are detected
+
+Note: Dynamic product and category pages (`/produkt/[slug]`, `/kategori/[slug]`) are not scanned in CI because they depend on a live WooCommerce GraphQL backend that may be unreachable during the workflow. Accessibility issues are almost always template-level, so scanning the shared pages above provides equivalent coverage. The authenticated account page (`/min-konto`) is also excluded since it requires login.
+
+View the latest accessibility results in the GitHub Actions tab under the "A11y" workflow.
+
 ## Security
 
 This project runs automated OWASP security scanning on every push and pull request via GitHub Actions:
