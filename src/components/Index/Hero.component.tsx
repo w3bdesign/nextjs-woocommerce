@@ -26,6 +26,10 @@ const Hero = () => (
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-white mb-6">
           Stripete Zig Zag Pute Sett
         </h1>
+        {/* TEMP pa11y verification: deliberate low-contrast violation (remove after test) */}
+        <p style={{ color: '#f6f6f6', backgroundColor: '#ffffff' }}>
+          pa11y contrast test
+        </p>
         <Button 
           href="/produkter"
           variant="hero"
