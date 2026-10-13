@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Install Chromium for pa11y
+        run: pnpm rebuild puppeteer
+
       - name: Create pa11y config
         run: |
           # Create pa11y config file
