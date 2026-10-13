@@ -45,9 +45,17 @@ jobs:
           echo '{"chromeLaunchConfig":{"args":["--no-sandbox"]}}' > .pa11y.json
 
       - name: Build Next.js app
+        env:
+          NEXT_PUBLIC_GRAPHQL_URL: ${{ secrets.NEXT_PUBLIC_GRAPHQL_URL }}
+          NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL: "https://via.placeholder.com/200"
+          NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL: "https://via.placeholder.com/600"
         run: pnpm build
 
       - name: Start Next.js app
+        env:
+          NEXT_PUBLIC_GRAPHQL_URL: ${{ secrets.NEXT_PUBLIC_GRAPHQL_URL }}
+          NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL: "https://via.placeholder.com/200"
+          NEXT_PUBLIC_PLACEHOLDER_LARGE_IMAGE_URL: "https://via.placeholder.com/600"
         run: pnpm start &
 
       - name: Wait for the application to be ready
