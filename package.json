@@ -32,33 +32,33 @@
   "dependencies": {
     "@apollo/client": "^3.14.1",
     "@types/react": "^19.2.18",
-    "algoliasearch": "^5.55.1",
+    "algoliasearch": "^5.59.0",
     "autoprefixer": "^10.5.4",
     "graphql": "^17.0.2",
     "motion": "^12.43.0",
     "next": "16.2.12",
     "nprogress": "^0.2.0",
-    "postcss": "~8.5.26",
+    "postcss": "~8.5.29",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-hook-form": "^7.83.0",
     "react-instantsearch": "^7.44.1",
-    "sharp": "^0.35.0",
-    "uuid": "^14.0.1",
-    "zustand": "^5.0.14"
+    "sharp": "^0.35.4",
+    "uuid": "^14.0.2",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
-    "@playwright/test": "^1.62.0",
-    "@types/node": "25.9.5",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "25.9.8",
     "@types/nprogress": "^0.2.3",
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
     "babel-plugin-styled-components": "^2.3.0",
     "postcss-preset-env": "^11.3.2",
-    "prettier": "^3.9.6",
-    "react-doctor": "^0.9.11",
+    "prettier": "^3.9.9",
+    "react-doctor": "^0.9.13",
     "tailwindcss": "^3.4.19",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   }
 }
