@@ -2,9 +2,9 @@ name: A11y
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 permissions:
   contents: read
@@ -60,9 +60,11 @@ jobs:
 
           # Run pa11y on main pages with config
           pnpm exec pa11y --config .pa11y.json http://localhost:3000 > pa11y-reports/home.txt || true
-          pnpm exec pa11y --config .pa11y.json http://localhost:3000/cv > pa11y-reports/cv.txt || true
-          pnpm exec pa11y --config .pa11y.json http://localhost:3000/prosjekter > pa11y-reports/prosjekter.txt || true
-          pnpm exec pa11y --config .pa11y.json http://localhost:3000/kontakt > pa11y-reports/kontakt.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/produkter > pa11y-reports/produkter.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/kategorier > pa11y-reports/kategorier.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/handlekurv > pa11y-reports/handlekurv.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/kasse > pa11y-reports/kasse.txt || true
+          pnpm exec pa11y --config .pa11y.json http://localhost:3000/logg-inn > pa11y-reports/logg-inn.txt || true
 
       - name: Upload pa11y results
         if: always()
