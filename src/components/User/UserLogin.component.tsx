@@ -70,7 +70,7 @@ const UserLogin = () => {
 
             <div className="w-full p-2">
               <div className="mt-4 flex justify-center">
-                <Button variant="primary" buttonDisabled={loading}>
+                <Button type="submit" variant="primary" buttonDisabled={loading}>
                   {loading ? <LoadingSpinner /> : 'Logg inn'}
                 </Button>
               </div>
