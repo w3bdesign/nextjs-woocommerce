@@ -3,6 +3,7 @@
 [![Codacy Badge](https://img.shields.io/codacy/grade/29de6847b01142e6a0183988fc3df46a?logo=codacy&logoColor=white)](https://app.codacy.com/gh/w3bdesign/nextjs-woocommerce?utm_source=github.com&utm_medium=referral&utm_content=w3bdesign/nextjs-woocommerce&utm_campaign=Badge_Grade_Settings)
 [![Quality Gate Status](https://img.shields.io/sonar/alert_status/w3bdesign_nextjs-woocommerce?server=https%3A%2F%2Fsonarcloud.io&logo=sonarcloud&logoColor=white)](https://sonarcloud.io/dashboard?id=w3bdesign_nextjs-woocommerce)
 [![OWASP Security](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/security.yml?branch=master&label=OWASP%20Security&logo=owasp&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/security.yml)
+[![A11y](https://img.shields.io/github/actions/workflow/status/w3bdesign/nextjs-woocommerce/pa11y.yml?branch=master&label=A11y&logo=accessibility&logoColor=white)](https://github.com/w3bdesign/nextjs-woocommerce/actions/workflows/pa11y.yml)
 
 ![bilde](https://github.com/user-attachments/assets/08047025-0950-472a-ae7d-932c7faee1db)
 
