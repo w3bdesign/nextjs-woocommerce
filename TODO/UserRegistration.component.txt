@@ -12,13 +12,15 @@
 //   Until this is enabled, the backend rejects every attempt with:
 //     "User registration is currently not allowed."
 //
-// WHY registerUser (NOT registerCustomer):
-//   The core WPGraphQL `registerUser` mutation is confirmed exposed on the
-//   backend (it returned "User registration is currently not allowed." rather
-//   than a schema error, proving the field exists). The firstName/lastName
-//   input fields are also confirmed valid on RegisterUserInput (a probe
-//   including them passed schema validation). The older draft used
-//   `registerCustomer`, which was never verified against this backend.
+// WHY registerCustomer (NOT registerUser):
+//   For a WooCommerce store we want accounts with the `customer` role (plus
+//   billing/shipping support), NOT plain WordPress subscribers. Verified live
+//   against the backend on 2026-10-14:
+//     - registerUser  -> creates a user with role "subscriber" (wrong for a
+//       shop; it uses WordPress's default new-user role).
+//     - registerCustomer -> creates a proper WooCommerce customer; the new
+//       account logs in successfully via loginWithCookies (status SUCCESS).
+//   Both mutations are exposed; registerCustomer is the correct one here.
 //
 // TO ACTIVATE (once "Anyone can register" is on):
 //   1. Add REGISTER_USER to src/utils/gql/GQL_MUTATIONS.ts (see block below).
