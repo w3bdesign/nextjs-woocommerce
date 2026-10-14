@@ -128,7 +128,7 @@ const UserRegistration = () => {
 
   const onSubmit = (data: IRegistrationData) => {
     setError(null);
-    registerUser({ variables: data });
+    registerCustomer({ variables: data });
   };
 
   return (
