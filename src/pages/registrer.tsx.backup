@@ -6,8 +6,9 @@
 //   While disabled, the backend rejects registration with
 //   "User registration is currently not allowed." (confirmed via live probe).
 //
-// The ready-to-use implementation (verified `registerUser` mutation +
-// Norwegian error handling) lives in TODO/UserRegistration.component.txt.
+// The ready-to-use implementation (verified `registerCustomer` mutation,
+// which creates a proper WooCommerce customer, + Norwegian error handling)
+// lives in TODO/UserRegistration.component.txt.
 // To activate: enable the setting above, follow the steps in that file, then
 // rename this file to registrer.tsx.
 //

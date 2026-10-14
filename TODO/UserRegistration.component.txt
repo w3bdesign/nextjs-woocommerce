@@ -23,7 +23,7 @@
 //   Both mutations are exposed; registerCustomer is the correct one here.
 //
 // TO ACTIVATE (once "Anyone can register" is on):
-//   1. Add REGISTER_USER to src/utils/gql/GQL_MUTATIONS.ts (see block below).
+//   1. Add REGISTER_CUSTOMER to src/utils/gql/GQL_MUTATIONS.ts (see block below).
 //   2. Save the component block below as
 //      src/components/User/UserRegistration.component.tsx.
 //   3. Rename src/pages/registrer.tsx.backup -> src/pages/registrer.tsx.
