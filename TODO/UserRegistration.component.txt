@@ -70,7 +70,7 @@ import { useRouter } from 'next/router';
 import { useMutation } from '@apollo/client';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import { REGISTER_USER } from '@/utils/gql/GQL_MUTATIONS';
+import { REGISTER_CUSTOMER } from '@/utils/gql/GQL_MUTATIONS';
 import { InputField } from '../Input/InputField.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 import Button from '../UI/Button.component';
@@ -105,8 +105,8 @@ const getRegisterErrorMessage = (message?: string): string => {
 };
 
 /**
- * User registration component. Creates a WordPress/WooCommerce account via
- * the core `registerUser` mutation, then redirects to the login page.
+ * User registration component. Creates a WooCommerce customer account (role
+ * "customer") via the `registerCustomer` mutation, then redirects to login.
  * @function UserRegistration
  * @returns {JSX.Element} - Rendered component with registration form
  */
@@ -115,7 +115,7 @@ const UserRegistration = () => {
   const [error, setError] = useState<string | null>(null);
   const { push } = useRouter();
 
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+  const [registerCustomer, { loading }] = useMutation(REGISTER_CUSTOMER, {
     onCompleted: () => {
       push('/logg-inn');
     },
