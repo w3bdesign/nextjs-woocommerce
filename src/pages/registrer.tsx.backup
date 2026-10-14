@@ -1,8 +1,19 @@
-// TODO: This page needs refactoring in the future to:
-// - Add proper form validation
-// - Improve error handling
+// PARKED PAGE - not active (.backup extension keeps it out of the router).
+//
+// BACKEND PREREQUISITE before this can work:
+//   WordPress admin -> Settings -> General -> Membership ->
+//   check "Anyone can register".
+//   While disabled, the backend rejects registration with
+//   "User registration is currently not allowed." (confirmed via live probe).
+//
+// The ready-to-use implementation (verified `registerCustomer` mutation,
+// which creates a proper WooCommerce customer, + Norwegian error handling)
+// lives in TODO/UserRegistration.component.txt.
+// To activate: enable the setting above, follow the steps in that file, then
+// rename this file to registrer.tsx.
+//
+// TODO (future hardening, once live):
 // - Add success/error notifications
-// - Add proper styling
 // - Consider adding email verification
 // - Add terms and conditions acceptance
 // - Add https://www.npmjs.com/package/react-turnstile / https://docs.stephenjlu.com/docs-stephenjlu/projects/how-to-implement-cloudflares-turnstile
