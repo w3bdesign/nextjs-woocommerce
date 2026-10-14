@@ -33,15 +33,15 @@
 // 1) GraphQL mutation -> src/utils/gql/GQL_MUTATIONS.ts
 // ----------------------------------------------------------------------------
 
-export const REGISTER_USER = gql`
-  mutation RegisterUser(
+export const REGISTER_CUSTOMER = gql`
+  mutation RegisterCustomer(
     $username: String!
     $email: String!
     $password: String!
     $firstName: String
     $lastName: String
   ) {
-    registerUser(
+    registerCustomer(
       input: {
         username: $username
         email: $email
@@ -50,9 +50,8 @@ export const REGISTER_USER = gql`
         lastName: $lastName
       }
     ) {
-      user {
+      customer {
         id
-        username
         email
         firstName
         lastName
