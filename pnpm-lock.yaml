@@ -181,8 +181,8 @@ importers:
         specifier: ^5.59.0
         version: 5.59.0
       autoprefixer:
-        specifier: ^10.5.4
-        version: 10.5.4(postcss@8.5.26)
+        specifier: ^10.6.1
+        version: 10.6.1(postcss@8.5.26)
       graphql:
         specifier: ^17.0.2
         version: 17.0.2
@@ -1990,13 +1990,6 @@ packages:
 
   atomically@2.1.1:
     resolution: {integrity: sha512-P4w9o2dqARji6P7MHprklbfiArZAWvo07yW7qs3pdljb3BWr12FIB7W+p0zJiuiVsUpRO0iZn1kFFcpPegg0tQ==}
-
-  autoprefixer@10.5.4:
-    resolution: {integrity: sha512-MaU0U/za7N3r6brxD4YB/l4NSrFzLPlANv6wEuQVaIPlD3L4W9rFcQPbL/EilY9BHhHvhfcz3gInDLrEtWT4EA==}
-    engines: {node: ^10 || ^12 || >=14}
-    hasBin: true
-    peerDependencies:
-      postcss: ^8.5.26
 
   autoprefixer@10.6.1:
     resolution: {integrity: sha512-cL1Qz6ADZhcEbny/8HPfe99J6HhNoYtpX2LFLIbhgGE7Q1hlQVkYFdetDN7Id3KiQxhDrHwzlHr/YQCnZ8+xSA==}
@@ -5951,15 +5944,6 @@ snapshots:
     dependencies:
       stubborn-fs: 2.0.0
       when-exit: 2.1.5
-
-  autoprefixer@10.5.4(postcss@8.5.26):
-    dependencies:
-      browserslist: 4.28.8
-      caniuse-lite: 1.0.30001809
-      fraction.js: 5.3.4
-      picocolors: 1.1.1
-      postcss: 8.5.26
-      postcss-value-parser: 4.2.0
 
   autoprefixer@10.6.1(postcss@8.5.26):
     dependencies:
