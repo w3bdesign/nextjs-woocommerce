@@ -41,7 +41,7 @@
     "postcss": "~8.5.29",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-hook-form": "^7.83.0",
+    "react-hook-form": "^7.90.0",
     "react-instantsearch": "^7.52.0",
     "sharp": "^0.35.5",
     "uuid": "^14.0.2",
