@@ -1,4 +1,8 @@
 import { Product, ProductCategory, ProductType } from '@/types/product';
+import { parsePrice } from './price';
+
+// Preserve the existing public name while sharing the store-wide price parser.
+export { parsePrice as parseProductPrice } from './price';
 
 export const getUniqueProductTypes = (products: Product[]): ProductType[] => {
   // Use Map to ensure unique categories by slug
@@ -22,50 +26,10 @@ export const getUniqueProductTypes = (products: Product[]): ProductType[] => {
   );
 };
 
-/** Read price text only; this is not an HTML sanitizer and must not render HTML. */
-const getPriceText = (price: string): string => {
-  const characters: string[] = [];
-  let skipUntil: '>' | ';' | null = null;
-
-  for (const character of price) {
-    if (skipUntil) {
-      if (character === skipUntil) skipUntil = null;
-    } else if (character === '<') {
-      skipUntil = '>';
-    } else if (character === '&') {
-      skipUntil = ';';
-    } else {
-      characters.push(character);
-    }
-  }
-
-  return characters.join('');
-};
-
-/** Parse WooCommerce display prices, including Norwegian decimal commas. */
-export const parseProductPrice = (price: string | null | undefined): number => {
-  // Ignore markup/entities before extracting digits (e.g. &#160; is not 160).
-  const text = getPriceText(price ?? '');
-  // For variable-product ranges, use the first (lowest) displayed price.
-  const amount = /\d[\d\s.,]*/.exec(text)?.[0].replace(/\s/g, '');
-  if (!amount) return Number.NaN;
-
-  if (/^\d{1,3}([.,]\d{3})+$/.test(amount)) {
-    return Number(amount.replace(/[.,]/g, ''));
-  }
-
-  const separator = Math.max(amount.lastIndexOf(','), amount.lastIndexOf('.'));
-  if (separator === -1) return Number(amount);
-
-  const whole = amount.slice(0, separator).replace(/[.,]/g, '');
-  const fraction = amount.slice(separator + 1);
-  return Number(`${whole}.${fraction}`);
-};
-
 /** Keep the slider usable for small catalogs without excluding expensive items. */
 export const getMaxProductPrice = (products: Product[]): number =>
   products.reduce((max, product) => {
-    const price = parseProductPrice(product.price);
+    const price = parsePrice(product.price);
     return Number.isFinite(price) ? Math.max(max, Math.ceil(price)) : max;
   }, 1000);
 
@@ -74,7 +38,7 @@ export const isWithinPriceRange = (
   product: Product,
   priceRange: [number, number],
 ): boolean => {
-  const productPrice = parseProductPrice(product.price);
+  const productPrice = parsePrice(product.price);
   return productPrice >= priceRange[0] && productPrice <= priceRange[1];
 };
 
@@ -130,9 +94,9 @@ export const getProductSortComparator = (
 ): ((a: Product, b: Product) => number) => {
   switch (sortBy) {
     case 'price-low':
-      return (a, b) => parseProductPrice(a.price) - parseProductPrice(b.price);
+      return (a, b) => parsePrice(a.price) - parsePrice(b.price);
     case 'price-high':
-      return (a, b) => parseProductPrice(b.price) - parseProductPrice(a.price);
+      return (a, b) => parsePrice(b.price) - parsePrice(a.price);
     case 'newest':
       return (a, b) => b.databaseId - a.databaseId;
     default:

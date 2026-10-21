@@ -2,6 +2,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import { ChangeEvent } from 'react';
+import { parsePrice } from './price';
 
 import type { CartProduct, Cart } from '@/types/cart';
 import type { ICheckoutDataProps } from '@/types/checkout';
@@ -24,20 +25,6 @@ export type IProductRootObject = ICartItemNode;
 export type IUpdateCartRootObject = IUpdateCartMutationArgs;
 
 type TUpdatedItems = { key: string; quantity: number }[];
-
-/**
- * Normalize encoded price spacing and add one space after the currency symbol.
- * @param {string} price The price string that we input
- * @param {string} symbol Currency symbol to add empty character/padding after
- */
-
-export const paddedPrice = (price: string, symbol: string) =>
-  price
-    .replace(/&(?:nbsp|#160|#x0*a0);/gi, ' ')
-    .split(symbol)
-    .join(`${symbol} `)
-    .replace(/[ \u00a0]+/g, ' ')
-    .trim();
 
 /**
  * Shorten inputted string (usually product description) to a maximum of length
@@ -88,8 +75,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
   givenProducts.forEach((item) => {
     const givenProduct = item.product.node;
 
-    // Convert price to a float value
-    const convertedCurrency = item.total.replace(/[^0-9.-]+/g, '');
+    const convertedCurrency = parsePrice(item.total);
 
     // Create a new product object for each item to avoid shared reference bug
     const product: CartProduct = {
@@ -97,7 +83,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
       cartKey: item.key,
       name: givenProduct.name,
       qty: item.quantity,
-      price: Number(convertedCurrency) / item.quantity,
+      price: convertedCurrency / item.quantity,
       totalPrice: item.total,
       image: givenProduct.image?.sourceUrl
         ? {
@@ -117,7 +103,7 @@ export const getFormattedCart = (data: IFormattedCartProps) => {
   });
 
   formattedCart.totalProductsCount = totalProductsCount;
-  formattedCart.totalProductsPrice = data.cart.total;
+  formattedCart.totalProductsPrice = parsePrice(data.cart.total);
 
   return formattedCart;
 };

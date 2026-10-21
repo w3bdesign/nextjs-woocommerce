@@ -18,14 +18,7 @@ import {
 
 import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
-
-// Pure function moved to module scope to avoid rebuilding on every render
-const getUnitPrice = (subtotal: string, quantity: number) => {
-  const numericSubtotal = Number.parseFloat(subtotal.replace(/[^0-9.-]+/g, ''));
-  return Number.isNaN(numericSubtotal)
-    ? 'N/A'
-    : (numericSubtotal / quantity).toFixed(2);
-};
+import { formatPrice, formatUnitPrice } from '@/utils/functions/price';
 
 const CartContents = () => {
   const router = useRouter();
@@ -113,7 +106,7 @@ const CartContents = () => {
                     {item.product.node.name}
                   </h2>
                   <p className="text-text-muted">
-                    kr {getUnitPrice(item.subtotal, item.quantity)}
+                    {formatUnitPrice(item.subtotal, item.quantity)}
                   </p>
                 </div>
                 <div className="flex items-center">
@@ -147,7 +140,9 @@ const CartContents = () => {
                   </Button>
                 </div>
                 <div className="ml-4">
-                  <p className="text-lg font-semibold text-text">{item.subtotal}</p>
+                  <p className="text-lg font-semibold text-text">
+                    {formatPrice(item.subtotal)}
+                  </p>
                 </div>
               </div>
             ))}
@@ -155,7 +150,7 @@ const CartContents = () => {
           <div className="bg-surface rounded-lg p-6 md:w-full">
             <div className="flex justify-end mb-4">
               <span className="font-semibold pr-2 text-text">Subtotal:</span>
-              <span className="text-text">{cartTotal}</span>
+              <span className="text-text">{formatPrice(cartTotal)}</span>
             </div>
             {!isCheckoutPage && (
               <div className="flex justify-center mb-4">
