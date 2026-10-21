@@ -111,8 +111,9 @@ const ProductFilters = ({
           />
         </div>
 
-        <div className="mb-8">
-          <h3 className="font-semibold mb-4 text-text">STØRRELSE</h3>
+        {sizes.length > 0 && (
+          <div className="mb-8">
+            <h3 className="font-semibold mb-4 text-text">STØRRELSE</h3>
           <div className="grid grid-cols-3 gap-2">
             {sizes.map((size) => (
               <Button
@@ -125,10 +126,12 @@ const ProductFilters = ({
               </Button>
             ))}
           </div>
-        </div>
+          </div>
+        )}
 
-        <div className="mb-8">
-          <h3 className="font-semibold mb-4 text-text">FARGE</h3>
+        {colors.length > 0 && (
+          <div className="mb-8">
+            <h3 className="font-semibold mb-4 text-text">FARGE</h3>
           <div className="grid grid-cols-3 gap-2">
             {colors.map((color) => (
               <button
@@ -147,7 +150,8 @@ const ProductFilters = ({
               />
             ))}
           </div>
-        </div>
+          </div>
+        )}
 
         <Button handleButtonClick={resetFilters} variant="reset">
           Resett filter
