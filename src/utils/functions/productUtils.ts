@@ -22,9 +22,52 @@ export const getUniqueProductTypes = (products: Product[]): ProductType[] => {
   );
 };
 
-/** Parse a price string into a numeric value */
-export const parseProductPrice = (price: string): number =>
-  Number.parseFloat(price.replace(/[^0-9.]/g, ''));
+/** Read price text only; this is not an HTML sanitizer and must not render HTML. */
+const getPriceText = (price: string): string => {
+  const characters: string[] = [];
+  let skipUntil: '>' | ';' | null = null;
+
+  for (const character of price) {
+    if (skipUntil) {
+      if (character === skipUntil) skipUntil = null;
+    } else if (character === '<') {
+      skipUntil = '>';
+    } else if (character === '&') {
+      skipUntil = ';';
+    } else {
+      characters.push(character);
+    }
+  }
+
+  return characters.join('');
+};
+
+/** Parse WooCommerce display prices, including Norwegian decimal commas. */
+export const parseProductPrice = (price: string | null | undefined): number => {
+  // Ignore markup/entities before extracting digits (e.g. &#160; is not 160).
+  const text = getPriceText(price ?? '');
+  // For variable-product ranges, use the first (lowest) displayed price.
+  const amount = /\d[\d\s.,]*/.exec(text)?.[0].replace(/\s/g, '');
+  if (!amount) return Number.NaN;
+
+  if (/^\d{1,3}([.,]\d{3})+$/.test(amount)) {
+    return Number(amount.replace(/[.,]/g, ''));
+  }
+
+  const separator = Math.max(amount.lastIndexOf(','), amount.lastIndexOf('.'));
+  if (separator === -1) return Number(amount);
+
+  const whole = amount.slice(0, separator).replace(/[.,]/g, '');
+  const fraction = amount.slice(separator + 1);
+  return Number(`${whole}.${fraction}`);
+};
+
+/** Keep the slider usable for small catalogs without excluding expensive items. */
+export const getMaxProductPrice = (products: Product[]): number =>
+  products.reduce((max, product) => {
+    const price = parseProductPrice(product.price);
+    return Number.isFinite(price) ? Math.max(max, Math.ceil(price)) : max;
+  }, 1000);
 
 /** Check if a product's price falls within the given range */
 export const isWithinPriceRange = (
