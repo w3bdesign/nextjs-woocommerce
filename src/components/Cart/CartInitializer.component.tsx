@@ -1,14 +1,5 @@
 import { useEffect } from 'react';
-import { useQuery } from '@apollo/client';
-
-// State
-import { useCartStore } from '@/stores/cartStore';
-
-// Utils
-import { getFormattedCart } from '@/utils/functions/functions';
-
-// GraphQL
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
+import { useCartQuery } from '@/hooks/useCartQuery';
 
 /**
  * Non-rendering component responsible for initializing the cart state
@@ -18,20 +9,7 @@ import { GET_CART } from '@/utils/gql/GQL_QUERIES';
  * @returns {null} - This component does not render any UI
  */
 const CartInitializer = () => {
-  const { syncWithWooCommerce } = useCartStore();
-
-  const { data, loading, error, refetch } = useQuery(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-  });
-
-  useEffect(() => {
-    if (loading || error || !data?.cart) return;
-
-    const updatedCart = getFormattedCart(data);
-    if (updatedCart) {
-      syncWithWooCommerce(updatedCart);
-    }
-  }, [data, loading, error, syncWithWooCommerce]);
+  const { refetch } = useCartQuery();
 
   useEffect(() => {
     refetch();

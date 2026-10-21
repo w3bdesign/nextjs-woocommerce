@@ -1,6 +1,6 @@
 // Imports
-import { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 
 // Components
@@ -9,8 +9,8 @@ import Button from '@/components/UI/Button.component';
 // State
 import { useCartStore } from '@/stores/cartStore';
 
-// Utils
-import { getFormattedCart } from '@/utils/functions/functions';
+// Hooks
+import { useCartQuery } from '@/hooks/useCartQuery';
 
 // Types
 import type {
@@ -41,7 +41,7 @@ const AddToCart = ({
   variationId,
   fullWidth = false,
 }: ISingleProductProps) => {
-  const { syncWithWooCommerce, isLoading: isCartLoading } = useCartStore();
+  const { isLoading: isCartLoading } = useCartStore();
   const [requestError, setRequestError] = useState<boolean>(false);
 
   const productQueryInput = {
@@ -51,18 +51,7 @@ const AddToCart = ({
   };
 
   // Get cart data query
-  const { data, loading, error, refetch } = useQuery(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-  });
-
-  useEffect(() => {
-    if (loading || error || !data?.cart) return;
-
-    const updatedCart = getFormattedCart(data);
-    if (updatedCart) {
-      syncWithWooCommerce(updatedCart);
-    }
-  }, [data, loading, error, syncWithWooCommerce]);
+  const { refetch } = useCartQuery();
 
   // Add to cart mutation
   const [addToCart, { loading: addToCartLoading }] = useMutation(ADD_TO_CART, {

@@ -1,7 +1,7 @@
 /*eslint complexity: ["error", 20]*/
 // Imports
 import { useState, useEffect } from 'react';
-import { useQuery, useMutation, ApolloError } from '@apollo/client';
+import { useMutation, ApolloError } from '@apollo/client';
 
 // Components
 import Billing from './Billing.component';
@@ -9,38 +9,23 @@ import CartContents from '../Cart/CartContents.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
 // GraphQL
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';
 import { useCartStore } from '@/stores/cartStore';
+import { useCartQuery } from '@/hooks/useCartQuery';
 
 // Utils
-import { getFormattedCart, createCheckoutData } from '@/utils/functions/functions';
+import { createCheckoutData } from '@/utils/functions/functions';
 
 // Types
 import type { ICheckoutDataProps } from '@/types/checkout';
 
 const CheckoutForm = () => {
-  const { cart, clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
+  const { cart, clearWooCommerceSession } = useCartStore();
   const [requestError, setRequestError] = useState<ApolloError | null>(null);
   const [orderCompleted, setorderCompleted] = useState<boolean>(false);
 
   // Get cart data query
-  const { data, loading, error, refetch } = useQuery(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-  });
-
-  useEffect(() => {
-    if (loading || error || !data?.cart) return;
-
-    const updatedCart = getFormattedCart(data);
-    if (!updatedCart && !data.cart.contents?.nodes?.length) {
-      clearWooCommerceSession();
-      return;
-    }
-    if (updatedCart) {
-      syncWithWooCommerce(updatedCart);
-    }
-  }, [data, loading, error, clearWooCommerceSession, syncWithWooCommerce]);
+  const { refetch } = useCartQuery({ clearEmptyCart: true });
 
   // Checkout GraphQL mutation
   const [checkout, { loading: checkoutLoading }] = useMutation(
