@@ -25,19 +25,22 @@ const CartContents = () => {
   const { clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
   const isCheckoutPage = router.pathname === '/kasse';
 
-  const { data, refetch } = useQuery(GET_CART, {
+  const { data, loading, error, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      const updatedCart = getFormattedCart(data);
-      if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
-        clearWooCommerceSession();
-        return;
-      }
-      if (updatedCart) {
-        syncWithWooCommerce(updatedCart);
-      }
-    },
   });
+
+  useEffect(() => {
+    if (loading || error || !data?.cart) return;
+
+    const updatedCart = getFormattedCart(data);
+    if (!updatedCart && !data.cart.contents?.nodes?.length) {
+      clearWooCommerceSession();
+      return;
+    }
+    if (updatedCart) {
+      syncWithWooCommerce(updatedCart);
+    }
+  }, [data, loading, error, clearWooCommerceSession, syncWithWooCommerce]);
 
   const [updateCart, { loading: updateCartProcessing }] = useMutation(
     UPDATE_CART,
