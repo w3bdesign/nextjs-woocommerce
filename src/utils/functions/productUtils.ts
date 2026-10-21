@@ -26,10 +26,10 @@ export const getUniqueProductTypes = (products: Product[]): ProductType[] => {
 export const parseProductPrice = (price: string | null | undefined): number => {
   // Strip markup/entities before extracting digits (e.g. &#160; is not 160).
   const text = (price ?? '')
-    .replace(/<[^>]*>/g, '')
+    .replace(/<[^<>]*>/g, '')
     .replace(/&(?:#\d+|#x[\da-f]+|[a-z]+);/gi, '');
   // For variable-product ranges, use the first (lowest) displayed price.
-  const amount = text.match(/\d[\d\s.,]*/)?.[0].replace(/\s/g, '');
+  const amount = /\d[\d\s.,]*/.exec(text)?.[0].replace(/\s/g, '');
   if (!amount) return Number.NaN;
 
   if (/^\d{1,3}([.,]\d{3})+$/.test(amount)) {
