@@ -25,13 +25,19 @@ function headless_graphql_cors_sanitize_origins( $input ): array {
         return $previous;
     }
 
-    if ( ! is_string( $input ) ) {
+    // WordPress can sanitize twice when creating an option for the first time.
+    $lines = is_string( $input ) ? preg_split( '/\r\n|\r|\n/', $input ) : $input;
+    if ( ! is_array( $lines ) ) {
         add_settings_error( 'headless_graphql_cors_allowed_origins', 'invalid_origins', 'Enter one HTTP or HTTPS origin per line.' );
         return $previous;
     }
 
     $origins = [];
-    foreach ( preg_split( '/\r\n|\r|\n/', $input ) as $line ) {
+    foreach ( $lines as $line ) {
+        if ( ! is_string( $line ) ) {
+            add_settings_error( 'headless_graphql_cors_allowed_origins', 'invalid_origins', 'Enter one HTTP or HTTPS origin per line.' );
+            return $previous;
+        }
         $origin = strtolower( trim( $line ) );
         if ( '' === $origin ) {
             continue;
