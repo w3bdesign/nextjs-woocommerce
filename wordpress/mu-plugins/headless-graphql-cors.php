@@ -6,6 +6,126 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/** Return deployment overrides, or the origins saved in WordPress admin. */
+function headless_graphql_cors_allowed_origins(): array {
+    $origins = defined( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS' )
+        ? HEADLESS_GRAPHQL_ALLOWED_ORIGINS
+        : get_option( 'headless_graphql_cors_allowed_origins', [] );
+
+    return is_array( $origins ) ? $origins : [];
+}
+
+/** Reject malformed entries without replacing the previously saved allowlist. */
+function headless_graphql_cors_sanitize_origins( $input ): array {
+    $previous = get_option( 'headless_graphql_cors_allowed_origins', [] );
+    $previous = is_array( $previous ) ? $previous : [];
+
+    // A deployment override is authoritative; do not accept misleading edits.
+    if ( defined( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS' ) ) {
+        return $previous;
+    }
+
+    if ( ! is_string( $input ) ) {
+        add_settings_error( 'headless_graphql_cors_allowed_origins', 'invalid_origins', 'Enter one HTTP or HTTPS origin per line.' );
+        return $previous;
+    }
+
+    $origins = [];
+    foreach ( preg_split( '/\r\n|\r|\n/', $input ) as $line ) {
+        $origin = strtolower( trim( $line ) );
+        if ( '' === $origin ) {
+            continue;
+        }
+
+        $parts = wp_parse_url( $origin );
+        if (
+            ! preg_match( '#\Ahttps?://(?:[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?|\[[0-9a-f:]+\])(?::[0-9]{1,5})?\z#', $origin )
+            || false === $parts
+            || ( isset( $parts['port'] ) && ( $parts['port'] < 1 || $parts['port'] > 65535 ) )
+        ) {
+            add_settings_error(
+                'headless_graphql_cors_allowed_origins',
+                'invalid_origins',
+                'Not saved. Use exact HTTP or HTTPS origins, without paths, trailing slashes, credentials, queries, fragments, or wildcards.'
+            );
+            return $previous;
+        }
+
+        // Browsers omit default ports from the Origin header.
+        if ( isset( $parts['port'] ) && ( ( 'https' === $parts['scheme'] && 443 === $parts['port'] ) || ( 'http' === $parts['scheme'] && 80 === $parts['port'] ) ) ) {
+            $origin = $parts['scheme'] . '://' . $parts['host'];
+        }
+        $origins[] = $origin;
+    }
+
+    return array_values( array_unique( $origins ) );
+}
+
+add_action(
+    'admin_init',
+    static function (): void {
+        register_setting(
+            'headless_graphql_cors',
+            'headless_graphql_cors_allowed_origins',
+            [
+                'type'              => 'array',
+                'default'           => [],
+                'sanitize_callback' => 'headless_graphql_cors_sanitize_origins',
+                'show_in_rest'      => false,
+            ]
+        );
+    }
+);
+
+add_action(
+    'admin_menu',
+    static function (): void {
+        add_options_page(
+            'GraphQL CORS',
+            'GraphQL CORS',
+            'manage_options',
+            'headless-graphql-cors',
+            static function (): void {
+                if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+                }
+
+                $overridden = defined( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS' );
+                echo '<div class="wrap"><h1>GraphQL CORS</h1>';
+                settings_errors( 'headless_graphql_cors_allowed_origins' );
+                echo '<p>Allow credentialed GraphQL requests only from storefronts you trust. Enter one exact origin per line.</p>';
+                if ( $overridden ) {
+                    echo '<p><strong>A deployment configuration override is active. This form is read-only.</strong></p>';
+                }
+                echo '<form action="options.php" method="post">';
+                settings_fields( 'headless_graphql_cors' );
+                echo '<p><label for="headless-graphql-cors-origins">Allowed storefront origins</label></p>';
+                echo '<textarea id="headless-graphql-cors-origins" name="headless_graphql_cors_allowed_origins" rows="8" cols="70" class="large-text code"' . ( $overridden ? ' disabled' : '' ) . '>';
+                echo esc_textarea( implode( "\n", array_filter( headless_graphql_cors_allowed_origins(), 'is_string' ) ) );
+                echo '</textarea><p class="description">Example: https://shop.example.com — include the scheme and any non-default port, but no path or trailing slash. An empty list blocks all cross-origin storefront access.</p>';
+                if ( ! $overridden ) {
+                    submit_button();
+                }
+                echo '</form></div>';
+            }
+        );
+    }
+);
+
+add_action(
+    'admin_notices',
+    static function (): void {
+        if ( ! current_user_can( 'manage_options' ) || ! class_exists( '\WPGraphQL' ) || ! empty( headless_graphql_cors_allowed_origins() ) ) {
+            return;
+        }
+
+        echo '<div class="notice notice-warning"><p>';
+        echo esc_html__( 'Headless GraphQL CORS has no allowed storefront origins. Cross-origin storefront requests will be blocked. Configure Settings → GraphQL CORS.', 'headless-graphql-cors' );
+        echo ' <a href="' . esc_url( admin_url( 'options-general.php?page=headless-graphql-cors' ) ) . '">Configure GraphQL CORS</a>';
+        echo '</p></div>';
+    }
+);
+
 // MU plugins load before regular plugins, so defer the dependency check.
 add_action(
     'plugins_loaded',
@@ -35,17 +155,8 @@ add_action(
 add_filter(
     'graphql_response_headers_to_send',
     static function ( array $headers ): array {
-        // Configure each deployment in wp-config.php; no origins are trusted by default.
-        // Example: define( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS', [ 'https://shop.example.com' ] );
-        $allowed_origins = defined( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS' )
-            ? HEADLESS_GRAPHQL_ALLOWED_ORIGINS
-            : [];
-
-        // Fail closed if deployment configuration has the wrong type.
-        if ( ! is_array( $allowed_origins ) ) {
-            $allowed_origins = [];
-        }
-
+        // Configure Settings → GraphQL CORS; no origins are trusted by default.
+        $allowed_origins = headless_graphql_cors_allowed_origins();
         $origin = get_http_origin();
 
         // Replace WPGraphQL's wildcard, rather than adding a second origin header.
