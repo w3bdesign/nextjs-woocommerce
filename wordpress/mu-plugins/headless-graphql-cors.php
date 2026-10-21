@@ -15,6 +15,22 @@ function headless_graphql_cors_allowed_origins(): array {
     return is_array( $origins ) ? $origins : [];
 }
 
+/** Check exact HTTP(S) origin syntax and the parsed port range. */
+function headless_graphql_cors_is_valid_origin( string $origin, $parts ): bool {
+    return preg_match( '#\Ahttps?://(?:[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?|\[[0-9a-f:]+\])(?::[0-9]{1,5})?\z#', $origin )
+        && false !== $parts
+        && ( ! isset( $parts['port'] ) || ( $parts['port'] >= 1 && $parts['port'] <= 65535 ) );
+}
+
+/** Browsers omit default ports from the Origin header. */
+function headless_graphql_cors_normalize_origin( string $origin, array $parts ): string {
+    if ( isset( $parts['port'] ) && ( ( 'https' === $parts['scheme'] && 443 === $parts['port'] ) || ( 'http' === $parts['scheme'] && 80 === $parts['port'] ) ) ) {
+        return $parts['scheme'] . '://' . $parts['host'];
+    }
+
+    return $origin;
+}
+
 /** Reject malformed entries without replacing the previously saved allowlist. */
 function headless_graphql_cors_sanitize_origins( $input ): array {
     $previous = get_option( 'headless_graphql_cors_allowed_origins', [] );
@@ -44,11 +60,7 @@ function headless_graphql_cors_sanitize_origins( $input ): array {
         }
 
         $parts = wp_parse_url( $origin );
-        if (
-            ! preg_match( '#\Ahttps?://(?:[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?|\[[0-9a-f:]+\])(?::[0-9]{1,5})?\z#', $origin )
-            || false === $parts
-            || ( isset( $parts['port'] ) && ( $parts['port'] < 1 || $parts['port'] > 65535 ) )
-        ) {
+        if ( ! headless_graphql_cors_is_valid_origin( $origin, $parts ) ) {
             add_settings_error(
                 'headless_graphql_cors_allowed_origins',
                 'invalid_origins',
@@ -57,11 +69,7 @@ function headless_graphql_cors_sanitize_origins( $input ): array {
             return $previous;
         }
 
-        // Browsers omit default ports from the Origin header.
-        if ( isset( $parts['port'] ) && ( ( 'https' === $parts['scheme'] && 443 === $parts['port'] ) || ( 'http' === $parts['scheme'] && 80 === $parts['port'] ) ) ) {
-            $origin = $parts['scheme'] . '://' . $parts['host'];
-        }
-        $origins[] = $origin;
+        $origins[] = headless_graphql_cors_normalize_origin( $origin, $parts );
     }
 
     return array_values( array_unique( $origins ) );
