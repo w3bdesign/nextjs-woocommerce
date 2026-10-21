@@ -26,13 +26,18 @@ export type IUpdateCartRootObject = IUpdateCartMutationArgs;
 type TUpdatedItems = { key: string; quantity: number }[];
 
 /**
- * Add empty character after currency symbol
+ * Normalize encoded price spacing and add one space after the currency symbol.
  * @param {string} price The price string that we input
  * @param {string} symbol Currency symbol to add empty character/padding after
  */
 
 export const paddedPrice = (price: string, symbol: string) =>
-  price.split(symbol).join(`${symbol} `);
+  price
+    .replace(/&(?:nbsp|#160|#x0*a0);/gi, ' ')
+    .split(symbol)
+    .join(`${symbol} `)
+    .replace(/[ \u00a0]+/g, ' ')
+    .trim();
 
 /**
  * Shorten inputted string (usually product description) to a maximum of length
