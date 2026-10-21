@@ -1,5 +1,5 @@
 // Imports
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 // Utils
@@ -14,14 +14,18 @@ import type { ISingleProductProps, ISingleProduct } from '@/types/product';
 
 const PLACEHOLDER_FALLBACK = 'https://via.placeholder.com/600';
 
-/** Strip HTML tags from a string using DOMParser (client-side only) */
-const useStrippedDescription = (html: string): string | null =>
-  useMemo(() => {
-    if (typeof window === 'undefined') {
-      return null;
-    }
-    return new DOMParser().parseFromString(html, 'text/html').body.textContent;
+/** Parse after mounting so the server and initial client render both stay empty. */
+const useStrippedDescription = (html: string): string | null => {
+  const [description, setDescription] = useState<string | null>(null);
+
+  useEffect(() => {
+    setDescription(
+      new DOMParser().parseFromString(html, 'text/html').body.textContent,
+    );
   }, [html]);
+
+  return description;
+};
 
 /** Resolve the product image source URL */
 const getImageSrc = (image: ISingleProduct['image']): string =>
