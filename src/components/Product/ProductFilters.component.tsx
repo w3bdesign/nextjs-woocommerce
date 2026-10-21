@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Product, ProductType } from '@/types/product';
+import { formatPrice } from '@/utils/functions/price';
 
 import Button from '@/components/UI/Button.component';
 import Checkbox from '@/components/UI/Checkbox.component';
@@ -45,7 +46,7 @@ const ProductFilters = ({
   // Get unique colors from all products - combined iteration for performance
   const availableColors: Array<{ name: string; slug: string }> = [];
   const seenSlugs = new Set<string>();
-  
+
   for (const product of products) {
     const colorNodes = product.allPaColors?.nodes || [];
     for (const color of colorNodes) {
@@ -55,12 +56,12 @@ const ProductFilters = ({
       }
     }
   }
-  
+
   availableColors.sort((a, b) => a.name.localeCompare(b.name));
 
   const colors = availableColors.map((color) => ({
     name: color.name,
-    class: `bg-${color.slug}-500`
+    class: `bg-${color.slug}-500`,
   }));
 
   const selectedSizeSet = new Set(selectedSizes);
@@ -106,7 +107,7 @@ const ProductFilters = ({
             value={priceRange[1]}
             startValue={priceRange[0]}
             onChange={(value) => setPriceRange([priceRange[0], value])}
-            formatValue={(value) => `kr ${value}`}
+            formatValue={formatPrice}
           />
         </div>
 
@@ -148,10 +149,7 @@ const ProductFilters = ({
           </div>
         </div>
 
-        <Button
-          handleButtonClick={resetFilters}
-          variant="reset"
-        >
+        <Button handleButtonClick={resetFilters} variant="reset">
           Resett filter
         </Button>
       </div>

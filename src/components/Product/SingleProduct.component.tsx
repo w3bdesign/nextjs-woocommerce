@@ -3,7 +3,8 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 
 // Utils
-import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
+import { filteredVariantPrice } from '@/utils/functions/functions';
+import { formatPrice } from '@/utils/functions/price';
 
 // Components
 import AddToCart from './AddToCart.component';
@@ -13,22 +14,13 @@ import type { ISingleProductProps, ISingleProduct } from '@/types/product';
 
 const PLACEHOLDER_FALLBACK = 'https://via.placeholder.com/600';
 
-/** Format a price string by padding the currency symbol */
-const formatPrice = (value: string | undefined): string | undefined => {
-  if (!value) {
-    return value;
-  }
-  return paddedPrice(value, 'kr');
-};
-
 /** Strip HTML tags from a string using DOMParser (client-side only) */
 const useStrippedDescription = (html: string): string | null =>
   useMemo(() => {
     if (typeof window === 'undefined') {
       return null;
     }
-    return new DOMParser().parseFromString(html, 'text/html').body
-      .textContent;
+    return new DOMParser().parseFromString(html, 'text/html').body.textContent;
   }, [html]);
 
 /** Resolve the product image source URL */
@@ -95,7 +87,11 @@ const PriceDisplay = ({
 
   const safePrice = price ?? '';
   const currentPrice = getCurrentSalePrice(hasVariations, safePrice, salePrice);
-  const originalPrice = getOriginalSalePrice(hasVariations, safePrice, regularPrice);
+  const originalPrice = getOriginalSalePrice(
+    hasVariations,
+    safePrice,
+    regularPrice,
+  );
 
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-2">

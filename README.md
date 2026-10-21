@@ -14,6 +14,7 @@
 ## Table Of Contents (TOC)
 
 - [Installation](#Installation)
+- [WordPress GraphQL CORS](#wordpress-graphql-cors)
 - [Features](#Features)
 - [Design System](#design-system)
 - [Lighthouse Performance Monitoring](#lighthouse-performance-monitoring)
@@ -42,7 +43,6 @@ The current release has been tested and is confirmed working with the following 
 - WooCommerce version 11.2.1
 - WP GraphQL version 2.24.0
 - WooGraphQL (GraphQL for eCommerce) version 1.0.3
-- WPGraphQL CORS version 2.1
 
 2.  For debugging and testing, install either:
 
@@ -69,6 +69,23 @@ The current release has been tested and is confirmed working with the following 
 9.  Proceed to checkout (Gå til kasse)
 
 10. Fill in your details and place the order
+
+## WordPress GraphQL CORS
+
+When the storefront and WordPress use different origins, the GraphQL endpoint
+must explicitly allow the storefront origin and credentialed requests. A wildcard
+allowed origin does not work with this application's cookie-based authentication.
+
+This repository includes a small [WordPress must-use plugin](wordpress/mu-plugins/headless-graphql-cors.php)
+for deployments that need this configuration. Install it on the WordPress server
+and configure the allowed origins separately for each customer and environment;
+the plugin does not hardcode deployment URLs or trust any origins by default.
+
+See the [WordPress CORS setup guide](DOCS/wordpress-cors.md) for installation,
+sample configuration, verification, and troubleshooting. No third-party CORS
+plugin is required. If another plugin, web server, or CDN already manages CORS,
+avoid overlapping or conflicting rules. Deploying the Next.js application alone
+does not install the WordPress plugin.
 
 ## Features
 
@@ -228,6 +245,12 @@ This project runs automated OWASP security scanning on every push and pull reque
 Custom Semgrep rules cover OWASP categories A01–A10 including XSS prevention, injection detection, authentication checks, SSRF protection, and security misconfiguration. View results in the GitHub Actions tab under the "OWASP Security Scan" workflow.
 
 ## Troubleshooting
+
+### Cross-origin GraphQL requests are blocked
+
+Follow the [WordPress CORS setup guide](DOCS/wordpress-cors.md). Configure CORS on
+the GraphQL server, not through frontend response headers, and keep cookie
+credentials enabled for authentication.
 
 ### I am getting a cart undefined error or other GraphQL errors
 
