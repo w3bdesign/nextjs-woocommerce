@@ -114,42 +114,42 @@ const ProductFilters = ({
         {sizes.length > 0 && (
           <div className="mb-8">
             <h3 className="font-semibold mb-4 text-text">STØRRELSE</h3>
-          <div className="grid grid-cols-3 gap-2">
-            {sizes.map((size) => (
-              <Button
-                key={size}
-                handleButtonClick={() => toggleSize(size)}
-                variant="filter"
-                selected={selectedSizeSet.has(size)}
-              >
-                {size}
-              </Button>
-            ))}
-          </div>
+            <div className="grid grid-cols-3 gap-2">
+              {sizes.map((size) => (
+                <Button
+                  key={size}
+                  handleButtonClick={() => toggleSize(size)}
+                  variant="filter"
+                  selected={selectedSizeSet.has(size)}
+                >
+                  {size}
+                </Button>
+              ))}
+            </div>
           </div>
         )}
 
         {colors.length > 0 && (
           <div className="mb-8">
             <h3 className="font-semibold mb-4 text-text">FARGE</h3>
-          <div className="grid grid-cols-3 gap-2">
-            {colors.map((color) => (
-              <button
-                type="button"
-                key={color.name}
-                onClick={() => toggleColor(color.name)}
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
-                  color.class
-                } ${
-                  selectedColorSet.has(color.name)
-                    ? 'ring-2 ring-offset-2 ring-primary'
-                    : ''
-                }`}
-                title={color.name}
-                aria-label={`Filtrer etter farge: ${color.name}`}
-              />
-            ))}
-          </div>
+            <div className="grid grid-cols-3 gap-2">
+              {colors.map((color) => (
+                <button
+                  type="button"
+                  key={color.name}
+                  onClick={() => toggleColor(color.name)}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs ${
+                    color.class
+                  } ${
+                    selectedColorSet.has(color.name)
+                      ? 'ring-2 ring-offset-2 ring-primary'
+                      : ''
+                  }`}
+                  title={color.name}
+                  aria-label={`Filtrer etter farge: ${color.name}`}
+                />
+              ))}
+            </div>
           </div>
         )}
 
