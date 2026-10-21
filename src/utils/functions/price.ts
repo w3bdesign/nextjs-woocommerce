@@ -2,8 +2,6 @@ type Price = string | number | null | undefined;
 
 // Store-wide display policy: Norwegian kroner, decimal commas and two decimals.
 const priceFormatter = new Intl.NumberFormat('nb-NO', {
-  style: 'currency',
-  currency: 'NOK',
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
@@ -13,7 +11,10 @@ const getPriceText = (price: string): string => {
   const characters: string[] = [];
   let skipUntil: '>' | ';' | null = null;
 
-  for (const character of price.replace(/&(?:ndash|mdash|#8211|#8212);/gi, '-')) {
+  for (const character of price.replace(
+    /&(?:ndash|mdash|#8211|#8212);/gi,
+    '-',
+  )) {
     if (skipUntil) {
       if (character === skipUntil) skipUntil = null;
     } else if (character === '<') {
@@ -52,12 +53,13 @@ export const parsePrice = (price: Price): number => {
 export const formatPrice = (price: Price): string => {
   if (typeof price === 'string') {
     const range = getPriceText(price).split(/(?<=\d)\s*[-–—]\s*/);
-    if (range.length > 1) return range.map((part) => formatPrice(parsePrice(part))).join(' - ');
+    if (range.length > 1)
+      return range.map((part) => formatPrice(parsePrice(part))).join(' - ');
   }
 
   const amount = parsePrice(price);
   return Number.isFinite(amount)
-    ? priceFormatter.format(amount).replace(/\s/g, ' ')
+    ? `kr ${priceFormatter.format(amount).replace(/\s/g, ' ')}`
     : 'N/A';
 };
 

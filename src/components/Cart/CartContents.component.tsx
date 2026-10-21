@@ -155,7 +155,9 @@ const CartContents = () => {
             {!isCheckoutPage && (
               <div className="flex justify-center mb-4">
                 <Link href="/kasse" passHref>
-                  <Button variant="primary" fullWidth>GÅ TIL KASSE</Button>
+                  <Button variant="primary" fullWidth>
+                    GÅ TIL KASSE
+                  </Button>
                 </Link>
               </div>
             )}

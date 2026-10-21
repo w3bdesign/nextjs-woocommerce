@@ -20,8 +20,7 @@ const useStrippedDescription = (html: string): string | null =>
     if (typeof window === 'undefined') {
       return null;
     }
-    return new DOMParser().parseFromString(html, 'text/html').body
-      .textContent;
+    return new DOMParser().parseFromString(html, 'text/html').body.textContent;
   }, [html]);
 
 /** Resolve the product image source URL */
@@ -88,7 +87,11 @@ const PriceDisplay = ({
 
   const safePrice = price ?? '';
   const currentPrice = getCurrentSalePrice(hasVariations, safePrice, salePrice);
-  const originalPrice = getOriginalSalePrice(hasVariations, safePrice, regularPrice);
+  const originalPrice = getOriginalSalePrice(
+    hasVariations,
+    safePrice,
+    regularPrice,
+  );
 
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-2">

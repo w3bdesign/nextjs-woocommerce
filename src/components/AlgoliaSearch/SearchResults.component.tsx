@@ -37,10 +37,7 @@ const SearchResults = ({
 }: ISearchResultProps) => {
   return (
     <article className="cursor-pointer hit">
-      <Link
-        href={`/produkt/${product_name.replaceAll(' ', '-')}`}
-        passHref
-      >
+      <Link href={`/produkt/${product_name.replaceAll(' ', '-')}`} passHref>
         <div className="flex p-6 bg-surface">
           <header className="hit-image-container relative w-12 h-12">
             <Image
@@ -66,7 +63,9 @@ const SearchResults = ({
                 </span>
               </>
             )}
-            {!on_sale && <span className="text-base">{formatPrice(regular_price)}</span>}
+            {!on_sale && (
+              <span className="text-base">{formatPrice(regular_price)}</span>
+            )}
             <br />
             <span className="text-base">
               {trimmedStringToLength(short_description, 30)}

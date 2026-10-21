@@ -49,7 +49,11 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                       <Image
                         className="object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
-                        src={image.sourceUrl || process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL || ''}
+                        src={
+                          image.sourceUrl ||
+                          process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL ||
+                          ''
+                        }
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       />
@@ -57,7 +61,10 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
                       <Image
                         className="object-cover object-center transition duration-300 group-hover:scale-105"
                         alt={name}
-                        src={process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL || ''}
+                        src={
+                          process.env.NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL ||
+                          ''
+                        }
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       />

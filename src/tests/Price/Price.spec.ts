@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { formatPrice, formatUnitPrice, parsePrice } from '../../utils/functions/price';
+import {
+  formatPrice,
+  formatUnitPrice,
+  parsePrice,
+} from '../../utils/functions/price';
 
 test('standardizes raw, encoded and HTML WooCommerce prices', () => {
   for (const price of [
@@ -44,7 +48,14 @@ test('calculates unit prices without dropping decimal commas', () => {
 });
 
 test('handles missing prices and invalid quantities safely', () => {
-  for (const price of [null, undefined, '', 'not a price', Number.NaN, Infinity]) {
+  for (const price of [
+    null,
+    undefined,
+    '',
+    'not a price',
+    Number.NaN,
+    Infinity,
+  ]) {
     expect(formatPrice(price)).toBe('N/A');
   }
   for (const quantity of [0, -1, Number.NaN, Infinity]) {
