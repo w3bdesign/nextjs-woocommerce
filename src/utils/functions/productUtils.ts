@@ -22,12 +22,30 @@ export const getUniqueProductTypes = (products: Product[]): ProductType[] => {
   );
 };
 
+/** Read price text only; this is not an HTML sanitizer and must not render HTML. */
+const getPriceText = (price: string): string => {
+  const characters: string[] = [];
+  let skipUntil: '>' | ';' | null = null;
+
+  for (const character of price) {
+    if (skipUntil) {
+      if (character === skipUntil) skipUntil = null;
+    } else if (character === '<') {
+      skipUntil = '>';
+    } else if (character === '&') {
+      skipUntil = ';';
+    } else {
+      characters.push(character);
+    }
+  }
+
+  return characters.join('');
+};
+
 /** Parse WooCommerce display prices, including Norwegian decimal commas. */
 export const parseProductPrice = (price: string | null | undefined): number => {
-  // Strip markup/entities before extracting digits (e.g. &#160; is not 160).
-  const text = (price ?? '')
-    .replace(/<[^<>]*>/g, '')
-    .replace(/&(?:#\d+|#x[\da-f]+|[a-z]+);/gi, '');
+  // Ignore markup/entities before extracting digits (e.g. &#160; is not 160).
+  const text = getPriceText(price ?? '');
   // For variable-product ranges, use the first (lowest) displayed price.
   const amount = /\d[\d\s.,]*/.exec(text)?.[0].replace(/\s/g, '');
   if (!amount) return Number.NaN;
