@@ -45,7 +45,7 @@ const ProductFilters = ({
   // Get unique colors from all products - combined iteration for performance
   const availableColors: Array<{ name: string; slug: string }> = [];
   const seenSlugs = new Set<string>();
-  
+
   for (const product of products) {
     const colorNodes = product.allPaColors?.nodes || [];
     for (const color of colorNodes) {
@@ -55,12 +55,12 @@ const ProductFilters = ({
       }
     }
   }
-  
+
   availableColors.sort((a, b) => a.name.localeCompare(b.name));
 
   const colors = availableColors.map((color) => ({
     name: color.name,
-    class: `bg-${color.slug}-500`
+    class: `bg-${color.slug}-500`,
   }));
 
   const selectedSizeSet = new Set(selectedSizes);
@@ -148,10 +148,7 @@ const ProductFilters = ({
           </div>
         </div>
 
-        <Button
-          handleButtonClick={resetFilters}
-          variant="reset"
-        >
+        <Button handleButtonClick={resetFilters} variant="reset">
           Resett filter
         </Button>
       </div>

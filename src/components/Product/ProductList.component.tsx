@@ -21,7 +21,7 @@ const ProductList = ({ products, title }: ProductListProps) => {
     productTypes,
     toggleProductType,
     resetFilters,
-    filterProducts
+    filterProducts,
   } = useProductFilters(products);
 
   const filteredProducts = filterProducts(products);
@@ -45,11 +45,17 @@ const ProductList = ({ products, title }: ProductListProps) => {
       <div className="flex-1">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
           <h1 className="text-xl sm:text-2xl font-medium text-center sm:text-left text-text">
-            {title} <span className="text-text-muted">({filteredProducts.length})</span>
+            {title}{' '}
+            <span className="text-text-muted">({filteredProducts.length})</span>
           </h1>
 
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 sm:gap-4">
-            <label htmlFor="sort-select" className="text-sm font-medium text-text">Sortering:</label>
+            <label
+              htmlFor="sort-select"
+              className="text-sm font-medium text-text"
+            >
+              Sortering:
+            </label>
             <select
               id="sort-select"
               value={sortBy}
