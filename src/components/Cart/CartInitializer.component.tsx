@@ -20,17 +20,18 @@ import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 const CartInitializer = () => {
   const { syncWithWooCommerce } = useCartStore();
 
-  const { data, refetch } = useQuery(GET_CART, {
+  const { data, loading, error, refetch } = useQuery(GET_CART, {
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      // On successful fetch, format the data and sync with the store
-      const updatedCart = getFormattedCart(data);
-      if (updatedCart) {
-        syncWithWooCommerce(updatedCart);
-      }
-    },
-    // Consider error handling if needed (e.g., onError callback)
   });
+
+  useEffect(() => {
+    if (loading || error || !data?.cart) return;
+
+    const updatedCart = getFormattedCart(data);
+    if (updatedCart) {
+      syncWithWooCommerce(updatedCart);
+    }
+  }, [data, loading, error, syncWithWooCommerce]);
 
   useEffect(() => {
     refetch();
