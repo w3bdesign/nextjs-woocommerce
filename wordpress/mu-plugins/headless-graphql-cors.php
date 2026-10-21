@@ -7,7 +7,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /** Return deployment overrides, or the origins saved in WordPress admin. */
-function headless_graphql_cors_allowed_origins(): array {
+function headlessGraphqlCorsAllowedOrigins(): array {
     $origins = defined( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS' )
         ? HEADLESS_GRAPHQL_ALLOWED_ORIGINS
         : get_option( 'headless_graphql_cors_allowed_origins', [] );
@@ -16,14 +16,14 @@ function headless_graphql_cors_allowed_origins(): array {
 }
 
 /** Check exact HTTP(S) origin syntax and the parsed port range. */
-function headless_graphql_cors_is_valid_origin( string $origin, $parts ): bool {
-    return preg_match( '#\Ahttps?://(?:[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?|\[[0-9a-f:]+\])(?::[0-9]{1,5})?\z#', $origin )
+function headlessGraphqlCorsIsValidOrigin( string $origin, $parts ): bool {
+    return preg_match( '#\Ahttps?://(?:[a-z\d](?:[a-z\d.-]*[a-z\d])?|\[[\da-f:]+\])(?::\d{1,5})?\z#', $origin )
         && false !== $parts
         && ( ! isset( $parts['port'] ) || ( $parts['port'] >= 1 && $parts['port'] <= 65535 ) );
 }
 
 /** Browsers omit default ports from the Origin header. */
-function headless_graphql_cors_normalize_origin( string $origin, array $parts ): string {
+function headlessGraphqlCorsNormalizeOrigin( string $origin, array $parts ): string {
     if ( isset( $parts['port'] ) && ( ( 'https' === $parts['scheme'] && 443 === $parts['port'] ) || ( 'http' === $parts['scheme'] && 80 === $parts['port'] ) ) ) {
         return $parts['scheme'] . '://' . $parts['host'];
     }
@@ -32,7 +32,7 @@ function headless_graphql_cors_normalize_origin( string $origin, array $parts ):
 }
 
 /** Reject malformed entries without replacing the previously saved allowlist. */
-function headless_graphql_cors_sanitize_origins( $input ): array {
+function headlessGraphqlCorsSanitizeOrigins( $input ): array {
     $previous = get_option( 'headless_graphql_cors_allowed_origins', [] );
     $previous = is_array( $previous ) ? $previous : [];
 
@@ -48,6 +48,11 @@ function headless_graphql_cors_sanitize_origins( $input ): array {
         return $previous;
     }
 
+    return headlessGraphqlCorsSanitizeOriginLines( $lines, $previous );
+}
+
+/** Validate every line before replacing the saved allowlist. */
+function headlessGraphqlCorsSanitizeOriginLines( array $lines, array $previous ): array {
     $origins = [];
     foreach ( $lines as $line ) {
         if ( ! is_string( $line ) ) {
@@ -60,7 +65,7 @@ function headless_graphql_cors_sanitize_origins( $input ): array {
         }
 
         $parts = wp_parse_url( $origin );
-        if ( ! headless_graphql_cors_is_valid_origin( $origin, $parts ) ) {
+        if ( ! headlessGraphqlCorsIsValidOrigin( $origin, $parts ) ) {
             add_settings_error(
                 'headless_graphql_cors_allowed_origins',
                 'invalid_origins',
@@ -69,7 +74,7 @@ function headless_graphql_cors_sanitize_origins( $input ): array {
             return $previous;
         }
 
-        $origins[] = headless_graphql_cors_normalize_origin( $origin, $parts );
+        $origins[] = headlessGraphqlCorsNormalizeOrigin( $origin, $parts );
     }
 
     return array_values( array_unique( $origins ) );
@@ -84,7 +89,7 @@ add_action(
             [
                 'type'              => 'array',
                 'default'           => [],
-                'sanitize_callback' => 'headless_graphql_cors_sanitize_origins',
+                'sanitize_callback' => 'headlessGraphqlCorsSanitizeOrigins',
                 'show_in_rest'      => false,
             ]
         );
@@ -115,7 +120,7 @@ add_action(
                 settings_fields( 'headless_graphql_cors' );
                 echo '<p><label for="headless-graphql-cors-origins">Allowed storefront origins</label></p>';
                 echo '<textarea id="headless-graphql-cors-origins" name="headless_graphql_cors_allowed_origins" rows="8" cols="70" class="large-text code"' . ( $overridden ? ' disabled' : '' ) . '>';
-                echo esc_textarea( implode( "\n", array_filter( headless_graphql_cors_allowed_origins(), 'is_string' ) ) );
+                echo esc_textarea( implode( "\n", array_filter( headlessGraphqlCorsAllowedOrigins(), 'is_string' ) ) );
                 echo '</textarea><p class="description">Example: https://shop.example.com — include the scheme and any non-default port, but no path or trailing slash. An empty list blocks all cross-origin storefront access.</p>';
                 if ( ! $overridden ) {
                     submit_button();
@@ -129,7 +134,7 @@ add_action(
 add_action(
     'admin_notices',
     static function (): void {
-        if ( ! current_user_can( 'manage_options' ) || ! class_exists( '\WPGraphQL' ) || ! empty( headless_graphql_cors_allowed_origins() ) ) {
+        if ( ! current_user_can( 'manage_options' ) || ! class_exists( '\WPGraphQL' ) || ! empty( headlessGraphqlCorsAllowedOrigins() ) ) {
             return;
         }
 
@@ -170,7 +175,7 @@ add_filter(
     'graphql_response_headers_to_send',
     static function ( array $headers ): array {
         // Configure Settings → GraphQL CORS; no origins are trusted by default.
-        $allowed_origins = headless_graphql_cors_allowed_origins();
+        $allowed_origins = headlessGraphqlCorsAllowedOrigins();
         $origin = get_http_origin();
 
         // Replace WPGraphQL's wildcard, rather than adding a second origin header.
