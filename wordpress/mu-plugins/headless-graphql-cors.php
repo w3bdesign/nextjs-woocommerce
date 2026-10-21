@@ -6,6 +6,32 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// MU plugins load before regular plugins, so defer the dependency check.
+add_action(
+    'plugins_loaded',
+    static function (): void {
+        if ( class_exists( '\WPGraphQL' ) ) {
+            return;
+        }
+
+        add_action(
+            'admin_notices',
+            static function (): void {
+                if ( ! current_user_can( 'manage_options' ) ) {
+                    return;
+                }
+
+                echo '<div class="notice notice-warning"><p>';
+                echo esc_html__(
+                    'Headless GraphQL CORS requires WPGraphQL to be installed and active. No GraphQL CORS headers are being configured.',
+                    'headless-graphql-cors'
+                );
+                echo '</p></div>';
+            }
+        );
+    }
+);
+
 add_filter(
     'graphql_response_headers_to_send',
     static function ( array $headers ): array {

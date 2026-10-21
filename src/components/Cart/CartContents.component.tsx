@@ -1,43 +1,28 @@
 import { useEffect } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useCartStore } from '@/stores/cartStore';
+import { useCartQuery } from '@/hooks/useCartQuery';
 import Button from '@/components/UI/Button.component';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
 
 import {
-  getFormattedCart,
   getUpdatedItems,
   handleQuantityChange,
   IProductRootObject,
 } from '@/utils/functions/functions';
 
-import { GET_CART } from '@/utils/gql/GQL_QUERIES';
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 import { formatPrice, formatUnitPrice } from '@/utils/functions/price';
 
 const CartContents = () => {
   const router = useRouter();
-  const { clearWooCommerceSession, syncWithWooCommerce } = useCartStore();
   const isCheckoutPage = router.pathname === '/kasse';
 
-  const { data, refetch } = useQuery(GET_CART, {
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      const updatedCart = getFormattedCart(data);
-      if (!updatedCart && !data?.cart?.contents?.nodes?.length) {
-        clearWooCommerceSession();
-        return;
-      }
-      if (updatedCart) {
-        syncWithWooCommerce(updatedCart);
-      }
-    },
-  });
+  const { data, refetch } = useCartQuery({ clearEmptyCart: true });
 
   const [updateCart, { loading: updateCartProcessing }] = useMutation(
     UPDATE_CART,
