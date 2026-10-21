@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { paddedPrice } from '@/utils/functions/functions';
+import { formatPrice } from '@/utils/functions/price';
 
 interface ProductCardProps {
   databaseId: number;
@@ -25,10 +25,9 @@ const ProductCard = ({
   slug,
   image,
 }: ProductCardProps) => {
-  // Add padding/empty character after currency symbol
-  const formattedPrice = price ? paddedPrice(price, 'kr') : price;
-  const formattedRegularPrice = regularPrice ? paddedPrice(regularPrice, 'kr') : regularPrice;
-  const formattedSalePrice = salePrice ? paddedPrice(salePrice, 'kr') : salePrice;
+  const formattedPrice = formatPrice(price);
+  const formattedRegularPrice = formatPrice(regularPrice);
+  const formattedSalePrice = formatPrice(salePrice);
 
   return (
     <div className="group">

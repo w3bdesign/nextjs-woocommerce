@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { trimmedStringToLength } from '@/utils/functions/functions';
+import { formatPrice } from '@/utils/functions/price';
 
 interface ISearchResultProps {
   hit: {
@@ -58,14 +59,14 @@ const SearchResults = ({
             {on_sale && (
               <>
                 <span className="text-base font-bold text-error">
-                  kr {sale_price}
+                  {formatPrice(sale_price)}
                 </span>
                 <span className="ml-2 text-base text-text-light line-through">
-                  kr {regular_price}
+                  {formatPrice(regular_price)}
                 </span>
               </>
             )}
-            {!on_sale && <span className="text-base">kr {regular_price}</span>}
+            {!on_sale && <span className="text-base">{formatPrice(regular_price)}</span>}
             <br />
             <span className="text-base">
               {trimmedStringToLength(short_description, 30)}

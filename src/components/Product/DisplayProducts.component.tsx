@@ -2,7 +2,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { filteredVariantPrice, paddedPrice } from '@/utils/functions/functions';
+import { filteredVariantPrice } from '@/utils/functions/functions';
+import { formatPrice } from '@/utils/functions/price';
 
 import type { IDisplayProduct } from '@/types/product';
 
@@ -36,16 +37,9 @@ const DisplayProducts = ({ products }: IDisplayProductsProps) => (
             image,
             variations,
           }) => {
-            // Add padding/empty character after currency symbol here
-            if (price) {
-              price = paddedPrice(price, 'kr');
-            }
-            if (regularPrice) {
-              regularPrice = paddedPrice(regularPrice, 'kr');
-            }
-            if (salePrice) {
-              salePrice = paddedPrice(salePrice, 'kr');
-            }
+            price = formatPrice(price);
+            regularPrice = formatPrice(regularPrice);
+            salePrice = formatPrice(salePrice);
 
             return (
               <div key={slug} className="group">
