@@ -82,6 +82,24 @@ for deployments that need this configuration. Install it on the WordPress server
 and configure the allowed origins separately for each customer and environment;
 the plugin does not hardcode deployment URLs or trust any origins by default.
 
+After uploading the plugin, open **Settings → GraphQL CORS** in WordPress admin.
+Enter one trusted frontend origin per line and save. No server configuration file
+edits are required.
+
+For the current production storefront, add:
+
+- **https://next-woocommerce.dfweb.no**
+
+Only if local development should access this WordPress backend, also add:
+
+- **http://localhost:3000** (use your actual development port if different).
+
+These are frontend origins, not the WordPress backend URL. Do not include paths,
+trailing slashes, or wildcards. Add any other staging/preview origin explicitly
+only when it should be trusted. An empty list blocks cross-origin storefront
+requests and triggers an admin warning. Clear server/CDN caches after changing
+the configuration, then reload the storefront.
+
 See the [WordPress CORS setup guide](DOCS/wordpress-cors.md) for installation,
 sample configuration, verification, and troubleshooting. No third-party CORS
 plugin is required. If another plugin, web server, or CDN already manages CORS,

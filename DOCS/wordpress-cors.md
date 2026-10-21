@@ -9,19 +9,39 @@ valid for credentialed requests. This cannot be fixed by Next.js response header
 1. Check whether a plugin, web server, or CDN already manages GraphQL CORS.
    If so, choose one implementation and remove conflicting rules. No existing
    CORS plugin is required to use this solution.
-2. Configure the allowed storefront origins for this deployment as described below.
+2. Identify the trusted frontend origins for this deployment as described below.
 3. Upload [the must-use plugin](../wordpress/mu-plugins/headless-graphql-cors.php)
    to the WordPress server at
    `wp-content/mu-plugins/headless-graphql-cors.php`. Create the directory if needed.
    Place the file directly inside it; WordPress does not auto-load nested folders.
 4. Must-use plugins load automatically. Verify it appears under Plugins → Must-Use.
-5. Clear any reverse-proxy/CDN cache. Avoid caching personalized GraphQL responses.
-6. Reload the storefront and inspect both preflight and actual GraphQL responses.
+5. Open **Settings → GraphQL CORS** and save the allowed storefront origins.
+6. Clear any reverse-proxy/CDN cache. Avoid caching personalized GraphQL responses.
+7. Reload the storefront and inspect both preflight and actual GraphQL responses.
 
 ## Configure each deployment
 
-The plugin contains no deployment-specific URLs. In the WordPress server's
-`wp-config.php`, before WordPress is loaded, define the allowed storefront origins:
+The plugin contains no deployment-specific URLs. Configure it through
+**Settings → GraphQL CORS** in WordPress admin; no server configuration file edits
+are required. Only administrators with permission to manage site settings can
+save the allowlist. Enter one exact frontend origin per line.
+
+For the current production storefront, add **https://next-woocommerce.dfweb.no**.
+Only if this backend should also accept local development requests, add
+**http://localhost:3000** (or the actual development port). Do not add the WordPress
+backend URL: the allowlist identifies the frontend sites calling it.
+
+Use exact origins, including scheme and port when needed, without paths or
+trailing slashes. Multiple origins can be listed if the same backend intentionally
+serves several storefronts. Invalid entries are rejected without replacing the
+previously saved list. Empty configuration produces an admin warning and grants
+no cross-origin access.
+
+### Optional deployment override
+
+For installations managed through server configuration, the existing constant
+remains supported. If defined before WordPress loads, it overrides the admin
+setting and makes the form read-only:
 
 ```php
 define( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS', [
@@ -29,19 +49,17 @@ define( 'HEADLESS_GRAPHQL_ALLOWED_ORIGINS', [
 ] );
 ```
 
-Replace the sample origin with the actual frontend origin for that customer and
-environment. Use an array of exact origins, including scheme and port when needed,
-without paths or trailing slashes. Multiple origins can be listed if the same
-backend intentionally serves several storefronts.
+Replace the sample origin with the actual frontend origin for that deployment.
 
 For local development, explicitly add `http://localhost:3000` to the development
 backend's configuration only if needed. Do not automatically trust local origins
 or staging deployments on production backends. Do not reflect arbitrary origins,
 allow every subdomain, or replace the allowlist with a wildcard.
 
-If the constant is missing or is not an array, the plugin trusts no cross-origin
-clients. Each WordPress deployment must configure its own allowlist; setting a
-Next.js environment variable does not configure the WordPress server.
+Without an override, the plugin uses the allowlist saved in WordPress admin.
+An invalid override type fails closed rather than falling back to the saved list.
+Each WordPress deployment must configure its own allowlist; setting a Next.js
+environment variable does not configure the WordPress server.
 
 ## Verify
 
