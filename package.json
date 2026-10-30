@@ -35,7 +35,7 @@
     "algoliasearch": "^5.59.0",
     "autoprefixer": "^10.6.1",
     "graphql": "^17.0.2",
-    "motion": "^14.4.0",
+    "motion": "^14.7.1",
     "next": "16.4.2",
     "nprogress": "^0.2.0",
     "postcss": "~8.5.29",
