@@ -239,8 +239,8 @@ importers:
         specifier: ^8.71.2
         version: 8.71.2(eslint@10.8.1(jiti@1.21.7)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@7.0.2)
       babel-plugin-styled-components:
-        specifier: ^2.3.0
-        version: 2.3.0(@babel/core@7.29.7(supports-color@5.5.0))(styled-components@6.5.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@5.5.0)
+        specifier: ^2.3.1
+        version: 2.3.1(@babel/core@7.29.7(supports-color@5.5.0))(styled-components@6.5.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@5.5.0)
       pa11y:
         specifier: ^10.0.0
         version: 10.0.0(yauzl@2.10.0)
@@ -2007,8 +2007,8 @@ packages:
       react-native-b4a:
         optional: true
 
-  babel-plugin-styled-components@2.3.0:
-    resolution: {integrity: sha512-nP/y6PbBqS/qtKROnJCgpGo8hYUzlBAVXN1QAjSBANL6vZiQXPQN7FYW/nUwoxY7nZhBEGm9T5tjL9gbzwulDw==}
+  babel-plugin-styled-components@2.3.1:
+    resolution: {integrity: sha512-qzRR73g8C6acYxnHNlKydMsJrSBKdPpJuPQlVRM2lhYUjsYaOD/V1OQ8Sas2tobQ6cS6wb0Qd6MoxNmoj3wklQ==}
     peerDependencies:
       '@babel/core': ^7.0.0
       styled-components: '>= 2'
@@ -3929,10 +3929,13 @@ packages:
     resolution: {integrity: sha512-6AsQEXcG7QhtdzjwJ4s5Amx5R9veYH9AP3+U6nF2BAMU0i1iM3cAXKJXuAKZCdv3Y2ntVMcL44cPx4cIDxgYFg==}
     engines: {node: '>= 16'}
     peerDependencies:
+      css-to-react-native: '>= 3.2.0'
       react: '>= 16.8.0'
       react-dom: '>= 16.8.0'
       react-native: '>= 0.68.0'
     peerDependenciesMeta:
+      css-to-react-native:
+        optional: true
       react-dom:
         optional: true
       react-native:
@@ -5915,7 +5918,7 @@ snapshots:
 
   b4a@1.8.1: {}
 
-  babel-plugin-styled-components@2.3.0(@babel/core@7.29.7(supports-color@5.5.0))(styled-components@6.5.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@5.5.0):
+  babel-plugin-styled-components@2.3.1(@babel/core@7.29.7(supports-color@5.5.0))(styled-components@6.5.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(supports-color@5.5.0):
     dependencies:
       '@babel/core': 7.29.7(supports-color@5.5.0)
       '@babel/helper-annotate-as-pure': 7.29.7
