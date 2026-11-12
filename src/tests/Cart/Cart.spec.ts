@@ -51,17 +51,26 @@ test.describe('Cart flow', () => {
       .first()
       .click();
     await expect(page).toHaveURL(/\/handlekurv$/);
+    // Wait for the new page to render before asserting on its content
     await expect(
-      page.getByRole('heading', { name: PRODUCT.name, exact: true }),
+      page.getByRole('heading', { name: 'Handlekurv', exact: true, level: 1 }),
     ).toBeVisible();
+    // Cart rows render the product name as <h2>
+    const cartRow = page.getByRole('heading', {
+      name: PRODUCT.name,
+      exact: true,
+      level: 2,
+    });
+    await expect(cartRow).toBeVisible();
     await expect(page.getByLabel(`Antall ${PRODUCT.name}`)).toHaveValue('1');
 
     // Proceed to checkout
     await page.getByRole('button', { name: 'GÅ TIL KASSE' }).click();
     await expect(page).toHaveURL(/\/kasse$/);
     await expect(
-      page.getByRole('heading', { name: PRODUCT.name, exact: true }),
+      page.getByRole('heading', { name: 'Kasse', exact: true, level: 1 }),
     ).toBeVisible();
+    await expect(cartRow).toBeVisible();
     // Checkout page hides the "go to checkout" button (pathname check)
     await expect(
       page.getByRole('button', { name: 'GÅ TIL KASSE' }),
