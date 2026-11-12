@@ -13,17 +13,18 @@ interface ILayoutProps {
 }
 
 /**
- * Renders layout for each page. Also passes along the title to the Header component.
+ * Renders layout for each page.
+ * The document <title> is set by the route's `metadata` / `generateMetadata`.
  * @function Layout
  * @param {ReactNode} children - Children to be rendered by Layout component
- * @param {TTitle} title - Title for the page. Is set in <title>{title}</title>
+ * @param {string} title - Visible page heading (rendered by PageTitle, except on "Hjem")
  * @returns {JSX.Element} - Rendered component
  */
 
-const Layout = ({ children, title }: ILayoutProps) => {
+const Layout = ({ children, title }: Readonly<ILayoutProps>) => {
   return (
     <div className="flex flex-col min-h-screen w-full mx-auto bg-surface">
-      <Header title={title} />
+      <Header />
       {title === 'Hjem' ? (
         <main className="flex-1">{children}</main>
       ) : (
