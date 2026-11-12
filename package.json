@@ -45,7 +45,7 @@
     "zustand": "^5.1.0"
   },
   "devDependencies": {
-    "@lhci/cli": "^0.15.1",
+    "@lhci/cli": "^0.16.0",
     "@playwright/test": "^1.64.1",
     "@types/node": "25.9.9",
     "@types/react": "19.3.0",
