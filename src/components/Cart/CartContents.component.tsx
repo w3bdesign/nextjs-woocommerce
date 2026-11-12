@@ -88,9 +88,9 @@ const CartContents = () => {
                     className="rounded-md object-cover"
                   />
                 </div>
-                {/* Mobile: name, unit price and controls stack beside the image (name gets the full width).
-                    Desktop: name | quantity + remove | line total on one row. */}
-                <div className="flex min-w-0 flex-1 flex-col gap-2 md:flex-row md:items-center md:gap-4">
+                {/* Mobile: name, line total and controls stack beside the image so the name gets the full width.
+                    Desktop: name | quantity + remove | line total on a single row. */}
+                <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-row md:items-center md:gap-4">
                   <div className="min-w-0 md:flex-1">
                     <h2 className="break-words text-base font-semibold leading-snug text-text md:text-lg">
                       {item.product.node.name}
@@ -99,40 +99,38 @@ const CartContents = () => {
                       {formatUnitPrice(item.subtotal, item.quantity)}
                     </p>
                   </div>
-                  <div className="flex flex-wrap items-center justify-between gap-2 md:flex-nowrap md:justify-end md:gap-4">
-                    <div className="flex items-center gap-2">
-                      <input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                        onChange={(event) => {
-                          handleQuantityChange(
-                            event,
-                            item.key,
-                            data.cart.contents.nodes,
-                            updateCart,
-                            updateCartProcessing,
-                          );
-                        }}
-                        className="h-10 w-16 px-2 py-1 text-center border border-border rounded-md bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
-                        aria-label={`Antall ${item.product.node.name}`}
-                      />
-                      <Button
-                        handleButtonClick={() =>
-                          handleRemoveProductClick(
-                            item.key,
-                            data.cart.contents.nodes,
-                          )
-                        }
-                        variant="secondary"
-                        buttonDisabled={updateCartProcessing}
-                      >
-                        Fjern
-                      </Button>
-                    </div>
-                    <p className="whitespace-nowrap text-right text-base font-semibold text-text md:min-w-28 md:text-lg">
-                      {formatPrice(item.subtotal)}
-                    </p>
+                  <p className="whitespace-nowrap text-base font-semibold text-text md:order-last md:min-w-28 md:text-right md:text-lg">
+                    {formatPrice(item.subtotal)}
+                  </p>
+                  <div className="mt-1 flex items-center gap-2 md:mt-0">
+                    <input
+                      type="number"
+                      min="1"
+                      value={item.quantity}
+                      onChange={(event) => {
+                        handleQuantityChange(
+                          event,
+                          item.key,
+                          data.cart.contents.nodes,
+                          updateCart,
+                          updateCartProcessing,
+                        );
+                      }}
+                      className="h-10 w-16 px-2 py-1 text-center border border-border rounded-md bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
+                      aria-label={`Antall ${item.product.node.name}`}
+                    />
+                    <Button
+                      handleButtonClick={() =>
+                        handleRemoveProductClick(
+                          item.key,
+                          data.cart.contents.nodes,
+                        )
+                      }
+                      variant="secondary"
+                      buttonDisabled={updateCartProcessing}
+                    >
+                      Fjern
+                    </Button>
                   </div>
                 </div>
               </div>
