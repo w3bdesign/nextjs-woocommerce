@@ -3,7 +3,7 @@ import {
   formatPrice,
   formatUnitPrice,
   parsePrice,
-} from '../../utils/functions/price';
+} from '@/utils/functions/price';
 
 test('standardizes raw, encoded and HTML WooCommerce prices', () => {
   for (const price of [

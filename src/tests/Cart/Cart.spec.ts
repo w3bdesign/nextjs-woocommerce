@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { mockWooGraphql, MOCK_SESSION_TOKEN } from '../helpers/mockWooGraphql';
+import { mockWooGraphql, MOCK_SESSION_TOKEN } from '@/tests/helpers/mockWooGraphql';
 
 /**
  * End-to-end cart flow.

@@ -4,7 +4,7 @@ import Cart from '@/components/Header/Cart.component';
 import Search from '@/components/AlgoliaSearch/AlgoliaSearchBox.component';
 import SVGMobileSearchIcon from '@/components/SVG/SVGMobileSearchIcon.component';
 
-import Hamburger from './Hamburger.component';
+import Hamburger from '@/components/Footer/Hamburger.component';
 
 /**
  * Navigation for the application.

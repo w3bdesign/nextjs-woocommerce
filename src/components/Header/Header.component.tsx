@@ -5,7 +5,7 @@
 // Remove <Head> and 'use client' once src/pages is gone.
 import Head from 'next/head';
 
-import Navbar from './Navbar.component';
+import Navbar from '@/components/Header/Navbar.component';
 
 interface IHeaderProps {
   title: string;

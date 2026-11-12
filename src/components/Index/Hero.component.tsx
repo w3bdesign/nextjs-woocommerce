@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Button from '../UI/Button.component';
+import Button from '@/components/UI/Button.component';
 
 /**
  * Renders Hero section for Index page

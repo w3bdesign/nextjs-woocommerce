@@ -1,8 +1,8 @@
 import { Product, ProductCategory, ProductType } from '@/types/product';
-import { parsePrice } from './price';
+import { parsePrice } from '@/utils/functions/price';
 
 // Preserve the existing public name while sharing the store-wide price parser.
-export { parsePrice as parseProductPrice } from './price';
+export { parsePrice as parseProductPrice } from '@/utils/functions/price';
 
 export const getUniqueProductTypes = (products: Product[]): ProductType[] => {
   // Use Map to ensure unique categories by slug

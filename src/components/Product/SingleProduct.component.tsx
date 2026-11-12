@@ -9,7 +9,7 @@ import { filteredVariantPrice } from '@/utils/functions/functions';
 import { formatPrice } from '@/utils/functions/price';
 
 // Components
-import AddToCart from './AddToCart.component';
+import AddToCart from '@/components/Product/AddToCart.component';
 
 // Types
 import type { ISingleProductProps, ISingleProduct } from '@/types/product';

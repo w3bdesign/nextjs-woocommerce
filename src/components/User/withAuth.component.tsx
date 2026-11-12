@@ -3,8 +3,8 @@
 import { useRouter } from 'next/router';
 import { useEffect, ComponentType, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_CURRENT_USER } from '../../utils/gql/GQL_QUERIES';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import { GET_CURRENT_USER } from '@/utils/gql/GQL_QUERIES';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const Wrapper = (props: P) => {

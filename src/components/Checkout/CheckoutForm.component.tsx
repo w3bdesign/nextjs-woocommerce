@@ -6,9 +6,9 @@ import { useState, useEffect } from 'react';
 import { useMutation, ApolloError } from '@apollo/client';
 
 // Components
-import Billing from './Billing.component';
-import CartContents from '../Cart/CartContents.component';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import Billing from '@/components/Checkout/Billing.component';
+import CartContents from '@/components/Cart/CartContents.component';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 // GraphQL
 import { CHECKOUT_MUTATION } from '@/utils/gql/GQL_MUTATIONS';

@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@apollo/client';
-import { GET_CUSTOMER_ORDERS } from '../../utils/gql/GQL_QUERIES';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import { GET_CUSTOMER_ORDERS } from '@/utils/gql/GQL_QUERIES';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 interface Order {
   id: string;

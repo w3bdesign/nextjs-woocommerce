@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { login } from '../../utils/auth';
-import { InputField } from '../Input/InputField.component';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
-import Button from '../UI/Button.component';
-import { useRouter } from 'next/router';
+import { login } from '@/utils/auth';
+import { InputField } from '@/components/Input/InputField.component';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
+import Button from '@/components/UI/Button.component';
+import { useRouter } from 'next/navigation';
 
 interface ILoginData {
   username: string;

@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useCartQuery } from '@/hooks/useCartQuery';
 import Button from '@/components/UI/Button.component';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 import {
   getUpdatedItems,

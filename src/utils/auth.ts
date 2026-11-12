@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { LOGIN_USER } from './gql/GQL_MUTATIONS';
+import { LOGIN_USER } from '@/utils/gql/GQL_MUTATIONS';
 
 type LoginError = {
   graphQLErrors?: Array<{ message?: string }>;
