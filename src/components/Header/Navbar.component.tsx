@@ -29,7 +29,7 @@ const Navbar = () => {
               <Link href="/produkter">
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-500"></span>
+                    <span className="absolute -bottom-1 left-0 w-full h-px bg-primary origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
                     {' '}Produkter
                   </span>
                 </span>
@@ -37,7 +37,7 @@ const Navbar = () => {
               <Link href="/kategorier">
                 <span className="text-base uppercase tracking-wider group relative">
                   <span className="relative inline-block">
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-500"></span>
+                    <span className="absolute -bottom-1 left-0 w-full h-px bg-primary origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></span>
                     {' '}Kategorier
                   </span>
                 </span>

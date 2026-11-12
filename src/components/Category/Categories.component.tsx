@@ -13,7 +13,7 @@ const Categories = ({ categories }: ICategoriesProps) => (
           href={`/kategori/${encodeURIComponent(slug)}`}
         >
           <div className="p-6 cursor-pointer">
-            <div className="flex items-center justify-center w-full h-16 text-center border border-border rounded-lg shadow-sm hover:shadow-md hover:border-primary transition-all duration-200">
+            <div className="flex items-center justify-center w-full h-16 text-center border border-border rounded-lg shadow-sm hover:shadow-md hover:border-primary transition-[box-shadow,border-color] duration-200">
               <p className="text-lg text-text">{name}</p>
             </div>
           </div>
