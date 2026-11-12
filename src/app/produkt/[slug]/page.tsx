@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { ApolloError } from '@apollo/client';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
@@ -21,9 +22,18 @@ interface IProductData {
   product: ISingleProduct | null;
 }
 
+/** WPGraphQL reports an unknown slug as a GraphQL error on the `product` field. */
+const isProductNotFoundError = (error: unknown) =>
+  error instanceof ApolloError &&
+  error.graphQLErrors.some(
+    ({ message, path }) =>
+      path?.[0] === 'product' && /no product id was found/i.test(message),
+  );
+
 /**
  * Deduplicated per request so generateMetadata and the page share one fetch.
- * Returns `undefined` when the backend request fails.
+ * Returns `null` when the product does not exist and `undefined` when the
+ * backend request fails.
  */
 const getProduct = cache(async (slug: string) => {
   try {
@@ -32,6 +42,7 @@ const getProduct = cache(async (slug: string) => {
     });
     return data?.product ?? null;
   } catch (error) {
+    if (isProductNotFoundError(error)) return null;
     console.error('Failed to load product', slug, error);
     return undefined;
   }
