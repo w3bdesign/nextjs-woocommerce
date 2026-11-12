@@ -5,17 +5,17 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('Redirects and status codes', () => {
-  test('legacy /produkt/[slug]?id= URL permanently redirects (301) to clean slug', async ({
-    request,
-  }) => {
-    const response = await request.get('/produkt/test-simple?id=123', {
-      maxRedirects: 0,
+  for (const path of ['/produkt/test-simple', '/kategori/tskjorter']) {
+    test(`legacy ${path}?id= URL permanently redirects (301) to clean slug`, async ({
+      request,
+    }) => {
+      const response = await request.get(`${path}?id=123`, { maxRedirects: 0 });
+      expect(response.status()).toBe(301);
+      expect(response.headers()['location']).toMatch(
+        new RegExp(`^(http://localhost:3000)?${path}$`),
+      );
     });
-    expect(response.status()).toBe(301);
-    expect(response.headers()['location']).toMatch(
-      /^(http:\/\/localhost:3000)?\/produkt\/test-simple$/,
-    );
-  });
+  }
 
   test('unknown route responds 404', async ({ request }) => {
     const response = await request.get('/denne-siden-finnes-ikke');
@@ -23,11 +23,11 @@ test.describe('Redirects and status codes', () => {
   });
 
   /*
-   * Dynamic pages stream behind the root `loading.tsx`, so `notFound()` cannot
-   * change the already-sent 200 status. Next renders the not-found UI and adds
-   * `noindex` instead (before the migration these URLs crashed with a 500).
+   * Pages stream behind the root `loading.tsx`, so `notFound()` may not be able
+   * to change an already-sent 200 status. Next then renders the not-found UI
+   * with `noindex`, so the page is not indexed.
    */
-  for (const path of ['/produkt/finnes-ikke-produkt', '/kategori/clothing']) {
+  for (const path of ['/produkt/finnes-ikke-produkt', '/kategori/finnes-ikke-kategori']) {
     test(`${path} renders not-found page with noindex`, async ({ request }) => {
       const response = await request.get(path);
       expect(response.status()).toBeLessThan(500);
