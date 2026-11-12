@@ -79,4 +79,71 @@ test.describe('Cart flow', () => {
     ).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'BESTILL' })).toBeVisible();
   });
+
+  test('a filled cart shows a loading skeleton, never the empty message, while it loads', async ({
+    page,
+  }) => {
+    await mockWooGraphql(page, PRODUCT, {
+      initialQuantity: 2,
+      cartDelayMs: 1500,
+    });
+
+    const hydrationErrors: string[] = [];
+    page.on('pageerror', (error) => {
+      if (/hydrat/i.test(error.message)) hydrationErrors.push(error.message);
+    });
+    page.on('console', (message) => {
+      if (message.type() === 'error' && /hydrat/i.test(message.text())) {
+        hydrationErrors.push(message.text());
+      }
+    });
+
+    // Record if the empty-cart message is ever rendered, however briefly
+    await page.addInitScript(() => {
+      const win = window as Window & { __emptyCartShown?: boolean };
+      win.__emptyCartShown = false;
+      new MutationObserver(() => {
+        if (document.body?.textContent?.includes('Ingen produkter i handlekurven')) {
+          win.__emptyCartShown = true;
+        }
+      }).observe(document, { childList: true, subtree: true, characterData: true });
+    });
+
+    const response = await page.goto('/handlekurv');
+
+    // The server cannot see the browser cart, so it must not claim the cart is empty
+    expect(await response?.text()).not.toContain('Ingen produkter i handlekurven');
+
+    await expect(page.getByText('Laster handlekurv…')).toBeAttached();
+    await expect(
+      page.getByRole('heading', { name: PRODUCT.name, exact: true, level: 2 }),
+    ).toBeVisible();
+    await expect(page.getByText('Laster handlekurv…')).toHaveCount(0);
+
+    expect(
+      await page.evaluate(
+        () => (window as Window & { __emptyCartShown?: boolean }).__emptyCartShown,
+      ),
+    ).toBe(false);
+    expect(hydrationErrors).toEqual([]);
+  });
+
+  test('a product without an image shows an icon and requests no fallback file', async ({
+    page,
+  }) => {
+    const productWithoutImage = { ...PRODUCT, hasImage: false };
+    await mockWooGraphql(page, productWithoutImage, { initialQuantity: 1 });
+
+    const placeholderRequests: string[] = [];
+    page.on('request', (request) => {
+      if (/placeholder/i.test(request.url())) placeholderRequests.push(request.url());
+    });
+
+    await page.goto('/handlekurv');
+
+    await expect(
+      page.getByRole('img', { name: `Ingen bilde av ${PRODUCT.name}` }),
+    ).toBeVisible();
+    expect(placeholderRequests).toEqual([]);
+  });
 });

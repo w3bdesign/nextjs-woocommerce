@@ -29,6 +29,15 @@ export interface MockProduct {
   name: string;
   slug: string;
   price: string;
+  /** Set to false to mock a product without an image. Defaults to true. */
+  hasImage?: boolean;
+}
+
+export interface MockOptions {
+  /** Quantity already in the cart before the test starts. Defaults to 0. */
+  initialQuantity?: number;
+  /** Delay in ms before cart query responses are returned. Defaults to 0. */
+  cartDelayMs?: number;
 }
 
 const productNode = (p: MockProduct) => ({
@@ -42,14 +51,17 @@ const productNode = (p: MockProduct) => ({
   slug: p.slug,
   averageRating: 0,
   reviewCount: 0,
-  image: {
-    __typename: 'MediaItem',
-    id: 'mock-image',
-    sourceUrl: MOCK_IMAGE_URL,
-    srcSet: null,
-    altText: p.name,
-    title: p.name,
-  },
+  image:
+    p.hasImage === false
+      ? null
+      : {
+          __typename: 'MediaItem',
+          id: 'mock-image',
+          sourceUrl: MOCK_IMAGE_URL,
+          srcSet: null,
+          altText: p.name,
+          title: p.name,
+        },
   galleryImages: { __typename: 'ProductToMediaItemConnection', nodes: [] },
 });
 
@@ -73,8 +85,12 @@ const cartItem = (p: MockProduct, quantity: number) => {
 /**
  * Installs the mock. Returns a handle exposing the mocked cart state.
  */
-export const mockWooGraphql = async (page: Page, product: MockProduct) => {
-  const state = { quantity: 0, requests: [] as string[] };
+export const mockWooGraphql = async (
+  page: Page,
+  product: MockProduct,
+  { initialQuantity = 0, cartDelayMs = 0 }: MockOptions = {},
+) => {
+  const state = { quantity: initialQuantity, requests: [] as string[] };
 
   const cart = () => {
     const nodes = state.quantity ? [cartItem(product, state.quantity)] : [];
@@ -103,7 +119,7 @@ export const mockWooGraphql = async (page: Page, product: MockProduct) => {
       body: JSON.stringify(body),
     });
 
-  await page.route('**/graphql', (route) => {
+  await page.route('**/graphql', async (route) => {
     const request = route.request();
 
     if (request.method() === 'OPTIONS') {
@@ -127,6 +143,9 @@ export const mockWooGraphql = async (page: Page, product: MockProduct) => {
 
     if (/\bcart\s*\{/.test(query)) {
       state.requests.push('GET_CART');
+      if (cartDelayMs) {
+        await new Promise((resolve) => setTimeout(resolve, cartDelayMs));
+      }
       return json(route, { data: { cart: cart() } });
     }
 
