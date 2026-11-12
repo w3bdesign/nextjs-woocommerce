@@ -15,10 +15,7 @@ const ROUTES: { path: string; title: string }[] = [
   { path: '/kasse', title: `${TITLE_PREFIX} Kasse` },
   { path: '/logg-inn', title: `${TITLE_PREFIX} Logg inn` },
   { path: '/produkt/test-simple', title: `${TITLE_PREFIX} Test Simple` },
-  {
-    path: `/kategori/clothing?id=${encodeURIComponent('dGVybToxNw==')}`,
-    title: `${TITLE_PREFIX} Clothing`,
-  },
+  { path: '/kategori/clothing', title: `${TITLE_PREFIX} Clothing` },
 ];
 
 const expectSharedHead = async (page: Page) => {

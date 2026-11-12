@@ -10,7 +10,6 @@ const PRODUCT_SLUG = 'test-simple';
 const PRODUCT_NAME = 'Test Simple';
 // "Tskjorter" is the category that currently contains products.
 const CATEGORY_SLUG = 'tskjorter';
-const CATEGORY_ID = 'dGVybToxNg==';
 const CATEGORY_NAME = 'Tskjorter';
 
 const visibleProductLink = (page: import('@playwright/test').Page) =>
@@ -44,10 +43,7 @@ test.describe('Routes', () => {
     ).toBeVisible();
     await expect(
       page.getByRole('link', { name: CATEGORY_NAME, exact: true }),
-    ).toHaveAttribute(
-      'href',
-      `/kategori/${CATEGORY_SLUG}?id=${encodeURIComponent(CATEGORY_ID)}`,
-    );
+    ).toHaveAttribute('href', `/kategori/${CATEGORY_SLUG}`);
   });
 
   test('/produkt/[slug] responds 200 and renders the product', async ({
@@ -61,12 +57,10 @@ test.describe('Routes', () => {
     await expect(page.getByRole('button', { name: 'KJØP' })).toBeVisible();
   });
 
-  test('/kategori/[slug]?id= responds 200 and renders category products', async ({
+  test('/kategori/[slug] responds 200 and renders category products', async ({
     page,
   }) => {
-    const response = await page.goto(
-      `/kategori/${CATEGORY_SLUG}?id=${encodeURIComponent(CATEGORY_ID)}`,
-    );
+    const response = await page.goto(`/kategori/${CATEGORY_SLUG}`);
     expect(response?.status()).toBe(200);
     await expect(
       page.getByRole('heading', { name: CATEGORY_NAME, exact: true }),
