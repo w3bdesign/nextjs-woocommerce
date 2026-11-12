@@ -87,13 +87,14 @@ const CartContents = () => {
                   </div>
 
                   <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
-                    {/* Top line: product info on the left, line total on the right */}
-                    <div className="flex items-start justify-between gap-3">
+                    {/* Product info and line total: stacked on small phones,
+                        side by side (total on the right) from the sm breakpoint */}
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                       <div className="min-w-0">
                         <h2 className="break-words text-base font-semibold leading-snug text-text sm:text-lg">
                           {name}
                         </h2>
-                        <p className="mt-1 text-sm text-text-muted">
+                        <p className="mt-1 whitespace-nowrap text-sm text-text-muted">
                           {formatUnitPrice(item.subtotal, item.quantity)} per
                           stk
                         </p>
