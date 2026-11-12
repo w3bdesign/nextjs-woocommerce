@@ -22,15 +22,20 @@ test.describe('Redirects and status codes', () => {
     expect(response.status()).toBe(404);
   });
 
-  test('unknown product slug responds 404', async ({ request }) => {
-    const response = await request.get('/produkt/finnes-ikke-produkt');
-    expect(response.status()).toBe(404);
-  });
-
-  test('category page without ?id= responds 404', async ({ request }) => {
-    const response = await request.get('/kategori/clothing');
-    expect(response.status()).toBe(404);
-  });
+  /*
+   * Dynamic pages stream behind the root `loading.tsx`, so `notFound()` cannot
+   * change the already-sent 200 status. Next renders the not-found UI and adds
+   * `noindex` instead (before the migration these URLs crashed with a 500).
+   */
+  for (const path of ['/produkt/finnes-ikke-produkt', '/kategori/clothing']) {
+    test(`${path} renders not-found page with noindex`, async ({ request }) => {
+      const response = await request.get(path);
+      expect(response.status()).toBeLessThan(500);
+      const html = await response.text();
+      expect(html).toContain('This page could not be found');
+      expect(html).toMatch(/<meta name="robots" content="noindex"\/?>/);
+    });
+  }
 
   test('/min-konto redirects anonymous users to /logg-inn', async ({ page }) => {
     await page.goto('/min-konto');
