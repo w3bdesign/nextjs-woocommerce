@@ -9,8 +9,8 @@ const SITE_TITLE = 'Next.js webshop with WooCommerce';
 
 /**
  * Default metadata for every route.
- * Pages set `title` and it is rendered as "Next.js webshop with WooCommerce <title>",
- * matching the previous <Header> behaviour in the Pages Router.
+ * Pages set `title` and it is rendered as "Next.js webshop with WooCommerce <title>".
+ * Note: the template applies to child segments only, so `app/page.tsx` sets an absolute title.
  */
 export const metadata: Metadata = {
   title: {
