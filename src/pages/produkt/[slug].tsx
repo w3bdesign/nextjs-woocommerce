@@ -1,63 +1,71 @@
+// Imports
+import { withRouter } from 'next/router';
+
+// Components
+import SingleProduct from '@/components/Product/SingleProduct.component';
+import Layout from '@/components/Layout/Layout.component';
+
+// Utilities
+import client from '@/utils/apollo/ApolloClient';
+
+// Types
 import type {
+  NextPage,
   GetServerSideProps,
   InferGetServerSidePropsType,
-  NextPage,
 } from 'next';
 
-import Layout from '@/components/Layout/Layout.component';
-import SingleProduct from '@/components/Product/SingleProduct.component';
-
-import { serverQuery } from '@/utils/apollo/serverQuery';
+// GraphQL
 import { GET_SINGLE_PRODUCT } from '@/utils/gql/GQL_QUERIES';
 
-import type { ISingleProduct } from '@/types/product';
-
-interface ProductPageProps {
-  product: ISingleProduct;
-}
-
 /**
- * Displays a single product with pretty URLs (/produkt/[slug]).
+ * Display a single product with dynamic pretty urls
+ * @function Produkt
+ * @param {InferGetServerSidePropsType<typeof getServerSideProps>} products
+ * @returns {JSX.Element} - Rendered component
  */
-const Produkt: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ product }) => (
-  <Layout title={product.name}>
-    <SingleProduct product={product} />
-  </Layout>
-);
+const Produkt: NextPage = ({
+  product,
+  networkStatus,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const hasError = networkStatus === '8';
+  return (
+    <Layout title={`${product.name ? product.name : ''}`}>
+      {product ? (
+        <SingleProduct product={product} />
+      ) : (
+        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
+      )}
+      {hasError && (
+        <div className="mt-8 text-2xl text-center">
+          Feil under lasting av produkt ...
+        </div>
+      )}
+    </Layout>
+  );
+};
 
-export default Produkt;
+export default withRouter(Produkt);
 
-export const getServerSideProps: GetServerSideProps<
-  ProductPageProps,
-  { slug: string }
-> = async ({ params, query, res }) => {
-  const slug = params?.slug;
-
-  if (!slug) return { notFound: true };
-
-  // Legacy URLs had an ?id= parameter – permanently redirect to the clean URL
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  query,
+  res,
+}) => {
+  // Handle legacy URLs with ID parameter by removing it
   if (query.id) {
-    return {
-      redirect: {
-        destination: `/produkt/${encodeURIComponent(slug)}`,
-        permanent: true,
-      },
-    };
+    res.setHeader('Location', `/produkt/${params?.slug}`);
+    res.statusCode = 301;
+    res.end();
+    return { props: {} };
   }
 
-  const data = await serverQuery<{ product: ISingleProduct | null }>(
-    GET_SINGLE_PRODUCT,
-    { slug },
-  );
+  const { data, loading, networkStatus } = await client.query({
+    query: GET_SINGLE_PRODUCT,
+    variables: { slug: params?.slug },
+  });
 
-  if (!data?.product) return { notFound: true };
-
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=60, stale-while-revalidate=300',
-  );
-
-  return { props: { product: data.product } };
+  return {
+    props: { product: data.product, loading, networkStatus },
+  };
 };

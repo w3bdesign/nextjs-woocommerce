@@ -1,75 +1,46 @@
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  NextPage,
-} from 'next';
+import { withRouter } from 'next/router';
 
+// Components
 import Layout from '@/components/Layout/Layout.component';
 import DisplayProducts from '@/components/Product/DisplayProducts.component';
 
-import { serverQuery } from '@/utils/apollo/serverQuery';
+import client from '@/utils/apollo/ApolloClient';
+
 import { GET_PRODUCTS_FROM_CATEGORY } from '@/utils/gql/GQL_QUERIES';
-
-import type { IDisplayProduct } from '@/types/product';
-
-interface CategoryPageProps {
-  categoryName: string;
-  products: IDisplayProduct[];
-}
-
-interface CategoryQueryResult {
-  productCategory: {
-    name: string;
-    products: { nodes: IDisplayProduct[] };
-  } | null;
-}
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 /**
- * Displays all products in a category (/kategori/[slug]).
- * Supports the legacy `?id=` global ID and falls back to looking up by slug.
+ * Display a single product with dynamic pretty urls
  */
-const Kategori: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ categoryName, products }) => (
-  <Layout title={categoryName}>
-    {products.length > 0 ? (
-      <DisplayProducts products={products} />
-    ) : (
-      <p className="mt-8 text-2xl text-center">
-        Ingen produkter i denne kategorien
-      </p>
-    )}
-  </Layout>
-);
-
-export default Kategori;
-
-export const getServerSideProps: GetServerSideProps<
-  CategoryPageProps,
-  { slug: string }
-> = async ({ params, query, res }) => {
-  const slug = params?.slug;
-  if (!slug) return { notFound: true };
-
-  const id = typeof query.id === 'string' ? query.id : undefined;
-
-  const data = await serverQuery<CategoryQueryResult>(
-    GET_PRODUCTS_FROM_CATEGORY,
-    id ? { id, idType: 'ID' } : { id: slug, idType: 'SLUG' },
+const Produkt = ({
+  categoryName,
+  products,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  return (
+    <Layout title={`${categoryName ? categoryName : ''}`}>
+      {products ? (
+        <DisplayProducts products={products} />
+      ) : (
+        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
+      )}
+    </Layout>
   );
+};
 
-  const category = data?.productCategory;
-  if (!category) return { notFound: true };
+export default withRouter(Produkt);
 
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=60, stale-while-revalidate=300',
-  );
+export const getServerSideProps: GetServerSideProps = async ({
+  query: { id },
+}) => {
+  const res = await client.query({
+    query: GET_PRODUCTS_FROM_CATEGORY,
+    variables: { id },
+  });
 
   return {
     props: {
-      categoryName: category.name,
-      products: category.products.nodes,
+      categoryName: res.data.productCategory.name,
+      products: res.data.productCategory.products.nodes,
     },
   };
 };

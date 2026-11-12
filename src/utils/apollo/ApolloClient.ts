@@ -2,10 +2,9 @@
 
 import {
   ApolloClient,
-  ApolloLink,
   InMemoryCache,
   createHttpLink,
-  type NormalizedCacheObject,
+  ApolloLink,
 } from '@apollo/client';
 
 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
@@ -14,72 +13,80 @@ const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 const WOOCOMMERCE_CART_KEY = 'woocommerce-cart:v1';
 const WOO_SESSION_KEY = 'woo-session:v1';
 
-const isServer = () => globalThis.window === undefined;
-
 interface SessionData {
   token: string;
   createdTime: number;
 }
 
-function readSession(): string | null {
-  if (isServer()) return null;
-  try {
-    return localStorage.getItem(WOO_SESSION_KEY);
-  } catch {
-    return null;
-  }
-}
-
-function parseSession(raw: string | null): SessionData | null {
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as SessionData;
-  } catch {
-    // Corrupt value – drop it so we don't keep failing on every request
-    localStorage.removeItem(WOO_SESSION_KEY);
-    return null;
-  }
-}
-
 /**
  * Middleware operation
  * If we have a session token in localStorage, add it to the GraphQL request as a Session header.
- * Expired sessions (older than 7 days) are removed together with the cached cart.
  */
-const middleware = new ApolloLink((operation, forward) => {
-  const cachedWooSession = readSession();
-  const sessionData = parseSession(cachedWooSession);
+export const middleware = new ApolloLink((operation, forward) => {
+  /**
+   * If session data exist in local storage, set value as session header.
+   * Here we also delete the session if it is older than 7 days
+   */
+  // Cache the localStorage read to avoid multiple accesses across middleware and afterware
+  const cachedWooSession =
+    globalThis.window === undefined ? null : localStorage.getItem(WOO_SESSION_KEY);
+  
+  const sessionData: SessionData | null = cachedWooSession
+    ? JSON.parse(cachedWooSession)
+    : null;
 
   const headers: Record<string, string> = {};
 
   if (sessionData?.token && sessionData?.createdTime) {
-    if (Date.now() - sessionData.createdTime > SEVEN_DAYS) {
+    const { token, createdTime } = sessionData;
+
+    // Check if the token is older than 7 days
+    if (Date.now() - createdTime > SEVEN_DAYS) {
+      // If it is, delete it
       localStorage.removeItem(WOO_SESSION_KEY);
       localStorage.setItem(WOOCOMMERCE_CART_KEY, JSON.stringify({}));
     } else {
-      headers['woocommerce-session'] = `Session ${sessionData.token}`;
+      // If it's not, use the token
+      headers['woocommerce-session'] = `Session ${token}`;
     }
   }
 
-  operation.setContext({ headers, cachedWooSession });
+  // Cookie-based authentication - no JWT tokens needed
+  // Cookies are automatically included with credentials: 'include'
+
+  operation.setContext({
+    headers,
+    // Pass the cached session to afterware to avoid re-reading localStorage
+    cachedWooSession,
+  });
 
   return forward(operation);
 });
 
 /**
  * Afterware operation.
- * Catches the incoming session token and stores it in localStorage for future GraphQL requests.
+ *
+ * This catches the incoming session token and stores it in localStorage, for future GraphQL requests.
  */
-const afterware = new ApolloLink((operation, forward) =>
+export const afterware = new ApolloLink((operation, forward) =>
   forward(operation).map((response) => {
-    if (isServer()) return response;
+    /**
+     * Check for session header and update session in local storage accordingly.
+     */
+    const context = operation.getContext();
+    const {
+      response: { headers },
+      cachedWooSession,
+    } = context;
 
-    const { response: httpResponse, cachedWooSession } = operation.getContext();
-    const session = httpResponse?.headers?.get('woocommerce-session');
+    const session = headers.get('woocommerce-session');
 
-    if (session) {
-      if (session === 'false') {
+    if (session && globalThis.window !== undefined) {
+      // Use the cached value from middleware instead of re-reading localStorage
+      if ('false' === session) {
+        // Remove session data if session destroyed.
         localStorage.removeItem(WOO_SESSION_KEY);
+        // Update session new data if changed.
       } else if (!cachedWooSession) {
         localStorage.setItem(
           WOO_SESSION_KEY,
@@ -92,47 +99,21 @@ const afterware = new ApolloLink((operation, forward) =>
   }),
 );
 
-const createHttp = () =>
-  createHttpLink({
-    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-    fetch,
-    credentials: 'include', // Include cookies for authentication
-  });
+const isServerSide = globalThis.window === undefined;
 
-/**
- * Creates a new Apollo client.
- *
- * On the server a fresh client (and cache) is created for every call so that
- * data is never shared between requests or users, and responses are never
- * served from a stale in-memory cache across ISR/SSR invocations.
- */
-export function createApolloClient(): ApolloClient<NormalizedCacheObject> {
-  if (isServer()) {
-    return new ApolloClient({
-      ssrMode: true,
-      link: createHttp(),
-      cache: new InMemoryCache(),
-      defaultOptions: {
-        query: { fetchPolicy: 'no-cache', errorPolicy: 'all' },
-      },
-    });
-  }
+// Apollo GraphQL client.
+const client = new ApolloClient({
+  ssrMode: isServerSide,
+  link: middleware.concat(
+    afterware.concat(
+      createHttpLink({
+        uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+        fetch,
+        credentials: 'include', // Include cookies for authentication
+      }),
+    ),
+  ),
+  cache: new InMemoryCache(),
+});
 
-  return new ApolloClient({
-    link: ApolloLink.from([middleware, afterware, createHttp()]),
-    cache: new InMemoryCache(),
-  });
-}
-
-let browserClient: ApolloClient<NormalizedCacheObject> | undefined;
-
-/**
- * Returns the Apollo client for the current environment.
- * - Server: always a new, request-scoped client.
- * - Browser: a memoized singleton shared by the whole app.
- */
-export function getApolloClient(): ApolloClient<NormalizedCacheObject> {
-  if (isServer()) return createApolloClient();
-  browserClient ??= createApolloClient();
-  return browserClient;
-}
+export default client;
