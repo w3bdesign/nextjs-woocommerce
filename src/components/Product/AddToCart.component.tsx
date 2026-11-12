@@ -1,3 +1,5 @@
+'use client';
+
 // Imports
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';

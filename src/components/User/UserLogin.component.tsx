@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { login } from '../../utils/auth';

@@ -1,3 +1,5 @@
+'use client';
+
 import { LazyMotion, domAnimation, m, Transition } from 'motion/react';
 
 import type { IAnimateStaggerWithDelayProps } from './types/Animations.types';

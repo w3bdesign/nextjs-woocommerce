@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import Link from 'next/link';

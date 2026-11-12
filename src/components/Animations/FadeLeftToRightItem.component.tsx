@@ -1,3 +1,5 @@
+'use client';
+
 import { m, Transition } from 'motion/react';
 
 import type { IAnimateProps } from './types/Animations.types';

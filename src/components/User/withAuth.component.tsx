@@ -1,3 +1,5 @@
+'use client';
+
 import { useRouter } from 'next/router';
 import { useEffect, ComponentType, useState } from 'react';
 import { useQuery } from '@apollo/client';
