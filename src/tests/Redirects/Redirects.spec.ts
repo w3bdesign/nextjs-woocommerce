@@ -22,6 +22,16 @@ test.describe('Redirects and status codes', () => {
     expect(response.status()).toBe(404);
   });
 
+  test('unknown product slug responds 404', async ({ request }) => {
+    const response = await request.get('/produkt/finnes-ikke-produkt');
+    expect(response.status()).toBe(404);
+  });
+
+  test('category page without ?id= responds 404', async ({ request }) => {
+    const response = await request.get('/kategori/clothing');
+    expect(response.status()).toBe(404);
+  });
+
   test('/min-konto redirects anonymous users to /logg-inn', async ({ page }) => {
     await page.goto('/min-konto');
     await expect(page).toHaveURL(/\/logg-inn$/);
