@@ -12,8 +12,10 @@ import type { IDisplayProduct } from '@/types/product';
 // ISR: same as the previous getStaticProps `revalidate: 60`.
 export const revalidate = 60;
 
+// A layout's title.template only applies to child segments, not to a page in
+// the same segment, so the root page sets the full title itself.
 export const metadata: Metadata = {
-  title: 'Hjem',
+  title: { absolute: 'Next.js webshop with WooCommerce Hjem' },
 };
 
 interface IProductsData {
