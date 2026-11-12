@@ -10,12 +10,16 @@ import { GET_PRODUCTS_FROM_CATEGORY } from '@/utils/gql/GQL_QUERIES';
 
 import type { IDisplayProduct } from '@/types/product';
 
-// SSR on every request: same as the previous getServerSideProps.
-export const dynamic = 'force-dynamic';
+// Rendered on first visit, then cached and refreshed at most every 10 minutes.
+export const revalidate = 600;
 
-/** Only `searchParams` is needed: categories are looked up by `?id=`, not the slug. */
+/** No categories are prebuilt at build time; each is rendered on first visit. */
+export function generateStaticParams() {
+  return [];
+}
+
 interface ICategoryPageProps {
-  searchParams: Promise<{ id?: string | string[] }>;
+  params: Promise<{ slug: string }>;
 }
 
 interface ICategoryData {
@@ -25,50 +29,36 @@ interface ICategoryData {
   } | null;
 }
 
-/** Deduplicated per request so generateMetadata and the page share one fetch. */
-const getCategory = cache(async (id: string) => {
+/** Shared by generateMetadata and the page so the category is fetched once. */
+const getCategory = cache(async (slug: string) => {
   const { data } = await serverQuery<ICategoryData>(GET_PRODUCTS_FROM_CATEGORY, {
-    id,
+    slug,
   });
   return data?.productCategory ?? null;
 });
 
-/** The category is looked up by the `?id=` query parameter (as before). */
-const getCategoryId = async (searchParams: ICategoryPageProps['searchParams']) => {
-  const { id } = await searchParams;
-  return Array.isArray(id) ? id[0] : id;
-};
-
 export async function generateMetadata({
-  searchParams,
+  params,
 }: Readonly<ICategoryPageProps>): Promise<Metadata> {
-  const id = await getCategoryId(searchParams);
-  if (!id) return {};
-  const category = await getCategory(id);
+  const { slug } = await params;
+  const category = await getCategory(slug);
   return { title: category?.name ?? '' };
 }
 
 /**
- * Display all products in a category
+ * Display all products in a category.
+ * Legacy `?id=` URLs are redirected with 301 in `src/proxy.ts`.
  */
 export default async function CategoryPage({
-  searchParams,
+  params,
 }: Readonly<ICategoryPageProps>) {
-  const id = await getCategoryId(searchParams);
-  if (!id) notFound();
-
-  const category = await getCategory(id);
+  const { slug } = await params;
+  const category = await getCategory(slug);
   if (!category) notFound();
-
-  const products = category.products?.nodes;
 
   return (
     <Layout title={category.name}>
-      {products ? (
-        <DisplayProducts products={products} />
-      ) : (
-        <div className="mt-8 text-2xl text-center">Laster produkt ...</div>
-      )}
+      <DisplayProducts products={category.products?.nodes ?? []} />
     </Layout>
   );
 }
