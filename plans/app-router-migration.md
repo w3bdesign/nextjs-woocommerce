@@ -1,62 +1,69 @@
-# Pages Router → App Router migration plan
+# Pages Router → App Router migration
 
-## Current state
+**Status: done.** `src/pages` has been removed and every route is served from [`src/app`](../src/app).
+Next `16.4.2`, React `19.3.1`. No version upgrade was needed.
 
-- Next `16.4.2`, React `19.3.1`. **No version upgrade needed.**
-- Routes in [`src/pages`](../src/pages):
+## Route mapping
 
-| Route | File | Data | Notes |
+| Route | App Router file | Rendering | Notes |
 |---|---|---|---|
-| `/` | [`index.tsx`](../src/pages/index.tsx) | `getStaticProps`, revalidate 60 | Layout title `Hjem` |
-| `/produkter` | [`produkter.tsx`](../src/pages/produkter.tsx) | `getStaticProps`, revalidate 60 | Overrides title with `next/head` |
-| `/kategorier` | [`kategorier.tsx`](../src/pages/kategorier.tsx) | `getStaticProps`, revalidate 10 | |
-| `/produkt/[slug]` | [`produkt/[slug].tsx`](../src/pages/produkt/[slug].tsx) | `getServerSideProps` | 301 redirect when `?id=` is present |
-| `/kategori/[slug]` | [`kategori/[slug].tsx`](../src/pages/kategori/[slug].tsx) | `getServerSideProps` | Uses the `?id=` query, not the slug |
-| `/handlekurv` | [`handlekurv.tsx`](../src/pages/handlekurv.tsx) | client only | |
-| `/kasse` | [`kasse.tsx`](../src/pages/kasse.tsx) | client only | |
-| `/logg-inn` | [`logg-inn.tsx`](../src/pages/logg-inn.tsx) | client only | |
-| `/min-konto` | [`min-konto.tsx`](../src/pages/min-konto.tsx) | client, `withAuth` HOC | Redirects to `/logg-inn` |
+| `/` | [`app/page.tsx`](../src/app/page.tsx) | ISR, `revalidate = 60` | Absolute title (the layout template does not apply to the same segment) |
+| `/produkter` | [`app/produkter/page.tsx`](../src/app/produkter/page.tsx) | ISR, `revalidate = 60` | `title.absolute = 'Produkter \| WooCommerce Next.js'` (as before) |
+| `/kategorier` | [`app/kategorier/page.tsx`](../src/app/kategorier/page.tsx) | ISR, `revalidate = 10` | |
+| `/produkt/[slug]` | [`app/produkt/[slug]/page.tsx`](../src/app/produkt/[slug]/page.tsx) | `dynamic = 'force-dynamic'` | `generateMetadata`; unknown slug → 404; backend error → error text |
+| `/kategori/[slug]` | [`app/kategori/[slug]/page.tsx`](../src/app/kategori/[slug]/page.tsx) | `dynamic = 'force-dynamic'` | Looks up by the `?id=` search param; missing id / unknown category → 404 |
+| `/handlekurv` | [`app/handlekurv/page.tsx`](../src/app/handlekurv/page.tsx) | static shell + client cart | |
+| `/kasse` | [`app/kasse/page.tsx`](../src/app/kasse/page.tsx) | static shell + client checkout | |
+| `/logg-inn` | [`app/logg-inn/page.tsx`](../src/app/logg-inn/page.tsx) | static shell + client form | |
+| `/min-konto` | [`app/min-konto/page.tsx`](../src/app/min-konto/page.tsx) | static shell + client `withAuth` | Redirects anonymous users to `/logg-inn` |
 
-- [`_app.tsx`](../src/pages/_app.tsx) contains `ApolloProvider`, `CartInitializer`, global CSS, and NProgress via `Router.events`.
-- [`_document.tsx`](../src/pages/_document.tsx) sets `lang="nb-NO"` and the favicon.
+## What replaced what
 
-## Migration risks
+| Pages Router | App Router |
+|---|---|
+| `_document.tsx` (`lang="nb-NO"`, favicon) | [`app/layout.tsx`](../src/app/layout.tsx) `<html lang>` + `metadata.icons` |
+| `_app.tsx` (`ApolloProvider`, `CartInitializer`, global CSS) | [`app/layout.tsx`](../src/app/layout.tsx) + [`app/providers.tsx`](../src/app/providers.tsx) (`'use client'`) |
+| NProgress via `Router.events` | [`app/loading.tsx`](../src/app/loading.tsx) (`nprogress` deps removed) |
+| `next/head` in `Header` and `produkter.tsx` | `metadata` / `generateMetadata` with a `title.template` in the root layout |
+| `getStaticProps` + `revalidate` | async Server Component + `export const revalidate` |
+| `getServerSideProps` | async Server Component + `export const dynamic = 'force-dynamic'` |
+| Shared browser Apollo client used on the server | [`serverQuery()`](../src/utils/apollo/serverQuery.ts): a new client per call, deduplicated per request with React `cache()` |
+| 301 in `getServerSideProps` for `/produkt/:slug?id=` | [`src/proxy.ts`](../src/proxy.ts) (keeps 301; `permanentRedirect()` would send 308) |
+| `next/router` (`withAuth`, `UserLogin`, `CartContents`) | `next/navigation` (`useRouter`, `usePathname`) |
 
-1. **Apollo singleton on the server.** [`ApolloClient.ts`](../src/utils/apollo/ApolloClient.ts) uses one module-level `InMemoryCache`. Server Components would share it across requests and serve stale data. Server fetches need a **new client for each request** (`src/utils/apollo/serverQuery.ts`).
-2. **`next/head`** in [`Header.component.tsx`](../src/components/Header/Header.component.tsx) and `produkter.tsx` does nothing in `app/`. Titles and meta tags must move to `metadata`/`generateMetadata`.
-3. **`next/router`** is used in [`withAuth`](../src/components/User/withAuth.component.tsx), [`UserLogin`](../src/components/User/UserLogin.component.tsx) and [`CartContents`](../src/components/Cart/CartContents.component.tsx) (`router.pathname`). These must switch to `next/navigation`.
-4. **NProgress** relies on `Router.events`, which App Router doesn't have. It needs a replacement.
-5. **The legacy `?id=` 301 redirect** on `/produkt/[slug]`. `permanentRedirect()` sends 308, not 301. `next.config` redirects keep the query string, so the redirect would loop. Use `src/proxy.ts` (Next 16's name for middleware) and return a 301 explicitly.
-6. **Async `params`/`searchParams`.** Since Next 15 these are Promises and must be awaited.
-7. **Caching defaults.** Apollo uses `fetch`, which Next patches and doesn't cache by default. Each route needs explicit `revalidate` or `dynamic` exports to keep its current ISR or SSR behaviour.
-8. **The same route can't exist in both `pages/` and `app/`.** Next fails the build. Delete each `pages` file in the same commit as its `app` replacement.
-9. **Client boundaries.** Interactive components (Navbar search, Hamburger, Cart, AddToCart, SingleProduct, Checkout, forms, motion animations) need `'use client'`. This is harmless in `pages/`, so it can be added before the migration.
-
-## Target architecture
+## Server/client split
 
 ```mermaid
 flowchart TD
-    A[app/layout.tsx - html lang nb-NO, globals.css, metadata] --> B[Providers - use client]
-    B --> C[ApolloProvider]
-    B --> D[CartInitializer]
-    B --> E[ProgressBar - use client]
-    A --> F[Route page.tsx - Server Component]
+    A[app/layout.tsx - server: html lang, globals.css, metadata] --> B[Providers - client]
+    B --> C[ApolloProvider + CartInitializer]
+    A --> F[route page.tsx - server]
     F --> G[serverQuery - per-request Apollo]
-    F --> H[Layout component]
-    H --> I[Client leaf components]
+    F --> H[Layout / Header / Hero / DisplayProducts / Categories - server]
+    H --> I[Navbar cart, search, AddToCart, ProductList filters, Checkout, forms - client]
 ```
 
-## Test-first safety net
+`'use client'` is only on components that use hooks or browser APIs. Pages and the components that wrap them stay Server Components.
 
-These Playwright tests run against the current Pages build first and must pass. They then run unchanged after each migration step.
+## Intentional behaviour changes
 
-- Each route returns 200 and shows its key content (the h1 or PageTitle, a product card, category links).
-- The exact `<title>` and meta description for each route, captured from the current build.
-- `<html lang="nb-NO">` and the favicon link are present.
-- `/produkt/<slug>?id=123` returns **301** to `/produkt/<slug>`.
-- Category navigation through `?id=` (already covered in `Categories.spec.ts`).
-- Product page: clicking add to cart increments the header cart count, and `/handlekurv` lists the item.
-- `/kasse` renders the billing form.
-- `/min-konto` redirects to `/logg-inn` when the user is not logged in.
-- An unknown route returns 404.
-- `pnpm build` passes (type check and route conflicts).
+- `/kategori/<slug>` without `?id=` and unknown product slugs now return **404** (they used to throw a 500).
+- `/produkter` no longer has an unreachable "loading" branch (the old `getStaticProps` always resolved before rendering).
+- The top progress bar is replaced by the route-level `loading.tsx` spinner.
+
+## Verification
+
+- `pnpm build` passes with no `pages` routes left.
+- Playwright on chromium passes, including tests added before the migration and captured from the Pages build:
+  - [`Routes.spec.ts`](../src/tests/Routes/Routes.spec.ts): every route returns 200 and shows its key content.
+  - [`Seo.spec.ts`](../src/tests/Seo/Seo.spec.ts): exact titles, description, keywords, og:title, `lang`, favicon.
+  - [`Redirects.spec.ts`](../src/tests/Redirects/Redirects.spec.ts): legacy `?id=` → 301, unknown route/product/category → 404, `/min-konto` → `/logg-inn`.
+  - [`Cart.spec.ts`](../src/tests/Cart/Cart.spec.ts): add to cart → header count → `/handlekurv` → `/kasse`. Browser GraphQL is mocked because the backend blocks CORS from localhost.
+- Firefox/WebKit projects need their browser binaries (`pnpm exec playwright install`), which are not installed on this machine.
+
+## Follow-ups (not part of the migration)
+
+- `"lint": "next lint"` in `package.json`: `next lint` was removed in Next 16; switch to the ESLint CLI.
+- Measure client JS / TBT before and after with `pnpm lhci` to quantify the RSC gains.
+- Consider pushing client boundaries further down (e.g. inside `SingleProduct`).
+- The old `registrer` page backup was moved to [`plans/legacy/registrer.tsx.backup`](legacy/registrer.tsx.backup).
