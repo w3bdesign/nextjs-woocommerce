@@ -192,9 +192,6 @@ importers:
       next:
         specifier: 16.4.2
         version: 16.4.2(@babel/core@7.29.7(supports-color@5.5.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.64.1)(@types/node@25.9.9)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      nprogress:
-        specifier: ^0.2.0
-        version: 0.2.0
       postcss:
         specifier: ^8.5.26
         version: 8.5.26
@@ -229,9 +226,6 @@ importers:
       '@types/node':
         specifier: 25.9.9
         version: 25.9.9
-      '@types/nprogress':
-        specifier: ^0.2.3
-        version: 0.2.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.72.1
         version: 8.72.1(@typescript-eslint/parser@8.72.1(eslint@10.8.1(jiti@1.21.7)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@7.0.2))(eslint@10.8.1(jiti@1.21.7)(supports-color@5.5.0))(supports-color@5.5.0)(typescript@7.0.2)
@@ -1674,9 +1668,6 @@ packages:
 
   '@types/node@25.9.9':
     resolution: {integrity: sha512-b4e2xxj/yMeT2hNlD6x7zNFiQK2Dlmkb9CQ6v3/1G2RezKN4YS2lcEv8lzGm1mhs4f2lM4yNAMI/zUDBZBBt7w==}
-
-  '@types/nprogress@0.2.3':
-    resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
 
   '@types/qs@6.15.1':
     resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
@@ -3233,9 +3224,6 @@ packages:
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
-
-  nprogress@0.2.0:
-    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
 
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
@@ -5627,8 +5615,6 @@ snapshots:
     dependencies:
       undici-types: 7.24.6
 
-  '@types/nprogress@0.2.3': {}
-
   '@types/qs@6.15.1': {}
 
   '@types/react@19.3.0':
@@ -7161,8 +7147,6 @@ snapshots:
       abbrev: 1.1.1
 
   normalize-path@3.0.0: {}
-
-  nprogress@0.2.0: {}
 
   object-assign@4.1.1: {}
 
