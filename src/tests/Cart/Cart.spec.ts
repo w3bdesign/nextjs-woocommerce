@@ -1,22 +1,30 @@
 import { test, expect } from '@playwright/test';
+import { mockWooGraphql, MOCK_SESSION_TOKEN } from '../helpers/mockWooGraphql';
 
 /**
  * End-to-end cart flow.
  * Exercises ApolloProvider, the WooCommerce session middleware/afterware,
- * the Zustand cart store and client-side navigation between routes.
+ * the Zustand cart store, the header cart badge, client-side navigation and
+ * the /kasse pathname check.
+ *
+ * Browser-side GraphQL is mocked (see helpers/mockWooGraphql.ts) so the test
+ * does not depend on the backend's CORS configuration; SSR data is still real.
  */
 
-const PRODUCT_SLUG = 'test-simple';
-const PRODUCT_NAME = 'Test Simple';
+const PRODUCT = {
+  databaseId: 13,
+  name: 'Test Simple',
+  slug: 'test-simple',
+  price: '699',
+};
 
 test.describe('Cart flow', () => {
-  // Mutates a (guest) WooCommerce session, so keep it serial.
-  test.describe.configure({ mode: 'serial' });
-
   test('add to cart updates header count, cart page and checkout', async ({
     page,
   }) => {
-    await page.goto(`/produkt/${PRODUCT_SLUG}`);
+    const mock = await mockWooGraphql(page, PRODUCT);
+
+    await page.goto(`/produkt/${PRODUCT.slug}`);
 
     const buyButton = page.getByRole('button', { name: 'KJØP' });
     await expect(buyButton).toBeEnabled();
@@ -28,6 +36,13 @@ test.describe('Cart flow', () => {
       .filter({ visible: true })
       .first();
     await expect(cartBadge).toHaveText('1');
+    expect(mock.requests).toContain('addToCart');
+
+    // Afterware stored the WooCommerce session token
+    const session = await page.evaluate(() =>
+      localStorage.getItem('woo-session:v1'),
+    );
+    expect(JSON.parse(session ?? '{}').token).toBe(MOCK_SESSION_TOKEN);
 
     // Client-side navigation to the cart page via the header link
     await page
@@ -37,15 +52,15 @@ test.describe('Cart flow', () => {
       .click();
     await expect(page).toHaveURL(/\/handlekurv$/);
     await expect(
-      page.getByRole('heading', { name: PRODUCT_NAME, exact: true }),
+      page.getByRole('heading', { name: PRODUCT.name, exact: true }),
     ).toBeVisible();
-    await expect(page.getByLabel(`Antall ${PRODUCT_NAME}`)).toHaveValue('1');
+    await expect(page.getByLabel(`Antall ${PRODUCT.name}`)).toHaveValue('1');
 
     // Proceed to checkout
     await page.getByRole('button', { name: 'GÅ TIL KASSE' }).click();
     await expect(page).toHaveURL(/\/kasse$/);
     await expect(
-      page.getByRole('heading', { name: PRODUCT_NAME, exact: true }),
+      page.getByRole('heading', { name: PRODUCT.name, exact: true }),
     ).toBeVisible();
     // Checkout page hides the "go to checkout" button (pathname check)
     await expect(

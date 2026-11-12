@@ -8,16 +8,20 @@ import { test, expect } from '@playwright/test';
 
 const PRODUCT_SLUG = 'test-simple';
 const PRODUCT_NAME = 'Test Simple';
-const CATEGORY_SLUG = 'clothing';
-const CATEGORY_ID = 'dGVybToxNw==';
-const CATEGORY_NAME = 'Clothing';
+// "Tskjorter" is the category that currently contains products.
+const CATEGORY_SLUG = 'tskjorter';
+const CATEGORY_ID = 'dGVybToxNg==';
+const CATEGORY_NAME = 'Tskjorter';
+
+const visibleProductLink = (page: import('@playwright/test').Page) =>
+  page.locator('a[href^="/produkt/"]').filter({ visible: true }).first();
 
 test.describe('Routes', () => {
   test('/ responds 200 and renders hero and products', async ({ page }) => {
     const response = await page.goto('/');
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1').first()).toBeVisible();
-    await expect(page.locator('a[href^="/produkt/"]').first()).toBeVisible();
+    await expect(visibleProductLink(page)).toBeVisible();
   });
 
   test('/produkter responds 200 and renders product list', async ({ page }) => {
@@ -27,7 +31,7 @@ test.describe('Routes', () => {
       page.getByRole('heading', { name: 'Produkter', exact: true }),
     ).toBeVisible();
     await expect(page.getByRole('heading', { name: /Herreklær/ })).toBeVisible();
-    await expect(page.locator('a[href^="/produkt/"]').first()).toBeVisible();
+    await expect(visibleProductLink(page)).toBeVisible();
   });
 
   test('/kategorier responds 200 and renders category links', async ({
@@ -67,7 +71,9 @@ test.describe('Routes', () => {
     await expect(
       page.getByRole('heading', { name: CATEGORY_NAME, exact: true }),
     ).toBeVisible();
-    await expect(page.locator('a[href^="/produkt/"]').first()).toBeVisible();
+    await expect(
+      page.locator(`a[href="/produkt/${PRODUCT_SLUG}"]`).filter({ visible: true }).first(),
+    ).toBeVisible();
   });
 
   test('/handlekurv responds 200 and renders empty cart state', async ({
