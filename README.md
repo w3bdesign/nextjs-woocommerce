@@ -34,7 +34,6 @@
 - [GraphQL for eCommerce (WooGraphQL)](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds WooCommerce functionality to a WPGraphQL schema.
 - [Algolia WooCommerce Indexer](https://github.com/w3bdesign/wp-algolia-woo-indexer) WordPress plugin coded by me. Sends WooCommerce products to Algolia. Required for search to work.
 
-
 Optional plugin:
 
 - [headless-wordpress](https://github.com/w3bdesign/headless-wp) Disables the frontend so only the backend is accessible. (optional)
@@ -151,12 +150,12 @@ does not install the WordPress plugin.
 
 Routes live in [`src/app`](src/app). Imports use the `@/` alias for `src/`.
 
-| Route                                | Rendering                                          |
-| ------------------------------------ | -------------------------------------------------- |
-| `/`, `/produkter`, `/kategorier`     | Server Component, built at build time              |
-| `/produkt/[slug]`, `/kategori/[slug]` | Server Component, built on first visit            |
-| `/handlekurv`, `/kasse`, `/logg-inn` | Client components for cart, checkout and login     |
-| `/min-konto`                         | Client component, requires login                   |
+| Route                                 | Rendering                                      |
+| ------------------------------------- | ---------------------------------------------- |
+| `/`, `/produkter`, `/kategorier`      | Server Component, built at build time          |
+| `/produkt/[slug]`, `/kategori/[slug]` | Server Component, built on first visit         |
+| `/handlekurv`, `/kasse`, `/logg-inn`  | Client components for cart, checkout and login |
+| `/min-konto`                          | Client component, requires login               |
 
 All Server Component pages are cached and refreshed at most every 10 minutes (`revalidate = 600`).
 
