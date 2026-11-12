@@ -8,25 +8,20 @@ import {
 import type { DocumentNode } from 'graphql';
 
 /**
- * Creates a fresh Apollo client for server-side usage (Server Components,
- * generateMetadata, Route Handlers).
+ * Shared Apollo client for Server Components and `generateMetadata`.
  *
- * A new client and cache are created per call so data is never shared between
- * requests/users. The browser-only WooCommerce session middleware/afterware
- * from `ApolloClient.ts` is intentionally not used here.
- *
- * Caching/revalidation is controlled by the route segment config
- * (`export const revalidate` / `export const dynamic`) of the calling page.
+ * Safe to share between requests: every query uses `fetchPolicy: 'no-cache'`,
+ * so nothing is stored in the cache, and no cookies or session headers are sent.
+ * Caching is controlled by the page's `revalidate` / `dynamic` config.
  */
-const createServerClient = () =>
-  new ApolloClient({
-    ssrMode: true,
-    link: createHttpLink({
-      uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
-      fetch,
-    }),
-    cache: new InMemoryCache(),
-  });
+const serverClient = new ApolloClient({
+  ssrMode: true,
+  link: createHttpLink({
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+    fetch,
+  }),
+  cache: new InMemoryCache(),
+});
 
 export const serverQuery = <
   TData = Record<string, unknown>,
@@ -34,12 +29,9 @@ export const serverQuery = <
 >(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   variables?: TVariables,
-) => {
-  const client = createServerClient();
-  // Returns the query promise directly; callers `await serverQuery(...)`.
-  return client.query<TData, TVariables>({
+) =>
+  serverClient.query<TData, TVariables>({
     query,
     variables,
     fetchPolicy: 'no-cache',
   });
-};
