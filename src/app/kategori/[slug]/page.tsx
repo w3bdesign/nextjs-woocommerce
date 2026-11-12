@@ -13,8 +13,8 @@ import type { IDisplayProduct } from '@/types/product';
 // SSR on every request: same as the previous getServerSideProps.
 export const dynamic = 'force-dynamic';
 
+/** Only `searchParams` is needed: categories are looked up by `?id=`, not the slug. */
 interface ICategoryPageProps {
-  params: Promise<{ slug: string }>;
   searchParams: Promise<{ id?: string | string[] }>;
 }
 
@@ -41,7 +41,7 @@ const getCategoryId = async (searchParams: ICategoryPageProps['searchParams']) =
 
 export async function generateMetadata({
   searchParams,
-}: ICategoryPageProps): Promise<Metadata> {
+}: Readonly<ICategoryPageProps>): Promise<Metadata> {
   const id = await getCategoryId(searchParams);
   if (!id) return {};
   const category = await getCategory(id);
@@ -51,7 +51,9 @@ export async function generateMetadata({
 /**
  * Display all products in a category
  */
-export default async function CategoryPage({ searchParams }: ICategoryPageProps) {
+export default async function CategoryPage({
+  searchParams,
+}: Readonly<ICategoryPageProps>) {
   const id = await getCategoryId(searchParams);
   if (!id) notFound();
 

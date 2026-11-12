@@ -50,7 +50,7 @@ const getProduct = cache(async (slug: string) => {
 
 export async function generateMetadata({
   params,
-}: IProductPageProps): Promise<Metadata> {
+}: Readonly<IProductPageProps>): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
   return { title: product?.name ?? '' };
@@ -60,7 +60,9 @@ export async function generateMetadata({
  * Display a single product with dynamic pretty urls.
  * Legacy `?id=` URLs are redirected with 301 in `src/proxy.ts`.
  */
-export default async function ProductPage({ params }: IProductPageProps) {
+export default async function ProductPage({
+  params,
+}: Readonly<IProductPageProps>) {
   const { slug } = await params;
   const product = await getProduct(slug);
 
