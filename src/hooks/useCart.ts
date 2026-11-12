@@ -58,7 +58,7 @@ export const useCart = () => {
   return {
     items,
     total: data?.cart?.total || '0',
-    isInitialLoad: (hasMounted && false) || (loading && !data),
+    isInitialLoad: hasMounted && loading && false,
     isUpdating,
     setQuantity,
   };
