@@ -75,61 +75,65 @@ const CartContents = () => {
             {data.cart.contents.nodes.map((item: IProductRootObject) => (
               <div
                 key={item.key}
-                className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-3 border-b border-border py-4 md:flex md:gap-4"
+                className="flex gap-3 border-b border-border py-4 md:items-center md:gap-4"
               >
-                <div className="relative size-16 flex-shrink-0 md:size-24">
+                <div className="relative size-20 flex-shrink-0 md:size-24">
                   <Image
                     src={
                       item.product.node.image?.sourceUrl || '/placeholder.png'
                     }
                     alt={item.product.node.name}
                     fill
-                    sizes="(min-width: 768px) 96px, 64px"
+                    sizes="(min-width: 768px) 96px, 80px"
                     className="rounded-md object-cover"
                   />
                 </div>
-                <div className="min-w-0 md:flex-grow">
-                  <h2 className="break-words text-base font-semibold leading-snug text-text md:text-lg">
-                    {item.product.node.name}
-                  </h2>
-                  <p className="whitespace-nowrap text-sm text-text-muted md:text-base">
-                    {formatUnitPrice(item.subtotal, item.quantity)}
-                  </p>
-                </div>
-                <div className="col-span-3 row-start-2 flex items-center justify-end gap-2 md:col-auto md:row-auto">
-                  <input
+                {/* Mobile: name, unit price and controls stack beside the image (name gets the full width).
+                    Desktop: name | quantity + remove | line total on one row. */}
+                <div className="flex min-w-0 flex-1 flex-col gap-2 md:flex-row md:items-center md:gap-4">
+                  <div className="min-w-0 md:flex-1">
+                    <h2 className="break-words text-base font-semibold leading-snug text-text md:text-lg">
+                      {item.product.node.name}
+                    </h2>
+                    <p className="whitespace-nowrap text-sm text-text-muted md:text-base">
+                      {formatUnitPrice(item.subtotal, item.quantity)}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 md:flex-nowrap md:justify-end md:gap-4">
+                    <div className="flex items-center gap-2">
+                      <input
                     type="number"
                     min="1"
                     value={item.quantity}
-                    onChange={(event) => {
-                      handleQuantityChange(
-                        event,
-                        item.key,
-                        data.cart.contents.nodes,
-                        updateCart,
-                        updateCartProcessing,
-                      );
-                    }}
-                    className="h-10 w-16 px-2 py-1 text-center border border-border rounded-md bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
-                    aria-label={`Antall ${item.product.node.name}`}
-                  />
-                  <Button
-                    handleButtonClick={() =>
-                      handleRemoveProductClick(
-                        item.key,
-                        data.cart.contents.nodes,
-                      )
-                    }
-                    variant="secondary"
-                    buttonDisabled={updateCartProcessing}
-                  >
-                    Fjern
-                  </Button>
-                </div>
-                <div className="col-start-3 row-start-1 text-right md:col-auto md:row-auto">
-                  <p className="whitespace-nowrap text-base font-semibold text-text md:text-lg">
-                    {formatPrice(item.subtotal)}
-                  </p>
+                        onChange={(event) => {
+                          handleQuantityChange(
+                            event,
+                            item.key,
+                            data.cart.contents.nodes,
+                            updateCart,
+                            updateCartProcessing,
+                          );
+                        }}
+                        className="h-10 w-16 px-2 py-1 text-center border border-border rounded-md bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
+                        aria-label={`Antall ${item.product.node.name}`}
+                      />
+                      <Button
+                        handleButtonClick={() =>
+                          handleRemoveProductClick(
+                            item.key,
+                            data.cart.contents.nodes,
+                          )
+                        }
+                        variant="secondary"
+                        buttonDisabled={updateCartProcessing}
+                      >
+                        Fjern
+                      </Button>
+                    </div>
+                    <p className="whitespace-nowrap text-right text-base font-semibold text-text md:min-w-28 md:text-lg">
+                      {formatPrice(item.subtotal)}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
