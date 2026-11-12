@@ -151,7 +151,7 @@ const CartContents = () => {
                         type="button"
                         onClick={() => setQuantity(item.key, 0, products)}
                         disabled={updateCartProcessing}
-                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-2 text-sm text-text-muted transition-colors hover:text-error disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex h-10 items-center gap-1.5 rounded-md border border-error px-3 text-sm font-semibold text-error transition-colors hover:bg-error hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-error focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         aria-label={`Fjern ${name} fra handlekurven`}
                       >
                         <svg
