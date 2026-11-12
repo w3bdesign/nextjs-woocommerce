@@ -1,7 +1,7 @@
 'use client';
 
 // Imports
-import { useMemo, useSyncExternalStore } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 
 // Utils
