@@ -20,6 +20,9 @@ import {
 import { UPDATE_CART } from '@/utils/gql/GQL_MUTATIONS';
 import { formatPrice, formatUnitPrice } from '@/utils/functions/price';
 
+const stepperButtonClasses =
+  'flex h-full w-10 items-center justify-center text-lg text-text transition-colors hover:bg-surface-alt disabled:cursor-not-allowed disabled:opacity-40';
+
 const CartContents = () => {
   const pathname = usePathname();
   const isCheckoutPage = pathname === '/kasse';
@@ -39,26 +42,21 @@ const CartContents = () => {
     },
   );
 
-  const handleRemoveProductClick = (
+  /** Set a cart line to an exact quantity (0 removes it). */
+  const setQuantity = (
     cartKey: string,
+    quantity: number,
     products: IProductRootObject[],
   ) => {
-    if (products?.length) {
-      const updatedItems = getUpdatedItems(products, 0, cartKey);
-      updateCart({
-        variables: {
-          input: {
-            clientMutationId: uuidv4(),
-            items: updatedItems,
-          },
+    if (updateCartProcessing || !products?.length || quantity < 0) return;
+    updateCart({
+      variables: {
+        input: {
+          clientMutationId: uuidv4(),
+          items: getUpdatedItems(products, quantity, cartKey),
         },
-      });
-    }
-    refetch();
-    // Delayed refetch to ensure WooCommerce backend has settled
-    setTimeout(() => {
-      refetch();
-    }, 2000);
+      },
+    });
   };
 
   useEffect(() => {
@@ -66,85 +64,131 @@ const CartContents = () => {
   }, [refetch]);
 
   const cartTotal = data?.cart?.total || '0';
+  const products: IProductRootObject[] = data?.cart?.contents?.nodes ?? [];
 
   return (
-    <div className="py-6 md:container md:mx-auto md:px-4 md:py-8">
-      {data?.cart?.contents?.nodes?.length ? (
+    <div className="mx-auto w-full max-w-3xl py-6 md:py-8">
+      {products.length ? (
         <>
-          <div className="bg-surface rounded-lg p-2 mb-8 md:p-6 md:w-full">
-            {data.cart.contents.nodes.map((item: IProductRootObject) => (
-              <div
-                key={item.key}
-                className="flex gap-3 border-b border-border py-4 md:items-center md:gap-4"
-              >
-                <div className="relative size-20 flex-shrink-0 md:size-24">
-                  <Image
-                    src={
-                      item.product.node.image?.sourceUrl || '/placeholder.png'
-                    }
-                    alt={item.product.node.name}
-                    fill
-                    sizes="(min-width: 768px) 96px, 80px"
-                    className="rounded-md object-cover"
-                  />
-                </div>
-                {/* Mobile: name, line total and controls stack beside the image so the name gets the full width.
-                    Desktop: name | quantity + remove | line total on a single row. */}
-                <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-row md:items-center md:gap-4">
-                  <div className="min-w-0 md:flex-1">
-                    <h2 className="break-words text-base font-semibold leading-snug text-text md:text-lg">
-                      {item.product.node.name}
-                    </h2>
-                    <p className="whitespace-nowrap text-sm text-text-muted md:text-base">
-                      {formatUnitPrice(item.subtotal, item.quantity)}
-                    </p>
-                  </div>
-                  <p className="whitespace-nowrap text-base font-semibold text-text md:order-last md:min-w-28 md:text-right md:text-lg">
-                    {formatPrice(item.subtotal)}
-                  </p>
-                  <div className="mt-1 flex items-center gap-2 md:mt-0">
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(event) => {
-                        handleQuantityChange(
-                          event,
-                          item.key,
-                          data.cart.contents.nodes,
-                          updateCart,
-                          updateCartProcessing,
-                        );
-                      }}
-                      className="h-10 w-16 px-2 py-1 text-center border border-border rounded-md bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
-                      aria-label={`Antall ${item.product.node.name}`}
+          <ul className="divide-y divide-border border-y border-border">
+            {products.map((item) => {
+              const { name, image } = item.product.node;
+
+              return (
+                <li key={item.key} className="flex gap-4 py-5">
+                  <div className="relative size-20 flex-shrink-0 overflow-hidden rounded-md bg-surface-alt sm:size-24">
+                    <Image
+                      src={image?.sourceUrl || '/placeholder.png'}
+                      alt={name}
+                      fill
+                      sizes="(min-width: 640px) 96px, 80px"
+                      className="object-cover"
                     />
-                    <Button
-                      handleButtonClick={() =>
-                        handleRemoveProductClick(
-                          item.key,
-                          data.cart.contents.nodes,
-                        )
-                      }
-                      variant="secondary"
-                      buttonDisabled={updateCartProcessing}
-                    >
-                      Fjern
-                    </Button>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="bg-surface rounded-lg p-2 md:p-6 md:w-full">
-            <div className="flex justify-between mb-4 md:justify-end">
-              <span className="font-semibold pr-2 text-text">Subtotal:</span>
-              <span className="whitespace-nowrap text-text">
+
+                  <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
+                    {/* Product info and line total: stacked on small phones,
+                        side by side (total on the right) from the sm breakpoint */}
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+                      <div className="min-w-0">
+                        <h2 className="break-words text-base font-semibold leading-snug text-text sm:text-lg">
+                          {name}
+                        </h2>
+                        <p className="mt-1 whitespace-nowrap text-sm text-text-muted">
+                          {formatUnitPrice(item.subtotal, item.quantity)} per
+                          stk
+                        </p>
+                      </div>
+                      <p className="whitespace-nowrap text-base font-semibold text-text sm:text-lg">
+                        {formatPrice(item.subtotal)}
+                      </p>
+                    </div>
+
+                    {/* Bottom line: quantity stepper on the left, remove on the right */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="inline-flex h-10 items-center overflow-hidden rounded-md border border-border">
+                        <button
+                          type="button"
+                          className={stepperButtonClasses}
+                          onClick={() =>
+                            setQuantity(item.key, item.quantity - 1, products)
+                          }
+                          disabled={updateCartProcessing || item.quantity <= 1}
+                          aria-label={`Reduser antall ${name}`}
+                        >
+                          −
+                        </button>
+                        <input
+                          type="number"
+                          min="1"
+                          inputMode="numeric"
+                          value={item.quantity}
+                          onChange={(event) => {
+                            handleQuantityChange(
+                              event,
+                              item.key,
+                              products,
+                              updateCart,
+                              updateCartProcessing,
+                            );
+                          }}
+                          className="h-full w-12 border-x border-border bg-transparent text-center text-sm text-text focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                          aria-label={`Antall ${name}`}
+                        />
+                        <button
+                          type="button"
+                          className={stepperButtonClasses}
+                          onClick={() =>
+                            setQuantity(item.key, item.quantity + 1, products)
+                          }
+                          disabled={updateCartProcessing}
+                          aria-label={`Øk antall ${name}`}
+                        >
+                          +
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => setQuantity(item.key, 0, products)}
+                        disabled={updateCartProcessing}
+                        className="inline-flex h-10 items-center gap-1.5 rounded-md border border-error px-3 text-sm font-semibold text-error transition-colors hover:bg-error hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-error focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        aria-label={`Fjern ${name} fra handlekurven`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="size-4"
+                          aria-hidden="true"
+                        >
+                          <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6" />
+                          <path d="M10 11v6M14 11v6" />
+                        </svg>
+                        Fjern
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="pt-5">
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="text-base font-semibold text-text">
+                Subtotal
+              </span>
+              <span className="whitespace-nowrap text-lg font-semibold text-text">
                 {formatPrice(cartTotal)}
               </span>
             </div>
             {!isCheckoutPage && (
-              <div className="flex justify-center mb-4">
+              <div className="mt-5 flex md:justify-end">
                 <Link href="/kasse" passHref className="w-full md:w-auto">
                   <Button variant="primary" fullWidth>
                     GÅ TIL KASSE

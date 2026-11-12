@@ -62,7 +62,9 @@ test.describe('Cart flow', () => {
       level: 2,
     });
     await expect(cartRow).toBeVisible();
-    await expect(page.getByLabel(`Antall ${PRODUCT.name}`)).toHaveValue('1');
+    await expect(
+      page.getByLabel(`Antall ${PRODUCT.name}`, { exact: true }),
+    ).toHaveValue('1');
 
     // Proceed to checkout
     await page.getByRole('button', { name: 'GÅ TIL KASSE' }).click();
