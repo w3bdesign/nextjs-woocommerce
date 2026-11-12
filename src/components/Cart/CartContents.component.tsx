@@ -68,80 +68,84 @@ const CartContents = () => {
   const cartTotal = data?.cart?.total || '0';
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="py-6 md:container md:mx-auto md:px-4 md:py-8">
       {data?.cart?.contents?.nodes?.length ? (
         <>
-          <div className="bg-surface rounded-lg p-6 mb-8 md:w-full">
+          <div className="bg-surface rounded-lg p-2 mb-8 md:p-6 md:w-full">
             {data.cart.contents.nodes.map((item: IProductRootObject) => (
               <div
                 key={item.key}
-                className="flex items-center border-b border-border py-4"
+                className="flex gap-3 border-b border-border py-4 md:items-center md:gap-4"
               >
-                <div className="flex-shrink-0 size-24 relative hidden md:block">
+                <div className="relative size-20 flex-shrink-0 md:size-24">
                   <Image
                     src={
                       item.product.node.image?.sourceUrl || '/placeholder.png'
                     }
                     alt={item.product.node.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-md"
+                    fill
+                    sizes="(min-width: 768px) 96px, 80px"
+                    className="rounded-md object-cover"
                   />
                 </div>
-                <div className="flex-grow ml-4">
-                  <h2 className="text-lg font-semibold text-text">
-                    {item.product.node.name}
-                  </h2>
-                  <p className="text-text-muted">
-                    {formatUnitPrice(item.subtotal, item.quantity)}
-                  </p>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(event) => {
-                      handleQuantityChange(
-                        event,
-                        item.key,
-                        data.cart.contents.nodes,
-                        updateCart,
-                        updateCartProcessing,
-                      );
-                    }}
-                    className="w-16 px-2 py-1 text-center border border-border rounded-md mr-2 bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
-                    aria-label={`Antall ${item.product.node.name}`}
-                  />
-                  <Button
-                    handleButtonClick={() =>
-                      handleRemoveProductClick(
-                        item.key,
-                        data.cart.contents.nodes,
-                      )
-                    }
-                    variant="secondary"
-                    buttonDisabled={updateCartProcessing}
-                  >
-                    Fjern
-                  </Button>
-                </div>
-                <div className="ml-4">
-                  <p className="text-lg font-semibold text-text">
+                {/* Mobile: name, line total and controls stack beside the image so the name gets the full width.
+                    Desktop: name | quantity + remove | line total on a single row. */}
+                <div className="flex min-w-0 flex-1 flex-col gap-1 md:flex-row md:items-center md:gap-4">
+                  <div className="min-w-0 md:flex-1">
+                    <h2 className="break-words text-base font-semibold leading-snug text-text md:text-lg">
+                      {item.product.node.name}
+                    </h2>
+                    <p className="whitespace-nowrap text-sm text-text-muted md:text-base">
+                      {formatUnitPrice(item.subtotal, item.quantity)}
+                    </p>
+                  </div>
+                  <p className="whitespace-nowrap text-base font-semibold text-text md:order-last md:min-w-28 md:text-right md:text-lg">
                     {formatPrice(item.subtotal)}
                   </p>
+                  <div className="mt-1 flex items-center gap-2 md:mt-0">
+                    <input
+                      type="number"
+                      min="1"
+                      value={item.quantity}
+                      onChange={(event) => {
+                        handleQuantityChange(
+                          event,
+                          item.key,
+                          data.cart.contents.nodes,
+                          updateCart,
+                          updateCartProcessing,
+                        );
+                      }}
+                      className="h-10 w-16 px-2 py-1 text-center border border-border rounded-md bg-surface focus:ring-2 focus:ring-primary focus:border-primary"
+                      aria-label={`Antall ${item.product.node.name}`}
+                    />
+                    <Button
+                      handleButtonClick={() =>
+                        handleRemoveProductClick(
+                          item.key,
+                          data.cart.contents.nodes,
+                        )
+                      }
+                      variant="secondary"
+                      buttonDisabled={updateCartProcessing}
+                    >
+                      Fjern
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="bg-surface rounded-lg p-6 md:w-full">
-            <div className="flex justify-end mb-4">
+          <div className="bg-surface rounded-lg p-2 md:p-6 md:w-full">
+            <div className="flex justify-between mb-4 md:justify-end">
               <span className="font-semibold pr-2 text-text">Subtotal:</span>
-              <span className="text-text">{formatPrice(cartTotal)}</span>
+              <span className="whitespace-nowrap text-text">
+                {formatPrice(cartTotal)}
+              </span>
             </div>
             {!isCheckoutPage && (
               <div className="flex justify-center mb-4">
-                <Link href="/kasse" passHref>
+                <Link href="/kasse" passHref className="w-full md:w-auto">
                   <Button variant="primary" fullWidth>
                     GÅ TIL KASSE
                   </Button>

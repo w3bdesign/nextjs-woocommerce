@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 interface ICustomValidation {
   required?: boolean;
-  minlength?: number;
+  minLength?: number;
   pattern?: string;
 }
 
