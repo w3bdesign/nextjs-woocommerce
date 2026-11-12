@@ -1,9 +1,5 @@
 const config = {
-  content: [
-    './src/app/**/*.tsx',
-    './src/components/**/*.tsx',
-    './src/pages/**/*.tsx',
-  ],
+  content: ['./src/app/**/*.tsx', './src/components/**/*.tsx'],
   safelist: [
     // Dynamic color classes used in ProductFilters for color swatches
     {
