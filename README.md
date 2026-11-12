@@ -160,7 +160,7 @@ Routes live in [`src/app`](src/app). Imports use the `@/` alias for `src/`.
 | `/handlekurv`, `/kasse`, `/logg-inn` | Client components for cart, checkout and login |
 | `/min-konto`       | Client component, requires login            |
 
-- Server Components fetch data with [`serverQuery`](src/utils/apollo/serverQuery.ts), which creates a new Apollo client per request.
+- Server Components fetch data with [`serverQuery`](src/utils/apollo/serverQuery.ts), a shared Apollo client without caching or session data.
 - Client components use Apollo Client with the WooCommerce session from [`ApolloClient.ts`](src/utils/apollo/ApolloClient.ts).
 - [`src/proxy.ts`](src/proxy.ts) redirects `/produkt/[slug]?id=…` to `/produkt/[slug]` with a 301.
 - Unknown products and categories render the not-found page with `noindex`.
