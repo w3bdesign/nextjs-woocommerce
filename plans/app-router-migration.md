@@ -10,8 +10,8 @@ Next `16.4.2`, React `19.3.1`. No version upgrade was needed.
 | `/` | [`app/page.tsx`](../src/app/page.tsx) | ISR, `revalidate = 60` | Absolute title (the layout template does not apply to the same segment) |
 | `/produkter` | [`app/produkter/page.tsx`](../src/app/produkter/page.tsx) | ISR, `revalidate = 60` | `title.absolute = 'Produkter \| WooCommerce Next.js'` (as before) |
 | `/kategorier` | [`app/kategorier/page.tsx`](../src/app/kategorier/page.tsx) | ISR, `revalidate = 10` | |
-| `/produkt/[slug]` | [`app/produkt/[slug]/page.tsx`](../src/app/produkt/[slug]/page.tsx) | `dynamic = 'force-dynamic'` | `generateMetadata`; unknown slug → 404; backend error → error text |
-| `/kategori/[slug]` | [`app/kategori/[slug]/page.tsx`](../src/app/kategori/[slug]/page.tsx) | `dynamic = 'force-dynamic'` | Looks up by the `?id=` search param; missing id / unknown category → 404 |
+| `/produkt/[slug]` | [`app/produkt/[slug]/page.tsx`](../src/app/produkt/[slug]/page.tsx) | `dynamic = 'force-dynamic'` | `generateMetadata`; unknown slug → `notFound()`; backend error → error text |
+| `/kategori/[slug]` | [`app/kategori/[slug]/page.tsx`](../src/app/kategori/[slug]/page.tsx) | `dynamic = 'force-dynamic'` | Looks up by the `?id=` search param; missing id / unknown category → `notFound()` |
 | `/handlekurv` | [`app/handlekurv/page.tsx`](../src/app/handlekurv/page.tsx) | static shell + client cart | |
 | `/kasse` | [`app/kasse/page.tsx`](../src/app/kasse/page.tsx) | static shell + client checkout | |
 | `/logg-inn` | [`app/logg-inn/page.tsx`](../src/app/logg-inn/page.tsx) | static shell + client form | |
@@ -47,7 +47,8 @@ flowchart TD
 
 ## Intentional behaviour changes
 
-- `/kategori/<slug>` without `?id=` and unknown product slugs now return **404** (they used to throw a 500).
+- `/kategori/<slug>` without `?id=` and unknown product slugs now render the not-found page with `<meta name="robots" content="noindex">` (they used to crash with a 500).
+  Because the root `loading.tsx` streams dynamic pages, the HTTP status is already 200 when `notFound()` runs. A hard 404 status would require removing the route-level `loading.tsx` for these routes.
 - `/produkter` no longer has an unreachable "loading" branch (the old `getStaticProps` always resolved before rendering).
 - The top progress bar is replaced by the route-level `loading.tsx` spinner.
 
@@ -57,7 +58,7 @@ flowchart TD
 - Playwright on chromium passes, including tests added before the migration and captured from the Pages build:
   - [`Routes.spec.ts`](../src/tests/Routes/Routes.spec.ts): every route returns 200 and shows its key content.
   - [`Seo.spec.ts`](../src/tests/Seo/Seo.spec.ts): exact titles, description, keywords, og:title, `lang`, favicon.
-  - [`Redirects.spec.ts`](../src/tests/Redirects/Redirects.spec.ts): legacy `?id=` → 301, unknown route/product/category → 404, `/min-konto` → `/logg-inn`.
+  - [`Redirects.spec.ts`](../src/tests/Redirects/Redirects.spec.ts): legacy `?id=` → 301, unknown route → 404, unknown product / category without id → not-found page + `noindex`, `/min-konto` → `/logg-inn`.
   - [`Cart.spec.ts`](../src/tests/Cart/Cart.spec.ts): add to cart → header count → `/handlekurv` → `/kasse`. Browser GraphQL is mocked because the backend blocks CORS from localhost.
 - Firefox/WebKit projects need their browser binaries (`pnpm exec playwright install`), which are not installed on this machine.
 
