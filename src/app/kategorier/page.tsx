@@ -6,8 +6,8 @@ import Layout from '@/components/Layout/Layout.component';
 import { serverQuery } from '@/utils/apollo/serverQuery';
 import { FETCH_ALL_CATEGORIES_QUERY } from '@/utils/gql/GQL_QUERIES';
 
-// ISR: same as the previous getStaticProps `revalidate: 10`.
-export const revalidate = 10;
+// Cached and refreshed at most every 10 minutes.
+export const revalidate = 600;
 
 export const metadata: Metadata = {
   title: 'Kategorier',

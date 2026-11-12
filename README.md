@@ -151,14 +151,14 @@ does not install the WordPress plugin.
 
 Routes live in [`src/app`](src/app). Imports use the `@/` alias for `src/`.
 
-| Route              | Rendering                                   |
-| ------------------ | ------------------------------------------- |
-| `/`, `/produkter`  | Server Component, revalidated every 60s     |
-| `/kategorier`      | Server Component, revalidated every 10s     |
-| `/produkt/[slug]`  | Server Component, built on first visit, revalidated every 10 min |
-| `/kategori/[slug]` | Server Component, built on first visit, revalidated every 10 min |
-| `/handlekurv`, `/kasse`, `/logg-inn` | Client components for cart, checkout and login |
-| `/min-konto`       | Client component, requires login            |
+| Route                                | Rendering                                          |
+| ------------------------------------ | -------------------------------------------------- |
+| `/`, `/produkter`, `/kategorier`     | Server Component, built at build time              |
+| `/produkt/[slug]`, `/kategori/[slug]` | Server Component, built on first visit            |
+| `/handlekurv`, `/kasse`, `/logg-inn` | Client components for cart, checkout and login     |
+| `/min-konto`                         | Client component, requires login                   |
+
+All Server Component pages are cached and refreshed at most every 10 minutes (`revalidate = 600`).
 
 - Server Components fetch data with [`serverQuery`](src/utils/apollo/serverQuery.ts), a shared Apollo client without caching or session data.
 - Client components use Apollo Client with the WooCommerce session from [`ApolloClient.ts`](src/utils/apollo/ApolloClient.ts).

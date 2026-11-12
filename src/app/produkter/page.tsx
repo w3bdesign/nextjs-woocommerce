@@ -8,8 +8,8 @@ import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
 
 import type { Product } from '@/types/product';
 
-// ISR: same as the previous getStaticProps `revalidate: 60`.
-export const revalidate = 60;
+// Cached and refreshed at most every 10 minutes.
+export const revalidate = 600;
 
 export const metadata: Metadata = {
   // This route intentionally does not use the shared title template.
