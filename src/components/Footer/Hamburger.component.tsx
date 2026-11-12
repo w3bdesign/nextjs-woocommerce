@@ -1,3 +1,5 @@
+'use client';
+
 import { useReducer, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
 

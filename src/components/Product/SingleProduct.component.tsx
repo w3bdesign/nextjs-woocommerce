@@ -1,5 +1,7 @@
+'use client';
+
 // Imports
-import { useState, useEffect } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 
 // Utils
@@ -7,24 +9,34 @@ import { filteredVariantPrice } from '@/utils/functions/functions';
 import { formatPrice } from '@/utils/functions/price';
 
 // Components
-import AddToCart from './AddToCart.component';
+import AddToCart from '@/components/Product/AddToCart.component';
 
 // Types
 import type { ISingleProductProps, ISingleProduct } from '@/types/product';
 
 const PLACEHOLDER_FALLBACK = 'https://via.placeholder.com/600';
 
-/** Parse after mounting so the server and initial client render both stay empty. */
+const noopSubscribe = () => () => {};
+
+/** `false` during SSR and hydration, `true` afterwards — without setState in an effect. */
+const useIsClient = () =>
+  useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
+
+/** Parse only on the client so the server and hydration render both stay empty. */
 const useStrippedDescription = (html: string): string | null => {
-  const [description, setDescription] = useState<string | null>(null);
+  const isClient = useIsClient();
 
-  useEffect(() => {
-    setDescription(
-      new DOMParser().parseFromString(html, 'text/html').body.textContent,
-    );
-  }, [html]);
-
-  return description;
+  return useMemo(
+    () =>
+      isClient
+        ? new DOMParser().parseFromString(html, 'text/html').body.textContent
+        : null,
+    [html, isClient],
+  );
 };
 
 /** Resolve the product image source URL */

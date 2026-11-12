@@ -1,8 +1,10 @@
+'use client';
+
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { InstantSearch, SearchBox, Hits, useSearchBox } from 'react-instantsearch';
 import { useState } from 'react';
 
-import SearchResults from './SearchResults.component';
+import SearchResults from '@/components/AlgoliaSearch/SearchResults.component';
 
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? 'changethis',

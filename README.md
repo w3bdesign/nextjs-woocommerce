@@ -16,13 +16,14 @@
 - [Installation](#Installation)
 - [WordPress GraphQL CORS](#wordpress-graphql-cors)
 - [Features](#Features)
+- [Architecture](#architecture)
 - [Design System](#design-system)
 - [Lighthouse Performance Monitoring](#lighthouse-performance-monitoring)
 - [Security](#security)
 - [Issues](#Issues)
 - [Troubleshooting](#Troubleshooting)
 - [TODO](#TODO)
-- [Future Improvements](SUGGESTIONS.md)
+- [Future Improvements](DOCS/SUGGESTIONS.md)
 
 ## Installation
 
@@ -32,7 +33,6 @@
 - [WPGraphQL](https://wordpress.org/plugins/wp-graphql) Exposes GraphQL for WordPress.
 - [GraphQL for eCommerce (WooGraphQL)](https://github.com/wp-graphql/wp-graphql-woocommerce) Adds WooCommerce functionality to a WPGraphQL schema.
 - [Algolia WooCommerce Indexer](https://github.com/w3bdesign/wp-algolia-woo-indexer) WordPress plugin coded by me. Sends WooCommerce products to Algolia. Required for search to work.
-
 
 Optional plugin:
 
@@ -61,7 +61,7 @@ The current release has been tested and is confirmed working with the following 
 
 5.  Modify the values according to your setup
 
-6.  Start the server with `pnpm run dev`
+6.  Run `pnpm install`, then start the server with `pnpm dev`
 
 7.  Enable COD (Cash On Demand) payment method in WooCommerce
 
@@ -101,10 +101,10 @@ does not install the WordPress plugin.
 
 ## Features
 
-- Next.js version 16.1.6
-- React version 19.2.4
-- Typescript
-- Tests with Playwright
+- Next.js version 16.4.2 with the App Router
+- React version 19.3.1 with Server Components
+- TypeScript 7
+- Tests with Playwright (WooCommerce GraphQL is mocked)
 - Connect to Woocommerce GraphQL API and list name, price and display image for products
 - Support for simple products and variable products
 - Cart handling and checkout with WooCommerce using Zustand for state management
@@ -120,13 +120,12 @@ does not install the WordPress plugin.
   - Apollo Client with GraphQL
 - React Hook Form
 - Native HTML5 form validation
-- Animations with Framer motion, Styled components and Animate.css
-- Loading spinner created with Styled Components
-- Shows page load progress with Nprogress during navigation
+- Animations with Motion and Animate.css
+- Loading UI with `loading.tsx`
 - Fully responsive design
 - Category and product listings
 - Show stock status
-- Pretty URLs with builtin Nextjs functionality
+- Pretty URLs with App Router file-based routing
 - Tailwind 3 for styling
 - JSDoc comments
 - Automated Lighthouse performance monitoring
@@ -147,9 +146,27 @@ does not install the WordPress plugin.
   - Product type categorization
   - Sorting options (popularity, price, newest)
 
+## Architecture
+
+Routes live in [`src/app`](src/app). Imports use the `@/` alias for `src/`.
+
+| Route                                 | Rendering                                      |
+| ------------------------------------- | ---------------------------------------------- |
+| `/`, `/produkter`, `/kategorier`      | Server Component, built at build time          |
+| `/produkt/[slug]`, `/kategori/[slug]` | Server Component, built on first visit         |
+| `/handlekurv`, `/kasse`, `/logg-inn`  | Client components for cart, checkout and login |
+| `/min-konto`                          | Client component, requires login               |
+
+All Server Component pages are cached and refreshed at most every 10 minutes (`revalidate = 600`).
+
+- Server Components fetch data with [`serverQuery`](src/utils/apollo/serverQuery.ts), a shared Apollo client without caching or session data.
+- Client components use Apollo Client with the WooCommerce session from [`ApolloClient.ts`](src/utils/apollo/ApolloClient.ts).
+- [`src/proxy.ts`](src/proxy.ts) redirects legacy `/produkt/[slug]?id=…` and `/kategori/[slug]?id=…` URLs to the clean URL with a 301.
+- Unknown products and categories render the not-found page with `noindex`.
+
 ## Design System
 
-This project uses a custom design system built with Tailwind CSS design tokens. The system is defined in [`tailwind.config.js`](tailwind.config.js) and [`globals.css`](src/styles/globals.css).
+This project uses a custom design system built with Tailwind CSS design tokens. The system is defined in [`tailwind.config.ts`](tailwind.config.ts) and [`globals.css`](src/styles/globals.css).
 
 ### Color Palette
 

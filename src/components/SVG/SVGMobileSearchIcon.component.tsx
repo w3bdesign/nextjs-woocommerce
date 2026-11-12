@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * The SVG that we use for search in the navbar for mobile.
  * Also includes logic for closing and opening the search form.

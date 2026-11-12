@@ -2,7 +2,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import { ChangeEvent } from 'react';
-import { parsePrice } from './price';
+import { parsePrice } from '@/utils/functions/price';
 
 import type { CartProduct, Cart } from '@/types/cart';
 import type { ICheckoutDataProps } from '@/types/checkout';

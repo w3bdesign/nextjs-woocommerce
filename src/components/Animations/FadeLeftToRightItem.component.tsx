@@ -1,6 +1,8 @@
+'use client';
+
 import { m, Transition } from 'motion/react';
 
-import type { IAnimateProps } from './types/Animations.types';
+import type { IAnimateProps } from '@/components/Animations/types/Animations.types';
 
 /**
  * Fade content left to right. Needs to be used with FadeLeftToRight as parent container

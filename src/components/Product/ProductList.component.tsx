@@ -1,7 +1,9 @@
+'use client';
+
 import { Product } from '@/types/product';
 import { useProductFilters } from '@/hooks/useProductFilters';
-import ProductCard from './ProductCard.component';
-import ProductFilters from './ProductFilters.component';
+import ProductCard from '@/components/Product/ProductCard.component';
+import ProductFilters from '@/components/Product/ProductFilters.component';
 
 interface ProductListProps {
   products: Product[];

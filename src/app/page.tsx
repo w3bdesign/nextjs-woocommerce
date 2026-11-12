@@ -1,0 +1,38 @@
+import type { Metadata } from 'next';
+
+import Hero from '@/components/Index/Hero.component';
+import DisplayProducts from '@/components/Product/DisplayProducts.component';
+import Layout from '@/components/Layout/Layout.component';
+
+import { serverQuery } from '@/utils/apollo/serverQuery';
+import { FETCH_ALL_PRODUCTS_QUERY } from '@/utils/gql/GQL_QUERIES';
+
+import type { IDisplayProduct } from '@/types/product';
+
+// Cached and refreshed at most every 10 minutes.
+export const revalidate = 600;
+
+// A layout's title.template only applies to child segments, not to a page in
+// the same segment, so the root page sets the full title itself.
+export const metadata: Metadata = {
+  title: { absolute: 'Next.js webshop with WooCommerce Hjem' },
+};
+
+interface IProductsData {
+  products: { nodes: IDisplayProduct[] };
+}
+
+/**
+ * Main index page
+ */
+export default async function IndexPage() {
+  const { data } = await serverQuery<IProductsData>(FETCH_ALL_PRODUCTS_QUERY);
+  const products = data?.products?.nodes;
+
+  return (
+    <Layout title="Hjem">
+      <Hero />
+      {products && <DisplayProducts products={products} />}
+    </Layout>
+  );
+}

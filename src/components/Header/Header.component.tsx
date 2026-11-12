@@ -1,34 +1,16 @@
-import Head from 'next/head';
-
-import Navbar from './Navbar.component';
-
-interface IHeaderProps {
-  title: string;
-}
+import Navbar from '@/components/Header/Navbar.component';
 
 /**
- * Renders header for each page.
+ * Renders the header for each page.
+ * Page <title> and meta tags are set through the App Router Metadata API
+ * (`metadata` / `generateMetadata` in `src/app`).
  * @function Header
- * @param {string} title - Title for the page. Is set in <title>{title}</title>
  * @returns {JSX.Element} - Rendered component
  */
-
-const Header = ({ title }: IHeaderProps) => (
-  <>
-    <Head>
-      <title>{`Next.js webshop with WooCommerce ${title}`}</title>
-      <meta name="description" content="WooCommerce webshop" />
-      <meta name="keywords" content="Ecommerce, WooCommerce" />
-      <meta
-        property="og:title"
-        content="Nextjs Ecommerce with Woocommerce"
-        key="pagetitle"
-      />
-    </Head>
-    <div className="container mx-auto px-6">
-      <Navbar />
-    </div>
-  </>
+const Header = () => (
+  <div className="container mx-auto px-6">
+    <Navbar />
+  </div>
 );
 
 export default Header;

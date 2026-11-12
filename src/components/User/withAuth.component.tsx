@@ -1,32 +1,31 @@
-import { useRouter } from 'next/router';
-import { useEffect, ComponentType, useState } from 'react';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useEffect, ComponentType } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_CURRENT_USER } from '../../utils/gql/GQL_QUERIES';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.component';
+import { GET_CURRENT_USER } from '@/utils/gql/GQL_QUERIES';
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component';
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const Wrapper = (props: P) => {
-    const { push } = useRouter();
-    const [isChecking, setIsChecking] = useState(true);
-    
+    const router = useRouter();
+
     const { data, loading, error } = useQuery(GET_CURRENT_USER, {
       errorPolicy: 'all',
       fetchPolicy: 'cache-and-network',
     });
 
+    const isAuthenticated = !error && Boolean(data?.customer);
+
+    // Navigation is a side effect on an external system (the router), so it belongs in an effect.
     useEffect(() => {
-      if (!loading) {
-        setIsChecking(false);
-        
-        // If there's an error or no customer data, user is not authenticated
-        if (error || !data?.customer) {
-          push('/logg-inn');
-        }
+      if (!loading && !isAuthenticated) {
+        router.push('/logg-inn');
       }
-    }, [data, loading, error, push]);
+    }, [loading, isAuthenticated, router]);
 
     // Show loading while checking authentication
-    if (loading || isChecking) {
+    if (loading) {
       return (
         <div className="flex justify-center items-center min-h-screen">
           <LoadingSpinner />
@@ -34,8 +33,8 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
       );
     }
 
-    // If no customer data, don't render the component
-    if (!data?.customer) {
+    // Not authenticated: render nothing while the redirect happens
+    if (!isAuthenticated) {
       return null;
     }
 

@@ -8,7 +8,7 @@ import {
 
 // Components
 import { InputField } from '@/components/Input/InputField.component';
-import Button from '../UI/Button.component';
+import Button from '@/components/UI/Button.component';
 
 // Constants
 import { INPUT_FIELDS } from '@/utils/constants/INPUT_FIELDS';

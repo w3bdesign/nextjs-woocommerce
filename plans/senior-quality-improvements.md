@@ -1,5 +1,7 @@
 # Senior-quality improvements (Pages Router)
 
+> **Outdated:** the App Router migration is done (see [`app-router-migration.md`](app-router-migration.md)). Items below that mention `src/pages`, `_app.tsx`, `getStaticProps`/`getServerSideProps` or NProgress were handled by the migration (per-request server Apollo client, 404 handling, metadata, `proxy.ts`). The remaining items (tooling, `next/image`, SEO baseline, dead files) still apply, but to `src/app`.
+
 The App Router migration is postponed. This plan fixes correctness, tooling and hygiene on the current Pages Router so the later migration starts from a clean, tested base.
 
 ## Phases

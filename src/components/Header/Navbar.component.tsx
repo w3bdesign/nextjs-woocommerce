@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import Cart from './Cart.component';
-import AlgoliaSearchBox from '../AlgoliaSearch/AlgoliaSearchBox.component';
-import MobileSearch from '../AlgoliaSearch/MobileSearch.component';
+import Cart from '@/components/Header/Cart.component';
+import AlgoliaSearchBox from '@/components/AlgoliaSearch/AlgoliaSearchBox.component';
+import MobileSearch from '@/components/AlgoliaSearch/MobileSearch.component';
 
 /**
  * Navigation for the application.

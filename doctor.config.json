@@ -4,7 +4,8 @@
     "overrides": [
       {
         "files": [
-          "src/pages/**",
+          "src/app/**/page.tsx",
+          "src/app/**/layout.tsx",
           "src/components/User/withAuth.component.tsx"
         ],
         "rules": ["react-doctor/only-export-components"]

@@ -1,6 +1,8 @@
+'use client';
+
 import { LazyMotion, domAnimation, m, Transition } from 'motion/react';
 
-import type { IAnimateStaggerWithDelayProps } from './types/Animations.types';
+import type { IAnimateStaggerWithDelayProps } from '@/components/Animations/types/Animations.types';
 
 /**
  * Fade content left to right. Needs to be used with FadeLeftToRightItem
