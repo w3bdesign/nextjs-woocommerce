@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, ComponentType, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_CURRENT_USER } from '@/utils/gql/GQL_QUERIES';
@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner.component
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const Wrapper = (props: P) => {
-    const { push } = useRouter();
+    const router = useRouter();
     const [isChecking, setIsChecking] = useState(true);
     
     const { data, loading, error } = useQuery(GET_CURRENT_USER, {
@@ -22,10 +22,10 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
         
         // If there's an error or no customer data, user is not authenticated
         if (error || !data?.customer) {
-          push('/logg-inn');
+          router.push('/logg-inn');
         }
       }
-    }, [data, loading, error, push]);
+    }, [data, loading, error, router]);
 
     // Show loading while checking authentication
     if (loading || isChecking) {
