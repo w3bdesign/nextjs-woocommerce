@@ -1,9 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 /**
- * Legacy product URLs (`/produkt/:slug?id=...`) permanently redirect (301) to
- * the clean slug URL. This replaces the redirect previously done in
- * `getServerSideProps` of `pages/produkt/[slug].tsx`.
+ * Legacy `/produkt/:slug?id=...` and `/kategori/:slug?id=...` URLs permanently
+ * redirect (301) to the clean slug URL, so each page has a single cached URL.
  *
  * `permanentRedirect()` in a page would respond with 308, so a proxy is used
  * to keep the exact 301 status code for SEO.
@@ -19,5 +18,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/produkt/:slug',
+  matcher: ['/produkt/:slug', '/kategori/:slug'],
 };

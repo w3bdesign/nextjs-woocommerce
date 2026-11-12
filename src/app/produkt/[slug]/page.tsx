@@ -11,8 +11,13 @@ import { GET_SINGLE_PRODUCT } from '@/utils/gql/GQL_QUERIES';
 
 import type { ISingleProduct } from '@/types/product';
 
-// SSR on every request: same as the previous getServerSideProps.
-export const dynamic = 'force-dynamic';
+// Rendered on first visit, then cached and refreshed at most every 10 minutes.
+export const revalidate = 600;
+
+/** No products are prebuilt at build time; each is rendered on first visit. */
+export function generateStaticParams() {
+  return [];
+}
 
 interface IProductPageProps {
   params: Promise<{ slug: string }>;
@@ -31,9 +36,9 @@ const isProductNotFoundError = (error: unknown) =>
   );
 
 /**
- * Deduplicated per request so generateMetadata and the page share one fetch.
- * Returns `null` when the product does not exist and `undefined` when the
- * backend request fails.
+ * Shared by generateMetadata and the page so the product is fetched once.
+ * Returns `null` when the product does not exist. Other errors are rethrown so
+ * a failed refresh keeps serving the last cached page instead of caching an error.
  */
 const getProduct = cache(async (slug: string) => {
   try {
@@ -43,8 +48,7 @@ const getProduct = cache(async (slug: string) => {
     return data?.product ?? null;
   } catch (error) {
     if (isProductNotFoundError(error)) return null;
-    console.error('Failed to load product', slug, error);
-    return undefined;
+    throw error;
   }
 });
 
@@ -65,20 +69,11 @@ export default async function ProductPage({
 }: Readonly<IProductPageProps>) {
   const { slug } = await params;
   const product = await getProduct(slug);
-
-  if (product === null) {
-    notFound();
-  }
+  if (!product) notFound();
 
   return (
-    <Layout title={product?.name ?? ''}>
-      {product ? (
-        <SingleProduct product={product} />
-      ) : (
-        <div className="mt-8 text-2xl text-center">
-          Feil under lasting av produkt ...
-        </div>
-      )}
+    <Layout title={product.name}>
+      <SingleProduct product={product} />
     </Layout>
   );
 }
