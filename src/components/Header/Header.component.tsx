@@ -1,3 +1,8 @@
+'use client';
+
+// TEMPORARY (App Router migration): `next/head` only works in the Pages Router.
+// In the App Router it renders nothing and titles/meta come from `metadata`.
+// Remove <Head> and 'use client' once src/pages is gone.
 import Head from 'next/head';
 
 import Navbar from './Navbar.component';
