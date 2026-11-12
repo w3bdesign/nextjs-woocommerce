@@ -59,7 +59,7 @@
     "postcss": "~8.5.32",
     "postcss-preset-env": "^11.6.1",
     "prettier": "^3.9.10",
-    "react-doctor": "^0.9.18",
+    "react-doctor": "^0.9.22",
     "tailwindcss": "^3.4.19",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
