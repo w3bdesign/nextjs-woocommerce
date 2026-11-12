@@ -87,8 +87,6 @@ const CartContents = () => {
                   </div>
 
                   <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
-                    {/* Product info and line total: stacked on small phones,
-                        side by side (total on the right) from the sm breakpoint */}
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                       <div className="min-w-0">
                         <h2 className="break-words text-base font-semibold leading-snug text-text sm:text-lg">
@@ -104,7 +102,6 @@ const CartContents = () => {
                       </p>
                     </div>
 
-                    {/* Bottom line: quantity stepper on the left, remove on the right */}
                     <div className="flex items-center justify-between gap-3">
                       <div className="inline-flex h-10 items-center overflow-hidden rounded-md border border-border">
                         <button
