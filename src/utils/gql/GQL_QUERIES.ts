@@ -156,8 +156,8 @@ export const FETCH_ALL_CATEGORIES_QUERY = gql`
 `;
 
 export const GET_PRODUCTS_FROM_CATEGORY = gql`
-  query ProductsFromCategory($id: ID!) {
-    productCategory(id: $id) {
+  query ProductsFromCategory($slug: ID!) {
+    productCategory(id: $slug, idType: SLUG) {
       id
       name
       products(first: 50) {
