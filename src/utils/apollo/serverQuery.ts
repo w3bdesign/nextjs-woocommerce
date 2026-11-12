@@ -28,7 +28,7 @@ const createServerClient = () =>
     cache: new InMemoryCache(),
   });
 
-export const serverQuery = async <
+export const serverQuery = <
   TData = Record<string, unknown>,
   TVariables extends OperationVariables = OperationVariables,
 >(
@@ -36,6 +36,7 @@ export const serverQuery = async <
   variables?: TVariables,
 ) => {
   const client = createServerClient();
+  // Returns the query promise directly; callers `await serverQuery(...)`.
   return client.query<TData, TVariables>({
     query,
     variables,

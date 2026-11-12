@@ -9,7 +9,7 @@ import CartInitializer from '@/components/Cart/CartInitializer.component';
 /**
  * Client-side providers for the App Router (replaces the providers in pages/_app.tsx).
  */
-export default function Providers({ children }: { children: ReactNode }) {
+export default function Providers({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <ApolloProvider client={client}>
       <CartInitializer />

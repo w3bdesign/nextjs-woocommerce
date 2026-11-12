@@ -103,7 +103,7 @@ export const mockWooGraphql = async (page: Page, product: MockProduct) => {
       body: JSON.stringify(body),
     });
 
-  await page.route('**/graphql', async (route) => {
+  await page.route('**/graphql', (route) => {
     const request = route.request();
 
     if (request.method() === 'OPTIONS') {
