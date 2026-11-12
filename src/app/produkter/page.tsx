@@ -12,7 +12,7 @@ import type { Product } from '@/types/product';
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  // The Pages Router version overrode the shared title template via next/head.
+  // This route intentionally does not use the shared title template.
   title: { absolute: 'Produkter | WooCommerce Next.js' },
 };
 
