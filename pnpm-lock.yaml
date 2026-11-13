@@ -172,8 +172,8 @@ importers:
   .:
     dependencies:
       '@apollo/client':
-        specifier: ^3.14.1
-        version: 3.14.1(@types/react@19.3.0)(graphql@17.0.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: ^4.3.8
+        version: 4.3.8(graphql@17.0.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rxjs@7.8.2)
       algoliasearch:
         specifier: ^5.59.0
         version: 5.59.0
@@ -336,13 +336,14 @@ packages:
   '@apm-js-collab/tracing-hooks@0.13.0':
     resolution: {integrity: sha512-mTvWz9rnQwx1U3h0XPTHaX7bgfkpipLLTQyjlC2cdhQpQEuoLT0AGzoydeoq2NxfEVv6fWOOETcSbb2nptleyw==}
 
-  '@apollo/client@3.14.1':
-    resolution: {integrity: sha512-SgGX6E23JsZhUdG2anxiyHvEvvN6CUaI4ZfMsndZFeuHPXL3H0IsaiNAhLITSISbeyeYd+CBd9oERXQDdjXWZw==}
+  '@apollo/client@4.3.8':
+    resolution: {integrity: sha512-g04oCNYjbbjpecZmcUOE0fZLt3vMFwoZJ+o4iu0N3bDDhMR95/ZVzWL9v3mM7WDSPxI0++P2348yAbSWceLoZA==}
     peerDependencies:
-      graphql: ^15.0.0 || ^16.0.0
+      graphql: ^16.0.0 || ^17.0.0
       graphql-ws: ^5.5.5 || ^6.0.3
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+      react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+      react-dom: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+      rxjs: ^7.3.0
       subscriptions-transport-ws: ^0.9.0 || ^0.11.0
     peerDependenciesMeta:
       graphql-ws:
@@ -3068,9 +3069,6 @@ packages:
     resolution: {integrity: sha512-RqGs4wavGYJWE07t35JQccByczmNUXQT0E12ZYV1VKYu5UiAU9lsos/yBAcf840+zrUQQxgVduCR5/B8nNtibg==}
     hasBin: true
 
-  hoist-non-react-statics@3.3.2:
-    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
-
   hookified@1.15.1:
     resolution: {integrity: sha512-MvG/clsADq1GPM2KGo2nyfaWVyn9naPiXrqIe4jYjXNZQt238kWyOGrsyc/DmRAQ+Re6yeo6yX/yoNCG5KAEVg==}
 
@@ -4257,17 +4255,6 @@ packages:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
 
-  rehackt@0.1.0:
-    resolution: {integrity: sha512-7kRDOuLHB87D/JESKxQoRwv4DzbIdwkAGQ7p6QKGdVlY1IZheUnVhlk/4UZlNUVxdAXpyxikE3URsG067ybVzw==}
-    peerDependencies:
-      '@types/react': '*'
-      react: '*'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
-
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
@@ -4328,6 +4315,9 @@ packages:
   rxjs@6.6.7:
     resolution: {integrity: sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==}
     engines: {npm: '>=2.0.0'}
+
+  rxjs@7.8.2:
+    resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
 
   safe-array-concat@1.1.4:
     resolution: {integrity: sha512-wtZlHyOje6OZTGqAoaDKxFkgRtkF9CnHAVnCHKfuj200wAgL+bSJhdsCD2l0Qx/2ekEXjPWcyKkfGb5CPboslg==}
@@ -4566,10 +4556,6 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  symbol-observable@4.0.0:
-    resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}
-    engines: {node: '>=0.10'}
-
   tagged-tag@1.0.0:
     resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
     engines: {node: '>=20'}
@@ -4651,10 +4637,6 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
-
-  ts-invariant@0.10.3:
-    resolution: {integrity: sha512-uivwYcQaxAucv1CzRp2n/QdYPo4ILf9VXgH19zEIjFx2EJufV16P0JtJVpYHy89DItG6Kwj2oIUjrcK5au+4tQ==}
-    engines: {node: '>=8'}
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
@@ -4924,12 +4906,6 @@ packages:
   yoga-layout@3.2.1:
     resolution: {integrity: sha512-0LPOt3AxKqMdFBZA3HBAt/t/8vIKq7VaQYbuA8WxCgung+p9TVyKRYdpvCb80HcdTN2NkbIKbhNwKUfm3tQywQ==}
 
-  zen-observable-ts@1.2.5:
-    resolution: {integrity: sha512-QZWQekv6iB72Naeake9hS1KxHlotfRpe+WGNbNx5/ta+R3DNjVO2bswf63gXlWDcs+EMd7XY8HfVQyP1X6T4Zg==}
-
-  zen-observable@0.8.15:
-    resolution: {integrity: sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==}
-
   zod-validation-error@4.0.2:
     resolution: {integrity: sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ==}
     engines: {node: '>=18.0.0'}
@@ -5074,7 +5050,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@apollo/client@3.14.1(@types/react@19.3.0)(graphql@17.0.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@apollo/client@4.3.8(graphql@17.0.2)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(rxjs@7.8.2)':
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@17.0.2)
       '@wry/caches': 1.0.1
@@ -5082,19 +5058,12 @@ snapshots:
       '@wry/trie': 0.5.0
       graphql: 17.0.2
       graphql-tag: 2.12.7(graphql@17.0.2)
-      hoist-non-react-statics: 3.3.2
       optimism: 0.18.1
-      prop-types: 15.8.1
-      rehackt: 0.1.0(@types/react@19.3.0)(react@19.3.1)
-      symbol-observable: 4.0.0
-      ts-invariant: 0.10.3
+      rxjs: 7.8.2
       tslib: 2.8.1
-      zen-observable-ts: 1.2.5
     optionalDependencies:
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
 
   '@astrojs/compiler@4.0.0': {}
 
@@ -7809,10 +7778,6 @@ snapshots:
       mkdirp: 0.3.0
       nopt: 1.0.10
 
-  hoist-non-react-statics@3.3.2:
-    dependencies:
-      react-is: 16.13.1
-
   hookified@1.15.1: {}
 
   hookified@2.2.0: {}
@@ -9182,11 +9147,6 @@ snapshots:
       gopd: 1.2.0
       set-function-name: 2.0.2
 
-  rehackt@0.1.0(@types/react@19.3.0)(react@19.3.1):
-    optionalDependencies:
-      '@types/react': 19.3.0
-      react: 19.3.1
-
   require-directory@2.1.1: {}
 
   require-from-string@2.0.2: {}
@@ -9244,6 +9204,10 @@ snapshots:
   rxjs@6.6.7:
     dependencies:
       tslib: 1.14.1
+
+  rxjs@7.8.2:
+    dependencies:
+      tslib: 2.8.1
 
   safe-array-concat@1.1.4:
     dependencies:
@@ -9569,8 +9533,6 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  symbol-observable@4.0.0: {}
-
   tagged-tag@1.0.0: {}
 
   tailwindcss@3.4.19(yaml@2.9.0):
@@ -9687,10 +9649,6 @@ snapshots:
       typescript: '@typescript/typescript6@6.0.2'
 
   ts-interface-checker@0.1.13: {}
-
-  ts-invariant@0.10.3:
-    dependencies:
-      tslib: 2.8.1
 
   tsconfig-paths@3.15.0:
     dependencies:
@@ -10021,12 +9979,6 @@ snapshots:
   yocto-queue@0.1.0: {}
 
   yoga-layout@3.2.1: {}
-
-  zen-observable-ts@1.2.5:
-    dependencies:
-      zen-observable: 0.8.15
-
-  zen-observable@0.8.15: {}
 
   zod-validation-error@4.0.2(zod@4.6.5):
     dependencies:
