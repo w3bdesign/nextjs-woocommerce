@@ -87,14 +87,11 @@ const CartItem = ({ item, disabled, onQuantityChange }: ICartItemProps) => {
               inputMode="numeric"
               value={item.quantity}
               onChange={(event) => {
-                const { value, valueAsNumber } = event.currentTarget;
-                // Ignore empty/partial/invalid input (e.g. while the user is
-                // retyping) instead of firing a cart mutation with a bogus value
-                if (value.trim() === '' || !Number.isFinite(valueAsNumber)) {
-                  return;
-                }
-                // Never remove the line from the input; clamp to a whole number >= 1
-                onQuantityChange(Math.max(1, Math.trunc(valueAsNumber)));
+                const quantity = Number.parseInt(event.target.value, 10);
+                // An emptied or invalid field falls back to 1 rather than removing the line
+                onQuantityChange(
+                  Number.isNaN(quantity) || quantity < 1 ? 1 : quantity,
+                );
               }}
               className="h-full w-12 border-x border-border bg-transparent text-center text-sm text-text focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               aria-label={`Antall ${name}`}
