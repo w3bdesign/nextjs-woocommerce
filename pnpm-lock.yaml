@@ -181,8 +181,8 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2
       motion:
-        specifier: ^14.11.1
-        version: 14.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: ^14.12.0
+        version: 14.12.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       next:
         specifier: 16.4.2
         version: 16.4.2(@babel/core@7.29.7(supports-color@5.5.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.64.1)(@types/node@25.9.9)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -2915,8 +2915,8 @@ packages:
   fraction.js@5.3.4:
     resolution: {integrity: sha512-1X1NTtiJphryn/uLQz3whtY6jK3fTqoE3ohKs0tT+Ujr1W59oopxmoEh7Lu5p6vBaPbgoM0bzveAW4Qi5RyWDQ==}
 
-  framer-motion@14.11.1:
-    resolution: {integrity: sha512-kXs+RHzja034QumwdXJubF0az86ueiWtANLB7FbhM+WKNGrgmYHysRRWG+we2KEpWv1+8W4eoMtsKaUldf54nA==}
+  framer-motion@14.12.0:
+    resolution: {integrity: sha512-4m+10xYan0ic8nFI8zyB5hJkW5F8F4Rer617UecOs8esw0he9unDgXaEZ0rUX7oztz1w4iuvyPWhk4jltMX5iw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -3617,14 +3617,14 @@ packages:
   module-details-from-path@1.0.4:
     resolution: {integrity: sha512-EGWKgxALGMgzvxYF1UyGTy0HXX/2vHLkw6+NvDKW2jypWbHpjQuj4UMcqQWXHERJhVGKikolT06G3bcKe4fi7w==}
 
-  motion-dom@14.11.1:
-    resolution: {integrity: sha512-H/12gSe24nuV19IR7jHLObI+5Tm34UA/S5JaUye802l19VoVsT1USE+Suv+G/XO1U+YmXI9Nnbs4Krd4FthSSg==}
+  motion-dom@14.12.0:
+    resolution: {integrity: sha512-YnAY17g8mXRVoXGZbH+v/O2SkNBJqz2TMuqL9yek9Omfhsdjw7gJwNgI5nsGZFpbbm3vINyOo+VtGPryIslatw==}
 
   motion-utils@14.7.0:
     resolution: {integrity: sha512-woO0/Nb7ys75f94fjvQi/6leiHGvZUYkeHUPEZ3vxsV+9OpEVhkxp01x8MlRwX0zt31EqgXsKDAoBoJLC148Tw==}
 
-  motion@14.11.1:
-    resolution: {integrity: sha512-V0AQPpbTlkhXYQGiO6X55KsFHz+fdYlZJVERFEjJpBWZlCggWOcbCA7zd24iYs1q/Le191tAV3J29xBfS5+tWA==}
+  motion@14.12.0:
+    resolution: {integrity: sha512-cxD0c0yGXo/mzPgveXMsXGl138UNsRit9XgInK8kThtDsrvIkhlAR9b6WYoAm7EmKWToMFx6v/G8i0Zjv+2uoA==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -7657,9 +7657,9 @@ snapshots:
 
   fraction.js@5.3.4: {}
 
-  framer-motion@14.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
+  framer-motion@14.12.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
-      motion-dom: 14.11.1
+      motion-dom: 14.12.0
       motion-utils: 14.7.0
       tslib: 2.8.1
     optionalDependencies:
@@ -8356,15 +8356,15 @@ snapshots:
 
   module-details-from-path@1.0.4: {}
 
-  motion-dom@14.11.1:
+  motion-dom@14.12.0:
     dependencies:
       motion-utils: 14.7.0
 
   motion-utils@14.7.0: {}
 
-  motion@14.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
+  motion@14.12.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
-      framer-motion: 14.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      framer-motion: 14.12.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       tslib: 2.8.1
     optionalDependencies:
       react: 19.3.1
