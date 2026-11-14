@@ -124,6 +124,34 @@ describe('ProductList', () => {
     expect(screen.getByRole('slider', { name: 'Pris' })).toHaveValue('1000');
   });
 
+  it('lists a shared colour once and turns it off when clicked again', async () => {
+    const user = userEvent.setup();
+    const blue = { allPaColors: { nodes: [{ name: 'Blå', slug: 'blue' }] } };
+    render(
+      <ProductList
+        products={[
+          product(1, 'Shirt', '100', blue),
+          product(2, 'Hoodie', '200', blue),
+          product(3, 'Cap', '300'),
+        ]}
+        title="Klær"
+      />,
+    );
+
+    const colourButtons = screen.getAllByRole('button', {
+      name: 'Filtrer etter farge: Blå',
+    });
+    expect(colourButtons).toHaveLength(1);
+
+    await user.click(colourButtons[0]);
+    expect(heading()).toHaveTextContent('(2)');
+    expect(colourButtons[0]).toHaveClass('ring-2');
+
+    await user.click(colourButtons[0]);
+    expect(heading()).toHaveTextContent('(3)');
+    expect(colourButtons[0]).not.toHaveClass('ring-2');
+  });
+
   it('hides size and color filters when no product has them', () => {
     render(<ProductList products={[PRODUCTS[2]]} title="Caps" />);
     expect(screen.queryByText('STØRRELSE')).not.toBeInTheDocument();
