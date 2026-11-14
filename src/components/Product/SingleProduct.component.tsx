@@ -93,7 +93,7 @@ const PriceDisplay = ({
 }: {
   onSale: boolean;
   hasVariations: boolean;
-  price: string | undefined;
+  price: string;
   salePrice: string | undefined;
   regularPrice: string | undefined;
 }) => {
@@ -101,13 +101,8 @@ const PriceDisplay = ({
     return <p className="text-xl font-bold text-text">{price}</p>;
   }
 
-  const safePrice = price ?? '';
-  const currentPrice = getCurrentSalePrice(hasVariations, safePrice, salePrice);
-  const originalPrice = getOriginalSalePrice(
-    hasVariations,
-    safePrice,
-    regularPrice,
-  );
+  const currentPrice = getCurrentSalePrice(hasVariations, price, salePrice);
+  const originalPrice = getOriginalSalePrice(hasVariations, price, regularPrice);
 
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-2">
@@ -170,7 +165,8 @@ const ProductDetails = ({
 }: {
   product: ISingleProduct;
   hasVariations: boolean;
-  price: string | undefined;
+  /** Always a string: `formatPrice` returns 'N/A' for missing prices. */
+  price: string;
   salePrice: string | undefined;
   regularPrice: string | undefined;
   descriptionText: string | null;

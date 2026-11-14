@@ -1,4 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
+import { createElement } from 'react';
+import { renderToString } from 'react-dom/server';
 import { useMutation } from '@apollo/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -64,6 +66,19 @@ describe('useCart', () => {
     expect(result.current.isInitialLoad).toBe(true);
     expect(result.current.items).toEqual([]);
     expect(result.current.total).toBe('0');
+  });
+
+  it('is in its initial load during server rendering, even with cached data', () => {
+    vi.mocked(useCartQuery).mockReturnValue({
+      data: { cart: { total: 'kr300.00', contents: { nodes } } },
+      loading: false,
+      refetch: vi.fn(),
+    } as never);
+    vi.mocked(useMutation).mockReturnValue([vi.fn(), { loading: false }] as never);
+
+    const Probe = () => createElement('p', null, `initial:${useCart().isInitialLoad}`);
+
+    expect(renderToString(createElement(Probe))).toContain('initial:true');
   });
 
   it('keeps showing data (not the initial load) while refetching', () => {

@@ -22,8 +22,6 @@ interface HamburgerState {
 }
 
 type HamburgerAction =
-  | { type: 'EXPAND' }
-  | { type: 'COLLAPSE' }
   | { type: 'ANIMATION_END_EXPANDED' }
   | { type: 'ANIMATION_END_COLLAPSED' }
   | { type: 'TOGGLE' };
@@ -38,9 +36,9 @@ function hamburgerReducer(
   state: HamburgerState,
   action: HamburgerAction,
 ): HamburgerState {
+
   switch (action.type) {
     case 'TOGGLE':
-      if (state.isAnimating) return state;
       return state.isExpanded
         ? { ...state, isExpanded: false, isAnimating: true }
         : { ...state, isExpanded: true, hidden: '', isAnimating: true };
@@ -48,8 +46,6 @@ function hamburgerReducer(
       return { ...state, isAnimating: false };
     case 'ANIMATION_END_COLLAPSED':
       return { ...state, hidden: 'invisible', isAnimating: false };
-    default:
-      return state;
   }
 }
 
@@ -76,19 +72,16 @@ const Hamburger = () => {
 
     if (!isAnimating) return;
 
-    animationTimeoutRef.current = setTimeout(() => {
+    const animationTimeout = setTimeout(() => {
       dispatch(
         isExpanded
           ? { type: 'ANIMATION_END_EXPANDED' }
           : { type: 'ANIMATION_END_COLLAPSED' },
       );
     }, 1000);
+    animationTimeoutRef.current = animationTimeout;
 
-    return () => {
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-    };
+    return () => clearTimeout(animationTimeout);
   }, [isExpanded, isAnimating]);
 
   const handleMobileMenuClick = useCallback(() => {

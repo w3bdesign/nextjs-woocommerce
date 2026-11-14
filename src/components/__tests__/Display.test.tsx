@@ -177,6 +177,26 @@ describe('DisplayProducts', () => {
     expect(screen.getAllByText('kr 100,00')).toHaveLength(3);
   });
 
+  it('leaves the image source empty when no placeholder is configured', () => {
+    vi.stubEnv('NEXT_PUBLIC_PLACEHOLDER_SMALL_IMAGE_URL', '');
+    // React warns about an empty `src`; that warning is expected here.
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <DisplayProducts
+        products={[
+          product({ name: 'No image', slug: 'no-image', image: undefined as never }),
+          product({ name: 'Empty url', slug: 'empty-url', image: { __typename: 'MediaItem' } }),
+        ]}
+      />,
+    );
+
+    for (const name of ['No image', 'Empty url']) {
+      expect(screen.getByRole('img', { name }).getAttribute('src') ?? '').toBe('');
+    }
+    consoleError.mockRestore();
+  });
+
   it('shows sale and regular price for a simple product on sale', () => {
     render(
       <DisplayProducts
