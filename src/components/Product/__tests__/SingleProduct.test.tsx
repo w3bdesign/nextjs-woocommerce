@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -46,6 +47,12 @@ describe('SingleProduct', () => {
     expect(screen.getByText('kr 699,00')).toBeInTheDocument();
     expect(screen.getByText('Myk bomull')).toBeInTheDocument();
     expect(screen.getByRole('img', { name: 'Test Simple' })).toHaveAttribute('src', '/shirt.jpg');
+  });
+
+  it('leaves the description out of the server HTML so hydration matches', () => {
+    const html = renderToString(<SingleProduct product={makeProduct()} />);
+    expect(html).toContain('Test Simple');
+    expect(html).not.toContain('Myk');
   });
 
   it('falls back to the placeholder image', () => {
