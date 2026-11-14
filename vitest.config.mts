@@ -24,6 +24,8 @@ export default defineConfig({
       exclude: [
         'src/tests/**',
         'src/types/**',
+        // Type-only module: no runtime code to cover.
+        'src/components/Animations/types/**',
         '**/__tests__/**',
         '**/*.d.ts',
         // Async Server Component shells are covered by Playwright instead.
@@ -39,10 +41,10 @@ export default defineConfig({
       reportsDirectory: './coverage',
       // Set just under the current numbers so a drop in coverage fails the run.
       thresholds: {
-        statements: 70,
-        branches: 65,
-        functions: 65,
-        lines: 70,
+        statements: 90,
+        branches: 90,
+        functions: 90,
+        lines: 90,
       },
     },
   },

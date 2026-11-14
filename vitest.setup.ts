@@ -36,7 +36,8 @@ vi.mock('next/image', () => ({
 
 afterEach(async () => {
   cleanup();
-  localStorage.clear();
+  // Tests that opt into the `node` environment have no localStorage.
+  globalThis.localStorage?.clear?.();
   vi.clearAllMocks();
   // Restore the default pathname after tests that override it.
   const { usePathname } = await import('next/navigation');
