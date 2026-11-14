@@ -163,11 +163,11 @@ describe('FadeLeftToRight', () => {
 
 describe('Providers', () => {
   it('provides the Apollo client and initialises the cart', () => {
-    let provided: unknown;
-    const Consumer = () => {
-      provided = useApolloClient();
-      return <p>child</p>;
-    };
+    // Render the comparison instead of assigning an outer variable during render,
+    // which the React purity rules forbid.
+    const Consumer = () => (
+      <p>{useApolloClient() === client ? 'shared client' : 'other client'}</p>
+    );
 
     render(
       <Providers>
@@ -175,8 +175,7 @@ describe('Providers', () => {
       </Providers>,
     );
 
-    expect(provided).toBe(client);
+    expect(screen.getByText('shared client')).toBeInTheDocument();
     expect(screen.getByText('cart-initializer')).toBeInTheDocument();
-    expect(screen.getByText('child')).toBeInTheDocument();
   });
 });
