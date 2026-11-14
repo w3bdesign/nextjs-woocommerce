@@ -11,6 +11,8 @@ import { devices } from '@playwright/test';
  */
 const config: PlaywrightTestConfig = {
   testDir: './src/tests',
+  /* Only E2E specs; Vitest unit tests use *.test.ts(x) in __tests__ folders. */
+  testMatch: '**/*.spec.ts',
   /* Maximum time one test can run for. */
   timeout: 60 * 1000, // Increased to 60 seconds
   expect: {

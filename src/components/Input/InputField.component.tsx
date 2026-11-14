@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import type { RegisterOptions } from 'react-hook-form';
 
 interface ICustomValidation {
   required?: boolean;
@@ -13,6 +14,29 @@ export interface IInputRootObject {
   type?: string;
   autoComplete?: string;
 }
+
+/**
+ * Turn the field's validation config into react-hook-form rules with Norwegian messages.
+ * HTML `pattern` is implicitly anchored to the whole value, so the RegExp is anchored too.
+ */
+const getValidationRules = (
+  inputLabel: string,
+  { required, minLength, pattern }: ICustomValidation = {},
+): RegisterOptions => ({
+  ...(required && { required: `${inputLabel} er påkrevd` }),
+  ...(minLength && {
+    minLength: {
+      value: minLength,
+      message: `${inputLabel} må være minst ${minLength} tegn`,
+    },
+  }),
+  ...(pattern && {
+    pattern: {
+      value: new RegExp(`^(?:${pattern})$`),
+      message: `${inputLabel} har ugyldig format`,
+    },
+  }),
+});
 
 /**
  * Input field component displays a text input in a form, with label.
@@ -32,6 +56,7 @@ export const InputField = ({
 }: Readonly<IInputRootObject>) => {
   const { register, formState: { errors } } = useFormContext();
   const hasError = Object.hasOwn(errors, inputName);
+  const errorMessage = errors[inputName]?.message;
 
   return (
     <div className="w-full md:w-1/2 p-2">
@@ -54,7 +79,7 @@ export const InputField = ({
         aria-invalid={hasError ? 'true' : 'false'}
         {...(hasError ? { 'aria-describedby': `${inputName}-error` } : {})}
         {...customValidation}
-        {...register(inputName)}
+        {...register(inputName, getValidationRules(inputLabel, customValidation))}
       />
       {hasError && (
         <p
@@ -62,7 +87,7 @@ export const InputField = ({
           className="mt-1 text-sm text-error"
           role="alert"
         >
-          {inputLabel} er påkrevd
+          {typeof errorMessage === 'string' ? errorMessage : `${inputLabel} er påkrevd`}
         </p>
       )}
     </div>
