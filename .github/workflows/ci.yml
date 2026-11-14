@@ -59,8 +59,7 @@ jobs:
         run: pnpm run test:coverage
       - name: Upload coverage to Codecov
         if: ${{ !cancelled() }}
-        # TODO: pin to a commit SHA like the other actions in this file.
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5.5.5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/lcov.info
