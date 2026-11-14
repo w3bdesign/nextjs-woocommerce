@@ -1,16 +1,16 @@
 import { test, expect } from '@playwright/test';
+import {
+  TEST_CATEGORY,
+  TEST_PRODUCT,
+  categoryPath,
+  productPath,
+} from '@/tests/helpers/testData';
 
 /**
  * Route smoke tests.
  * Guards the Pages Router → App Router migration: every public route must
  * keep responding with 200 and render its key content.
  */
-
-const PRODUCT_SLUG = 'test-simple';
-const PRODUCT_NAME = 'Test Simple';
-// "Tskjorter" is the category that currently contains products.
-const CATEGORY_SLUG = 'tskjorter';
-const CATEGORY_NAME = 'Tskjorter';
 
 const visibleProductLink = (page: import('@playwright/test').Page) =>
   page.locator('a[href^="/produkt/"]').filter({ visible: true }).first();
@@ -42,17 +42,17 @@ test.describe('Routes', () => {
       page.getByRole('heading', { name: 'Kategorier', exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole('link', { name: CATEGORY_NAME, exact: true }),
-    ).toHaveAttribute('href', `/kategori/${CATEGORY_SLUG}`);
+      page.getByRole('link', { name: TEST_CATEGORY.name, exact: true }),
+    ).toHaveAttribute('href', categoryPath());
   });
 
   test('/produkt/[slug] responds 200 and renders the product', async ({
     page,
   }) => {
-    const response = await page.goto(`/produkt/${PRODUCT_SLUG}`);
+    const response = await page.goto(productPath());
     expect(response?.status()).toBe(200);
     await expect(
-      page.getByRole('heading', { name: PRODUCT_NAME, exact: true }).first(),
+      page.getByRole('heading', { name: TEST_PRODUCT.name, exact: true }).first(),
     ).toBeVisible();
     await expect(page.getByRole('button', { name: 'KJØP' })).toBeVisible();
   });
@@ -60,13 +60,13 @@ test.describe('Routes', () => {
   test('/kategori/[slug] responds 200 and renders category products', async ({
     page,
   }) => {
-    const response = await page.goto(`/kategori/${CATEGORY_SLUG}`);
+    const response = await page.goto(categoryPath());
     expect(response?.status()).toBe(200);
     await expect(
-      page.getByRole('heading', { name: CATEGORY_NAME, exact: true }),
+      page.getByRole('heading', { name: TEST_CATEGORY.name, exact: true }),
     ).toBeVisible();
     await expect(
-      page.locator(`a[href="/produkt/${PRODUCT_SLUG}"]`).filter({ visible: true }).first(),
+      page.locator(`a[href="${productPath()}"]`).filter({ visible: true }).first(),
     ).toBeVisible();
   });
 

@@ -1,4 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
+import {
+  SECONDARY_CATEGORY,
+  TEST_PRODUCT,
+  categoryPath,
+  productPath,
+} from '@/tests/helpers/testData';
 
 /**
  * SEO / document head regression tests.
@@ -14,8 +20,11 @@ const ROUTES: { path: string; title: string }[] = [
   { path: '/handlekurv', title: `${TITLE_PREFIX} Handlekurv` },
   { path: '/kasse', title: `${TITLE_PREFIX} Kasse` },
   { path: '/logg-inn', title: `${TITLE_PREFIX} Logg inn` },
-  { path: '/produkt/test-simple', title: `${TITLE_PREFIX} Test Simple` },
-  { path: '/kategori/clothing', title: `${TITLE_PREFIX} Clothing` },
+  { path: productPath(), title: `${TITLE_PREFIX} ${TEST_PRODUCT.name}` },
+  {
+    path: categoryPath(SECONDARY_CATEGORY.slug),
+    title: `${TITLE_PREFIX} ${SECONDARY_CATEGORY.name}`,
+  },
 ];
 
 const expectSharedHead = async (page: Page) => {
