@@ -87,10 +87,15 @@ const CartItem = ({ item, disabled, onQuantityChange }: ICartItemProps) => {
               inputMode="numeric"
               value={item.quantity}
               onChange={(event) => {
-                const quantity = Number.parseInt(event.target.value, 10);
+                const rawValue = event.target.value.trim();
                 // An emptied or invalid field falls back to 1 rather than removing the line
+                if (!/^\d+$/.test(rawValue)) {
+                  onQuantityChange(1);
+                  return;
+                }
+                const quantity = Number.parseInt(rawValue, 10);
                 onQuantityChange(
-                  Number.isNaN(quantity) || quantity < 1 ? 1 : quantity,
+                  Number.isSafeInteger(quantity) && quantity >= 1 ? quantity : 1,
                 );
               }}
               className="h-full w-12 border-x border-border bg-transparent text-center text-sm text-text focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
