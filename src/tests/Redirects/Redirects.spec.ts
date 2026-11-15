@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { categoryPath, productPath } from '@/tests/helpers/testData';
 
 /**
  * Redirect and error-status regression tests.
  */
 
 test.describe('Redirects and status codes', () => {
-  for (const path of ['/produkt/test-simple', '/kategori/tskjorter']) {
+  for (const path of [productPath(), categoryPath()]) {
     test(`legacy ${path}?id= URL permanently redirects (301) to clean slug`, async ({
       request,
     }) => {

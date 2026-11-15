@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { mockWooGraphql, MOCK_SESSION_TOKEN } from '@/tests/helpers/mockWooGraphql';
+import { TEST_PRODUCT, productPath } from '@/tests/helpers/testData';
 
 /**
  * End-to-end cart flow.
@@ -11,12 +12,7 @@ import { mockWooGraphql, MOCK_SESSION_TOKEN } from '@/tests/helpers/mockWooGraph
  * does not depend on the backend's CORS configuration; SSR data is still real.
  */
 
-const PRODUCT = {
-  databaseId: 13,
-  name: 'Test Simple',
-  slug: 'test-simple',
-  price: '699',
-};
+const PRODUCT = { ...TEST_PRODUCT };
 
 test.describe('Cart flow', () => {
   test('add to cart updates header count, cart page and checkout', async ({
@@ -24,7 +20,7 @@ test.describe('Cart flow', () => {
   }) => {
     const mock = await mockWooGraphql(page, PRODUCT);
 
-    await page.goto(`/produkt/${PRODUCT.slug}`);
+    await page.goto(productPath(PRODUCT.slug));
 
     const buyButton = page.getByRole('button', { name: 'KJØP' });
     await expect(buyButton).toBeEnabled();

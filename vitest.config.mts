@@ -39,12 +39,12 @@ export default defineConfig({
       ],
       reporter: ['text', 'html', 'lcov'],
       reportsDirectory: './coverage',
-      // Set just under the current numbers so a drop in coverage fails the run.
+      // Minimum coverage; the run fails if any metric drops below this.
       thresholds: {
-        statements: 90,
-        branches: 90,
-        functions: 90,
-        lines: 90,
+        statements: 95,
+        branches: 95,
+        functions: 95,
+        lines: 95,
       },
     },
   },
