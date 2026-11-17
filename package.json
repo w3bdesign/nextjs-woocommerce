@@ -64,7 +64,7 @@
     "eslint": "^10.14.0",
     "eslint-config-next": "16.4.6",
     "eslint-config-prettier": "^10.1.8",
-    "jsdom": "^31.0.0",
+    "jsdom": "^31.0.1",
     "pa11y": "^10.0.0",
     "postcss": "~8.5.32",
     "postcss-preset-env": "^11.6.1",
