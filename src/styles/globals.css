@@ -58,6 +58,18 @@ body {
   color: var(--color-text);
 }
 
+/* ─── Placeholder contrast (WCAG AA ≥ 4.5:1) ───
+   Tailwind preflight defaults placeholders to gray-400 (#9ca3af),
+   which is only ~2.4:1 on --color-surface. Use the muted text token. */
+
+@layer base {
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+  }
+}
+
 /* ─── Legacy layout overrides ─── */
 
 #cart-div {
