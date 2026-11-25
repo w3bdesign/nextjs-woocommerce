@@ -67,7 +67,7 @@
     "jsdom": "^31.0.0",
     "pa11y": "^10.0.0",
     "postcss": "~8.5.32",
-    "postcss-preset-env": "^11.6.1",
+    "postcss-preset-env": "^11.6.3",
     "prettier": "^3.9.10",
     "react-doctor": "^0.9.22",
     "tailwindcss": "^3.4.19",
